@@ -47,7 +47,7 @@
 		<div class="container">
 			<div class="appointment__text">
 				<!-- <form class="appointment__form" action="#"> -->
-				<form class="appointment__form" action="#" id="frm">
+				<form class="appointment__form" action="joinMemberTable" id="frm" method="post">
 					<div class="text-center" >
 
 						<!-- 1. 아이디 -->
@@ -216,7 +216,7 @@
 						
 						<!-- 끝! 회원가입 버튼 -->
 						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-							<input type="button" value="회원가입" id="submitBtn" style="font-size: 1.1em;" onclick="fn_join()"><br>
+							<input type="submit" value="회원가입" id="submitBtn" style="font-size: 1.1em;"><br>
 						</div>
 
 					</div>
