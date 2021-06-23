@@ -3320,52 +3320,6 @@ ol {
 	margin: 10px;
 }
 
-
-
-
-/*민선 추가*/
-.join_gender input[type="radio"] {
-	display: none;
-	margin: 10px;
-	
-}
-.join_gender label {
-	width: 48%;
-	height: 48px;
-	text-align: center;
-	margin: 3px;
-	margin-bottom: 20px;
-	padding-top: 12px;
-	border-radius: 4px;
-	font-size: 17px;
-	color: #CCC;
-	background: #FFFFFF33;
-/* 	margin-right: 10px; */
-/* 	padding: 13px; */
-	cursor: pointer;
-	font-family: "DM Sans", sans-serif;
-	
-}
-.join_gender input[type="radio"]:checked+label {
-	background: #FFFFFF;
-	color: #5768AD;
-}
-.join_gender[type="radio"]+label{
-	width: 400px;
-	border-radius: 4px;
-	font-size: 15px;
-	color: #CCC;
-	text-align: center;
-	background: #F5F5F5;
-	margin-right: 10px;
-	padding: 13px;
-	cursor: pointer;
-	font-family: "DM Sans", sans-serif;
-	display: none;
-	margin: 10px;
-}
-
-
 /*예진 추가*/
 .card-bordered {
     border: 1px solid #ebebeb
@@ -3868,23 +3822,102 @@ textarea {
 }
 
 /*예진추가*/
-.classes__item__text .file_btn{
-	font-size: 14px;
-    font-weight: 700;
-    background: #5768AD;
-    color: #ffffff;
-    display: inline-block;
-    border: 1px solid rgba(155, 158, 163, 0.2);
-    padding: 10px 20px 7px;
-    border-radius: 2px;
-    -webkit-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    -ms-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    transition: all 0.4s;
-}  
-.classes__item__text .file_btn:hover {
-	background: #ffffff;
-	border: 1px solid #5768AD;
-	color: #5768AD;
+.filebox input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+.filebox label {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  background: #5768AD;
+  color: #ffffff;
+  border: 1px solid rgba(155, 158, 163, 0.2);
+  padding: 10px 20px 7px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.filebox .upload-name {
+  height: 35px;
+  font-size: 16px; 
+  padding: 0 10px;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: none;
+
+}
+
+.ai-thumbnail-wrappper { 
+	width: 25%; 
+}
+ 
+.ai-thumbnail { 
+	position: relative; 
+	overflow: hidden; 
+} 
+
+/*민선 추가*/
+.join_gender input[type="radio"] {
+   display: none;
+   margin: 10px;
+   
+}
+.join_gender label {
+   width: 48%;
+   height: 48px;
+   text-align: center;
+   margin: 3px;
+   margin-bottom: 20px;
+   padding-top: 12px;
+   border-radius: 4px;
+   font-size: 17px;
+   color: #CCC;
+   background: #FFFFFF33;
+/*    margin-right: 10px; */
+/*    padding: 13px; */
+   cursor: pointer;
+   font-family: "DM Sans", sans-serif;
+   
+}
+.join_gender input[type="radio"]:checked+label {
+   background: #FFFFFF;
+   color: #5768AD;
+}
+.join_gender[type="radio"]+label{
+   width: 400px;
+   border-radius: 4px;
+   font-size: 15px;
+   color: #CCC;
+   text-align: center;
+   background: #F5F5F5;
+   margin-right: 10px;
+   padding: 13px;
+   cursor: pointer;
+   font-family: "DM Sans", sans-serif;
+   display: none;
+   margin: 10px;
+}
+/* 민정추가 */
+
+.lessonAdd_file label{
+  display:inline-block;
+  background:#23a3a7;
+  color:#fff;
+  padding:0px 15px;
+  line-height:35px;
+  cursor:pointer;
+}
+
+.lessonAdd_file label:after{
+  content:"파일등록";
+}
+
+.lessonAdd_file .at_file{
+  display:none;
 }
