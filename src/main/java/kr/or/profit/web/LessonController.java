@@ -14,57 +14,57 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Handles requests for the application home page.
  */
 @Controller
-public class LessionController {
+public class LessonController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LessionController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LessonController.class);
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "lessionList", method = RequestMethod.GET)
-	public String lessionList(Locale locale, Model model) {
+	@RequestMapping(value = "lessonList", method = RequestMethod.GET)
+	public String lessonList(Locale locale, Model model) {
 		
-		return "lession/lessionList";
+		return "lesson/lessonList";
 	}
 	
-	@RequestMapping(value = "lessionDetail", method = RequestMethod.GET)
-	public String lessionDetail(Locale locale, Model model) {
+	@RequestMapping(value = "lessonDetail", method = RequestMethod.GET)
+	public String lessonDetail(Locale locale, Model model) {
 		
-		return "lession/lessionDetail";
+		return "lesson/lessonDetail";
 	}
 	
-	@RequestMapping(value = "lessionAdd", method = RequestMethod.GET)
-	public String lessionAdd(Locale locale, Model model) {
+	@RequestMapping(value = "lessonAdd", method = RequestMethod.GET)
+	public String lessonAdd(Locale locale, Model model) {
 		
-		return "lession/lessionAdd";
+		return "lesson/lessonAdd";
 	}
 	
-	@RequestMapping(value = "lessionMod", method = RequestMethod.GET)
-	public String lessionMod(Locale locale, Model model) {
+	@RequestMapping(value = "lessonMod", method = RequestMethod.GET)
+	public String lessonMod(Locale locale, Model model) {
 		
-		return "lession/lessionMod";
+		return "lesson/lessonMod";
 	}
 
 	@RequestMapping(value = "classDetail", method = RequestMethod.GET)
 	public String classDetail(Locale locale, Model model) {
 		
-		return "lession/classDetail";
+		return "lesson/classDetail";
 	}
 	@RequestMapping(value = "classAdd", method = RequestMethod.GET)
 	public String classAdd(Locale locale, Model model) {
 		
-		return "lession/classAdd";
+		return "lesson/classAdd";
 	}
 	@RequestMapping(value = "classMod", method = RequestMethod.GET)
 	public String classMod(Locale locale, Model model) {
 		
-		return "lession/classMod";
+		return "lesson/classMod";
 	}
 
 	@RequestMapping(value = "test", method = RequestMethod.GET)
 	public String test(Locale locale, Model model) {
 		
-		return "lession/test";
+		return "lesson/test";
 	}
 	
 }
