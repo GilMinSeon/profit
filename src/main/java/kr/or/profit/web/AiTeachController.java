@@ -23,13 +23,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+
+import org.python.util.PythonInterpreter;
+
 /**
  * 
  * Handles requests for the application home page.
  */
 @Controller
 public class AiTeachController {
-
+	
+	private static PythonInterpreter interpreter;
 	private static final Logger logger = LoggerFactory.getLogger(AiTeachController.class);
 
 	/**
@@ -43,7 +47,13 @@ public class AiTeachController {
 	
 	@RequestMapping(value = "aiTeachDetail", method = RequestMethod.GET)
 	public String aiTeachDetail(Locale locale, Model model) {
-
+		interpreter = new PythonInterpreter();
+        interpreter.exec("from java.lang import System");
+        interpreter.exec("s = 'Hello World'");
+        interpreter.exec("System.out.println(s)");
+        interpreter.exec("print(s)");
+        interpreter.exec("print(s[1:-1])");
+        
 		return "aiTeach/aiTeachDetail";
 	}
 	

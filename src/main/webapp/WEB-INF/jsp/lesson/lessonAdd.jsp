@@ -1,34 +1,151 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html lang="en">
 <head>
-<!-- include libraries(jQuery, bootstrap) -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>bulletin_write</title>
-<style type="text/css">
-#hover_btn {
-	font-size: 14px;
-	font-weight: 700;
-	color: #5768AD;
-	display: inline-block;
-	border: 1px solid rgba(155, 158, 163, 0.2);
-	padding: 10px 20px 7px;
-	border-radius: 2px;
-	background-color: white;
+<script>
+$(document).ready(function(){
+	$('#minus1').click(function(e){
+		e.preventDefault();
+		var stat = $('#count1').val();
+		var num = parseInt(stat,10);
+		num--;
+		console.log(stat);
+		console.log(num);
+		if(num<=0){
+		alert('더이상 줄일수 없습니다.');
+		num =1;
+		}
+		$('#count1').val(num);
+		});
+		$('#plus1').click(function(e){
+		e.preventDefault();
+		var stat = $('#count1').val();
+		var num = parseInt(stat,10);
+		num++;
+		console.log(stat);
+		console.log(num);
+	
+		if(num>100){
+		alert('더이상 늘릴수 없습니다.');
+		num=100;
+		}
+		$('#count1').val(num);
+	});
+	
+	$('#minus2').click(function(e){
+		e.preventDefault();
+		var stat = $('#count2').val();
+		var num = parseInt(stat,10);
+		num--;
+		console.log(stat);
+		console.log(num);
+		if(num<=0){
+		alert('더이상 줄일수 없습니다.');
+		num =1;
+		}
+		$('#count2').val(num);
+		});
+		$('#plus2').click(function(e){
+		e.preventDefault();
+		var stat = $('#count2').val();
+		var num = parseInt(stat,10);
+		num++;
+		console.log(stat);
+		console.log(num);
+
+		if(num>100){
+		alert('더이상 늘릴수 없습니다.');
+		num=100;
+		}
+		$('#count2').val(num);
+	});
+		
+	$('#minus3').click(function(e){
+		e.preventDefault();
+		var stat = $('#count3').val();
+		var num = parseInt(stat,10);
+		num--;
+		console.log(stat);
+		console.log(num);
+		if(num<=0){
+		alert('더이상 줄일수 없습니다.');
+		num =1;
+		}
+		$('#count3').val(num);
+		});
+		$('#plus3').click(function(e){
+		e.preventDefault();
+		var stat = $('#count3').val();
+		var num = parseInt(stat,10);
+		num++;
+		console.log(stat);
+		console.log(num);
+
+		if(num>100){
+		alert('더이상 늘릴수 없습니다.');
+		num=100;
+		}
+		$('#count3').val(num);
+	});
+		
+	$('#minus4').click(function(e){
+		e.preventDefault();
+		var stat = $('#count4').val();
+		var num = parseInt(stat,10);
+		num--;
+		console.log(stat);
+		console.log(num);
+		if(num<=0){
+		alert('더이상 줄일수 없습니다.');
+		num =1;
+		}
+		$('#count4').val(num);
+		});
+		$('#plus4').click(function(e){
+		e.preventDefault();
+		var stat = $('#count4').val();
+		var num = parseInt(stat,10);
+		num++;
+		console.log(stat);
+		console.log(num);
+
+		if(num>100){
+		alert('더이상 늘릴수 없습니다.');
+		num=100;
+		}
+		$('#count4').val(num);
+	});
+		
+		
+		
+	$("#exe_btn").hide();
+  	var fileTarget = $('#file'); 
+  	fileTarget.on('change', function(){ // 값이 변경되면
+     	var cur=$(".filebox input[type='file']").val();
+  	
+     	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
+     	var nameLength = curSplit.length;
+     	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
+
+    	$(".upload-name").val(fileName);
+  	}); 
+});
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#preview_img').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+    $("#exe_btn").show();
 }
 
-#hover_btn:hover {
-	background: #5768AD;
-	border: 1px solid #5768AD;
-	color: #ffffff;
-}
-</style>
+</script>
 </head>
 <body style="padding-top: 5rem;">
 	<!-- Breadcrumb Begi -->
@@ -47,12 +164,12 @@
 	<div class="container">
 		<section class="classes spad">
 			<div>
-				<h3 style="padding-left: 15px; color: #263246; font-family: DM Sans, sans-serif; font-weight: 400;">🦾 강의를 등록해주세요 🦿</h3>
+				<h3 style="padding-left: 15px; color: #263246; font-family: DM Sans, sans-serif; font-weight: 400;">강의를 등록해주세요 </h3>
 			</div>
 			<br />
 			<br />
 			<main role="main" class="container">
-				<form name="form" method="get" action="/lessionList">
+				<form name="form" method="post" action="/lessionList" style="text-align: center;">
 					<div class="write-title">
 						<label>
 							<p>
@@ -75,38 +192,85 @@
 							</div>
 						</div>
 					</div>
-					<div class="pt-1"></div>
 					<p>
-						<input type="text" name="title" placeholder="제목을 입력하세요" style="border-radius: 5px; width: 100%; padding: 5px;">
+						<div class="form-group">
+						    <input type="text" class="form-control" id="title"  placeholder="제목을 입력하세요">
+						</div>
+					</p>
+					<p>	
+						<div class="form-group">
+						    <input type="text" class="form-control" id="sub_title" placeholder="부제목(강의설명)을 입력하세요">
+						</div>
 					</p>
 					<p>
-						<input type="text" name="title" placeholder="강의 설명을 입력해주세요" style="border-radius: 5px; width: 100%; padding: 5px;">
-					</p>
-					<p>
-						<input type="number" name="title" placeholder="Breathing" style="border-radius: 5px; width: 100%; padding: 5px;">
-					</p>
-					<p>
-						<input type="number" name="title" placeholder="Methabolism" style="border-radius: 5px; width: 100%; padding: 5px;">
-					</p>
-					<p>
-						<input type="number" name="title" placeholder="Flexibility" style="border-radius: 5px; width: 100%; padding: 5px;">
-					</p>
-					<p>
-						<input type="number" name="title" placeholder="Strongness" style="border-radius: 5px; width: 100%; padding: 5px;">
-					</p>
-					<div class="pt-1">
-						<textarea id="summernote" name="contents"></textarea>
-					</div>
-					<script>
-						$('#summernote').summernote({
-							placeholder : '클래스 소개를 적어주세요',
-							tabsize : 2,
-							height : 300
-						});
-					</script>
+							<div style="display: flex;">
+								<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
+									<div>
+										<span style="color: #001943;">Breathing</span>
+									</div>
+									<div class="qty mt-5">
+										<span class="minus bg-dark" id="minus1">-</span>
+		                                <input type="number" class="count" id="count1" name="qty" value="1">
+		                                <span class="plus bg-dark" id="plus1">+</span>
+		                            </div>
+								</div>
+								
+								<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
+									<div>
+										<span style="color: #001943;">Methabolism</span>
+									</div>
+									<div class="qty mt-5">
+										<span class="minus bg-dark" id="minus2">-</span>
+		                                <input type="number" class="count" id="count2" name="qty" value="1">
+		                                <span class="plus bg-dark" id="plus2">+</span>
+		                            </div>
+								</div>
+								
+								<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
+									<div>
+										<span style="color: #001943;">Flexibility</span>
+									</div>
+									<div class="qty mt-5">
+										<span class="minus bg-dark" id="minus3">-</span>
+		                                <input type="number" class="count" id="count3" name="qty" value="1">
+		                                <span class="plus bg-dark" id="plus3">+</span>
+		                            </div>
+								</div>
+								
+								<div style="display: inline-block;flex:1;float:right;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
+									<div>
+										<span style="color: #001943">Strongness</span>
+									</div>
+									<div class="qty mt-5">
+										<span class="minus bg-dark" id="minus4">-</span>
+		                                <input type="number" class="count" id="count4" name="qty" value="1">
+		                                <span class="plus bg-dark" id="plus4">+</span>
+		                            </div>
+								</div>
+							
+							</div>
+						</p>
+						
+						<p>
+							<textarea class="form-control" rows="5" placeholder="강의 소개를 입력해주세요"></textarea>
+						</p>
+						
+						<p>
+							<div class="filebox" style="text-align: left;margin-top: 30px;"> 
+							  <label for="file">파일첨부</label> 
+							  <input type="file" id="file" onchange="readURL(this);"> 
+							  <input class="upload-name" value="첨부파일이 없습니다." readonly="readonly">
+							</div>
+							<div class="ai-thumnail-wrapper" style="width: 100%; height: autox;">
+						        <div class="img_wrap ai-thumbnail" style="text-align: center;">
+						            <img id="preview_img" />
+						        </div>
+						    </div>
+						</p>
+						
 					<br />
-					<div class="pt-1 text-right">
-						<button id="hover_btn" class="btn btn btn-success" type="submit" style="width: 10%; padding: 5px;">등록</button>
+					<div class="classes__item__text" style="float:right;">
+						<button id="hover_btn" class="btn btn btn-success" type="submit" >등록</button>
 					</div>
 				</form>
 			</main>
