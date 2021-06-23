@@ -18,7 +18,7 @@ public class AdminController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-	/**
+	/**dsfasdfasdfsad
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "trainerPermitList", method = RequestMethod.GET)
