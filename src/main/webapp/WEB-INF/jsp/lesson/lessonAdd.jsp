@@ -145,7 +145,103 @@ function readURL(input) {
     $("#exe_btn").show();
 }
 
+// function fn_lessonAdd(){
+// 	var title = $("#lessonTitle").val();
+// 	var category = $("#lessonCategorySeq").val();
+// 	var title_comment = $("#lessonTitleComment").val();
+// 	var balance = $("#lessonBalance").val();
+// 	var flex = $("#lessonFlex").val();
+// 	var strong = $("#lessonStrong").val();
+// 	var core = $("#lessonCore").val();
+// 	var intro = $("#lessonIntro").val();
+// 	var price = $("#lessonPrice").val();
+// 	var month = $("#lessonMonth").val();
+	 
+// 	if(title.trim()==""){
+// 		alert("제목을 입력해주세요.");
+// 		$("#lessonTitle").focus();
+// 		return;
+// 	}
+	
+// 	if(title_comment.trim()==""){
+// 		alert("강의소개를 입력해주세요.");
+// 		$("#lessonTitleComment").focus();
+// 		return;
+// 	}
+	
+	
+// 	if(intro.trim()==""){
+// 		alert("강의소개를 입력해주세요.");
+// 		$("#lessonIntro").focus();
+// 		return;
+// 	}
+	
+// 	if(price.trim()==""){
+// 		alert("강의소개를 입력해주세요.");
+// 		$("#lessonPrice").focus();
+// 		return;
+// 	}
+	
+// 	if(month.trim()==""){
+// 		alert("강의일수를 입력해주세요.");
+// 		$("#lessonMonth").focus();
+// 		return;
+// 	}
+	
+// 	var param = "";
+// 	param += "dummy=" + Math.random();
+// 	param += "&store_name="+store_name;
+// 	param += "&store_tel="+store_tel;
+// 	param += "&store_code="+store_code;
+	
+
+// 	console.log(param)
+// 	$.ajax({
+// 		url : "store_ins.ajax",
+// 		data : param,
+// 		dataType : "json",
+// 		type : "post",
+// 		async: false,
+// 		statusCode : {
+// 			404 : function() {
+// 				alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
+// 			}
+// 		},
+// 		success : function(data) {
+// 			if(data.msg =="ok"){
+// 				alert("업체가 정상적으로 추가되었습니다.")
+// 				location.href="store_list"
+// 			}else{
+// 				alert("추가도중 문제가 생겼습니다");
+// 			}
+// 			console.log(data.msg);
+// 		}
+// 	});
+	
+// }
+
 </script>
+<style>
+.site-btn_s{
+font-size: 14px;
+	color: #5768AD;
+	font-weight: 700;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 14px 50px;
+	background: #ffffff;
+	border: none;
+	letter-spacing: 2px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+.site-btn_s:hover{
+background: #ffffff;
+	border: 1px solid #5768AD;
+	color: #5768AD;
+	cursor: pointer;
+}
+</style>
 </head>
 <body style="padding-top: 5rem;">
 	<!-- Breadcrumb Begi -->
@@ -169,7 +265,7 @@ function readURL(input) {
 			<br />
 			<br />
 			<main role="main" class="container">
-				<form name="form" method="post" action="/lessionList" style="text-align: center;">
+				<form name="form" method="get" action="/lessionList" style="text-align: center;">
 					<div class="write-title">
 						<label>
 							<p>
@@ -194,65 +290,72 @@ function readURL(input) {
 					</div>
 					<p>
 						<div class="form-group">
-						    <input type="text" class="form-control" id="title"  placeholder="제목을 입력하세요">
+						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="제목을 입력하세요">
 						</div>
 					</p>
 					<p>	
 						<div class="form-group">
-						    <input type="text" class="form-control" id="sub_title" placeholder="부제목(강의설명)을 입력하세요">
+						    <input type="text" class="form-control" id="lessonTitleComment" name="lessonTitleComment" placeholder="부제목(강의설명)을 입력하세요">
 						</div>
 					</p>
+					
 					<p>
-							<div style="display: flex;">
-								<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
-									<div>
-										<span style="color: #001943;">Breathing</span>
-									</div>
-									<div class="qty mt-5">
-										<span class="minus bg-dark" id="minus1">-</span>
-		                                <input type="number" class="count" id="count1" name="qty" value="1">
-		                                <span class="plus bg-dark" id="plus1">+</span>
-		                            </div>
+						<div style="display: flex; width: auto;">
+							<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
+								<div>
+									<span style="color: #001943;">Balance</span>
 								</div>
-								
-								<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
-									<div>
-										<span style="color: #001943;">Methabolism</span>
-									</div>
-									<div class="qty mt-5">
-										<span class="minus bg-dark" id="minus2">-</span>
-		                                <input type="number" class="count" id="count2" name="qty" value="1">
-		                                <span class="plus bg-dark" id="plus2">+</span>
-		                            </div>
-								</div>
-								
-								<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
-									<div>
-										<span style="color: #001943;">Flexibility</span>
-									</div>
-									<div class="qty mt-5">
-										<span class="minus bg-dark" id="minus3">-</span>
-		                                <input type="number" class="count" id="count3" name="qty" value="1">
-		                                <span class="plus bg-dark" id="plus3">+</span>
-		                            </div>
-								</div>
-								
-								<div style="display: inline-block;flex:1;float:right;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
-									<div>
-										<span style="color: #001943">Strongness</span>
-									</div>
-									<div class="qty mt-5">
-										<span class="minus bg-dark" id="minus4">-</span>
-		                                <input type="number" class="count" id="count4" name="qty" value="1">
-		                                <span class="plus bg-dark" id="plus4">+</span>
-		                            </div>
-								</div>
-							
+								<div class="qty mt-5">
+									<span class="minus bg-dark" id="minus1">-</span>
+	                                <input type="number" class="count" id="count1" name="lessonBalance" name="qty" value="1">
+	                                <span class="plus bg-dark" id="plus1">+</span>
+	                            </div>
 							</div>
+							
+							<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
+								<div>
+									<span style="color: #001943;">Flex</span>
+								</div>
+								<div class="qty mt-5">
+									<span class="minus bg-dark" id="minus2">-</span>
+	                                <input type="number" class="count" id="count2" name="lessonFlex" name="qty" value="1">
+	                                <span class="plus bg-dark" id="plus2">+</span>
+	                            </div>
+							</div>
+							
+							<div style="display: inline-block;flex:1;margin-right:5px; float:left;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
+								<div>
+									<span style="color: #001943;">Strong</span>
+								</div>
+								<div class="qty mt-5">
+									<span class="minus bg-dark" id="minus3">-</span>
+	                                <input type="number" class="count" id="count3" name="lessonStrong" name="qty" value="1">
+	                                <span class="plus bg-dark" id="plus3">+</span>
+	                            </div>
+							</div>
+							
+							<div style="display: inline-block;flex:1;float:right;border:1px solid #D4D5D8; border-radius: 5px;height: 65px; background: white;">
+								<div>
+									<span style="color: #001943">Core</span>
+								</div>
+								<div class="qty mt-5">
+									<span class="minus bg-dark" id="minus4">-</span>
+	                                <input type="number" class="count" id="count4" name="lessonCore" name="qty" value="1">
+	                                <span class="plus bg-dark" id="plus4">+</span>
+	                            </div>
+							</div>
+						
+						</div>
 						</p>
 						
 						<p>
-							<textarea class="form-control" rows="5" placeholder="강의 소개를 입력해주세요"></textarea>
+							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" placeholder="강의 소개를 입력해주세요"></textarea>
+						</p>
+						
+						<p>
+							<div class="form-group">
+							    <input type="text" class="form-control" id="lessonPrice" name="lessonPrice"  placeholder="강의가격을 입력해주세요">
+							</div>
 						</p>
 						
 						<p>
@@ -269,10 +372,11 @@ function readURL(input) {
 						</p>
 						
 					<br />
-					<div class="classes__item__text" style="float:right;">
-						<button id="hover_btn" class="btn btn btn-success" type="submit" >등록</button>
-					</div>
-				</form>
+					</form>
+					<div style="text-align: right;">
+                             <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_lessonAdd()">등록</button>
+                    </div>
+					
 			</main>
 		</section>
 	</div>

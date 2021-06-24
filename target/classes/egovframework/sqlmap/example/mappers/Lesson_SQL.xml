@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.or.profit.mapper.LessonMapper">
+    
+    <resultMap id="lesson" type="kr.or.profit.vo.LessonVO">
+		<result property="lessonSeq" column="lesson_seq"/>
+		<result property="commonSeq" column="common_seq"/>
+		<result property="lessonCategorySeq" column="lesson_category_seq"/>
+		<result property="lessonTitle" column="lesson_title"/>
+		<result property="lessonTitleComment" column="lesson_title_comment"/>
+		<result property="lessonBalance" column="lesson_balance"/>
+		<result property="lessonFlex" column="lesson_flex"/>
+		<result property="lessonStrong" column="lesson_strong"/>
+		<result property="lessonCore" column="lesson_core"/>
+		<result property="lessonIntro" column="lesson_intro"/>
+		<result property="lessonPrice" column="lesson_price"/>
+		<result property="lessonPrivateFlag" column="lesson_private_flag"/>
+		<result property="lessonMonth" column="lesson_month"/>
+		<result property="inUserId" column="in_user_id"/>
+		<result property="inDate" column="in_date"/>
+		<result property="upUserId" column="up_user_id"/>
+		<result property="upDate" column="up_date"/>
+	</resultMap>
+	
+	<insert id="insertLesson" parameterType="LessonVO">
+	    <selectKey order="BEFORE" keyProperty="lessonSeq" resultType="String">
+			SELECT NVL(MAX(LESSON_SEQ),0)+1 FROM LESSON
+		</selectKey>
+		<![CDATA[
+			INSERT INTO LESSON
+			(	LESSON_SEQ,
+				COMMON_SEQ,
+				LESSON_CATEGORY_SEQ,
+				LESSON_TITLE,
+				LESSON_TITLE_COMMENT,
+				LESSON_BALANCE,
+				LESSON_FLEX,
+				LESSON_STRONG,
+				LESSON_CORE,
+				LESSON_INTRO,
+				LESSON_PRICE,
+				LESSON_PRIVATE_FLAG,
+				LESSON_MONTH,
+				IN_USER_ID,
+				IN_DATE,
+				UP_USER_ID,
+				UP_DATE
+			)
+			VALUES (#{lessonSeq},
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					1,
+					'n',
+					1,
+					1,
+					sysdate,
+					1,
+					sysdate)
+		]]>
+	</insert>
+    
+</mapper>

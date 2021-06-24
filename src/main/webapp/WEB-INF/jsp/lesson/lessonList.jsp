@@ -265,9 +265,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="classes__item__text" style="text-align: right; padding-top: 0;">
-				<a href="lessionAdd" class="class-btn">강의 등록</a>
-			</div>
+			<div class="classes__item__text" style="text-align: right;padding-top: 0;">
+                 <span class="blinking">내 강의 등록하러 가기 → </span>&nbsp;
+                 <a href="lessonAdd" class="class-btn_w">강의등록</a>
+   		 	</div>
 			<div class="row">
 				<div class="col-lg-4 col-md-6">
 					<div class="classes__item classes__item__page">

@@ -2,12 +2,20 @@ package kr.or.profit.web;
 
 import java.util.Locale;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.support.SessionStatus;
+
+import kr.or.profit.service.LessonService;
+import kr.or.profit.vo.LessonVO;
 
 /**
  * 
@@ -17,6 +25,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LessonController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LessonController.class);
+	
+	@Resource(name="lessonService")
+	private LessonService lessonService;
+	
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -33,9 +45,16 @@ public class LessonController {
 		return "lesson/lessonDetail";
 	}
 	
+	/**
+	 * 강의 등록
+	 * @param lessonVO - 등록할 정보가 담긴 VO
+	 * @param
+	 * @return
+	 * @throws Exception 
+	 */
 	@RequestMapping(value = "lessonAdd", method = RequestMethod.GET)
-	public String lessonAdd(Locale locale, Model model) {
-		
+	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, Model model) throws Exception  {
+		lessonService.insertLesson(lessonVO);
 		return "lesson/lessonAdd";
 	}
 	

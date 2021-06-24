@@ -3921,3 +3921,14 @@ textarea {
 .lessonAdd_file .at_file{
   display:none;
 }
+.lesson_btn{
+	display: inline-block;
+	font-size: 14px;
+	padding: 16px 36px 14px;
+	color: #ffffff;
+	text-transform: uppercase;
+	font-weight: 700;
+	background: #5768AD;
+	border-radius: 2px;
+	letter-spacing: 2px;
+}

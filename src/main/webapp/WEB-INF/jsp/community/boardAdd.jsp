@@ -91,7 +91,6 @@
 					</div>
 				</div>
 				
-				<div class="pt-1"></div>
 				<input type="text" name="title" placeholder="제목을 입력하세요"
 					style="border-radius: 5px; width: 100%; padding: 5px;">
 				<div class="pt-1">
@@ -105,8 +104,8 @@
 					});
 				</script>
 				<br/>
-				<div class="pt-1 text-right">
-					<button id="hover_btn" class="btn btn btn-success" type="submit"
+				<div class="class__filter__input">
+					<button id="hover_btn" type="submit"
 						style="width: 10%; padding: 5px;">등록</button>
 				</div>
 			</form>
