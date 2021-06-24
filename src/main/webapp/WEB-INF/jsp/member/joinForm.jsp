@@ -15,17 +15,58 @@
 	letter-spacing: 2px;
 }
 </style>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-	function fn_join(){
-		alert("dddd");
+$(function(){
+	$("#frm").submit(function(){
 		
-		var formData = $("#frm").serialize().replace(/%/g,'%25');
-		console.log(formData);
+		if($("#memberPwd").val() !== $("#confirmPwd").val()){
+			alert("비밀번호가 다릅니다!")
+			$('#confirmPwdMsg').html("you can use this ID");
+			$("#memberPwd").val("").focus();
+			$("#confirmPwd").val("");
+			return false;
+		}
+	})
+	
+	$("#memberId").blur(function() {
+		
+		var memberId = $.trim($("#memberId").val()); //현재 창에 입력된 값
+		
+		//checkMemberId로 데이터 전송 - 비동기 전송방식
 		
 		
+		$.ajax({
+			type : "POST",
+			data : "memberId="+memberId, //json
+			url : "idcheck",
+			dataType : "text", //리턴타입
+			
+			//전송 후 세팅
+			success : function(result) {
+				if (result == "ok") {
+					//alert("사용가능한 아이디입니다")
+					$("#msgId").html("사용가능한 아이디 입니다");
+					$("#submitBtn").attr("disabled", "disabled");
+				} else {
+					//alert("이미 사용중인 아이디입니다")
+					$("#msgId").html("사용중인 아이디입니다");
+					$("#id_check").html("");
+					$("#submitBtn").removeAttr("disabled");
+				}
+			},
+			error : function(){
+				alert("오류발생");
+			}
+			
+		})
+	});
+	
+	
+			
 		
-		
-	}
+})
+	
 </script>
 <body>
 	<!-- Breadcrumb Begin -->
@@ -47,11 +88,22 @@
 		<div class="container">
 			<div class="appointment__text">
 				<!-- <form class="appointment__form" action="#"> -->
-				<form class="appointment__form" action="#" id="frm">
+				<form class="appointment__form" action="joinMemberTable" id="frm" method="post">
 					<div class="text-center" >
 
 						<!-- 1. 아이디 -->
 						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+							<div style="margin-bottom: 2px;">
+								<h5 style="display: inline; float: left; color: white;">아이디 *</h5>
+								&nbsp;<h5 style="display: inline; float: left; color: orange;" id="msgId" >경고메세지</h5>
+							</div>
+							<input type="text" placeholder="Password" id="memberId" name="memberId" style="margin-bottom: 5px;">
+							<div style="margin-bottom: 15px;">
+								
+							</div>
+						</div>
+						
+						<!-- <div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
 							<div style="margin-bottom: 2px;">
 								<h5 style="display: inline; float: left; color: white;">아이디 *</h5>
 								&nbsp;
@@ -66,7 +118,7 @@
 							<div style="margin-bottom: 15px;">
 								<h5 style="display: inline; float: left; color: orange;">경고메세지 출력창</h5>
 							</div>
-						</div>
+						</div> -->
 
 						<br>
 						<!-- 2. 비밀번호 입력 -->
@@ -76,9 +128,9 @@
 								&nbsp;
 							</div>
 							<input type="text" placeholder="Password" id="memberPwd" name="memberPwd" style="margin-bottom: 5px;">
-							<div style="margin-bottom: 15px;">
+							<!-- <div style="margin-bottom: 15px;">
 								<h5 style="display: inline; float: left; color: orange;">경고메세지</h5>
-							</div>
+							</div> -->
 						</div>
 						<br>
 
@@ -90,7 +142,7 @@
 							</div>
 							<input type="text" placeholder="Password" id="confirmPwd" name="confirmPwd" style="margin-bottom: 5px;">
 							<div style="margin-bottom: 15px;">
-								<h5 style="display: inline; float: left; color: orange;">경고메세지</h5>
+								<h5 style="display: inline; float: left; color: orange;" id="confirmPwdMsg" ></h5>
 							</div>
 						</div>
 						
@@ -216,7 +268,7 @@
 						
 						<!-- 끝! 회원가입 버튼 -->
 						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-							<input type="button" value="회원가입" id="submitBtn" style="font-size: 1.1em;" onclick="fn_join()"><br>
+							<input type="submit" value="회원가입" id="submitBtn" style="font-size: 1.1em;"><br>
 						</div>
 
 					</div>
@@ -228,7 +280,7 @@
 
 
 	<!-- Js Plugins -->
-	<script src="./resources/js/jquery-3.3.1.min.js"></script>
+	
 	<script src="./resources/js/bootstrap.min.js"></script>
 	<script src="./resources/js/jquery.nice-select.min.js"></script>
 	<script src="./resources/js/jquery.barfiller.js"></script>
