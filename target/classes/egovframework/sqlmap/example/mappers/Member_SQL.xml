@@ -5,9 +5,13 @@
     <insert id="insertMember" parameterType="MemberVO">
         <![CDATA[
         insert into MEMBER(
-        	MEMBER_ID, MEMBER_PWD, MEMBER_NAME, MEMBER_NICKNAME, MEMBER_MOBILE
+        	MEMBER_ID, MEMBER_PWD, MEMBER_NAME, MEMBER_NICKNAME, MEMBER_MOBILE, 
+        	MEMBER_GENDER, MEMBER_HEIGHT, MEMBER_WEIGHT, MEMBER_EMAIL, MEMBER_GUBUN, MEMBER_ROUTE, MEMBER_PROFILE_PATH,
+        	IN_USER_ID, IN_DATE, UP_USER_ID, UP_DATE
         ) values (
-        	#{memberId}, #{memberPwd}, #{memberName}, #{memberNickname}, #{memberMobile}
+        	#{memberId}, #{memberPwd}, #{memberName}, #{memberNickname}, #{memberMobile},
+        	#{memberGender}, #{memberHeight}, #{memberWeight}, #{memberEmail}, 'U', 'P', 123,
+        	#{memberId}, to_char(sysdate, 'YYYYMMDD.HH24MISS'), #{memberId}, to_char(sysdate, 'YYYYMMDD.HH24MISS')
         )
         ]]>
     </insert>
@@ -15,6 +19,16 @@
     <!-- 아이디 중복 검사 -->
     <select id="selectMemberIdCheck" parameterType="String" resultType="int">
         select count(*) from MEMBER where MEMBER_ID = #{memberId}
+    </select>
+    
+    <!-- 닉네임 중복 검사 -->
+    <select id="selectMemberNicknameCheck" parameterType="String" resultType="int">
+        select count(*) from MEMBER where MEMBER_NICKNAME = #{memberNickname}
+    </select>
+    
+    <!-- 닉네임 중복 검사 -->
+    <select id="selectMemberEmailCheck" parameterType="String" resultType="int">
+        select count(*) from MEMBER where MEMBER_EMAIL = #{memberEmail}
     </select>
     
 </mapper>
