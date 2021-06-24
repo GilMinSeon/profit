@@ -3932,3 +3932,10 @@ textarea {
 	border-radius: 2px;
 	letter-spacing: 2px;
 }
+
+/*예진추가*/
+.file_input_button{
+	background-color: #F5F5F5;
+	color: yellow
+}
+
