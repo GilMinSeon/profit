@@ -14,11 +14,10 @@ public class LessonServiceImpl implements LessonService {
 	@Resource(name= "lessonMapper")
 	private LessonMapper lessonDAO;
 	
+
 	@Override
-	public void insertLesson(LessonVO vo) throws Exception {
-		
-		lessonDAO.insertLesson(vo);
-		
+	public int insertLesson(LessonVO vo) throws Exception {
+		return  lessonDAO.insertLesson(vo);
 	}
 
 }

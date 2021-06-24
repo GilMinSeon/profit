@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import kr.or.profit.service.LessonService;
@@ -53,9 +54,21 @@ public class LessonController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "lessonAdd", method = RequestMethod.GET)
-	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, Model model) throws Exception  {
-		lessonService.insertLesson(lessonVO);
+	public String lessonAdd(Locale locale, Model model) {
+		
 		return "lesson/lessonAdd";
+	}
+	
+	@RequestMapping(value = "lesson_ins", method = RequestMethod.POST)
+	@ResponseBody
+	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, Model model) throws Exception  {
+		System.out.println("강의등록 체크");
+		String message = "";
+		int cnt = lessonService.insertLesson(lessonVO);
+		if(cnt == 1) {
+			message = "ok";
+		}
+		return message;
 	}
 	
 	@RequestMapping(value = "lessonMod", method = RequestMethod.GET)
