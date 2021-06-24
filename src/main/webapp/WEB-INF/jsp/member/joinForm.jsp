@@ -12,6 +12,15 @@
  	margin-bottom: 17px; 
  	margin-top: 4px;
 }
+
+.form-control:focus {
+	color: white;
+	background-color: #FFFFFF33;
+	border-color: #80bdff;
+	outline: 0;
+	box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25)
+}
+
 #submitBtn {
 	font-size: 14px;
 	color: #5768AD;
@@ -228,7 +237,7 @@ $(function(){
 								<h5 style="display: inline; float: left; color: white; margin-bottom: 4px;">이메일 *&nbsp;&nbsp;</h5>
 							</div>
 							<div class="input-group" style="margin-bottom: 5px;">
-								<input type="text" class="form-control" placeholder="Email" id="memberEmail" name="memberEmail"> 
+								<input type="text" class="form-control" placeholder="Email" id="memberEmail" name="memberEmail" style="font: white;"> 
 									<span class="input-group-addon"
 									style="border: 1px solid #5768AD; border-radius: 4px;">
 									<button type="button" onclick="location.href='pwdMod'" class="input-group-addon"
