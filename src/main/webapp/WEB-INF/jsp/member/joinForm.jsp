@@ -47,12 +47,12 @@ $(function(){
 				if (result == "ok") {
 					//alert("사용가능한 아이디입니다")
 					$("#msgId").html("사용가능한 아이디 입니다");
-					$("#submitBtn").attr("disabled", "disabled");
+// 					$("#submitBtn").attr("disabled", "disabled");
 				} else {
 					//alert("이미 사용중인 아이디입니다")
 					$("#msgId").html("사용중인 아이디입니다");
 					$("#id_check").html("");
-					$("#submitBtn").removeAttr("disabled");
+// 					$("#submitBtn").removeAttr("disabled");
 				}
 			},
 			error : function(){

@@ -25,7 +25,7 @@
 	
 	<insert id="insertLesson" parameterType="LessonVO">
 	    <selectKey order="BEFORE" keyProperty="lessonSeq" resultType="String">
-			SELECT NVL(MAX(LESSON_SEQ),0)+1 FROM LESSON
+			SELECT NVL(MAX(TO_NUMBER(LESSON_SEQ)),0)+1 FROM LESSON
 		</selectKey>
 		<![CDATA[
 			INSERT INTO LESSON
@@ -47,24 +47,29 @@
 				UP_USER_ID,
 				UP_DATE
 			)
-			VALUES (#{lessonSeq},
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
+			VALUES (#{lessonSeq, jdbcType=VARCHAR},
+					#{commonSeq, jdbcType=VARCHAR},
+					#{lessonCategorySeq, jdbcType=VARCHAR},
+					#{lessonTitle, jdbcType=VARCHAR},
+					#{lessonTitleComment, jdbcType=VARCHAR},
+					#{lessonBalance, jdbcType=VARCHAR},
+					#{lessonFlex, jdbcType=VARCHAR},
+					#{lessonStrong, jdbcType=VARCHAR},
+					#{lessonCore, jdbcType=VARCHAR},
+					#{lessonIntro, jdbcType=VARCHAR},
+					#{lessonPrice, jdbcType=VARCHAR},
 					'n',
-					1,
+					#{lessonMonth, jdbcType=VARCHAR},
 					1,
 					sysdate,
 					1,
 					sysdate)
 		]]>
 	</insert>
+	
+	<!-- 강의 등록 체크 -->
+    <select id="insertLessonCheck" parameterType="String" resultType="int">
+        select count(*) from LESSON
+    </select>
     
 </mapper>

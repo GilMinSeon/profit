@@ -6,10 +6,9 @@ import kr.or.profit.vo.LessonVO;
 @Mapper("lessonMapper")
 public interface LessonMapper {
 
-	/**
-	 * 강의 등록
-	 */
-	void insertLesson(LessonVO vo) throws Exception;
+	//강의 등록
+	int insertLesson(LessonVO vo) throws Exception;
+
 
 	
 }

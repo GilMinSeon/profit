@@ -11,12 +11,10 @@ $(document).ready(function(){
 		e.preventDefault();
 		var stat = $('#count1').val();
 		var num = parseInt(stat,10);
-		num--;
-		console.log(stat);
-		console.log(num);
-		if(num<=0){
+		num -=5;
+		if(num<0){
 		alert('더이상 줄일수 없습니다.');
-		num =1;
+		num =0;
 		}
 		$('#count1').val(num);
 		});
@@ -24,11 +22,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		var stat = $('#count1').val();
 		var num = parseInt(stat,10);
-		num++;
-		console.log(stat);
-		console.log(num);
+		num +=5;
 	
-		if(num>100){
+		if(num>=100){
 		alert('더이상 늘릴수 없습니다.');
 		num=100;
 		}
@@ -39,12 +35,10 @@ $(document).ready(function(){
 		e.preventDefault();
 		var stat = $('#count2').val();
 		var num = parseInt(stat,10);
-		num--;
-		console.log(stat);
-		console.log(num);
-		if(num<=0){
+		num -=5;
+		if(num<0){
 		alert('더이상 줄일수 없습니다.');
-		num =1;
+		num =0;
 		}
 		$('#count2').val(num);
 		});
@@ -52,11 +46,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		var stat = $('#count2').val();
 		var num = parseInt(stat,10);
-		num++;
-		console.log(stat);
-		console.log(num);
+		num +=5;
 
-		if(num>100){
+		if(num>=100){
 		alert('더이상 늘릴수 없습니다.');
 		num=100;
 		}
@@ -67,12 +59,10 @@ $(document).ready(function(){
 		e.preventDefault();
 		var stat = $('#count3').val();
 		var num = parseInt(stat,10);
-		num--;
-		console.log(stat);
-		console.log(num);
-		if(num<=0){
+		num -=5;
+		if(num<0){
 		alert('더이상 줄일수 없습니다.');
-		num =1;
+		num =0;
 		}
 		$('#count3').val(num);
 		});
@@ -80,11 +70,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		var stat = $('#count3').val();
 		var num = parseInt(stat,10);
-		num++;
-		console.log(stat);
-		console.log(num);
+		num +=5;
 
-		if(num>100){
+		if(num>=100){
 		alert('더이상 늘릴수 없습니다.');
 		num=100;
 		}
@@ -95,12 +83,10 @@ $(document).ready(function(){
 		e.preventDefault();
 		var stat = $('#count4').val();
 		var num = parseInt(stat,10);
-		num--;
-		console.log(stat);
-		console.log(num);
-		if(num<=0){
+		num -=5;
+		if(num<0){
 		alert('더이상 줄일수 없습니다.');
-		num =1;
+		num =0;
 		}
 		$('#count4').val(num);
 		});
@@ -108,11 +94,9 @@ $(document).ready(function(){
 		e.preventDefault();
 		var stat = $('#count4').val();
 		var num = parseInt(stat,10);
-		num++;
-		console.log(stat);
-		console.log(num);
+		num +=5;
 
-		if(num>100){
+		if(num>=100){
 		alert('더이상 늘릴수 없습니다.');
 		num=100;
 		}
@@ -145,80 +129,100 @@ function readURL(input) {
     $("#exe_btn").show();
 }
 
-// function fn_lessonAdd(){
-// 	var title = $("#lessonTitle").val();
-// 	var category = $("#lessonCategorySeq").val();
-// 	var title_comment = $("#lessonTitleComment").val();
-// 	var balance = $("#lessonBalance").val();
-// 	var flex = $("#lessonFlex").val();
-// 	var strong = $("#lessonStrong").val();
-// 	var core = $("#lessonCore").val();
-// 	var intro = $("#lessonIntro").val();
-// 	var price = $("#lessonPrice").val();
-// 	var month = $("#lessonMonth").val();
-	 
-// 	if(title.trim()==""){
-// 		alert("제목을 입력해주세요.");
-// 		$("#lessonTitle").focus();
-// 		return;
-// 	}
+function fn_lessonAdd(){
+	var title = $("#lessonTitle").val();
+	var category = $("input:radio[name=cate_type]:checked").val();
+	var title_comment = $("#lessonTitleComment").val();
+	var balance = $("#count1").val();
+	var flex = $("#count2").val();
+	var strong = $("#count3").val();
+	var core = $("#count4").val();
+	var intro = $("#lessonIntro").val();
+	var price = $("#lessonPrice").val();
+	var month = $("#lessonMonth").val();
+	console.log(title);
+	console.log(category);
+	console.log(tmp);
+	console.log(title_comment);
+	console.log(balance);
+	console.log(flex);
+	console.log(strong);
+	console.log(core);
+	console.log(intro);
+	console.log(price);
+	console.log(month);
 	
-// 	if(title_comment.trim()==""){
-// 		alert("강의소개를 입력해주세요.");
-// 		$("#lessonTitleComment").focus();
-// 		return;
-// 	}
+	if(title==""){
+		alert("제목을 입력해주세요.");
+		$("#lessonTitle").focus();
+		return;
+	}
+	
+	if(title_comment==""){
+		alert("강의소개를 입력해주세요.");
+		$("#lessonTitleComment").focus();
+		return;
+	}
+	
+	if(month==""){
+		alert("강의일수를 입력해주세요.");
+		$("#lessonMonth").focus();
+		return;
+	}
+	
+	if(intro==""){
+		alert("강의소개를 입력해주세요.");
+		$("#lessonIntro").focus();
+		return;
+	}	
 	
 	
-// 	if(intro.trim()==""){
-// 		alert("강의소개를 입력해주세요.");
-// 		$("#lessonIntro").focus();
-// 		return;
-// 	}
+	if(price==""){
+		alert("강의 가격을 입력해주세요.");
+		$("#lessonPrice").focus();
+		return;
+	}
 	
-// 	if(price.trim()==""){
-// 		alert("강의소개를 입력해주세요.");
-// 		$("#lessonPrice").focus();
-// 		return;
-// 	}
 	
-// 	if(month.trim()==""){
-// 		alert("강의일수를 입력해주세요.");
-// 		$("#lessonMonth").focus();
-// 		return;
-// 	}
 	
-// 	var param = "";
-// 	param += "dummy=" + Math.random();
-// 	param += "&store_name="+store_name;
-// 	param += "&store_tel="+store_tel;
-// 	param += "&store_code="+store_code;
-	
+	var param = "";
+	param += "dummy=" + Math.random();
+	param += "&title="+title;
+	param += "&category="+category;
+	param += "&title_comment="+title_comment;
+	param += "&balance="+balance;
+	param += "&flex="+flex;
+	param += "&strong="+strong;
+	param += "&core="+core;
+	param += "&intro="+intro;
+	param += "&price="+price;
+	param += "&month="+month;
 
-// 	console.log(param)
-// 	$.ajax({
-// 		url : "store_ins.ajax",
-// 		data : param,
-// 		dataType : "json",
-// 		type : "post",
-// 		async: false,
-// 		statusCode : {
-// 			404 : function() {
-// 				alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
-// 			}
-// 		},
-// 		success : function(data) {
-// 			if(data.msg =="ok"){
-// 				alert("업체가 정상적으로 추가되었습니다.")
-// 				location.href="store_list"
-// 			}else{
-// 				alert("추가도중 문제가 생겼습니다");
-// 			}
+	console.log(param)
+	$.ajax({
+		url : "lesson_ins",
+		data : param,
+		dataType : "text",
+		type : "post",
+		async: false,
+		statusCode : {
+			404 : function() {
+				alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
+			}
+		},
+		success : function(data) {
+			if(data.msg =="ok"){
+				alert("강의가 정상적으로 추가되었습니다.")
+				location.href="lessonList"
+			}else{
+				alert("추가도중 문제가 생겼습니다.");
+				return;
+			}
 // 			console.log(data.msg);
-// 		}
-// 	});
+		}
+	});
 	
-// }
+}
 
 </script>
 <style>
@@ -265,7 +269,7 @@ background: #ffffff;
 			<br />
 			<br />
 			<main role="main" class="container">
-				<form name="form" method="get" action="/lessionList" style="text-align: center;">
+				<form name="form" method="post" action="lessonAdd" style="text-align: center;">
 					<div class="write-title">
 						<label>
 							<p>
@@ -275,27 +279,36 @@ background: #ffffff;
 						</label>
 						<div class="c_radio">
 							<div style="display: inline-block;">
-								<input type="radio" name="cate_type" id="exercise" value="exercise" autocomplete="off" style="opacity: 0;">
-								<label for="exercise">헬스</label>
-								<input type="radio" name="cate_type" id="food" value="food" autocomplete="off" style="opacity: 0">
-								<label for="food">요가</label>
+								<input type="radio" name="cate_type" id="gym" value="1" autocomplete="off" style="opacity: 0;">
+								<label for="gym">헬스</label>
+								<input type="radio" name="cate_type" id="yoga" value="2" autocomplete="off" style="opacity: 0">
+								<label for="yoga">요가</label>
 							</div>
 							<div style="display: inline-block;">
-								<input type="radio" name="cate_type" id="motive" value="motive" autocomplete="off" style="opacity: 0">
-								<label for="motive">필라테스</label>
-								<input type="radio" name="cate_type" id="habit" value="habit" autocomplete="off" style="opacity: 0">
-								<label for="habit">맨몸운동</label>
+								<input type="radio" name="cate_type" id="filates" value="3" autocomplete="off" style="opacity: 0">
+								<label for="filates">필라테스</label>
+								<input type="radio" name="cate_type" id="exercise" value="4" autocomplete="off" style="opacity: 0">
+								<label for="exercise">맨몸운동</label>
 							</div>
 						</div>
 					</div>
 					<p>
 						<div class="form-group">
-						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="제목을 입력하세요">
+							<label for="lessonPrice" style="float:left;">제목 : </label>
+						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="ex)1강 전신스트레칭">
 						</div>
 					</p>
 					<p>	
 						<div class="form-group">
-						    <input type="text" class="form-control" id="lessonTitleComment" name="lessonTitleComment" placeholder="부제목(강의설명)을 입력하세요">
+							<label for="lessonPrice" style="float:left;">강의코멘트(부제목) : </label>
+						    <input type="text" class="form-control" id="lessonTitleComment" name="lessonTitleComment" placeholder="ex)운동시작전 몸을 풀기위한 스트레칭 강의입니다...">
+						</div>
+					</p>
+					
+					<p>	
+						<div class="form-group">
+							<label for="lessonPrice" style="float:left;">강의기간 : </label>
+						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)5주">
 						</div>
 					</p>
 					
@@ -307,7 +320,7 @@ background: #ffffff;
 								</div>
 								<div class="qty mt-5">
 									<span class="minus bg-dark" id="minus1">-</span>
-	                                <input type="number" class="count" id="count1" name="lessonBalance" name="qty" value="1">
+	                                <input type="number" class="count" id="count1" name="lessonBalance" name="qty" value="0">
 	                                <span class="plus bg-dark" id="plus1">+</span>
 	                            </div>
 							</div>
@@ -318,7 +331,7 @@ background: #ffffff;
 								</div>
 								<div class="qty mt-5">
 									<span class="minus bg-dark" id="minus2">-</span>
-	                                <input type="number" class="count" id="count2" name="lessonFlex" name="qty" value="1">
+	                                <input type="number" class="count" id="count2" name="lessonFlex" name="qty" value="0">
 	                                <span class="plus bg-dark" id="plus2">+</span>
 	                            </div>
 							</div>
@@ -329,7 +342,7 @@ background: #ffffff;
 								</div>
 								<div class="qty mt-5">
 									<span class="minus bg-dark" id="minus3">-</span>
-	                                <input type="number" class="count" id="count3" name="lessonStrong" name="qty" value="1">
+	                                <input type="number" class="count" id="count3" name="lessonStrong" name="qty" value="0">
 	                                <span class="plus bg-dark" id="plus3">+</span>
 	                            </div>
 							</div>
@@ -340,7 +353,7 @@ background: #ffffff;
 								</div>
 								<div class="qty mt-5">
 									<span class="minus bg-dark" id="minus4">-</span>
-	                                <input type="number" class="count" id="count4" name="lessonCore" name="qty" value="1">
+	                                <input type="number" class="count" id="count4" name="lessonCore" name="qty" value="0">
 	                                <span class="plus bg-dark" id="plus4">+</span>
 	                            </div>
 							</div>
@@ -349,12 +362,14 @@ background: #ffffff;
 						</p>
 						
 						<p>
-							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" placeholder="강의 소개를 입력해주세요"></textarea>
+							<label for="lessonPrice" style="float:left;">강의소개 : </label>
+							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."></textarea>
 						</p>
 						
 						<p>
 							<div class="form-group">
-							    <input type="text" class="form-control" id="lessonPrice" name="lessonPrice"  placeholder="강의가격을 입력해주세요">
+								<label for="lessonPrice" style="float:left;">강의가격 : </label>
+							    <input type="text" class="form-control" id="lessonPrice" name="lessonPrice"  placeholder="ex)530000">
 							</div>
 						</p>
 						
