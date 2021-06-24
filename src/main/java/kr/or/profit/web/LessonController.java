@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
+import kr.or.profit.service.AttachFileService;
 import kr.or.profit.service.LessonService;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.LessonVO;
 
 /**
@@ -30,6 +32,8 @@ public class LessonController {
 	@Resource(name="lessonService")
 	private LessonService lessonService;
 	
+	@Resource(name = "fileService")
+	private AttachFileService fileService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -61,11 +65,14 @@ public class LessonController {
 	
 	@RequestMapping(value = "lesson_ins", method = RequestMethod.POST)
 	@ResponseBody
-	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, Model model) throws Exception  {
-		System.out.println("강의등록 체크");
+	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
+//		System.out.println(lessonVO.getLessonTitle());
+		System.out.println(fileVO.getFileRealName());
+		
 		String message = "";
 		int cnt = lessonService.insertLesson(lessonVO);
-		if(cnt == 1) {
+		int cnt1 = fileService.insertLessonFile(fileVO);
+		if(cnt == 1 && cnt1 ==1) {
 			message = "ok";
 		}
 		return message;

@@ -7,5 +7,6 @@
 		<typeAlias alias="popularVO" type="kr.or.profit.vo.PopularVO"/>
 		<typeAlias alias="memberVO" type="kr.or.profit.vo.MemberVO"/>
 		<typeAlias alias="lessonVO" type="kr.or.profit.vo.LessonVO"/>
+		<typeAlias alias="fileVO" type="kr.or.profit.vo.AttachFileVO"/>
     </typeAliases>
 </configuration>
