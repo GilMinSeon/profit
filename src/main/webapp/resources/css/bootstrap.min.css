@@ -1999,7 +1999,7 @@ pre code {
 }
 
 .form-control:focus {
-	color: white;
+	color: #495057;
 	background-color: #FFFFFF33;
 	border-color: #80bdff;
 	outline: 0;
