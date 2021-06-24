@@ -51,6 +51,7 @@ public class MemberController {
 
 		System.out.println(vo.getMemberId());
 		System.out.println(vo.getMemberName());
+		System.out.println(vo.getMemberGender());
 		System.out.println("여기여기");
 		memberService.insertMember(vo);
 		
@@ -69,6 +70,27 @@ public class MemberController {
 		return message;
 	}
 	
+	@RequestMapping("nicknamecheck")
+	@ResponseBody
+	public String selectMemberNicknameCheck(String memberNickname) throws Exception{
+		String message = "";
+		int cnt = memberService.selectMemberNicknameCheck(memberNickname);
+		if(cnt == 0) {
+			message = "ok";
+		}
+		return message;
+	}
+	
+	@RequestMapping("emailcheck")
+	@ResponseBody
+	public String selectMemberEmailCheck(String memberEmail) throws Exception{
+		String message = "";
+		int cnt = memberService.selectMemberEmailCheck(memberEmail);
+		if(cnt == 0) {
+			message = "ok";
+		}
+		return message;
+	}
 	
 	
 }
