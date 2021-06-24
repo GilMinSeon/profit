@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.or.profit.mapper.AttachFileMapper">
+    
+    <resultMap id="file" type="kr.or.profit.vo.AttachFileVO">
+		<result property="fileSeq" column="file_seq"/>
+		<result property="communitySeq" column="community_seq"/>
+		<result property="memberId" column="member_id"/>
+		<result property="lessonDetailSeq" column="lesson_detail_seq"/>
+		<result property="chattingDetailSeq" column="chatting_detail_seq"/>
+		<result property="processSeq" column="process_seq"/>
+		<result property="fileRealName" column="file_real_name"/>
+		<result property="fileSaveName" column="file_save_name"/>
+		<result property="filePath" column="file_path"/>
+		<result property="inUserId" column="in_user_id"/>
+		<result property="inDate" column="in_date"/>
+		<result property="upUserId" column="up_user_id"/>
+		<result property="upDate" column="up_date"/>
+	</resultMap>
+	
+	<insert id="insertLessonFile" parameterType="fileVO">
+	    <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
+		</selectKey>
+		<![CDATA[
+			INSERT INTO ATTACH_FILE
+			(	FILE_SEQ,
+				COMMUNITY_SEQ,
+				MEMBER_ID,
+				LESSON_DETAIL_SEQ,
+				CHATTING_DETAIL_SEQ,
+				PROCESS_SEQ,
+				FILE_REAL_NAME,
+				FILE_SAVE_NAME,
+				FILE_PATH,
+				IN_USER_ID,
+				IN_DATE,
+				UP_USER_ID,
+				UP_DATE
+			)
+			VALUES (#{fileSeq, jdbcType=VARCHAR},
+					#{communitySeq, jdbcType=VARCHAR},
+					#{memberId, jdbcType=VARCHAR},
+					#{lessonDetailSeq, jdbcType=VARCHAR},
+					#{chattingDetailSeq, jdbcType=VARCHAR},
+					#{processSeq, jdbcType=VARCHAR},
+					#{fileRealName, jdbcType=VARCHAR},
+					#{fileSaveName, jdbcType=VARCHAR},
+					#{filePath, jdbcType=VARCHAR},
+					1,
+					sysdate,
+					1,
+					sysdate)
+		]]>
+	</insert>
+	
+    
+   	
+	    
+    
+</mapper>
