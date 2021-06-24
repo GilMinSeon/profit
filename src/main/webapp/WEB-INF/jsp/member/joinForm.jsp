@@ -15,10 +15,6 @@
 
 .form-control:focus {
 	color: white;
-	background-color: #FFFFFF33;
-	border-color: #80bdff;
-	outline: 0;
-	box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25)
 }
 
 #submitBtn {
@@ -52,6 +48,15 @@ $(function(){
 		
 		var memberId = $.trim($("#memberId").val()); //현재 창에 입력된 값
 		
+		
+		 var idReg = /^[A-za-z]+[a-z0-9]{5,19}$/g;
+	        if( !idReg.test( $("input[name=memberId]").val() ) ) {
+	            alert("아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.");
+	            return;
+	        }
+		
+		
+		
 		//checkMemberId로 데이터 전송 - 비동기 전송방식
 		$.ajax({
 			type : "POST",
@@ -81,12 +86,15 @@ $(function(){
 		
 		
 		if($("#memberPwd").val() !== $("#confirmPwd").val()){
-			$("#msgPwd").html("비밀번호가 일치합니다!");
+			$("#msgPwd").html("비밀번호가 일치하지않습니다!");
 			alert("비밀번호가 다릅니다!")
 			$('#confirmPwdMsg').html("you can use this ID");
 			$("#memberPwd").val("").focus();
 			$("#confirmPwd").val("");
 			return false;
+		}else{
+			$("#msgPwd").html("비밀번호가 일치합니다!");
+			
 		}
 		
 		

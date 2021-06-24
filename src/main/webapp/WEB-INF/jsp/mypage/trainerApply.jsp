@@ -6,6 +6,48 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
+<script>
+    var cnt = 1;
+    function fn_addFile(){
+    	cnt = cnt + 1;
+    	$("#d_file").append("<input type='file' id='file"+ cnt + "' onchange='fn_attach_file("+cnt+")' style='display:none;height: 10px;'>" +
+							"<label for='file" + cnt + "' style='background-color: #cac9e6;float: left; height: 50px;width: 20%;font-weight: bold;text-align: center;padding-top: 15px;'>파일선택</label>" +  
+							"<input class='upload-name" + cnt + "' value='첨부파일이 없습니다.' readonly='readonly' style='color: black;width: 80%;background-color: #3f51b50d;'>");
+    	
+    }
+    
+//     $(document).ready(function(cnt){ 
+//       	fileTarget.on('change', function(){ // 값이 변경되면
+//          	var cur=$('#file' + cnt).val();
+//       		alert(cur);
+//          	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
+//          	var nameLength = curSplit.length;
+//          	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
+//         	$(".upload-name" + cnt).val(fileName);
+//       	}); 
+//     }); 
+    
+    function fn_attach_file(cnt){
+    	alert(cnt);
+    	var cur=$('#file' + cnt).val();
+  		alert(cur);
+     	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
+     	var nameLength = curSplit.length;
+     	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
+    	$(".upload-name" + cnt).val(fileName);
+    }
+    
+    function readURL(input) {
+//         if (input.files && input.files[0]) {
+//             var reader = new FileReader();
+//             reader.onload = function (e) {
+//                 $('#preview_img').attr('src', e.target.result);
+//             }
+//             reader.readAsDataURL(input.files[0]);
+//         }
+    }
+</script>
 <body>
 
     <!-- Breadcrumb Begin -->
@@ -110,7 +152,7 @@
 						<div class="col-lg-6 text-center mypage_myinfo"
 										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
 										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">이름</h5>
+											<h5 style="display: inline; float: left; ;">이름</h5>
 											&nbsp;
 										</div>
 										<input type="text" readonly="readonly"
@@ -207,7 +249,19 @@
 											<h5 style="display: inline; float: left; color: black;">첨부파일</h5>
 											&nbsp;
 											<div class="col-lg-12" style="text-align: right; float: left; padding: 0; margin: 0;">
-												<input type="button" value="첨부파일 추가" class="site-btn updateBtn" style="float:right; padding: 1px 6px ;font-size: 0.8em; color: white; background-color: #5768AD; width: 130px; height: 40px; margin-right: 7px;" onclick="fn_update()">
+<!-- 												<input type="button" value="첨부파일 추가" class="site-btn updateBtn" style="float:right; padding: 1px 6px ;font-size: 0.8em; color: white; background-color: #5768AD; width: 130px; height: 40px; margin-right: 7px;" onclick="fn_update()"> -->
+												<div style="text-align: right;">
+													<input type="button" value="파일 추가" onClick="fn_addFile()" style="background-color: #5768AD;width: 30%;font-weight: bold;font-size: 1.1em;padding-left: 6px;">
+												</div>
+												
+												<div id="d_file" class="attach_div" style="text-align: left;height: 50px;margin: 0px;">
+												  	<input type="file" id="file1" onchange='fn_attach_file(1)' style="display:none;height: 10px;"> 
+            										<label for="file1" style="background-color: #cac9e6;float: left; height: 50px;width: 20%;font-weight: bold;text-align: center;padding-top: 15px;">파일선택</label> 
+													<input class="upload-name1" value="첨부파일이 없습니다." readonly="readonly" style="color: black;width: 80%;background-color: #3f51b50d;">
+													
+           										 </div>
+           										 
+           										 
 											</div>
 										</div>
 										
@@ -252,7 +306,7 @@
 
 
     <!-- Js Plugins -->
-    <script src="./resources/js/jquery-3.3.1.min.js"></script>
+    
     <script src="./resources/js/bootstrap.min.js"></script>
     <script src="./resources/js/jquery.nice-select.min.js"></script>
     <script src="./resources/js/jquery.barfiller.js"></script>
