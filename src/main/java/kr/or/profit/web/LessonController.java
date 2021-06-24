@@ -78,11 +78,32 @@ public class LessonController {
 		return message;
 	}
 	
+	/**
+	 * 강의를 수정한다 
+	 * @param locale
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "lessonMod", method = RequestMethod.GET)
 	public String lessonMod(Locale locale, Model model) {
 		
 		return "lesson/lessonMod";
 	}
+	
+	@RequestMapping(value = "lesson_upd", method = RequestMethod.POST)
+	@ResponseBody
+	public String lessonMod(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
+		
+		String message = "";
+		int cnt = lessonService.updateLesson(lessonVO);
+		int cnt1 = fileService.insertLessonFile(fileVO);
+		if(cnt == 1 && cnt1 ==1) {
+			message = "ok";
+		}
+		return message;
+	}
+	
+	
 
 	@RequestMapping(value = "classDetail", method = RequestMethod.GET)
 	public String classDetail(Locale locale, Model model) {

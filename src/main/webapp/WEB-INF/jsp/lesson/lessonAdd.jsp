@@ -158,9 +158,6 @@ function fn_lessonAdd(){
 	var filePath= uploadPath + fileRealName;
 	var fileSaveName = guid() + "_" + fileRealName;
 	
-	
-
-	
 	console.log(lessonTitle);
 	console.log(lessonCategorySeq);
 	console.log(lessonTitleComment);
@@ -174,6 +171,20 @@ function fn_lessonAdd(){
 	console.log(filePath);
 	console.log(fileRealName);
 	console.log(fileSaveName);
+	
+	var chk_radio = document.getElementsByName('cate_type');
+	var sel_type = null;
+	for(var i=0;i<chk_radio.length;i++){
+		if(chk_radio[i].checked == true){ 
+			sel_type = chk_radio[i].value;
+		}
+	}
+
+	if(sel_type == null){
+        alert("카테고리를 선택하세요."); 
+		return;
+	}
+
 	
 	if(lessonTitle==""){
 		alert("제목을 입력해주세요.");
@@ -193,6 +204,7 @@ function fn_lessonAdd(){
 		return;
 	}
 	
+	
 	if(lessonIntro==""){
 		alert("강의소개를 입력해주세요.");
 		$("#lessonIntro").focus();
@@ -208,10 +220,23 @@ function fn_lessonAdd(){
 	
 	var price_reg = /^[0-9]*$/;
 	if (!price_reg.test(lessonPrice)) {
-		alert("가격은 (특수기호없이)숫자만 입력해주세요");
+		alert("가격은 (특수기호없이)숫자만 입력해주세요. \n ex) 300000");
 		$("#lessonPrice").focus();
 		return false;
 	}
+	
+	var month_reg = /^(0[1-9]|1[012])$/;
+	if (!month_reg.test(lessonMonth)) {
+		alert("수강기간은 1월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
+		$("#lessonMonth").focus();
+		return false;
+	}
+	
+	var fileCheck = document.getElementById("file").value;
+    if(!fileCheck){
+        alert("파일을 첨부해 주세요");
+        return false;
+    }
 	
 	var param = "";
 	param += "dummy=" + Math.random();
@@ -339,7 +364,7 @@ background: #ffffff;
 					<p>	
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">강의기간 : </label>
-						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)5주">
+						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)01">
 						</div>
 					</p>
 					

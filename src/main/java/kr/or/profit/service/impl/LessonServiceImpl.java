@@ -23,6 +23,12 @@ public class LessonServiceImpl implements LessonService {
 		return  lessonDAO.insertLesson(vo);
 	}
 
+	//강의 수정
+	@Override
+	public int updateLesson(LessonVO vo) throws Exception {
+		return lessonDAO.updateLesson(vo);
+	}
+
 	
 
 }

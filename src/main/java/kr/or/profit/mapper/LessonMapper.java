@@ -10,6 +10,9 @@ public interface LessonMapper {
 	//강의 등록
 	int insertLesson(LessonVO vo) throws Exception;
 
+	//강의 수정
+	int updateLesson(LessonVO vo) throws Exception;
+
 	
 
 
