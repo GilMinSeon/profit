@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.profit.mapper.MemberMapper">
+
+    <insert id="insertMember" parameterType="MemberVO">
+        <![CDATA[
+        insert into MEMBER(
+        	MEMBER_ID, MEMBER_PWD, MEMBER_NAME, MEMBER_NICKNAME, MEMBER_MOBILE
+        ) values (
+        	#{memberId}, #{memberPwd}, #{memberName}, #{memberNickname}, #{memberMobile}
+        )
+        ]]>
+    </insert>
+    
+    <!-- 아이디 중복 검사 -->
+    <select id="selectMemberIdCheck" parameterType="String" resultType="int">
+        select count(*) from MEMBER where MEMBER_ID = #{memberId}
+    </select>
+    
+</mapper>
