@@ -38,7 +38,7 @@
 	<!-- 	main html 시작 -->
 	<section class="about spad">
 		<div class="container">
-		<c:set var="result" value="${resultList}"></c:set>
+<%-- 		<c:set var="result" value="${resultList}"></c:set> --%>
 			<div class="row">
 				<div class="col-lg-7 p-0" style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
 					<div class="about__pic" style="">

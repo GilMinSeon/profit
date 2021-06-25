@@ -129,7 +129,7 @@
 	</select>
 	    
    	
-    <select id="selectLessonDetail" resultMap="lesson">
+    <select id="selectLessonDetail" resultType="egovMap">
 
 		SELECT A.LESSON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
         A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_PATH

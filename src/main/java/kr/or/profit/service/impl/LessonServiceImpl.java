@@ -1,15 +1,14 @@
 package kr.or.profit.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import kr.or.profit.mapper.AttachFileMapper;
 import kr.or.profit.mapper.LessonMapper;
 import kr.or.profit.service.LessonService;
-import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.LessonVO;
 
 @Service("lessonService")
@@ -37,12 +36,26 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.selectLessonList();
 	}
 
-	//강의 상세조회
+//	@Override
+//	public Map<String, Object> selectLessonDetail(Map<String, Object> map) throws Exception {
+//		return this.lessonDAO.selectLessonDetail(map);
+//	}
+
 	@Override
-	public List<?> selectLessonDetail() throws Exception {
-		return lessonDAO.selectLessonDetail();
-		
+	public List<?> selectLessonDetail(String lessonSeq) throws Exception {
+		return lessonDAO.selectLessonDetail(lessonSeq);
 	}
+	
+//	@Override
+//	public List<?> selectLessonDetail(LessonVO vo) throws Exception {
+//		return lessonDAO.selectLessonDetail(vo);
+//	}
+
+	//강의 상세조회
+//	@Override
+//	public List<?> selectLessonDetail(String lessonSeq) throws Exception {
+//		return lessonDAO.selectLessonDetail(lessonSeq);
+//	}
 
 	
 

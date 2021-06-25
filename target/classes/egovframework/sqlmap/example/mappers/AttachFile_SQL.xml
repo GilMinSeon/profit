@@ -17,6 +17,7 @@
 		<result property="inDate" column="in_date"/>
 		<result property="upUserId" column="up_user_id"/>
 		<result property="upDate" column="up_date"/>
+		<result property="lessonSeq" column="lesson_seq"/>
 	</resultMap>
 	
 	<insert id="insertLessonFile" parameterType="fileVO">
@@ -37,7 +38,8 @@
 				IN_USER_ID,
 				IN_DATE,
 				UP_USER_ID,
-				UP_DATE
+				UP_DATE,
+				LESSON_SEQ
 			)
 			VALUES (#{fileSeq, jdbcType=VARCHAR},
 					#{communitySeq, jdbcType=VARCHAR},
@@ -51,7 +53,8 @@
 					1,
 					to_char(sysdate, 'YYYYMMDD.HH24MISS'),
 					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'))
+					to_char(sysdate, 'YYYYMMDD.HH24MISS'),
+					#{lessonSeq, jdbcType=VARCHAR})
 		]]>
 	</insert>
 	
