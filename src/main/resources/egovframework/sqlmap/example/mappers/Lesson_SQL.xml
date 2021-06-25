@@ -72,24 +72,63 @@
         select count(*) from LESSON
     </select>
     
-   	<update id="updateLesson">
+<!--    	<update id="updateLesson"> -->
 
-			UPDATE LESSON
-			SET LESSON_CATEGORY_SEQ=#{lessonCategorySeq}
-				, LESSON_TITLE=#{lessonTitle}
-				, LESSON_TITLE_COMMENT=#{lessonTitleComment}
-				, LESSON_BALANCE=#{lessonBalance}
-				, LESSON_FLEX=#{lessonFlex}
-				, LESSON_STRONG=#{lessonStrong}
-				, LESSON_CORE=#{lessonCore}
-				, LESSON_INTRO=#{lessonIntro}
-				, LESSON_PRICE=#{lessonPrice}
-				, LESSON_MONTH=#{lessonMonth}
-				, UP_USER_ID=1
-				, UP_DATE= to_char(sysdate, 'YYYYMMDD.HH24MISS')
-				  WHERE LESSON_SEQ=#{lessonSeq}
+<!-- 			UPDATE LESSON -->
+<!-- 			SET LESSON_CATEGORY_SEQ=#{lessonCategorySeq} -->
+<!-- 				, LESSON_TITLE=#{lessonTitle} -->
+<!-- 				, LESSON_TITLE_COMMENT=#{lessonTitleComment} -->
+<!-- 				, LESSON_BALANCE=#{lessonBalance} -->
+<!-- 				, LESSON_FLEX=#{lessonFlex} -->
+<!-- 				, LESSON_STRONG=#{lessonStrong} -->
+<!-- 				, LESSON_CORE=#{lessonCore} -->
+<!-- 				, LESSON_INTRO=#{lessonIntro} -->
+<!-- 				, LESSON_PRICE=#{lessonPrice} -->
+<!-- 				, LESSON_MONTH=#{lessonMonth} -->
+<!-- 				, UP_USER_ID=1 -->
+<!-- 				, UP_DATE= to_char(sysdate, 'YYYYMMDD.HH24MISS') -->
+<!-- 				  WHERE LESSON_SEQ=#{lessonSeq} -->
 
-	</update>
+<!-- 	</update> -->
 	    
+	    
+	    <select id="selectLessonList"  resultType="egovMap">	<!-- egovMap :  key 에 대하여 Camel Case 변환하여 super.put -->
+
+			SELECT
+				LESSON_SEQ,
+				COMMON_SEQ,
+				LESSON_CATEGORY_SEQ,
+				LESSON_TITLE,
+				LESSON_TITLE_COMMENT,
+				LESSON_BALANCE,
+				LESSON_FLEX,
+				LESSON_STRONG,
+				LESSON_CORE,
+				LESSON_INTRO,
+				LESSON_PRICE,
+				LESSON_PRIVATE_FLAG,
+				LESSON_MONTH,
+				IN_USER_ID,
+				IN_DATE,
+				UP_USER_ID,
+				UP_DATE
+			FROM LESSON
+<!-- 			WHERE 1=1 -->
+<!-- 			<if test="searchKeyword != null and searchKeyword != ''"> -->
+<!-- 		        <choose> -->
+<!-- 		            <when test="searchCondition == 0"> -->
+<!-- 						AND	ID LIKE '%' || #{searchKeyword} || '%' -->
+<!-- 					</when> -->
+<!-- 		            <when test="searchCondition == 1"> -->
+<!-- 						AND	NAME LIKE '%' || #{searchKeyword} || '%' -->
+<!-- 					</when> -->
+<!-- 				</choose> -->
+<!-- 			</if> -->
+			ORDER BY LESSON_SEQ DESC
+<!-- 			LIMIT #{recordCountPerPage} OFFSET #{firstIndex} -->
+	</select>
+	    
+   	
+   	
     
 </mapper>
