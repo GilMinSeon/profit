@@ -28,7 +28,11 @@
     
     $(function(){
     	
-    	
+//     	if(!${memberMobile}){
+    		
+//     	}else{
+//     		alert("회원 전화번호가 존재하지 않습니다.");
+//     	}
     	
     	$("#frm").submit(function(){
     	
@@ -156,7 +160,7 @@
 										</div>
 										<input id="trainerName" type="text"
 											style="background-color: #3f51b50d; color: black;"
-											value="${sessionScope.memberId}">
+											value="${memberName}">
 									</div>
 
 									<div class="col-lg-6 text-center mypage_myinfo"
@@ -180,7 +184,7 @@
 										</div>
 										<input id="mobile" type="text" placeholder="Mobile" 
 											style="background-color: #3f51b50d; color: black;"
-											value="">
+											value="${memberMobile}">
 									</div>
 									<div class="col-lg-6 text-center mypage_myinfo"
 										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">

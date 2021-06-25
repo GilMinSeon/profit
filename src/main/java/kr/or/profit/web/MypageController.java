@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,12 +31,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.or.profit.service.MemberService;
+import kr.or.profit.service.MypageService;
+
 /**
  * 
  * Handles requests for the application home page.
  */
 @Controller
 public class MypageController {
+	@Resource(name = "mypageService")
+	private MypageService mypageService;
+	
 	
 	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
 	private static final String CURR_IMAGE_REPO_PATH = 
@@ -61,16 +68,27 @@ public class MypageController {
 	}
 	
 	@RequestMapping(value = "trainerApply", method = RequestMethod.GET)
-	public String trainerApply(HttpServletRequest request) {
+	public String trainerApply(HttpServletRequest request, Model model) throws Exception {
 		HttpSession session = request.getSession();
 		
 		//로그인 생기면 제거해주세용~
         session.setAttribute("memberId", "dpwls64");
         session.setAttribute("memberGubun", "U");
+        //
         
+        String memberId = (String) session.getAttribute("memberId");
         
-		
+        List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
+        String memberName = list.get(0).get("MEMBER_NAME");
+        String memberGender = list.get(0).get("MEMBER_GENDER");
+        String memberMobile = list.get(0).get("MEMBER_MOBILE");
+
+        model.addAttribute("memberName", memberName);
+        model.addAttribute("memberGender", memberGender);
+        model.addAttribute("memberMobile", memberMobile);
+        
         return "mypage/trainerApply";
+        
 	}
 	
 //	@RequestMapping(value="trainerApplyResult", method = RequestMethod.POST)
