@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +71,7 @@ public class MypageController {
 		return "mypage/bookmark";
 	}
 	
-	@RequestMapping(value = "trainerApply", method = RequestMethod.GET)
+	@RequestMapping(value = "trainerApply", method = {RequestMethod.GET, RequestMethod.POST})
 	public String trainerApply(HttpServletRequest request, Model model) throws Exception {
 		HttpSession session = request.getSession();
 		
@@ -158,50 +160,54 @@ public class MypageController {
 	    return "mypage/test";
 	}
 	
-	@RequestMapping(value="upload", method=RequestMethod.GET)
-    public ModelAndView uploadGet(ModelAndView mav) throws Exception{
-		mav.setViewName("mypage/result");
-		return mav;
+	@RequestMapping(value="result", method= {RequestMethod.POST, RequestMethod.GET})
+	public String result() {
+	    return "mypage/result";
 	}
 	
+//	@RequestMapping(value="upload", method=RequestMethod.GET)
+//    public ModelAndView uploadGet(ModelAndView mav) throws Exception{
+//		mav.setViewName("mypage/result");
+//		return mav;
+//	}
+	
 	@RequestMapping(value="upload", method=RequestMethod.POST)
-    public void upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
-        multipartRequest.setCharacterEncoding("utf-8");
+	@ResponseBody
+    public String upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
+        multipartRequest.setCharacterEncoding("utf-8");
+        
         
         //회원 정보 Process Table에 Insert
         String trainerAward = multipartRequest.getParameter("trainerAward");
-        String trainerCarrer = multipartRequest.getParameter("trainerCarrer");
+        String trainerCareer = multipartRequest.getParameter("trainerCareer");
         String trainerGym = multipartRequest.getParameter("trainerGym");
         
-        System.out.println("-------------------------");
-        System.out.println(trainerAward);
-        System.out.println(trainerCarrer);
-        System.out.println(trainerGym);
-        System.out.println("-------------------------");
         
         ProcessVO vo = new ProcessVO();
-        vo.setMemberId((String)session.getAttribute("memberId"));
-        vo.setTrainerAward(trainerAward);
-        vo.setTrainerCareer(trainerCarrer);
-        vo.setTrainerGym(trainerGym);
         
+        String loginMemberId = (String)session.getAttribute("memberId");
+        vo.setMemberId(loginMemberId);
+        vo.setTrainerAward(trainerAward);
+        vo.setTrainerCareer(trainerCareer);
+        vo.setTrainerGym(trainerGym);
+        vo.setInUserId(loginMemberId);
+        vo.setUpUserId(loginMemberId);
         mypageService.insertProcess(vo);
         
-        
-        
-        
-        
-        Map map = new HashMap();
-        Enumeration enu = multipartRequest.getParameterNames();
-        
-        List fileList = fileProcess(multipartRequest);
-        for(int i=0;i<fileList.size();i++) {
+        //다중파일 List로 담아 File 테이블에 추가
+	    Map map = new HashMap();
+	    Enumeration enu = multipartRequest.getParameterNames();
+	        
+	    List fileList = fileProcess(multipartRequest);
+	    for(int i=0;i<fileList.size();i++) {
         	String name = fileList.get(i).toString();
         	map.put("file"+(i+1), name);
         }
         map.put("fileList", fileList);
         
+        
+        return "ok";
         
     }
     

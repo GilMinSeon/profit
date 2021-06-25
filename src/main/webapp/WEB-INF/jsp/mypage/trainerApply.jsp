@@ -51,15 +51,25 @@ input:-webkit-autofill {
    	    		data : formData,
    	    		processData : false,
    	    		contentType : false,
-   	    		success : function(html){
-   	    			alert("파일을 업로드 하였습니다");
-   	    			location.href="upload";
-   	    		},
+   	    		async:false,
+   	    		dataType:"text",
+   	    		success : function(data){
+	    			if(data=="ok"){
+   	    			alert("신청이 정상적으로 완료되었습니다.");
+   	    			location.href="home";
+	    			}else if(data=="no"){
+	    				alert("신청이 실패하였습니다. 다시 시도해주세요");
+	    			}else{
+	    				alert("신청이 실패하였습니다. 다시 시도해주세요");
+	    			}
+	    		},
    	    		error : function(error){
-   	    			alert("파일 업로드에 실패하였습니다.");
+   	    			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
    	    			console.log(error);
    	    			console.log(error.status);
    	    		}
+   	    		
+   	    		
    	    	})
     	    
     	})
@@ -239,7 +249,7 @@ input:-webkit-autofill {
 										<div class="row">
 											<div class="col-lg-12"></div>
 											<div class="col-lg-12 text-center">
-												<textarea id="trainerCareer" name="trainerCarrer"
+												<textarea id="trainerCareer" name="trainerCareer"
 													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
 2014~2019 서울 멋진헬스장 트레이너 
 2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
