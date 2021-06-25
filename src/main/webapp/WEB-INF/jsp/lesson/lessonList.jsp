@@ -275,35 +275,37 @@
                  <a href="lessonAdd" class="class-btn_w">강의등록</a>
    		 	</div>
 			<div class="row">
+			<c:forEach var="result" items="${resultList}" varStatus="status">
+<!-- 			<input type="hidden" name="lessonSeq"> -->
 				<div class="col-lg-4 col-md-6">
 					<div class="classes__item classes__item__page">
-						<div class="classes__item__pic set-bg" data-setbg="./resources/img/classes/pul.gif" style="background-image: url(&quot;./resources/img/classes/classes-1.jpg&quot;);"></div>
+						<div class="classes__item__pic set-bg" data-setbg=${result.filePath} style="background-image: url(&quot;./resources/img/classes/classes-1.jpg&quot;);"></div>
 						<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
 							<div style="text-align: right;">
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/look.PNG" style="width: 30px; height: 20px; opacity: 0.5;">
 								</div>
 								<div style="display: inline-block;">
-									<p>100</p>
+									<p>${result.lessonHit }</p>
 								</div>
 								|&nbsp;
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/reply.PNG" style="width: 24px; height: 19px; opacity: 0.5;">
 								</div>
 								<div style="display: inline-block;">
-									<p>2000</p>
+									<p>${result.lessonReply}</p>
 								</div>
 								|&nbsp;
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/good.PNG" style="width: 22px; height: 20px;">
 								</div>
 								<div style="display: inline-block;">
-									<p>400</p>
+									<p>${result.lessonGood}</p>
 								</div>
 							</div>
-							<p>카테고리 | 운동</p>
+							<p>카테고리 | <span>${result.lessonCategoryName}</span></p>
 							<h4 style="margin-bottom: 30px;">
-								<a href="lessionDetail">100일만에 -10kg만든 운동법</a>
+								<a href="lessionDetail">${result.lessonTitle}</a>
 							</h4>
 							<div>
 								<div style="display: inline-block; vertical-align: middle;">
@@ -311,75 +313,14 @@
 								</div>
 								&nbsp;
 								<div style="display: inline-block;">
-									<h6 style="margin-bottom: 25px;">동그리동동</h6>
+									<h6 style="margin-bottom: 25px;">${result.inUserId}</h6>
 								</div>
 							</div>
-							<a href="lessionDetail" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+							<a href="lessonDetail?lessonSeq=${result.lessonSeq}" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="classes__item classes__item__page">
-						<div class="classes__item__pic set-bg" data-setbg="./resources/img/classes/g1.gif" style="background-image: url(&quot;./resources/img/classes/classes-1.jpg&quot;);"></div>
-						<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
-							<div style="text-align: right;">
-								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/look.PNG" style="width: 30px; height: 20px; opacity: 0.5;">
-								</div>
-								<div style="display: inline-block;">
-									<p>1000</p>
-								</div>
-								|&nbsp;
-								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/reply.PNG" style="width: 24px; height: 19px; opacity: 0.5;">
-								</div>
-								<div style="display: inline-block;">
-									<p>2000</p>
-								</div>
-								|&nbsp;
-								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/good.PNG" style="width: 22px; height: 20px;">
-								</div>
-								<div style="display: inline-block;">
-									<p>400</p>
-								</div>
-							</div>
-							<p>카테고리 | 운동</p>
-							<h4 style="margin-bottom: 30px;">
-								<a href="lessionDetail">100일만에 -10kg만든 운동법</a>
-							</h4>
-							<div>
-								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
-								</div>
-								&nbsp;
-								<div style="display: inline-block;">
-									<h6 style="margin-bottom: 25px;">동그리동동</h6>
-								</div>
-							</div>
-							<a href="lessionDetail" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="classes__item classes__item__page">
-						<div class="classes__item__pic set-bg" data-setbg="./resources/img/classes/a2.jpg"></div>
-						<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
-							<p>카테고리 | 운동</p>
-							<h4 style="margin-bottom: 30px;">
-								<a href="lessionDetail">100일만에 -10kg만든 운동법</a>
-							</h4>
-							<span>조회수 : 10 댓글수 :10 좋아요수 : 10</span>
-							<br />
-							<br />
-							<h6>
-								동그리동동
-								<span>- Yoga Teacher</span>
-							</h6>
-							<a href="lessionDetail" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
-						</div>
-					</div>
-				</div>
+				</c:forEach>
 				<div class="col-lg-12">
 					<div class="classes__pagination">
 						<a href="#">1</a>

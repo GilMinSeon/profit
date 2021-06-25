@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +38,7 @@
 	<!-- 	main html 시작 -->
 	<section class="about spad">
 		<div class="container">
+		<c:set var="result" value="${resultList}"></c:set>
 			<div class="row">
 				<div class="col-lg-7 p-0" style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
 					<div class="about__pic" style="">
@@ -44,7 +48,7 @@
 				<div class="col-lg-5 p-0">
 					<div class="about__text">
 						<div class="section-title">
-							<h2>What We Do</h2>
+							<h2>fff</h2>
 							<p>To be invited to the nearest Cali center and get free physical advice to learn more about the program.</p>
 						</div>
 						<div class="about__bar">

@@ -46,12 +46,23 @@ public class LessonController {
 	public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
 		List<?> lessonList = lessonService.selectLessonList();
 		model.addAttribute("resultList", lessonList);
+		System.out.println("dddddddddddd"+model);
 		return "lesson/lessonList";
 	}
 	
+	/**
+	 * 강의 상세 조회
+	 * @param lessonVO
+	 * @param locale
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "lessonDetail", method = RequestMethod.GET)
-	public String lessonDetail(Locale locale, Model model) {
-		
+	public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
+		List<?> lessonDetailList = lessonService.selectLessonDetail();
+		model.addAttribute("resultList", lessonDetailList);
+		System.out.println("resultList"+model);
 		return "lesson/lessonDetail";
 	}
 	

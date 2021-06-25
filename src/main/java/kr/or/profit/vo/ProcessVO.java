@@ -4,8 +4,8 @@ public class ProcessVO {
 	private String processSeq;
 	private String memberId;
 	private String trainerAward;
-	private String trainerCareer;
 	private String trainerGym;
+	private String trainerCareer;
 	private String processStatus;
 	private String processFinishDate;
 	private String adminMemo;
@@ -31,12 +31,6 @@ public class ProcessVO {
 	}
 	public void setTrainerAward(String trainerAward) {
 		this.trainerAward = trainerAward;
-	}
-	public String getTrainerCareer() {
-		return trainerCareer;
-	}
-	public void setTrainerCareer(String trainerCareer) {
-		this.trainerCareer = trainerCareer;
 	}
 	public String getTrainerGym() {
 		return trainerGym;
@@ -86,6 +80,14 @@ public class ProcessVO {
 	public void setUpDate(String upDate) {
 		this.upDate = upDate;
 	}
+	public String getTrainerCareer() {
+		return trainerCareer;
+	}
+	public void setTrainerCareer(String trainerCareer) {
+		this.trainerCareer = trainerCareer;
+	}
+	
+	
 	
 	
 }

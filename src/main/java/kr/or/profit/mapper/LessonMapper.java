@@ -18,6 +18,9 @@ public interface LessonMapper {
 	//강의 목록 조회
 	List<?> selectLessonList() throws Exception;
 
+	//강의 상세조회
+	List<?> selectLessonDetail() throws Exception;
+
 	
 
 

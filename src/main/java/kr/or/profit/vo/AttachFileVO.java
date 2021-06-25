@@ -14,6 +14,7 @@ public class AttachFileVO {
 	private String inDate;
 	private String upUserId;
 	private String upDate;
+	private String lessonSeq;
 	
 	
 	public String getFileSeq() {
@@ -94,6 +95,13 @@ public class AttachFileVO {
 	public void setUpDate(String upDate) {
 		this.upDate = upDate;
 	}
+	public String getLessonSeq() {
+		return lessonSeq;
+	}
+	public void setLessonSeq(String lessonSeq) {
+		this.lessonSeq = lessonSeq;
+	}
+	
 	
 	
 }
