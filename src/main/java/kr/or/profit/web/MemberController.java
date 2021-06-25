@@ -65,9 +65,11 @@ public class MemberController {
 	public String selectMemberIdCheck(String memberId) throws Exception{
 		String message = "";
 		int cnt = memberService.selectMemberIdCheck(memberId);
+		System.out.println(cnt);
 		if(cnt == 0) {
 			message = "ok";
 		}
+		System.out.println(message);
 		return message;
 	}
 	
@@ -115,6 +117,14 @@ public class MemberController {
 	}
 	
 	
-	
+	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		session.removeAttribute("memberId");
+		session.removeAttribute("memberNickname");
+		session.removeAttribute("memberGubun");
+		return "redirect:home";
+
+	}
+
 	
 }
