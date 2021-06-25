@@ -11,6 +11,13 @@ public interface MemberService {
 	
 	//닉네임 중복검사
 	public int selectMemberNicknameCheck(String memberNickname) throws Exception;
-	//
+	
+	//이메일 중복검사
 	public int selectMemberEmailCheck(String memberEmail) throws Exception;
+	
+	//로그인 처리
+	public int selectMemberCount(MemberVO vo) throws Exception;
+	
+	
+	
 }

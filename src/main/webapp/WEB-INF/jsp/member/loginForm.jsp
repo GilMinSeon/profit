@@ -16,6 +16,46 @@
 	letter-spacing: 2px;
 }
 </style>
+<script type="text/javascript">
+function fn_login(){
+	var memberId = $.trim($("#memberId").val());
+	var memberPwd = $.trim($("#memberPwd").val());
+	
+	if(memberId == ""){
+		alert("아이디를 입력해주세요");
+		$("#memberId").focus();
+		return false;
+	}
+	if(memberPwd == ""){
+		alert("비밀번호를 입력해주세요");
+		$("#memberPwd").focus();
+		return false;
+	}
+	
+	$.ajax({
+		type : "POST",
+		data : "memberId=" + memberId +"&memberPwd=" + memberPwd, //json
+		url : "loginWriteSub",
+		dataType : "text", //리턴타입
+
+		//전송 후 세팅
+		success : function(result) {
+			if (result == "ok") {
+				alert(memberId+"님 로그인 되었습니다")
+				location.href="home";
+			} else {
+				alert("로그인 정보를 다시 확인해주세요");
+			}
+		},
+		error : function() {
+			alert("오류발생");
+		}
+
+	})
+	
+	
+}
+</script>
 <body>
 	<!-- Breadcrumb Begin -->
 	<section class="breadcrumb-option set-bg"
@@ -25,10 +65,6 @@
 				<div class="col-lg-12">
 					<div class="breadcrumb__text">
 						<h2>로그인</h2>
-						<!-- <div class="breadcrumb__widget">
-                            <a href="./index.html">Home</a>
-                            <span>Our Classes</span>
-                        </div> -->
 					</div>
 				</div>
 			</div>
@@ -47,16 +83,16 @@
 						</div>
 					</div>
 				</div> -->
-				<form action="#" class="appointment__form">
+				<form class="appointment__form">
 					<div class="text-center" >
 						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto; ">
-							<input type="text" placeholder="아이디" >
+							<input type="text" placeholder="아이디" name="memberId" id="memberId">
 						</div>
 						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto; ">
-							<input type="text" placeholder="비밀번호">
+							<input type="text" placeholder="비밀번호" name="memberPwd" id="memberPwd">
 						</div>
 						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto; ">
-							<input type="button" value="로그인" id="submitBtn" style="font-size: 1.1em;"><br>
+							<input type="button" value="로그인" id="submitBtn" style="font-size: 1.1em;" onclick="fn_login()"><br>
 							<input type="button" value="카카오로그인" id="submitBtn" style="background: yellow;font-size: 1.1em; ">
 						</div><br>
 							<div class="text-center">

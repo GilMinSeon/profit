@@ -35,5 +35,12 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		return memberMapper.selectMemberEmailCheck(memberEmail);
 	}
 
+	@Override
+	public int selectMemberCount(MemberVO vo) throws Exception {
+		return memberMapper.selectMemberCount(vo);
+	}
+
+
+
 
 }
