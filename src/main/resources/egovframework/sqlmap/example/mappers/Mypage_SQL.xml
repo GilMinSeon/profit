@@ -26,7 +26,7 @@
     
     
     <!-- 프로세스테이블에 정보 추가 -->
-    <insert id="insertProcess" parameterType="ProcessVO">
+    <insert id="insertProcess" parameterType="ProcessVO" useGeneratedKeys="true" keyProperty="process_id">
         <![CDATA[
         insert 
         	into 
@@ -62,10 +62,40 @@
         		to_char(sysdate,'YYYYMMDD')||'.'||to_char(sysdate,'HHMISS'), 
         		#{upUserId}, 
         		to_char(sysdate,'YYYYMMDD')||'.'||to_char(sysdate,'HHMISS'))
+        		
         ]]>
+	        
     </insert>
     
     
+    <!-- 프로세스테이블에 정보 추가 -->
+    <insert id="insertProcessFile" parameterType="ProcessVO" useGeneratedKeys="true" keyProperty="process_id">
+        <![CDATA[
+        
+        		
+        ]]>
+	        
+    </insert>
+    
+    <!-- 파일 테이블에 데이터 추가 -->
+<!--     <insert id="insertProcessFile" parameterType="java.util.List"> -->
+<!-- 		<![CDATA[ -->
+<!-- 			insert  -->
+<!-- 				into  -->
+<!-- 			account( -->
+<!-- 		 id, -->
+<!-- 		 age -->
+<!-- 		) values  -->
+<!-- 		<foreach item="item" index="index" collection="list"> -->
+<!-- 		( -->
+<!-- 		 #{item.id} -->
+<!-- 		 ,#{item.age} -->
+<!-- 		) -->
+<!-- 		</foreach> -->
+<!-- 		]]> -->
+<!-- 	</insert> -->
+
+
     
     
 </mapper>

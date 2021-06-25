@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.profit.service.MemberService;
 import kr.or.profit.service.MypageService;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.ProcessVO;
 
 /**
@@ -50,12 +51,7 @@ public class MypageController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
 	private static final String CURR_IMAGE_REPO_PATH = 
-            "D:\\A_TeachingMaterial\\6.JspSpring\\other\\images";
-//	@RequestMapping(value="/form")
-//	public String form() {
-//	    return "uploadForm";
-//	}
-	
+            "\\\\192.168.41.6\\upload\\profit";
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -75,11 +71,6 @@ public class MypageController {
 	public String trainerApply(HttpServletRequest request, Model model) throws Exception {
 		HttpSession session = request.getSession();
 		
-		//로그인 생기면 제거해주세용~
-        session.setAttribute("memberId", "dpwls64");
-        session.setAttribute("memberGubun", "U");
-        //
-        
         String memberId = (String) session.getAttribute("memberId");
         List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
         String memberName = list.get(0).get("MEMBER_NAME");
@@ -165,12 +156,6 @@ public class MypageController {
 	    return "mypage/result";
 	}
 	
-//	@RequestMapping(value="upload", method=RequestMethod.GET)
-//    public ModelAndView uploadGet(ModelAndView mav) throws Exception{
-//		mav.setViewName("mypage/result");
-//		return mav;
-//	}
-	
 	@RequestMapping(value="upload", method=RequestMethod.POST)
 	@ResponseBody
     public String upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
@@ -200,12 +185,26 @@ public class MypageController {
 	    Enumeration enu = multipartRequest.getParameterNames();
 	        
 	    List fileList = fileProcess(multipartRequest);
-	    for(int i=0;i<fileList.size();i++) {
-        	String name = fileList.get(i).toString();
-        	map.put("file"+(i+1), name);
-        }
-        map.put("fileList", fileList);
-        
+	    List fileListUid = new ArrayList<>();
+	    List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
+	    
+	    for(int i=1; i<fileList.size()+1; i++) {
+	    	System.out.println("uid 이름");
+	    	fileListUid.add(multipartRequest.getParameter("file" + i + "_uid"));
+	    	
+	    	AttachFileVO fileVO = new AttachFileVO();
+	    	
+	    	String realname = multipartRequest.getParameter("file" + i);
+	    	String savename = multipartRequest.getParameter("file" + i + "_uid");
+	    	String path = CURR_IMAGE_REPO_PATH + savename;
+	    	
+	    	fileVO.setMemberId((String)session.getAttribute("memberId"));
+	    	fileVO.setFileRealName(realname);
+	    	fileVO.setFileSaveName(savename);
+	    	fileVO.setFilePath(path);
+	    	
+	    	fileVOList.add(fileVO);
+	    }
         
         return "ok";
         

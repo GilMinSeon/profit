@@ -22,14 +22,29 @@ input:-webkit-autofill {
     
     var cnt = 1;
     function fn_addFile(){
-        $("#d_file").append("<br>" + "<input type='file' class='file_choice' name='file" + cnt + "' />");
+        $("#d_file").append("<br>" + "<input type='file' class='file_choice' name='file" + cnt + "' onchange='fn_attach_file("+cnt+")'/>" +
+        					"<input type='hidden' name='file"+cnt+"_uid' />");
         cnt++;
     }
     
     function fn_attach_file(cnt){
-    	var cur=$('#file' + cnt).val();
-    	$(".upload-name" + cnt).val(cur);
+    	alert(cnt);
+//     	var cur=$('#file' + cnt).val();
+    	var cur = $("input[name=file" + cnt + "]").val();
+    	var curSplit = cur.split("\\");
+    	var nameLength = curSplit.length;
+    	var fileName = curSplit[nameLength-1];
+    	var fileSaveName = guid() + "_" + fileName;
+    	alert(fileSaveName);
+    	$("input[name=file"+cnt+"_uid]").val(fileSaveName);
     }
+    
+    function guid() {
+  	  function _s4() {
+  	    return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
+  	  }
+  	  return _s4() + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + _s4() + _s4();
+  }
     
     $(function(){
     	
