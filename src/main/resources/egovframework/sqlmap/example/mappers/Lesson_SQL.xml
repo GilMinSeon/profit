@@ -21,6 +21,7 @@
 		<result property="inDate" column="in_date"/>
 		<result property="upUserId" column="up_user_id"/>
 		<result property="upDate" column="up_date"/>
+		<result property="lessonHit" column="lesson_hit"/>
 	</resultMap>
 	
 	<insert id="insertLesson" parameterType="LessonVO">
@@ -94,25 +95,24 @@
 	    
 	    <select id="selectLessonList"  resultType="egovMap">	<!-- egovMap :  key 에 대하여 Camel Case 변환하여 super.put -->
 
-			SELECT
-				LESSON_SEQ,
-				COMMON_SEQ,
-				LESSON_CATEGORY_SEQ,
-				LESSON_TITLE,
-				LESSON_TITLE_COMMENT,
-				LESSON_BALANCE,
-				LESSON_FLEX,
-				LESSON_STRONG,
-				LESSON_CORE,
-				LESSON_INTRO,
-				LESSON_PRICE,
-				LESSON_PRIVATE_FLAG,
-				LESSON_MONTH,
-				IN_USER_ID,
-				IN_DATE,
-				UP_USER_ID,
-				UP_DATE
-			FROM LESSON
+			SELECT A.LESSON_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, B.LESSON_GOOD, A.IN_USER_ID, C.LESSON_REPLY, D.FILE_PATH, E.LESSON_CATEGORY_NAME
+				FROM LESSON A
+				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
+				                FROM BOOKGOOD
+				                WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G'
+				                GROUP BY LESSON_SEQ) B
+				ON A.LESSON_SEQ = B.LESSON_SEQ
+				    LEFT OUTER JOIN(SELECT LESSON_SEQ,COUNT(*) AS LESSON_REPLY
+				                FROM REPLY
+				                GROUP BY LESSON_SEQ) C
+				ON A.LESSON_SEQ = C.LESSON_SEQ
+				    LEFT OUTER JOIN (SELECT LESSON_SEQ, FILE_PATH
+				                FROM ATTACH_FILE) D
+				ON A.LESSON_SEQ = D.LESSON_SEQ
+				    LEFT OUTER JOIN (SELECT LESSON_CATEGORY_SEQ, LESSON_CATEGORY_NAME
+				                FROM LESSON_CATEGORY) E
+				ON A.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ
+
 <!-- 			WHERE 1=1 -->
 <!-- 			<if test="searchKeyword != null and searchKeyword != ''"> -->
 <!-- 		        <choose> -->
@@ -124,11 +124,23 @@
 <!-- 					</when> -->
 <!-- 				</choose> -->
 <!-- 			</if> -->
-			ORDER BY LESSON_SEQ DESC
+			ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC
 <!-- 			LIMIT #{recordCountPerPage} OFFSET #{firstIndex} -->
 	</select>
 	    
    	
+    <select id="selectLessonDetail" resultMap="lesson">
+
+		SELECT A.LESSON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
+        A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_PATH
+			FROM LESSON A
+			    LEFT OUTER JOIN (SELECT LESSON_SEQ, FILE_PATH
+			                FROM ATTACH_FILE) B
+			ON A.LESSON_SEQ = B.LESSON_SEQ
+			
+			WHERE A.LESSON_SEQ=#{lessonSeq, jdbcType=VARCHAR}
+
+	</select>
    	
     
 </mapper>

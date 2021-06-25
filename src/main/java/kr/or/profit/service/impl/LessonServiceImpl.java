@@ -37,6 +37,13 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.selectLessonList();
 	}
 
+	//강의 상세조회
+	@Override
+	public List<?> selectLessonDetail() throws Exception {
+		return lessonDAO.selectLessonDetail();
+		
+	}
+
 	
 
 }

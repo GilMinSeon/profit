@@ -16,6 +16,9 @@ public interface LessonService {
 	//강의 목록조회 ->나중에 페이징처리하기
 	public List<?> selectLessonList() throws Exception;
 
+	//강의 상세조회
+	public List<?> selectLessonDetail() throws Exception;
+
 
 	
 	
