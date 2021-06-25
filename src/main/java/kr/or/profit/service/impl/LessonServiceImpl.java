@@ -1,5 +1,7 @@
 package kr.or.profit.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -24,9 +26,15 @@ public class LessonServiceImpl implements LessonService {
 	}
 
 	//강의 수정
+//	@Override
+//	public int updateLesson(LessonVO vo) throws Exception {
+//		return lessonDAO.updateLesson(vo);
+//	}
+
+	//강의 목록조회
 	@Override
-	public int updateLesson(LessonVO vo) throws Exception {
-		return lessonDAO.updateLesson(vo);
+	public List<?> selectLessonList() throws Exception {
+		return lessonDAO.selectLessonList();
 	}
 
 	

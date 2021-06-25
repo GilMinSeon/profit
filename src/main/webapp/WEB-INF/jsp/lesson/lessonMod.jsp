@@ -155,7 +155,7 @@ $(document).ready(function(){
 					<p>
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">제목 : </label>
-						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="ex)1강 전신스트레칭">
+						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="ex)1강 전신스트레칭" value="${data.lessonTitle}">
 						</div>
 					</p>
 					<p>	

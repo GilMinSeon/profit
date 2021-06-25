@@ -1,5 +1,6 @@
 package kr.or.profit.web;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
@@ -36,11 +37,15 @@ public class LessonController {
 	private AttachFileService fileService;
 	
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * 강의 목록 조회 -나중에 페이징처리하자민정아
+	 * @param locale
+	 * @param model
+	 * @return
 	 */
 	@RequestMapping(value = "lessonList", method = RequestMethod.GET)
-	public String lessonList(Locale locale, Model model) {
-		
+	public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
+		List<?> lessonList = lessonService.selectLessonList();
+		model.addAttribute("resultList", lessonList);
 		return "lesson/lessonList";
 	}
 	
@@ -90,18 +95,20 @@ public class LessonController {
 		return "lesson/lessonMod";
 	}
 	
-	@RequestMapping(value = "lesson_upd", method = RequestMethod.POST)
-	@ResponseBody
-	public String lessonMod(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
-		
-		String message = "";
-		int cnt = lessonService.updateLesson(lessonVO);
-		int cnt1 = fileService.insertLessonFile(fileVO);
-		if(cnt == 1 && cnt1 ==1) {
-			message = "ok";
-		}
-		return message;
-	}
+//	@RequestMapping(value = "lesson_upd", method = RequestMethod.POST)
+//	@ResponseBody
+//	public String lessonMod(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
+//		
+//		model = model.addAttribute("data", lessonVO);
+//		
+//		String message = "";
+//		int cnt = lessonService.updateLesson(lessonVO);
+//		int cnt1 = fileService.insertLessonFile(fileVO);
+//		if(cnt == 1 && cnt1 ==1) {
+//			message = "ok";
+//		}
+//		return message;
+//	}
 	
 	
 

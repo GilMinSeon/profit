@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,45 +10,48 @@
 </head>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
+
+    
     var cnt = 1;
     function fn_addFile(){
-    	cnt = cnt + 1;
-    	$("#d_file").append("<input type='file' id='file"+ cnt + "' onchange='fn_attach_file("+cnt+")' style='display:none;height: 10px;'>" +
-							"<label for='file" + cnt + "' style='background-color: #cac9e6;float: left; height: 50px;width: 20%;font-weight: bold;text-align: center;padding-top: 15px;'>파일선택</label>" +  
-							"<input class='upload-name" + cnt + "' value='첨부파일이 없습니다.' readonly='readonly' style='color: black;width: 80%;background-color: #3f51b50d;'>");
-    	
+        $("#d_file").append("<br>" + "<input type='file' class='file_choice' name='file" + cnt + "' />");
+        cnt++;
     }
-    
-//     $(document).ready(function(cnt){ 
-//       	fileTarget.on('change', function(){ // 값이 변경되면
-//          	var cur=$('#file' + cnt).val();
-//       		alert(cur);
-//          	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
-//          	var nameLength = curSplit.length;
-//          	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
-//         	$(".upload-name" + cnt).val(fileName);
-//       	}); 
-//     }); 
     
     function fn_attach_file(cnt){
-    	alert(cnt);
     	var cur=$('#file' + cnt).val();
-  		alert(cur);
-     	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
-     	var nameLength = curSplit.length;
-     	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
-    	$(".upload-name" + cnt).val(fileName);
+//      	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
+//      	var nameLength = curSplit.length;
+//      	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
+    	$(".upload-name" + cnt).val(cur);
     }
     
-    function readURL(input) {
-//         if (input.files && input.files[0]) {
-//             var reader = new FileReader();
-//             reader.onload = function (e) {
-//                 $('#preview_img').attr('src', e.target.result);
-//             }
-//             reader.readAsDataURL(input.files[0]);
-//         }
-    }
+    $(function(){
+    	
+    	
+    	
+    	$("#frm").submit(function(){
+    	
+   	    	var formData = new FormData($('#frm')[0]);
+   	    	$.ajax({
+   	    		type : 'post',
+   	    		url : 'upload',
+   	    		data : formData,
+   	    		processData : false,
+   	    		contentType : false,
+   	    		success : function(html){
+   	    			alert("파일을 업로드 하였습니다");
+   	    			location.href="upload";
+   	    		},
+   	    		error : function(error){
+   	    			alert("파일 업로드에 실패하였습니다.");
+   	    			console.log(error);
+   	    			console.log(error.status);
+   	    		}
+   	    	})
+    	    
+    	})
+    })
 </script>
 <body>
 
@@ -132,14 +137,7 @@
 	<section class="appointment" style=" margin-bottom: 50px;">
 		<div class="container">
 			<div class="appointment__text" style="background-color: #9e9e9e0a">
-				<!-- <div class="row">
-					<div class="col-lg-12">
-						<div class="section-title">
-							<h2></h2>
-						</div>
-					</div>
-				</div> -->
-				<form action="#" class="appointment__form">
+<!-- 				<form class="appointment__form"  action="fileUpload" id="frm" method="post" enctype="multipart/form-data"> -->
 					<div class="text-center">
 						<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">트레이너 신청</h4>
 						<br/>
@@ -148,16 +146,17 @@
 						<p style="color:#5768AD;">▶ 첨부서류는 <span style="color:#FC7F65;">pdf</span> 파일로 첨부해주세요.</p>
 						<p style="color:#5768AD;">▶ 경력과 수상이력은 해당양식에 맞춰 작성해주세요.</p>
 						<br/><br/>
-						
+						<form id="frm" class="appointment__form" method="post" 
+											           enctype="multipart/form-data">
 						<div class="col-lg-6 text-center mypage_myinfo"
 										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
 										<div style="margin-bottom: 2px;">
 											<h5 style="display: inline; float: left; ;">이름</h5>
 											&nbsp;
 										</div>
-										<input type="text" readonly="readonly"
+										<input id="trainerName" type="text"
 											style="background-color: #3f51b50d; color: black;"
-											value="마동석">
+											value="${sessionScope.memberId}">
 									</div>
 
 									<div class="col-lg-6 text-center mypage_myinfo"
@@ -167,9 +166,9 @@
 											&nbsp;
 										</div>
 										<div class="r_gender">
-											<input type="radio" name="gend_type" id="male" value="남자" autocomplete="off" style="opacity: 0;">
+											<input type="radio" name="gendType" id="male" value="M" autocomplete="off" style="opacity: 0;">
 											<label for="male" style="border:1px solid;float:left;">남자</label>
-											<input type="radio" name="gend_type" id="female" value="여자" autocomplete="off" style="opacity: 0;">
+											<input type="radio" name="gendType" id="female" value="F" autocomplete="off" style="opacity: 0;">
 											<label for="female" style="border:1px solid;" >여자</label>
 										</div>
 									</div>
@@ -179,7 +178,7 @@
 											<h5 style="display: inline; float: left; color: black;">핸드폰번호</h5>
 											&nbsp;
 										</div>
-										<input type="text" placeholder="Mobile" 
+										<input id="mobile" type="text" placeholder="Mobile" 
 											style="background-color: #3f51b50d; color: black;"
 											value="">
 									</div>
@@ -189,7 +188,7 @@
 											<h5 style="display: inline; float: left; color: black;">소속헬스장</h5>
 											&nbsp;
 										</div>
-										<input type="text" placeholder="GYM Name" 
+										<input id="trainerGym" type="text" placeholder="GYM Name" name="trainerGym"
 											style="background-color: #3f51b50d; color: black;"
 											value="">
 									</div>
@@ -204,7 +203,7 @@
 											<div class="col-lg-12"></div>
 											<div class="col-lg-12 text-center">
 												<textarea  
-													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
+													id="trainerAward" style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
 2014~2019 서울 멋진헬스장 트레이너 
 2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
 2014~2019 서울 멋진헬스장 트레이너 
@@ -227,7 +226,7 @@
 										<div class="row">
 											<div class="col-lg-12"></div>
 											<div class="col-lg-12 text-center">
-												<textarea 
+												<textarea id="trainerCareer"
 													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
 2014~2019 서울 멋진헬스장 트레이너 
 2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
@@ -249,49 +248,33 @@
 											<h5 style="display: inline; float: left; color: black;">첨부파일</h5>
 											&nbsp;
 											<div class="col-lg-12" style="text-align: right; float: left; padding: 0; margin: 0;">
-<!-- 												<input type="button" value="첨부파일 추가" class="site-btn updateBtn" style="float:right; padding: 1px 6px ;font-size: 0.8em; color: white; background-color: #5768AD; width: 130px; height: 40px; margin-right: 7px;" onclick="fn_update()"> -->
-												<div style="text-align: right;">
-													<input type="button" value="파일 추가" onClick="fn_addFile()" style="background-color: #5768AD;width: 30%;font-weight: bold;font-size: 1.1em;padding-left: 6px;">
-												</div>
-												
-												<div id="d_file" class="attach_div" style="text-align: left;height: 50px;margin: 0px;">
-												  	<input type="file" id="file1" onchange='fn_attach_file(1)' style="display:none;height: 10px;"> 
-            										<label for="file1" style="background-color: #cac9e6;float: left; height: 50px;width: 20%;font-weight: bold;text-align: center;padding-top: 15px;">파일선택</label> 
-													<input class="upload-name1" value="첨부파일이 없습니다." readonly="readonly" style="color: black;width: 80%;background-color: #3f51b50d;">
-													
-           										 </div>
+
            										 
+											            <input type="button" class="file_add" value="파일 추가" onClick="fn_addFile()"><br>
+											            
+											            <div id="d_file">
+											            
+											            </div>
+											            
+											    
            										 
 											</div>
 										</div>
 										
 											
 										<div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="file" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류">
-								        </div>
-								        
-								        <div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="file" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류">
-								        </div>
-								        
-								        <div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="file" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류">
-								        </div>
-										
-										<div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="file" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류">
 								        </div>
 									</div>
 
 									<br>
 									<div class="col-lg-12" style="text-align: right;">
-			                             <button type="submit" class="site-btn" style="font-size: 1.1em;color: white; background-color: #5768AD;width: 150px;height: 48px;margin-right: 7px;">신청</button>
+			                             <input type="submit" class="file_add" value="신청" style="width: 100%;">
 			                        </div>
 						
-						
+						</form>
 
 					</div>
-				</form>
+<!-- 				</form> -->
 			</div>
 		</div>
 	</section>
@@ -302,8 +285,6 @@
         </div>
     </section>
     <!-- Blog Section End -->
-
-
 
     <!-- Js Plugins -->
     
