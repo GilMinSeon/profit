@@ -1,6 +1,6 @@
 package kr.or.profit.vo;
 
-public class Process {
+public class ProcessVO {
 	private String processSeq;
 	private String memberId;
 	private String trainerAward;

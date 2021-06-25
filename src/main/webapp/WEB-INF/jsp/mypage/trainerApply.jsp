@@ -2,12 +2,20 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 30px #ecedf2 inset !important;
+  -webkit-text-fill-color: black !important;
+  
+}
+</style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
 
@@ -20,15 +28,19 @@
     
     function fn_attach_file(cnt){
     	var cur=$('#file' + cnt).val();
-//      	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
-//      	var nameLength = curSplit.length;
-//      	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
     	$(".upload-name" + cnt).val(cur);
     }
     
     $(function(){
     	
-    	
+    	if(${memberGender.equals('F')}){
+    		$("input:radio[id='female']").prop("checked", true);  
+    		$("input:radio[id='male']").prop("checked", false); 
+
+    	}else{
+    		$("input:radio[id='female']").prop("checked", false);  
+    		$("input:radio[id='male']").prop("checked", true); 
+    	}
     	
     	$("#frm").submit(function(){
     	
@@ -156,7 +168,7 @@
 										</div>
 										<input id="trainerName" type="text"
 											style="background-color: #3f51b50d; color: black;"
-											value="${sessionScope.memberId}">
+											value="${memberName}" readonly="readonly">
 									</div>
 
 									<div class="col-lg-6 text-center mypage_myinfo"
@@ -166,9 +178,9 @@
 											&nbsp;
 										</div>
 										<div class="r_gender">
-											<input type="radio" name="gendType" id="male" value="M" autocomplete="off" style="opacity: 0;">
+											<input type="radio" name="gendType" id="male" value="M" autocomplete="off" style="opacity: 0;" onclick="return(false);">
 											<label for="male" style="border:1px solid;float:left;">남자</label>
-											<input type="radio" name="gendType" id="female" value="F" autocomplete="off" style="opacity: 0;">
+											<input type="radio" name="gendType" id="female" value="F" autocomplete="off" style="opacity: 0;" onclick="return(false);">
 											<label for="female" style="border:1px solid;" >여자</label>
 										</div>
 									</div>
@@ -180,7 +192,8 @@
 										</div>
 										<input id="mobile" type="text" placeholder="Mobile" 
 											style="background-color: #3f51b50d; color: black;"
-											value="">
+											value="${fn:substring(memberMobile,0,3)}-${fn:substring(memberMobile,3,7)}-${fn:substring(memberMobile,7,11)}"
+											readonly="readonly">
 									</div>
 									<div class="col-lg-6 text-center mypage_myinfo"
 										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
@@ -188,7 +201,7 @@
 											<h5 style="display: inline; float: left; color: black;">소속헬스장</h5>
 											&nbsp;
 										</div>
-										<input id="trainerGym" type="text" placeholder="GYM Name" name="trainerGym"
+										<input id="trainerGym" name="trainerGym" type="text" placeholder="GYM Name" name="trainerGym"
 											style="background-color: #3f51b50d; color: black;"
 											value="">
 									</div>
@@ -203,7 +216,7 @@
 											<div class="col-lg-12"></div>
 											<div class="col-lg-12 text-center">
 												<textarea  
-													id="trainerAward" style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
+													id="trainerAward" name="trainerAward" style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
 2014~2019 서울 멋진헬스장 트레이너 
 2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
 2014~2019 서울 멋진헬스장 트레이너 
@@ -226,7 +239,7 @@
 										<div class="row">
 											<div class="col-lg-12"></div>
 											<div class="col-lg-12 text-center">
-												<textarea id="trainerCareer"
+												<textarea id="trainerCareer" name="trainerCarrer"
 													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
 2014~2019 서울 멋진헬스장 트레이너 
 2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사

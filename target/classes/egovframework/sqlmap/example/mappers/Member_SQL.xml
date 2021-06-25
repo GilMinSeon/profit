@@ -31,4 +31,12 @@
         select count(*) from MEMBER where MEMBER_EMAIL = #{memberEmail}
     </select>
     
+    
+    <!-- 로그인처리 -->
+    <select id="selectMemberCount" parameterType="MemberVO" resultType="int">
+        select count(*) from MEMBER
+        where MEMBER_ID = #{memberId} and MEMBER_PWD = #{memberPwd}
+    </select>
+    
+    
 </mapper>

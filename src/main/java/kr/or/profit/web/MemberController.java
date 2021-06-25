@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,6 +92,29 @@ public class MemberController {
 		}
 		return message;
 	}
+	
+	
+	@RequestMapping("loginWriteSub")
+	@ResponseBody
+	public String loginProcessing(MemberVO vo, HttpSession session) throws Exception{
+		String msg = "";
+		MemberVO membervo = memberService.selectMemberCount(vo);
+		//System.out.println("sisi"+membervo.getMemberGubun());
+		if(membervo != null) {
+			//session 생성
+			session.setAttribute("memberId", membervo.getMemberId());
+			session.setAttribute("memberNickname", membervo.getMemberNickname());
+			session.setAttribute("memberGubun", membervo.getMemberGubun());
+			//message 처리
+			msg = "ok";
+		}else {
+			msg = "no";
+		}
+		
+		return msg;
+	}
+	
+	
 	
 	
 }

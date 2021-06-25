@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.profit.mapper.MemberMapper">
-
+    
     <insert id="insertMember" parameterType="MemberVO">
         <![CDATA[
         insert into MEMBER(
@@ -30,5 +30,14 @@
     <select id="selectMemberEmailCheck" parameterType="String" resultType="int">
         select count(*) from MEMBER where MEMBER_EMAIL = #{memberEmail}
     </select>
+    
+    
+    <!-- 로그인처리 -->
+    <select id="selectMemberCount" parameterType="MemberVO" resultType="MemberVO">
+        select MEMBER_ID as memberId, MEMBER_NICKNAME as memberNickname, MEMBER_GUBUN as memberGubun
+        from MEMBER
+        where MEMBER_ID = #{memberId} and MEMBER_PWD = #{memberPwd}
+    </select>
+    
     
 </mapper>
