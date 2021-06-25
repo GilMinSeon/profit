@@ -108,6 +108,48 @@ input:-webkit-autofill {
 			}
 		})
 
+		//이메일 인증 버튼
+		var email_ran = ""
+		function fn_email_number(){
+			email_ran = "";
+			for (var i = 0; i < 4; i++) {
+				var ran1 = Math.floor(Math.random() * 10 + 0);
+				email_ran += ran1;
+			}
+			
+			var memberEmail  = $("#memberEmail").val();
+			
+			var param = "";
+			param += "dummy=" + Math.random();
+			
+			param += "&memberEmail=" + memberEmail;
+			param += "&email_ran=" + email_ran;
+			
+			
+			$.ajax({
+				url : "send_number.ajax",
+				data : param,
+				dataType : "json",
+				type : "post",
+				async : false,
+				statusCode : {
+					404 : function() {
+						alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
+					}
+				},
+				success : function(data) {
+					if(data.msg == "ok"){
+						flag_dupl = false;
+						alert("이메일을 확인하세요")
+					} 
+				}
+			});
+		}
+		
+		
+		
+		
+		
 		$("#memberId").blur(function() {
 			var memberId = $.trim($("#memberId").val()); //현재 창에 입력된 값
 			var idReg = /^[A-za-z]+[a-z0-9]{5,19}$/g;
@@ -347,7 +389,7 @@ input:-webkit-autofill {
 								<input type="text" class="form-control" placeholder="Email" id="memberEmail" name="memberEmail" style="font: white;">
 								<input class="inner_input" type="hidden" name="checked_email" value="n"> 
 								<span class="input-group-addon" style="border: 1px solid #5768AD; border-radius: 4px;">
-									<button type="button" onclick="location.href='pwdMod'" class="input-group-addon"
+									<button type="button" onclick="fn_email_number()" class="input-group-addon"
 										style="font-size: 1.0em; padding: 12.5px; margin-left: 5px;">인증번호전송</button>
 								</span>
 							</div>

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <body>
 	<!-- Breadcrumb Begin -->
 	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg">
@@ -30,6 +33,7 @@
 				<div class="team__slider owl-carousel owl-loaded owl-drag">
 					<div class="owl-stage-outer">
 						<div class="owl-stage" style="transform: translate3d(-1440px, 0px, 0px); transition: all 1.2s ease 0s; width: 2520px;">
+<%-- 						<c:forEach var="result" items="${resultList}" varStatus="status"> --%>
 							<div class="owl-item cloned" style="width: 360px;">
 								<div class="col-lg-6">
 									<div class="team__item" style="padding-top: 10px; padding-bottom: 10px;">
@@ -218,6 +222,7 @@
 									</div>
 								</div>
 							</div>
+<%-- 							</c:forEach> --%>
 						</div>
 					</div>
 					<div class="owl-dots disabled"></div>
