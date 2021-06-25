@@ -20,7 +20,7 @@ public interface MemberMapper {
 	public int selectMemberEmailCheck(String memberEmail);
 	
 	//로그인 처리
-	public int selectMemberCount(MemberVO vo);
+	public MemberVO selectMemberCount(MemberVO vo);
 	
 	
 }

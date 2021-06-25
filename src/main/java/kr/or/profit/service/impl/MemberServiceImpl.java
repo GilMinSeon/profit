@@ -36,7 +36,7 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 	}
 
 	@Override
-	public int selectMemberCount(MemberVO vo) throws Exception {
+	public MemberVO selectMemberCount(MemberVO vo) throws Exception {
 		return memberMapper.selectMemberCount(vo);
 	}
 
