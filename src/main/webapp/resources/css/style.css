@@ -755,6 +755,22 @@ ol {
 	letter-spacing: 2px;
 }
 
+.appointment__form .file_add{
+	font-size: 1.1em;
+    color: white;
+    background-color: #5768AD;
+    width: 141px;
+    height: 50px;
+    margin-right: 7px;
+    padding-right: 28px;
+    font-weight: bold;
+}
+
+.appointment__form .file_choice{
+	color: black;
+	vertical-align: middle;
+}
+
 /*---------------------
   Testimonial
 -----------------------*/
