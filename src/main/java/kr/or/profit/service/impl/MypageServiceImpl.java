@@ -23,10 +23,17 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 	public List<Map<String, String>> selectMemberInfo(String memberId) throws Exception {
 		return mypageMapper.selectMemberInfo(memberId);
 	}
-
+	
+	//프로세스정보추가
 	@Override
 	public int insertProcess(ProcessVO vo) throws Exception {
 		return mypageMapper.insertProcess(vo);
+	}
+
+	//파일 추가
+	@Override
+	public int insertProcessFile(List list) throws Exception {
+		return mypageMapper.insertProcessFile(list);
 	}
 
 	

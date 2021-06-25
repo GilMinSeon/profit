@@ -24,8 +24,9 @@
    	    		processData : false,
    	    		contentType : false,
    	    		success : function(data){
-   	    			if(data == "ok")
-   	    			alert("파일을 업로드 하였습니다");
+   	    			if(data == "ok"){
+   	    				alert("파일을 업로드 하였습니다");
+   	    			}
    	    		},
    	    		error : function(error){
    	    			alert("파일 업로드에 실패하였습니다.");

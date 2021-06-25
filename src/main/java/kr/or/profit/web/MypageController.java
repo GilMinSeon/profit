@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.profit.service.MemberService;
 import kr.or.profit.service.MypageService;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.ProcessVO;
 
 /**
@@ -48,12 +51,7 @@ public class MypageController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
 	private static final String CURR_IMAGE_REPO_PATH = 
-            "D:\\A_TeachingMaterial\\6.JspSpring\\other\\images";
-//	@RequestMapping(value="/form")
-//	public String form() {
-//	    return "uploadForm";
-//	}
-	
+            "\\\\192.168.41.6\\upload\\profit";
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -69,15 +67,10 @@ public class MypageController {
 		return "mypage/bookmark";
 	}
 	
-	@RequestMapping(value = "trainerApply", method = RequestMethod.GET)
+	@RequestMapping(value = "trainerApply", method = {RequestMethod.GET, RequestMethod.POST})
 	public String trainerApply(HttpServletRequest request, Model model) throws Exception {
 		HttpSession session = request.getSession();
 		
-		//로그인 생기면 제거해주세용~
-        session.setAttribute("memberId", "dpwls64");
-        session.setAttribute("memberGubun", "U");
-        //
-        
         String memberId = (String) session.getAttribute("memberId");
         List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
         String memberName = list.get(0).get("MEMBER_NAME");
@@ -158,50 +151,62 @@ public class MypageController {
 	    return "mypage/test";
 	}
 	
-	@RequestMapping(value="upload", method=RequestMethod.GET)
-    public ModelAndView uploadGet(ModelAndView mav) throws Exception{
-		mav.setViewName("mypage/result");
-		return mav;
+	@RequestMapping(value="result", method= {RequestMethod.POST, RequestMethod.GET})
+	public String result() {
+	    return "mypage/result";
 	}
 	
 	@RequestMapping(value="upload", method=RequestMethod.POST)
-    public void upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
-        multipartRequest.setCharacterEncoding("utf-8");
+	@ResponseBody
+    public String upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
+        multipartRequest.setCharacterEncoding("utf-8");
+        
         
         //회원 정보 Process Table에 Insert
         String trainerAward = multipartRequest.getParameter("trainerAward");
-        String trainerCarrer = multipartRequest.getParameter("trainerCarrer");
+        String trainerCareer = multipartRequest.getParameter("trainerCareer");
         String trainerGym = multipartRequest.getParameter("trainerGym");
         
-        System.out.println("-------------------------");
-        System.out.println(trainerAward);
-        System.out.println(trainerCarrer);
-        System.out.println(trainerGym);
-        System.out.println("-------------------------");
         
         ProcessVO vo = new ProcessVO();
-        vo.setMemberId((String)session.getAttribute("memberId"));
-        vo.setTrainerAward(trainerAward);
-        vo.setTrainerCareer(trainerCarrer);
-        vo.setTrainerGym(trainerGym);
         
+        String loginMemberId = (String)session.getAttribute("memberId");
+        vo.setMemberId(loginMemberId);
+        vo.setTrainerAward(trainerAward);
+        vo.setTrainerCareer(trainerCareer);
+        vo.setTrainerGym(trainerGym);
+        vo.setInUserId(loginMemberId);
+        vo.setUpUserId(loginMemberId);
         mypageService.insertProcess(vo);
         
+        //다중파일 List로 담아 File 테이블에 추가
+	    Map map = new HashMap();
+	    Enumeration enu = multipartRequest.getParameterNames();
+	        
+	    List fileList = fileProcess(multipartRequest);
+	    List fileListUid = new ArrayList<>();
+	    List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
+	    
+	    for(int i=1; i<fileList.size()+1; i++) {
+	    	System.out.println("uid 이름");
+	    	fileListUid.add(multipartRequest.getParameter("file" + i + "_uid"));
+	    	
+	    	AttachFileVO fileVO = new AttachFileVO();
+	    	
+	    	String realname = multipartRequest.getParameter("file" + i);
+	    	String savename = multipartRequest.getParameter("file" + i + "_uid");
+	    	String path = CURR_IMAGE_REPO_PATH + savename;
+	    	
+	    	fileVO.setMemberId((String)session.getAttribute("memberId"));
+	    	fileVO.setFileRealName(realname);
+	    	fileVO.setFileSaveName(savename);
+	    	fileVO.setFilePath(path);
+	    	
+	    	fileVOList.add(fileVO);
+	    }
         
-        
-        
-        
-        Map map = new HashMap();
-        Enumeration enu = multipartRequest.getParameterNames();
-        
-        List fileList = fileProcess(multipartRequest);
-        for(int i=0;i<fileList.size();i++) {
-        	String name = fileList.get(i).toString();
-        	map.put("file"+(i+1), name);
-        }
-        map.put("fileList", fileList);
-        
+        return "ok";
         
     }
     
