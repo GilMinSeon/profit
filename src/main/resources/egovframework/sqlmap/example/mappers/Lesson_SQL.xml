@@ -61,9 +61,9 @@
 					'n',
 					#{lessonMonth, jdbcType=VARCHAR},
 					1,
-					sysdate,
+					to_char(sysdate, 'YYYYMMDD.HH24MISS'),
 					1,
-					sysdate)
+					to_char(sysdate, 'YYYYMMDD.HH24MISS'))
 		]]>
 	</insert>
 	
@@ -71,5 +71,25 @@
     <select id="insertLessonCheck" parameterType="String" resultType="int">
         select count(*) from LESSON
     </select>
+    
+   	<update id="updateLesson">
+
+			UPDATE LESSON
+			SET LESSON_CATEGORY_SEQ=#{lessonCategorySeq}
+				, LESSON_TITLE=#{lessonTitle}
+				, LESSON_TITLE_COMMENT=#{lessonTitleComment}
+				, LESSON_BALANCE=#{lessonBalance}
+				, LESSON_FLEX=#{lessonFlex}
+				, LESSON_STRONG=#{lessonStrong}
+				, LESSON_CORE=#{lessonCore}
+				, LESSON_INTRO=#{lessonIntro}
+				, LESSON_PRICE=#{lessonPrice}
+				, LESSON_MONTH=#{lessonMonth}
+				, UP_USER_ID=1
+				, UP_DATE= to_char(sysdate, 'YYYYMMDD.HH24MISS')
+				  WHERE LESSON_SEQ=#{lessonSeq}
+
+	</update>
+	    
     
 </mapper>

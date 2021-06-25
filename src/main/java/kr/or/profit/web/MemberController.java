@@ -3,6 +3,7 @@ package kr.or.profit.web;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,8 +46,12 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "joinMemberTable", method = RequestMethod.POST)
-	public String joinMemberTable(@ModelAttribute MemberVO vo) throws Exception {
+	public String joinMemberTable(@ModelAttribute MemberVO vo, HttpServletRequest request) throws Exception {
+		request.setCharacterEncoding("utf-8");
+
 		System.out.println(vo.getMemberId());
+		System.out.println(vo.getMemberName());
+		System.out.println(vo.getMemberGender());
 		System.out.println("여기여기");
 		memberService.insertMember(vo);
 		
@@ -65,6 +70,27 @@ public class MemberController {
 		return message;
 	}
 	
+	@RequestMapping("nicknamecheck")
+	@ResponseBody
+	public String selectMemberNicknameCheck(String memberNickname) throws Exception{
+		String message = "";
+		int cnt = memberService.selectMemberNicknameCheck(memberNickname);
+		if(cnt == 0) {
+			message = "ok";
+		}
+		return message;
+	}
+	
+	@RequestMapping("emailcheck")
+	@ResponseBody
+	public String selectMemberEmailCheck(String memberEmail) throws Exception{
+		String message = "";
+		int cnt = memberService.selectMemberEmailCheck(memberEmail);
+		if(cnt == 0) {
+			message = "ok";
+		}
+		return message;
+	}
 	
 	
 }

@@ -128,8 +128,8 @@
 			<main id="main" class="site-main" role="main">
 				<!-- 				<div id="" class=""> -->
 				<div class="classes__item__text" style="text-align: right;">
-					<a href="lessionList" class="class-btn">목록</a>
-					<a href="lessionMod" class="class-btn">수정</a>
+					<a href="lessonList" class="class-btn">목록</a>
+					<a href="lessonMod" class="class-btn">수정</a>
 					<a href="#" class="class-btn">삭제</a>
 					<a href="classAdd" class="class-btn">강의추가</a>
 				</div>

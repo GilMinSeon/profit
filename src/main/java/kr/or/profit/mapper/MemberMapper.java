@@ -12,4 +12,10 @@ public interface MemberMapper {
 	
 	//아이디 중복 검사
 	public int selectMemberIdCheck(String memberId);
+	
+	//닉네임 중복 검사
+	public int selectMemberNicknameCheck(String memberNickname);
+	
+	//
+	public int selectMemberEmailCheck(String memberEmail);
 }

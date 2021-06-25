@@ -8,4 +8,9 @@ public interface MemberService {
 	
 	//아이디 중복검사
 	public int selectMemberIdCheck(String memberId) throws Exception;
+	
+	//닉네임 중복검사
+	public int selectMemberNicknameCheck(String memberNickname) throws Exception;
+	//
+	public int selectMemberEmailCheck(String memberEmail) throws Exception;
 }

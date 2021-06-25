@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>bulletin_write</title>
 <script>
+var uploadPath = "Y:/profit/";
 $(document).ready(function(){
 	$('#minus1').click(function(e){
 		e.preventDefault();
@@ -129,74 +130,129 @@ function readURL(input) {
     $("#exe_btn").show();
 }
 
+function guid() {
+	  function _s4() {
+	    return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
+	  }
+	  return _s4() + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + _s4() + _s4();
+}
+
+
 function fn_lessonAdd(){
-	var title = $("#lessonTitle").val();
-	var category = $("input:radio[name=cate_type]:checked").val();
-	var title_comment = $("#lessonTitleComment").val();
-	var balance = $("#count1").val();
-	var flex = $("#count2").val();
-	var strong = $("#count3").val();
-	var core = $("#count4").val();
-	var intro = $("#lessonIntro").val();
-	var price = $("#lessonPrice").val();
-	var month = $("#lessonMonth").val();
-	console.log(title);
-	console.log(category);
-	console.log(tmp);
-	console.log(title_comment);
-	console.log(balance);
-	console.log(flex);
-	console.log(strong);
-	console.log(core);
-	console.log(intro);
-	console.log(price);
-	console.log(month);
+	var lessonTitle = $("#lessonTitle").val();
+	var lessonCategorySeq = $("input:radio[name=cate_type]:checked").val();
+	var lessonTitleComment = $("#lessonTitleComment").val();
+	var lessonBalance = $("#count1").val();
+	var lessonFlex = $("#count2").val();
+	var lessonStrong = $("#count3").val();
+	var lessonCore = $("#count4").val();
+	var lessonIntro = $("#lessonIntro").val();
+	var lessonPrice = $("#lessonPrice").val();
+	var lessonMonth = $("#lessonMonth").val();
+	var filePath_temp=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
+	//전체경로를 \ 나눔.
+	var filePathSplit = filePath_temp.split('\\'); 
+	//전체경로를 \로 나눈 길이.
+	var filePathLength = filePathSplit.length;
+	var fileRealName = filePathSplit[2];
+	var filePath= uploadPath + fileRealName;
+	var fileSaveName = guid() + "_" + fileRealName;
 	
-	if(title==""){
+	console.log(lessonTitle);
+	console.log(lessonCategorySeq);
+	console.log(lessonTitleComment);
+	console.log(lessonBalance);
+	console.log(lessonFlex);
+	console.log(lessonStrong);
+	console.log(lessonCore);
+	console.log(lessonIntro);
+	console.log(lessonPrice);
+	console.log(lessonMonth);
+	console.log(filePath);
+	console.log(fileRealName);
+	console.log(fileSaveName);
+	
+	var chk_radio = document.getElementsByName('cate_type');
+	var sel_type = null;
+	for(var i=0;i<chk_radio.length;i++){
+		if(chk_radio[i].checked == true){ 
+			sel_type = chk_radio[i].value;
+		}
+	}
+
+	if(sel_type == null){
+        alert("카테고리를 선택하세요."); 
+		return;
+	}
+
+	
+	if(lessonTitle==""){
 		alert("제목을 입력해주세요.");
 		$("#lessonTitle").focus();
 		return;
 	}
 	
-	if(title_comment==""){
+	if(lessonTitleComment==""){
 		alert("강의소개를 입력해주세요.");
 		$("#lessonTitleComment").focus();
 		return;
 	}
 	
-	if(month==""){
+	if(lessonMonth==""){
 		alert("강의일수를 입력해주세요.");
 		$("#lessonMonth").focus();
 		return;
 	}
 	
-	if(intro==""){
+	
+	if(lessonIntro==""){
 		alert("강의소개를 입력해주세요.");
 		$("#lessonIntro").focus();
 		return;
 	}	
 	
 	
-	if(price==""){
+	if(lessonPrice==""){
 		alert("강의 가격을 입력해주세요.");
 		$("#lessonPrice").focus();
 		return;
 	}
 	
+	var price_reg = /^[0-9]*$/;
+	if (!price_reg.test(lessonPrice)) {
+		alert("가격은 (특수기호없이)숫자만 입력해주세요. \n ex) 300000");
+		$("#lessonPrice").focus();
+		return false;
+	}
 	
+	var month_reg = /^(0[1-9]|1[012])$/;
+	if (!month_reg.test(lessonMonth)) {
+		alert("수강기간은 1월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
+		$("#lessonMonth").focus();
+		return false;
+	}
+	
+	var fileCheck = document.getElementById("file").value;
+    if(!fileCheck){
+        alert("파일을 첨부해 주세요");
+        return false;
+    }
 	
 	var param = "";
 	param += "dummy=" + Math.random();
-	param += "&title="+title;
-	param += "&category="+category;
-	param += "&title_comment="+title_comment;
-	param += "&balance="+balance;
-	param += "&flex="+flex;
-	param += "&strong="+strong;
-	param += "&core="+core;
-	param += "&intro="+intro;
-	param += "&price="+price;
-	param += "&month="+month;
+	param += "&lessonTitle="+lessonTitle;
+	param += "&lessonCategorySeq="+lessonCategorySeq;
+	param += "&lessonTitleComment="+lessonTitleComment;
+	param += "&lessonBalance="+lessonBalance;
+	param += "&lessonFlex="+lessonFlex;
+	param += "&lessonStrong="+lessonStrong;
+	param += "&lessonCore="+lessonCore;
+	param += "&lessonIntro="+lessonIntro;
+	param += "&lessonPrice="+lessonPrice;
+	param += "&lessonMonth="+lessonMonth;
+	param += "&filePath="+filePath;
+	param += "&fileRealName="+fileRealName;
+	param += "&fileSaveName="+fileSaveName;
 
 	console.log(param)
 	$.ajax({
@@ -211,14 +267,14 @@ function fn_lessonAdd(){
 			}
 		},
 		success : function(data) {
-			if(data.msg =="ok"){
+			console.log(data);
+			if(data =="ok"){
 				alert("강의가 정상적으로 추가되었습니다.")
 				location.href="lessonList"
 			}else{
 				alert("추가도중 문제가 생겼습니다.");
 				return;
 			}
-// 			console.log(data.msg);
 		}
 	});
 	
@@ -247,7 +303,7 @@ background: #ffffff;
 }
 </style>
 </head>
-<body style="padding-top: 5rem;">
+<body>
 	<!-- Breadcrumb Begi -->
 	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg" style="background-image: url(&quot;./resources/img/breadcrumb.jpg&quot;);">
 		<div class="container">
@@ -269,7 +325,7 @@ background: #ffffff;
 			<br />
 			<br />
 			<main role="main" class="container">
-				<form name="form" method="post" action="lessonAdd" style="text-align: center;">
+				<form name="form" method="post" action="lessonAdd" style="text-align: center;" enctype="multipart/form-data">
 					<div class="write-title">
 						<label>
 							<p>
@@ -308,7 +364,7 @@ background: #ffffff;
 					<p>	
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">강의기간 : </label>
-						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)5주">
+						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)01">
 						</div>
 					</p>
 					
