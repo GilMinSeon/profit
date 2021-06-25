@@ -16,7 +16,7 @@ public interface MemberService {
 	public int selectMemberEmailCheck(String memberEmail) throws Exception;
 	
 	//로그인 처리
-	public int selectMemberCount(MemberVO vo) throws Exception;
+	public MemberVO selectMemberCount(MemberVO vo) throws Exception;
 	
 	
 	

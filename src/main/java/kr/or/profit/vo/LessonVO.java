@@ -18,6 +18,7 @@ public class LessonVO {
 	private String inDate;
 	private String upUserId;
 	private String upDate;
+	private String lessonHit;
 	
 	
 	public String getLessonSeq() {
@@ -121,6 +122,12 @@ public class LessonVO {
 	}
 	public void setUpDate(String upDate) {
 		this.upDate = upDate;
+	}
+	public String getLessonHit() {
+		return lessonHit;
+	}
+	public void setLessonHit(String lessonHit) {
+		this.lessonHit = lessonHit;
 	}
 	
 	

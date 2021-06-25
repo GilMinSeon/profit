@@ -98,12 +98,17 @@ public class MemberController {
 	@ResponseBody
 	public String loginProcessing(MemberVO vo, HttpSession session) throws Exception{
 		String msg = "";
-		int cnt = memberService.selectMemberCount(vo);
-		if(cnt ==1) {
+		MemberVO membervo = memberService.selectMemberCount(vo);
+		//System.out.println("sisi"+membervo.getMemberGubun());
+		if(membervo != null) {
 			//session 생성
-			session.setAttribute("memberId", vo.getMemberId());
+			session.setAttribute("memberId", membervo.getMemberId());
+			session.setAttribute("memberNickname", membervo.getMemberNickname());
+			session.setAttribute("memberGubun", membervo.getMemberGubun());
 			//message 처리
 			msg = "ok";
+		}else {
+			msg = "no";
 		}
 		
 		return msg;
