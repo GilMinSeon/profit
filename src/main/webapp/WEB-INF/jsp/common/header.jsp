@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!--     Page Preloder
     <div id="preloder">
         <div class="loader"></div>
@@ -65,14 +64,35 @@
                 </div>
             </div>
 <!--             id="header_info"  -->
+
             <div style="width: 100%; ">
             		<div class="header__logo header_info" style="display: inline-block;padding-left: 15%;">
                             <a href="home"><img src="./resources/img/logo.png" alt=""></a>
                     </div>
                     <div class="header_info" style="vertical-align: bottom;text-align: right;float: right;height: 100%;padding-top: 70px;padding-right: 50px;">
-                    <a href="trainerPermitList" style="color: gray;font-size: 0.9em;padding-left: 10px;">관리자님</a>
-                    <a href="myinfo" style="color: gray;font-size: 0.9em;padding-left: 10px;">마이페이지</a>
-                    <a href="login" style="color: gray;font-size: 0.9em;padding-left: 10px;">로그인</a>
+                    <c:set var="memberId" value="${sessionScope.memberId}"/>
+                    <c:set var="memberGubun" value="${sessionScope.memberGubun}"/>
+                    <c:if test="${memberId == null }">
+                    	<a href="login" style="color: gray;font-size: 0.9em;padding-left: 10px;">로그인</a>
+                    	<a href="join" style="color: gray;font-size: 0.9em;padding-left: 10px;">회원가입</a>
+                    </c:if>
+                    <c:if test="${memberId != null }">
+                    	<c:if test="${memberGubun == 'U' }">
+                    	<img src="./resources/img/header/user.png" width="16px" height="16px">
+	                    <a href="trainerPermitList" style="color: gray;font-size: 0.9em;padding-left: 10px;">${sessionScope.memberNickname }님 (회원)</a>
+	                    </c:if>
+                    	
+	                    <c:if test="${memberGubun == 'T' }">	
+                    	<img src="./resources/img/header/health.png" width="16px" height="16px">
+	                    <a href="trainerPermitList" style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 10px;">${sessionScope.memberNickname }님 (트레이너)</a>
+	                    </c:if>
+	                    <img src="./resources/img/header/lock.png" width="16px" height="16px;">
+	                    <a href="myinfo" style="color: gray;font-size: 0.9em;padding-left: 0px;">마이페이지</a>
+                    	<a href="logout" style="color: gray;font-size: 0.9em;padding-left: 10px;cursor: pointer;">로그아웃</a>
+                    </c:if>
+                    
+                    
+                    
                     </div>
       	    </div>
         </div>

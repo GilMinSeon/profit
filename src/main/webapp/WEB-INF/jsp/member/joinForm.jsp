@@ -108,47 +108,6 @@ input:-webkit-autofill {
 			}
 		})
 
-		//이메일 인증 버튼
-		var email_ran = ""
-		function fn_email_number(){
-			email_ran = "";
-			for (var i = 0; i < 4; i++) {
-				var ran1 = Math.floor(Math.random() * 10 + 0);
-				email_ran += ran1;
-			}
-			
-			var memberEmail  = $("#memberEmail").val();
-			
-			var param = "";
-			param += "dummy=" + Math.random();
-			
-			param += "&memberEmail=" + memberEmail;
-			param += "&email_ran=" + email_ran;
-			
-			
-			$.ajax({
-				url : "send_number.ajax",
-				data : param,
-				dataType : "json",
-				type : "post",
-				async : false,
-				statusCode : {
-					404 : function() {
-						alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
-					}
-				},
-				success : function(data) {
-					if(data.msg == "ok"){
-						flag_dupl = false;
-						alert("이메일을 확인하세요")
-					} 
-				}
-			});
-		}
-		
-		
-		
-		
 		
 		$("#memberId").blur(function() {
 			var memberId = $.trim($("#memberId").val()); //현재 창에 입력된 값
@@ -158,7 +117,6 @@ input:-webkit-autofill {
 				$("#msgId").html("");
 				return false;
 			}
-
 			//checkMemberId로 데이터 전송 - 비동기 전송방식
 			$.ajax({
 				type : "POST",
