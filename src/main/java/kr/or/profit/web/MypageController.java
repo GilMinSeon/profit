@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.profit.service.MemberService;
 import kr.or.profit.service.MypageService;
+import kr.or.profit.vo.ProcessVO;
 
 /**
  * 
@@ -77,7 +79,6 @@ public class MypageController {
         //
         
         String memberId = (String) session.getAttribute("memberId");
-        
         List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
         String memberName = list.get(0).get("MEMBER_NAME");
         String memberGender = list.get(0).get("MEMBER_GENDER");
@@ -90,34 +91,6 @@ public class MypageController {
         return "mypage/trainerApply";
         
 	}
-	
-//	@RequestMapping(value="trainerApplyResult", method = RequestMethod.POST)
-//	public String fileUp(MultipartHttpServletRequest multi) {
-//		System.out.println("여기");
-//		String path="C:/";
-//		String fileName="";
-//		
-//		File dir = new File(path);
-//		if(!dir.isDirectory()) {
-//			dir.mkdir();
-//		}
-//		
-//		Iterator<String> files = multi.getFileNames();
-//		System.out.println(files.hasNext());
-//		while(files.hasNext()) {
-//			String uploadFile = files.next();
-//			
-//			MultipartFile mFile = multi.getFile(uploadFile);
-//			fileName = mFile.getOriginalFilename();
-//			System.out.println("실제 파일 이름 : " + fileName );
-//			try {
-//				mFile.transferTo(new File(path+fileName));
-//			}catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return "trainerApply";
-//	}
 	
 	@RequestMapping(value = "trainerInfo", method = RequestMethod.GET)
 	public String trainerInfo(Locale locale, Model model) {
@@ -192,15 +165,35 @@ public class MypageController {
 	}
 	
 	@RequestMapping(value="upload", method=RequestMethod.POST)
-    public void upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception{
+    public void upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
         multipartRequest.setCharacterEncoding("utf-8");
+        HttpSession session = request.getSession();
+        
+        //회원 정보 Process Table에 Insert
+        String trainerAward = multipartRequest.getParameter("trainerAward");
+        String trainerCarrer = multipartRequest.getParameter("trainerCarrer");
+        String trainerGym = multipartRequest.getParameter("trainerGym");
+        
+        System.out.println("-------------------------");
+        System.out.println(trainerAward);
+        System.out.println(trainerCarrer);
+        System.out.println(trainerGym);
+        System.out.println("-------------------------");
+        
+        ProcessVO vo = new ProcessVO();
+        vo.setMemberId((String)session.getAttribute("memberId"));
+        vo.setTrainerAward(trainerAward);
+        vo.setTrainerCareer(trainerCarrer);
+        vo.setTrainerGym(trainerGym);
+        
+        mypageService.insertProcess(vo);
+        
+        
+        
+        
+        
         Map map = new HashMap();
         Enumeration enu = multipartRequest.getParameterNames();
-        
-        String gendType = multipartRequest.getParameter("gendType");
-        String trainerGym = multipartRequest.getParameter("trainerGym");
-        System.out.println("gendType : " + gendType);
-        System.out.println("trainerGym : " + trainerGym);
         
         List fileList = fileProcess(multipartRequest);
         for(int i=0;i<fileList.size();i++) {

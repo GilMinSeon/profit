@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.or.profit.mapper.MypageMapper;
 import kr.or.profit.service.MypageService;
+import kr.or.profit.vo.ProcessVO;
 
 @Service("mypageService")
 public class MypageServiceImpl extends EgovAbstractServiceImpl implements MypageService{
@@ -23,26 +24,12 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 		return mypageMapper.selectMemberInfo(memberId);
 	}
 
+	@Override
+	public int insertProcess(ProcessVO vo) throws Exception {
+		return mypageMapper.insertProcess(vo);
+	}
+
 	
-//	@Override
-//	public void insertMember(MemberVO vo) throws Exception {
-//		memberMapper.insertMember(vo);
-//	}
-//
-//	@Override
-//	public int selectMemberIdCheck(String memberId) throws Exception {
-//		return memberMapper.selectMemberIdCheck(memberId);
-//	}
-//	
-//	@Override
-//	public int selectMemberNicknameCheck(String memberNickname) throws Exception {
-//		return memberMapper.selectMemberNicknameCheck(memberNickname);
-//	}
-//	
-//	@Override
-//	public int selectMemberEmailCheck(String memberEmail) throws Exception {
-//		return memberMapper.selectMemberEmailCheck(memberEmail);
-//	}
 
 
 }
