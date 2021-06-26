@@ -165,41 +165,21 @@ public class MypageController {
         int insertResult = mypageService.insertProcessFile(filemap);
         
         //회원 정보 Process Table에 Insert
-//        String trainerAward = multipartRequest.getParameter("trainerAward");
-//        String trainerCareer = multipartRequest.getParameter("trainerCareer");
-//        String trainerGym = multipartRequest.getParameter("trainerGym");
-//        
-//        System.out.println("-----------------------------------");
-//        System.out.println(trainerAward);
-//        System.out.println(trainerCareer);
-//        System.out.println(trainerGym);
-//        System.out.println("-----------------------------------");
-//        
-//        
-//        ProcessVO vo = new ProcessVO();
-//        
-//        String loginMemberId = (String)session.getAttribute("memberId");
-//        vo.setMemberId(loginMemberId);
-//        vo.setTrainerAward(trainerAward);
-//        vo.setTrainerCareer(trainerCareer);
-//        vo.setTrainerGym(trainerGym);
-//        vo.setInUserId(loginMemberId);
-//        vo.setUpUserId(loginMemberId);
-//        mypageService.insertProcess(vo);
+        String trainerAward = multipartRequest.getParameter("trainerAward");
+        String trainerCareer = multipartRequest.getParameter("trainerCareer");
+        String trainerGym = multipartRequest.getParameter("trainerGym");
         
+        ProcessVO vo = new ProcessVO();
         
-        //다중파일 List로 담아 File 테이블에 추가
-//	    Map map = new HashMap();
-//	    Enumeration enu = multipartRequest.getParameterNames();
-	        
-//	    List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
-	    
-//	    int insertResult = mypageService.insertProcessFile(fileVOList);
-	    
-//	    Map<String, Object> filemap = new HashMap<String, Object>();
-//	    filemap.put("list", fileVOList);
-//	    int insertResult = mypageService.insertProcessFile(filemap);
-	    
+        String loginMemberId = (String)session.getAttribute("memberId");
+        vo.setMemberId(loginMemberId);
+        vo.setTrainerAward(trainerAward);
+        vo.setTrainerCareer(trainerCareer);
+        vo.setTrainerGym(trainerGym);
+        vo.setInUserId(loginMemberId);
+        vo.setUpUserId(loginMemberId);
+        mypageService.insertProcess(vo);
+        
 	    String msg = "ng";
 	    
 	    if(insertResult > 0) {
@@ -216,9 +196,10 @@ public class MypageController {
     	List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
         List<String> fileList = new ArrayList<String>();
         Iterator<String> fileNames = multipartRequest.getFileNames();
-        
+        int cnt = 1;
         while(fileNames.hasNext()) {
-        	int cnt = 1;
+        	
+        	
         	UUID uuid = UUID.randomUUID();
         	
         	System.out.println("uuid : " + uuid);
@@ -226,7 +207,6 @@ public class MypageController {
             System.out.println("fileName : " + fileName);
             MultipartFile mFile = multipartRequest.getFile(fileName);
             String originalFileName = mFile.getOriginalFilename();
-//            fileList.add(originalFileName);
             File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
             if(mFile.getSize() != 0) {
                 if(!file.exists()) {
