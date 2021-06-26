@@ -33,6 +33,15 @@ public class QnaController {
 	@Resource(name = "qnaService")
 	private QnaService qnaService;
 
+	/**
+	 * 글을 등록한다.
+	 * 
+	 * @param sampleVO - 등록할 정보가 담긴 VO
+	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
+	 * @param status
+	 * @return "qna/qnaList"
+	 * @exception Exception
+	 */
 //	qnaList 화면열리면 qnaList 실행 
 	@RequestMapping(value = "qnaList.do")
 	public String qnaList(@RequestParam Map<String, Object> map, Model model) throws Exception {
@@ -52,22 +61,7 @@ public class QnaController {
 		return "qna/qnaAdd";
 	}
 
-	/**
-	 * 글을 등록한다.
-	 * 
-	 * @param sampleVO - 등록할 정보가 담긴 VO
-	 * @param searchVO - 목록 조회조건 정보가 담긴 VO
-	 * @param status
-	 * @return "qna/qnaList"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "qnaList.do", method = RequestMethod.POST)
-	public String qnaInsert(@RequestParam Map<String, Object> map, Model model) throws Exception {
-		System.out.println("여기1 map" + map);
-		System.out.println("여기1 model" + model);
-
-		return "qna/qnaList";
-	}
+	
 
 	@RequestMapping(value = "qnaMod.do", method = RequestMethod.GET)
 	public String qnaMod(Locale locale, Model model) {
