@@ -128,6 +128,7 @@ $(document).ready(function(){
 			</div>
 			<br />
 			<br />
+			${resultList}
 			<main role="main" class="container">
 				<form name="form" method="post" action="lessonAdd" style="text-align: center;" enctype="multipart/form-data">
 					<div class="write-title">
@@ -155,20 +156,20 @@ $(document).ready(function(){
 					<p>
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">제목 : </label>
-						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="ex)1강 전신스트레칭" value="${data.lessonTitle}">
+						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" value="${resultList.lessonTitle}" placeholder="ex)1강 전신스트레칭">
 						</div>
 					</p>
 					<p>	
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">강의코멘트(부제목) : </label>
-						    <input type="text" class="form-control" id="lessonTitleComment" name="lessonTitleComment" placeholder="ex)운동시작전 몸을 풀기위한 스트레칭 강의입니다...">
+						    <input type="text" class="form-control" id="lessonTitleComment" name="lessonTitleComment" value="${resultList.lessonTitleComment}" placeholder="ex)운동시작전 몸을 풀기위한 스트레칭 강의입니다...">
 						</div>
 					</p>
 					
 					<p>	
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">강의기간 : </label>
-						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)01">
+						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" value="${resultList.lessonMonth}" placeholder="ex)01">
 						</div>
 					</p>
 					
@@ -180,7 +181,7 @@ $(document).ready(function(){
 								</div>
 								<div class="qty mt-5">
 									<span class="minus bg-dark" id="minus1">-</span>
-	                                <input type="number" class="count" id="count1" name="lessonBalance" name="qty" value="0">
+	                                <input type="number" class="count" id="count1" name="lessonBalance" name="qty" value="${resultList.lessonBalance}">
 	                                <span class="plus bg-dark" id="plus1">+</span>
 	                            </div>
 							</div>
@@ -191,7 +192,7 @@ $(document).ready(function(){
 								</div>
 								<div class="qty mt-5">
 									<span class="minus bg-dark" id="minus2">-</span>
-	                                <input type="number" class="count" id="count2" name="lessonFlex" name="qty" value="0">
+	                                <input type="number" class="count" id="count2" name="lessonFlex" name="qty"  value="${resultList.lessonFlex}">
 	                                <span class="plus bg-dark" id="plus2">+</span>
 	                            </div>
 							</div>
@@ -202,7 +203,7 @@ $(document).ready(function(){
 								</div>
 								<div class="qty mt-5">
 									<span class="minus bg-dark" id="minus3">-</span>
-	                                <input type="number" class="count" id="count3" name="lessonStrong" name="qty" value="0">
+	                                <input type="number" class="count" id="count3" name="lessonStrong" name="qty" value="${resultList.lessonStrong}">
 	                                <span class="plus bg-dark" id="plus3">+</span>
 	                            </div>
 							</div>
@@ -213,7 +214,7 @@ $(document).ready(function(){
 								</div>
 								<div class="qty mt-5">
 									<span class="minus bg-dark" id="minus4">-</span>
-	                                <input type="number" class="count" id="count4" name="lessonCore" name="qty" value="0">
+	                                <input type="number" class="count" id="count4" name="lessonCore" name="qty" value="${resultList.lessonCore}">
 	                                <span class="plus bg-dark" id="plus4">+</span>
 	                            </div>
 							</div>
@@ -223,13 +224,13 @@ $(document).ready(function(){
 						
 						<p>
 							<label for="lessonPrice" style="float:left;">강의소개 : </label>
-							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."></textarea>
+							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" value="${resultList.lessonIntro}" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."></textarea>
 						</p>
 						
 						<p>
 							<div class="form-group">
 								<label for="lessonPrice" style="float:left;">강의가격 : </label>
-							    <input type="text" class="form-control" id="lessonPrice" name="lessonPrice"  placeholder="ex)530000">
+							    <input type="text" class="form-control" id="lessonPrice" name="lessonPrice" value="${resultList.lessonPrice}" placeholder="ex)530000">
 							</div>
 						</p>
 						

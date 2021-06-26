@@ -256,7 +256,7 @@ function fn_lessonAdd(){
 
 	console.log(param)
 	$.ajax({
-		url : "lesson_ins",
+		url : "lesson_insAjax.do",
 		data : param,
 		dataType : "text",
 		type : "post",

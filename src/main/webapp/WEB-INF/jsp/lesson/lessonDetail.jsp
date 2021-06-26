@@ -38,7 +38,7 @@
 	<!-- 	main html 시작 -->
 	<section class="about spad">
 		<div class="container">
-<%-- 		<c:set var="result" value="${resultList}"></c:set> --%>
+		<c:set var="resultList" value="${resultList}"/>
 			<div class="row">
 				<div class="col-lg-7 p-0" style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
 					<div class="about__pic" style="">
@@ -48,36 +48,44 @@
 				<div class="col-lg-5 p-0">
 					<div class="about__text">
 						<div class="section-title">
-							<h2>fff</h2>
-							<p>To be invited to the nearest Cali center and get free physical advice to learn more about the program.</p>
+							<h2>${resultList.lessonTitle}</h2>
+							<div>
+								<div style="display: inline-block;"><p>※ 한줄 소개 : </p></div>&nbsp;
+								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>
+							</div>
+							<br/>
+							<div>
+								<div style="display: inline-block;"><p>※ 강의 가격 : </p></div>&nbsp;
+								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonPrice} 원</p></div>
+							</div>
 						</div>
 						<div class="about__bar">
 							<div class="about__bar__item">
 								<p>Breathing</p>
 								<div id="bar1" class="barfiller">
 									<span class="tip" style="left: 562.603px; transition: left 1s ease-in-out 0s;">82%</span>
-									<span class="fill" data-percentage="82" style="background: rgb(87, 104, 173); width: 590.4px; transition: width 1s ease-in-out 0s;"></span>
-								</div>
-							</div>
-							<div class="about__bar__item">
-								<p>Methabolism</p>
-								<div id="bar2" class="barfiller">
-									<span class="tip" style="left: 497.803px; transition: left 1s ease-in-out 0s;">73%</span>
-									<span class="fill" data-percentage="73" style="background: rgb(87, 104, 173); width: 525.6px; transition: width 1s ease-in-out 0s;"></span>
+									<span class="fill" data-percentage="${resultList.lessonBalance}" style="background: rgb(87, 104, 173); width: 590.4px; transition: width 1s ease-in-out 0s;"></span>
 								</div>
 							</div>
 							<div class="about__bar__item">
 								<p>Flexibility</p>
-								<div id="bar3" class="barfiller">
-									<span class="tip" style="left: 562.603px; transition: left 1s ease-in-out 0s;">82%</span>
-									<span class="fill" data-percentage="82" style="background: rgb(87, 104, 173); width: 590.4px; transition: width 1s ease-in-out 0s;"></span>
+								<div id="bar2" class="barfiller">
+									<span class="tip" style="left: 497.803px; transition: left 1s ease-in-out 0s;">73%</span>
+									<span class="fill" data-percentage="${resultList.lessonFlex}" style="background: rgb(87, 104, 173); width: 525.6px; transition: width 1s ease-in-out 0s;"></span>
 								</div>
 							</div>
 							<div class="about__bar__item">
 								<p>Strongness</p>
+								<div id="bar3" class="barfiller">
+									<span class="tip" style="left: 562.603px; transition: left 1s ease-in-out 0s;">82%</span>
+									<span class="fill" data-percentage="${resultList.lessonStrong}" style="background: rgb(87, 104, 173); width: 590.4px; transition: width 1s ease-in-out 0s;"></span>
+								</div>
+							</div>
+							<div class="about__bar__item">
+								<p>Core</p>
 								<div id="bar4" class="barfiller">
 									<span class="tip" style="left: 591.403px; transition: left 1s ease-in-out 0s;">86%</span>
-									<span class="fill" data-percentage="86" style="background: rgb(87, 104, 173); width: 619.2px; transition: width 1s ease-in-out 0s;"></span>
+									<span class="fill" data-percentage="${resultList.lessonCore}" style="background: rgb(87, 104, 173); width: 619.2px; transition: width 1s ease-in-out 0s;"></span>
 								</div>
 							</div>
 						</div>
@@ -132,10 +140,10 @@
 			<main id="main" class="site-main" role="main">
 				<!-- 				<div id="" class=""> -->
 				<div class="classes__item__text" style="text-align: right;">
-					<a href="lessonList" class="class-btn">목록</a>
-					<a href="lessonMod" class="class-btn">수정</a>
+					<a href="lessonList.do" class="class-btn">목록</a>
+					<a href="lessonMod.do" class="class-btn">수정</a>
 					<a href="#" class="class-btn">삭제</a>
-					<a href="classAdd" class="class-btn">강의추가</a>
+					<a href="classAdd.do" class="class-btn">강의추가</a>
 				</div>
 				<div class="d-flex justify-content-between align-items-center has-border">
 					<ul id="titeul" class="nav sub-nav sub-nav--has-border">
@@ -153,14 +161,10 @@
 						</li>
 					</ul>
 				</div>
-				<div class="tab-content" style="padding-bottom: 50px; padding-top: 50px;">
+				<div class="tab-content" style="padding-bottom: 50px;">
 					<div class="tab-pane fade mt-2 mt-lg-5 active show" id="description-tab" role="tabpanel" aria-expanded="false">
 						<div id="t1" style="display: block;">
-							<p>요청서를 보낸 후 어떻게 진행되는지 알려드릴게요1111</p>
-							<p>1 요청서 작성 요청서 작성 도움이 필요한 서비스의 요청서를 상세히 작성하고 고수를 소개받으세요</p>
-							<p>2 견적 비교 견적 비교 최대 48시간 이내에 고수들이 제공하는 견적을 받아보고 꼼꼼히 비교해 보세요</p>
-							<p>3 연락 및 거래 연락 및 거래 원하는 고수와 채팅 및 전화(안심번호)를 통해 거래하세요</p>
-							<p>4 리뷰 쓰기 리뷰 쓰기 거래가 잘 마무리 되었다면 서비스에 대한 리뷰를 남겨주세요</p>
+							<p>${resultList.lessonIntro}</p>
 						</div>
 						<div id="t2">
 							<!-- Classes Section Begin -->

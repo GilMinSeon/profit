@@ -36,26 +36,13 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.selectLessonList();
 	}
 
-//	@Override
-//	public Map<String, Object> selectLessonDetail(Map<String, Object> map) throws Exception {
-//		return this.lessonDAO.selectLessonDetail(map);
-//	}
-
+	//강의 상세조회
 	@Override
-	public List<?> selectLessonDetail(String lessonSeq) throws Exception {
-		return lessonDAO.selectLessonDetail(lessonSeq);
+	public Map<String, Object> selectLessonDetail(LessonVO vo) throws Exception {
+		return lessonDAO.selectLessonDetail(vo);
 	}
 	
-//	@Override
-//	public List<?> selectLessonDetail(LessonVO vo) throws Exception {
-//		return lessonDAO.selectLessonDetail(vo);
-//	}
 
-	//강의 상세조회
-//	@Override
-//	public List<?> selectLessonDetail(String lessonSeq) throws Exception {
-//		return lessonDAO.selectLessonDetail(lessonSeq);
-//	}
 
 	
 

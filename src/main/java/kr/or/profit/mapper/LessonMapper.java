@@ -19,12 +19,7 @@ public interface LessonMapper {
 	List<?> selectLessonList() throws Exception;
 
 	//강의 상세조회
-//	List<?> selectLessonDetail(String lessonSeq) throws Exception;
-
-//	List<?> selectLessonDetail(LessonVO vo) throws Exception;
-	List<?> selectLessonDetail(String lessonSeq) throws Exception;
-
-//	Map<String, Object> selectLessonDetail(Map<String, Object> map) throws Exception;
+	Map<String, Object> selectLessonDetail(LessonVO vo) throws Exception;
 
 
 	
