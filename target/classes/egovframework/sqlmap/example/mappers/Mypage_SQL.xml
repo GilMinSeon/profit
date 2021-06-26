@@ -14,12 +14,88 @@
     
     <!-- 회원 기본정보 가져오기 -->
     <select id="selectMemberInfo" parameterType="String" resultMap="processMemberInfo">
-        select member_name, member_gender, member_mobile
-		from member
-		where member_id=#{memberId}
+        select 
+        	member_name, 
+        	member_gender, 
+        	member_mobile
+		from 
+			member
+		where 
+			member_id=#{memberId}
     </select>
     
     
+    <!-- 프로세스테이블에 정보 추가 -->
+    <insert id="insertProcess" parameterType="ProcessVO" useGeneratedKeys="true" keyProperty="process_id">
+        <![CDATA[
+        insert 
+        	into 
+        process
+        	(
+        		process_seq, 
+        		member_id, 
+        		trainer_award, 
+        		trainer_career, 
+        		trainer_gym, 
+        		process_status, 
+        		process_finish_date, 
+        		admin_memo, 
+        		in_user_id, 
+        		in_date, 
+        		up_date, 
+        		up_user_id
+        	)
+			values(
+				(
+					select 
+						NVL(max(to_number(process_seq)),0) + 1 
+					from process
+				), 
+				#{memberId}, 
+				#{trainerAward}, 
+				#{trainerCareer}, 
+				#{trainerGym},
+				'A',
+				to_char(sysdate+14,'YYYYMMDD')||'.235959',
+        		null, 
+        		#{inUserId}, 
+        		to_char(sysdate,'YYYYMMDD')||'.'||to_char(sysdate,'HHMISS'), 
+        		#{upUserId}, 
+        		to_char(sysdate,'YYYYMMDD')||'.'||to_char(sysdate,'HHMISS'))
+        		
+        ]]>
+	        
+    </insert>
+    
+    
+    <!-- 프로세스테이블에 정보 추가 -->
+    <insert id="insertProcessFile" parameterType="ProcessVO" useGeneratedKeys="true" keyProperty="process_id">
+        <![CDATA[
+        
+        		
+        ]]>
+	        
+    </insert>
+    
+    <!-- 파일 테이블에 데이터 추가 -->
+<!--     <insert id="insertProcessFile" parameterType="java.util.List"> -->
+<!-- 		<![CDATA[ -->
+<!-- 			insert  -->
+<!-- 				into  -->
+<!-- 			account( -->
+<!-- 		 id, -->
+<!-- 		 age -->
+<!-- 		) values  -->
+<!-- 		<foreach item="item" index="index" collection="list"> -->
+<!-- 		( -->
+<!-- 		 #{item.id} -->
+<!-- 		 ,#{item.age} -->
+<!-- 		) -->
+<!-- 		</foreach> -->
+<!-- 		]]> -->
+<!-- 	</insert> -->
+
+
     
     
 </mapper>
