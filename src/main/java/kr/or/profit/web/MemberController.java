@@ -22,31 +22,31 @@ public class MemberController {
 	@Resource(name = "memberService")
 	private MemberService memberService;
 
-	@RequestMapping(value = "login", method = RequestMethod.GET)
+	@RequestMapping(value = "login.do", method = RequestMethod.GET)
 	public String loginForm(Locale locale, Model model) {
 
 		return "member/loginForm";
 	}
 
-	@RequestMapping(value = "join", method = RequestMethod.GET)
+	@RequestMapping(value = "join.do", method = RequestMethod.GET)
 	public String joinForm(Locale locale, Model model) {
 
 		return "member/joinForm";
 	}
 
-	@RequestMapping(value = "findId", method = RequestMethod.GET)
+	@RequestMapping(value = "findId.do", method = RequestMethod.GET)
 	public String findId(Locale locale, Model model) {
 
 		return "member/findId";
 	}
 
-	@RequestMapping(value = "findPwd", method = RequestMethod.GET)
+	@RequestMapping(value = "findPwd.do", method = RequestMethod.GET)
 	public String findPwd(Locale locale, Model model) {
 
 		return "member/findPwd";
 	}
 
-	@RequestMapping(value = "joinMemberTable", method = RequestMethod.POST)
+	@RequestMapping(value = "joinAjax.do", method = RequestMethod.POST)
 	public String joinMemberTable(@ModelAttribute MemberVO vo, HttpServletRequest request) throws Exception {
 		request.setCharacterEncoding("utf-8");
 
@@ -60,7 +60,7 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping("idcheck")
+	@RequestMapping("idcheckAjax.do")
 	@ResponseBody
 	public String selectMemberIdCheck(String memberId) throws Exception{
 		String message = "";
@@ -73,7 +73,7 @@ public class MemberController {
 		return message;
 	}
 	
-	@RequestMapping("nicknamecheck")
+	@RequestMapping("nicknamecheckAjax.do")
 	@ResponseBody
 	public String selectMemberNicknameCheck(String memberNickname) throws Exception{
 		String message = "";
@@ -84,7 +84,7 @@ public class MemberController {
 		return message;
 	}
 	
-	@RequestMapping("emailcheck")
+	@RequestMapping("emailcheckAjax.do")
 	@ResponseBody
 	public String selectMemberEmailCheck(String memberEmail) throws Exception{
 		String message = "";
@@ -96,7 +96,7 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping("loginWriteSub")
+	@RequestMapping("loginSubmitAjax.do")
 	@ResponseBody
 	public String loginProcessing(MemberVO vo, HttpSession session) throws Exception{
 		String msg = "";
@@ -117,12 +117,12 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.removeAttribute("memberId");
 		session.removeAttribute("memberNickname");
 		session.removeAttribute("memberGubun");
-		return "redirect:home";
+		return "redirect:home.do";
 
 	}
 
