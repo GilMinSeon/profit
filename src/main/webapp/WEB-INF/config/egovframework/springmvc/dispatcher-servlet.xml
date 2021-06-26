@@ -34,6 +34,7 @@
 			<mvc:exclude-mapping path="/noticeList.do"/>
 			<mvc:exclude-mapping path="/qnaList.do"/>
 			<mvc:exclude-mapping path="/lessonList.do"/>
+			<mvc:exclude-mapping path="/classDetail.do"/>
 			
 			
 			<bean class="kr.or.profit.cmmn.interceptor.AuthenticInterceptor" />

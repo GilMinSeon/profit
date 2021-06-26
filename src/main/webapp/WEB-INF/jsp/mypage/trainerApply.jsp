@@ -62,7 +62,7 @@ input:-webkit-autofill {
    	    	var formData = new FormData($('#frm')[0]);
    	    	$.ajax({
    	    		type : 'post',
-   	    		url : 'upload',
+   	    		url : 'uploadAjax.do',
    	    		data : formData,
    	    		processData : false,
    	    		contentType : false,

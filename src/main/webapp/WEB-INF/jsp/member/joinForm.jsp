@@ -37,9 +37,58 @@ input:-webkit-autofill {
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+	
+	function fn_email_number(){
+		
+		var memberEmail = $.trim($("#memberEmail").val()); //현재 창에 입력된 값
+		var emailReg = /.+@[a-z]+(\.[a-z]+){1,2}$/;
+		if (!emailReg.test($("input[name=memberEmail]").val())) {
+			alert("올바른 이메일 형식이 아닙니다");
+			$("#msgEmail").html("");
+			return false;
+		}
+		
+		if($("input[name=checked_email]").val() == 'n'){
+			alert("사용중인 이메일입니다.")
+			return false;
+		}
+		
+		emailNum = generateRandomCode(5)
+		
+		function generateRandomCode(n) {
+			var str = ''
+		  	for (let i = 0; i < n; i++) {
+		    	str += Math.floor(Math.random() * 10)
+		  	}
+		  return str;
+		}
+		
+		alert("해당 이메일로 인증번호가 발송되었습니다.\n이메일을 확인해주세요");
+		
+ 		$.ajax({
+			type : "POST",
+			data : "memberEmail=" + memberEmail +"&emailNum=" + emailNum, 
+			url : "sendmailAjax.do",
+			dataType : "text", 
+
+			success : function(result) {
+				if (result == "ok") {
+					
+				} else {
+					alert("오류가 발생했습니다. 다시 한 번 시도해주세요");
+				}
+			},
+			error : function() {
+				alert("오류발생");
+			}
+
+		}) 
+	}
+	
+
+
 	$(function() {
 		$("#frm").submit(function() {
-			
 			var idReg = /^[A-za-z]+[a-z0-9]{5,19}$/g;
 			if (!idReg.test($("input[name=memberId]").val())) {
 				alert("아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.");
@@ -69,7 +118,7 @@ input:-webkit-autofill {
 			}
 			
 			var nicknameReg = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/
-			if (!nameReg.test($("input[name=memberNickname]").val())) {
+			if (!nicknameReg.test($("input[name=memberNickname]").val())) {
 				alert("닉네임은 20글자 내로 가능합니다.");
 				return false;
 			}
@@ -95,6 +144,12 @@ input:-webkit-autofill {
 				alert("중복되는 이메일입니다. 다른 이메일을 사용해주세요");
 				return false;
 			}
+			console.log(emailNum)
+			
+			if ($("input[name=confirmEmailNum]").val() != emailNum) {
+				alert("인증번호가 일치하지 않습니다. 정확히 입력해주세요");
+				return false;
+			}
 			
 			
 			if($.trim($("#memberId").val()) !== $("#memberId").val() || 
@@ -106,6 +161,9 @@ input:-webkit-autofill {
 				alert("공백은 입력이 불가능합니다.");
 				return false;
 			}
+			
+			alert("회원가입이 완료되었습니다! ")
+			
 		})
 
 		
@@ -147,7 +205,7 @@ input:-webkit-autofill {
 			var memberNickname = $.trim($("#memberNickname").val()); //현재 창에 입력된 값
 			var nicknameReg =  /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/
 			if (!nicknameReg.test($("input[name=memberNickname]").val())) {
-				alert("닉네임은 20글자내로 가능합니다.");
+				alert("닉네임은 20글자내로 가능합니다. 밑에");
 				$("#msgNickname").html("");
 				return false;
 			}
@@ -210,6 +268,20 @@ input:-webkit-autofill {
 		
 		
 		$("#confirmPwd").blur(function() {
+
+			if ($("#memberPwd").val() !== $("#confirmPwd").val()) {
+				$("#msgPwd").html("비밀번호가 일치하지않습니다!");
+				$("input[name=checked_pwd]").val('n');
+				return false;
+			} else {
+				$("#msgPwd").html("비밀번호가 일치합니다!");
+				$("input[name=checked_pwd]").val('y');
+
+			}
+
+		});
+		
+		$("#memberPwd").blur(function() {
 
 			if ($("#memberPwd").val() !== $("#confirmPwd").val()) {
 				$("#msgPwd").html("비밀번호가 일치하지않습니다!");
@@ -359,7 +431,7 @@ input:-webkit-autofill {
 							<div style="margin-bottom: 2px;">
 								<h5 style="display: inline; float: left; color: white;">이메일 인증번호 *&nbsp;&nbsp;</h5>
 							</div>
-							<input class="inner_input" type="text" placeholder="인증번호">
+							<input class="inner_input" type="text" placeholder="인증번호" name="confirmEmailNum">
 						</div>
 						<br>
 

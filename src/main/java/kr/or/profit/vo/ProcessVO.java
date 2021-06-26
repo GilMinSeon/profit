@@ -1,8 +1,11 @@
 package kr.or.profit.vo;
 
+import java.util.Date;
+
 public class ProcessVO {
 	private String processSeq;
 	private String memberId;
+	private String fileSeq;
 	private String trainerAward;
 	private String trainerGym;
 	private String trainerCareer;
@@ -10,9 +13,9 @@ public class ProcessVO {
 	private String processFinishDate;
 	private String adminMemo;
 	private String inUserId;
-	private String inDate;
+	private Date inDate;
 	private String upUserId;
-	private String upDate;
+	private Date upDate;
 	
 	public String getProcessSeq() {
 		return processSeq;
@@ -26,6 +29,12 @@ public class ProcessVO {
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
+	public String getFileSeq() {
+		return fileSeq;
+	}
+	public void setFileSeq(String fileSeq) {
+		this.fileSeq = fileSeq;
+	}
 	public String getTrainerAward() {
 		return trainerAward;
 	}
@@ -37,6 +46,12 @@ public class ProcessVO {
 	}
 	public void setTrainerGym(String trainerGym) {
 		this.trainerGym = trainerGym;
+	}
+	public String getTrainerCareer() {
+		return trainerCareer;
+	}
+	public void setTrainerCareer(String trainerCareer) {
+		this.trainerCareer = trainerCareer;
 	}
 	public String getProcessStatus() {
 		return processStatus;
@@ -62,10 +77,10 @@ public class ProcessVO {
 	public void setInUserId(String inUserId) {
 		this.inUserId = inUserId;
 	}
-	public String getInDate() {
+	public Date getInDate() {
 		return inDate;
 	}
-	public void setInDate(String inDate) {
+	public void setInDate(Date inDate) {
 		this.inDate = inDate;
 	}
 	public String getUpUserId() {
@@ -74,18 +89,14 @@ public class ProcessVO {
 	public void setUpUserId(String upUserId) {
 		this.upUserId = upUserId;
 	}
-	public String getUpDate() {
+	public Date getUpDate() {
 		return upDate;
 	}
-	public void setUpDate(String upDate) {
+	public void setUpDate(Date upDate) {
 		this.upDate = upDate;
 	}
-	public String getTrainerCareer() {
-		return trainerCareer;
-	}
-	public void setTrainerCareer(String trainerCareer) {
-		this.trainerCareer = trainerCareer;
-	}
+	
+	
 	
 	
 	

@@ -18,23 +18,29 @@
     
     <!-- 프로세스테이블에 정보 추가 -->
     <insert id="insertProcess" parameterType="ProcessVO" useGeneratedKeys="true" keyProperty="process_id">
+    
+    	<selectKey resultType="string" keyProperty="boardID" order="BEFORE">
+        	SELECT MAX(boardID)+1 FROM board        
+    	</selectKey>
+      		  
         <![CDATA[
         insert 
         	into 
         process
         	(
-        		process_seq, 
-        		member_id, 
-        		trainer_award, 
-        		trainer_career, 
-        		trainer_gym, 
-        		process_status, 
-        		process_finish_date, 
-        		admin_memo, 
-        		in_user_id, 
-        		in_date, 
-        		up_date, 
-        		up_user_id
+        		process_seq,
+				member_id,
+				file_seq,
+				trainer_award,
+				trainer_career,
+				trainer_gym,
+				process_status,
+				process_finish_date,
+				admin_memo,
+				in_user_id,
+				in_date,
+				up_user_id,
+				up_date
         	)
 			values(
 				(
@@ -43,50 +49,70 @@
 					from process
 				), 
 				#{memberId}, 
+				<!-- 여기를 채워야함 -->
 				#{trainerAward}, 
 				#{trainerCareer}, 
 				#{trainerGym},
 				'A',
-				to_char(sysdate+14,'YYYYMMDD')||'.235959',
+				sysdate+14,
         		null, 
         		#{inUserId}, 
-        		to_char(sysdate,'YYYYMMDD')||'.'||to_char(sysdate,'HHMISS'), 
+        		sysdate, 
         		#{upUserId}, 
-        		to_char(sysdate,'YYYYMMDD')||'.'||to_char(sysdate,'HHMISS'))
+        		sysdate
         		
         ]]>
 	        
     </insert>
     
-    
-    <!-- 프로세스테이블에 정보 추가 -->
-    <insert id="insertProcessFile" parameterType="ProcessVO" useGeneratedKeys="true" keyProperty="process_id">
-        <![CDATA[
-        
-        		
-        ]]>
+<!-- 파일 테이블에 데이터 추가 -->
+	<insert id="insertProcessFile" parameterType="java.util.Map" > 
+		<selectKey resultType="string" keyProperty="proSeq" order="BEFORE">
+        		select 
+					NVL(max(to_number(process_seq)),0) + 1 
+        		from 
+        			process
+    	</selectKey> 
+		
+	    <foreach collection="list" item="item" index="index" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+	    	 
+			into 
+		   	attach_file
+		   		(
+		   			file_seq, 
+		   			member_id, 
+		   			process_seq, 
+		   			file_real_name, 
+		   			file_save_name, 
+		   			file_path, 
+		   			in_user_id, 
+		   			in_date, 
+		   			up_user_id, 
+		   			up_date
+		   		)
+			values 
 	        
-    </insert>
-    
-    <!-- 파일 테이블에 데이터 추가 -->
-<!--     <insert id="insertProcessFile" parameterType="java.util.List"> -->
-<!-- 		<![CDATA[ -->
-<!-- 			insert  -->
-<!-- 				into  -->
-<!-- 			account( -->
-<!-- 		 id, -->
-<!-- 		 age -->
-<!-- 		) values  -->
-<!-- 		<foreach item="item" index="index" collection="list"> -->
-<!-- 		( -->
-<!-- 		 #{item.id} -->
-<!-- 		 ,#{item.age} -->
-<!-- 		) -->
-<!-- 		</foreach> -->
-<!-- 		]]> -->
-<!-- 	</insert> -->
+	        (
+		    		(
+		    			select 
+							NVL(max(to_number(file_seq)),0) + 1 
+        				from 
+        					attach_file
+        			),
+        			#{item.memberId}, 
+        			${index}, 
+        			#{item.fileRealName}, 
+        			#{item.fileSaveName}, 
+        			#{item.filePath}, 
+        			#{item.inUserId}, 
+        			'20210626.111111', 
+        			#{item.upUserId}, 
+        			'20210626.111111'
+        		)
+	        
+	        
+	    </foreach>
+	    
+	</insert>
 
-
-    
-    
 </mapper>
