@@ -31,6 +31,11 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 		  if(requestUrl.contains(contextPath+"/resources")){ 
 		      return true;
 		  } 
+		  
+		  if(requestUrl.contains(contextPath+"/")){ 
+		      return true;
+		  } 
+		  
 
 		  if(id==null){ 
 		      response.sendRedirect(contextPath+"/login");

@@ -25,50 +25,51 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "home", method = RequestMethod.GET)
+	@RequestMapping(value = "home.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		return "main/home";
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Locale locale, Model model) {
+		System.out.println("여기");
 		return "main/home";
 	}
-	@RequestMapping(value = "aboutUs", method = RequestMethod.GET)
+	@RequestMapping(value = "aboutUs.do", method = RequestMethod.GET)
 	public String aboutUs(Locale locale, Model model) {
 		
 		return "aboutUs";
 	}	
-	@RequestMapping(value = "blog", method = RequestMethod.GET)
+	@RequestMapping(value = "blog.do", method = RequestMethod.GET)
 	public String blog(Locale locale, Model model) {
 		
 		return "blog";
 	}	
-	@RequestMapping(value = "blogDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "blogDetail.do", method = RequestMethod.GET)
 	public String blogDetail(Locale locale, Model model) {
 		
 		return "blogDetail";
 	}	
-	@RequestMapping(value = "classes", method = RequestMethod.GET)
+	@RequestMapping(value = "classes.do", method = RequestMethod.GET)
 	public String classes(Locale locale, Model model) {
 		return "classes";
 	}	
-	@RequestMapping(value = "classesDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "classesDetail.do", method = RequestMethod.GET)
 	public String classesDetail(Locale locale, Model model) {
 		
 		return "classesDetail";
 	}	
-	@RequestMapping(value = "contact", method = RequestMethod.GET)
+	@RequestMapping(value = "contact.do", method = RequestMethod.GET)
 	public String contact(Locale locale, Model model) {
 		
 		return "contact";
 	}	
-	@RequestMapping(value = "faq", method = RequestMethod.GET)
+	@RequestMapping(value = "faq.do", method = RequestMethod.GET)
 	public String faq(Locale locale, Model model) {
 		
 		return "faq";
 	}
-	@RequestMapping(value = "pricing", method = RequestMethod.GET)
+	@RequestMapping(value = "pricing.do", method = RequestMethod.GET)
 	public String pricing(Locale locale, Model model) {
 		
 		return "pricing";
