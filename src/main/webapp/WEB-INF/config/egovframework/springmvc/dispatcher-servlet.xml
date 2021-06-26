@@ -17,58 +17,9 @@
     <!-- 로그인 인터셉터 -->
     <mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/trainerPermitList"/>
-			<mvc:mapping path="/trainerPermitDetail"/>
-			<mvc:mapping path="/adminMemberList"/>
-			<mvc:mapping path="/adminMemberDetail"/>
-			<mvc:mapping path="/adminLessonList"/>
-			<mvc:mapping path="/adminSendMail"/>
-			<mvc:mapping path="/adminChatList"/>
-			<mvc:mapping path="/adminChatDetail"/>
-			<mvc:mapping path="/adminTicketPayList"/>
-			
-			<mvc:mapping path="/aiTeachList"/>
-			<mvc:mapping path="/aiTeachDetail"/>
-			
-			<mvc:mapping path="/recipeDetail"/>
-			<mvc:mapping path="/recipeAdd"/>
-			<mvc:mapping path="/recipeMod"/>
-			
-			<mvc:mapping path="/boardDetail"/>
-			<mvc:mapping path="/boardAdd"/>
-			<mvc:mapping path="/boardMod"/>
-			
-			<mvc:mapping path="/chatDetail"/>
-			<mvc:mapping path="/buyTicket"/>
-			<mvc:mapping path="/buyTicketDetail"/>
-			<mvc:mapping path="/chatting"/>
-			
-			<mvc:mapping path="/lessonDetail"/>
-			<mvc:mapping path="/lessonAdd"/>
-			<mvc:mapping path="/lessonMod"/>
-			
-			<mvc:mapping path="/classDetail"/>
-			<mvc:mapping path="/classAdd"/>
-			<mvc:mapping path="/classMod"/>
-			
-			<mvc:mapping path="/myinfo"/>
-			<mvc:mapping path="/bookmark"/>
-			<mvc:mapping path="/trainerApply"/>
-			<mvc:mapping path="/trainerInfo"/>
-			<mvc:mapping path="/listenList"/>
-			<mvc:mapping path="/teachList"/>
-			<mvc:mapping path="/pwdMod"/>
-			<mvc:mapping path="/mobileMod"/>
-			<mvc:mapping path="/payDetail"/>
-			<mvc:mapping path="/ticketPayList"/>
-			
-			<mvc:mapping path="/noticeDetail"/>
-			<mvc:mapping path="/noticeAdd"/>
-			<mvc:mapping path="/noticeMod"/>
-			
-			<mvc:mapping path="/qnaDetail"/>
-			<mvc:mapping path="/qnaAdd"/>
-			<mvc:mapping path="/qnaMod"/>
+			<mvc:mapping path="/**/*"/>
+			<mvc:mapping path="/*"/>
+			<mvc:exclude-mapping path="/**/*Ajax.do"/>
 			
 			<bean class="kr.or.profit.cmmn.interceptor.AuthenticInterceptor" />
 		</mvc:interceptor>
