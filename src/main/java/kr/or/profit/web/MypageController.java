@@ -46,32 +46,32 @@ import kr.or.profit.vo.ProcessVO;
  */
 @Controller
 public class MypageController {
-	@Resource(name = "mypageService")
-	private MypageService mypageService;
-	
-	
-	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
-	private static final String CURR_IMAGE_REPO_PATH = 
+   @Resource(name = "mypageService")
+   private MypageService mypageService;
+   
+   
+   private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
+   private static final String CURR_IMAGE_REPO_PATH = 
             "\\\\192.168.41.6\\upload\\profit";
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "myinfo.do", method = RequestMethod.GET)
-	public String myinfo(Locale locale, Model model) {
-		
-		return "mypage/myinfo";
-	}
-	
-	@RequestMapping(value = "bookmark.do", method = RequestMethod.GET)
-	public String bookmark(Locale locale, Model model) {
-		
-		return "mypage/bookmark";
-	}
-	
-	@RequestMapping(value = "trainerApply.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public String trainerApply(HttpServletRequest request, Model model) throws Exception {
-		HttpSession session = request.getSession();
-		
+   /**
+    * Simply selects the home view to render by returning its name.
+    */
+   @RequestMapping(value = "myinfo.do", method = RequestMethod.GET)
+   public String myinfo(Locale locale, Model model) {
+      
+      return "mypage/myinfo";
+   }
+   
+   @RequestMapping(value = "bookmark.do", method = RequestMethod.GET)
+   public String bookmark(Locale locale, Model model) {
+      
+      return "mypage/bookmark";
+   }
+   
+   @RequestMapping(value = "trainerApply.do", method = {RequestMethod.GET, RequestMethod.POST})
+   public String trainerApply(HttpServletRequest request, Model model) throws Exception {
+      HttpSession session = request.getSession();
+      
         String memberId = (String) session.getAttribute("memberId");
         System.out.println("memberId : " + memberId);
         List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
@@ -86,82 +86,82 @@ public class MypageController {
         
         return "mypage/trainerApply";
         
-	}
-	
-	@RequestMapping(value = "trainerInfo.do", method = RequestMethod.GET)
-	public String trainerInfo(Locale locale, Model model) {
-		
-		return "mypage/trainerInfo";
-	}
-	
-	@RequestMapping(value = "listenList.do", method = RequestMethod.GET)
-	public String listenList(Locale locale, Model model) {
-		
-		return "mypage/listenList";
-	}
-	
-	@RequestMapping(value = "teachList.do", method = RequestMethod.GET)
-	public String teachList(Locale locale, Model model) {
-		
-		return "mypage/teachList";
-	}
-	
-	@RequestMapping(value = "pwdMod.do", method = RequestMethod.GET)
-	public String pwdMod(Locale locale, Model model) {
-		
-		return "mypage/pwdMod";
-	}
-	
-	@RequestMapping(value = "mobileMod.do", method = RequestMethod.GET)
-	public String mobileMod(Locale locale, Model model) {
-		
-		return "mypage/mobileMod";
-	}
+   }
+   
+   @RequestMapping(value = "trainerInfo.do", method = RequestMethod.GET)
+   public String trainerInfo(Locale locale, Model model) {
+      
+      return "mypage/trainerInfo";
+   }
+   
+   @RequestMapping(value = "listenList.do", method = RequestMethod.GET)
+   public String listenList(Locale locale, Model model) {
+      
+      return "mypage/listenList";
+   }
+   
+   @RequestMapping(value = "teachList.do", method = RequestMethod.GET)
+   public String teachList(Locale locale, Model model) {
+      
+      return "mypage/teachList";
+   }
+   
+   @RequestMapping(value = "pwdMod.do", method = RequestMethod.GET)
+   public String pwdMod(Locale locale, Model model) {
+      
+      return "mypage/pwdMod";
+   }
+   
+   @RequestMapping(value = "mobileMod.do", method = RequestMethod.GET)
+   public String mobileMod(Locale locale, Model model) {
+      
+      return "mypage/mobileMod";
+   }
 
-	@RequestMapping(value = "payDetail.do", method = RequestMethod.GET)
-	public String payDetail(Locale locale, Model model) {
-		
-		return "mypage/payDetail";
-	}
-	
-	@RequestMapping(value = "ticketPayList.do", method = RequestMethod.GET)
-	public String ticketPayList(Locale locale, Model model) {
-		
-		return "mypage/ticketPayList";
-	}
-	
-	@RequestMapping(value = "ticketPayDetail.do", method = RequestMethod.GET)
-	public String ticketPayDetail(Locale locale, Model model) {
-		
-		return "mypage/ticketPayDetail";
-	}
-	
-	@RequestMapping(value = "myChatList.do", method = RequestMethod.GET)
-	public String myChatList(Locale locale, Model model) {
-		
-		return "mypage/myChatList";
-	}
-	
-	@RequestMapping(value = "myChatDetail.do", method = RequestMethod.GET)
-	public String myChatDetail(Locale locale, Model model) {
-		
-		return "mypage/myChatDetail";
-	}
-	
-	@RequestMapping(value="result.do", method= {RequestMethod.POST, RequestMethod.GET})
-	public String result() {
-	    return "mypage/result";
-	}
-	
-	@RequestMapping(value="uploadAjax.do", method=RequestMethod.POST)
-	@ResponseBody
+   @RequestMapping(value = "payDetail.do", method = RequestMethod.GET)
+   public String payDetail(Locale locale, Model model) {
+      
+      return "mypage/payDetail";
+   }
+   
+   @RequestMapping(value = "ticketPayList.do", method = RequestMethod.GET)
+   public String ticketPayList(Locale locale, Model model) {
+      
+      return "mypage/ticketPayList";
+   }
+   
+   @RequestMapping(value = "ticketPayDetail.do", method = RequestMethod.GET)
+   public String ticketPayDetail(Locale locale, Model model) {
+      
+      return "mypage/ticketPayDetail";
+   }
+   
+   @RequestMapping(value = "myChatList.do", method = RequestMethod.GET)
+   public String myChatList(Locale locale, Model model) {
+      
+      return "mypage/myChatList";
+   }
+   
+   @RequestMapping(value = "myChatDetail.do", method = RequestMethod.GET)
+   public String myChatDetail(Locale locale, Model model) {
+      
+      return "mypage/myChatDetail";
+   }
+   
+   @RequestMapping(value="result.do", method= {RequestMethod.POST, RequestMethod.GET})
+   public String result() {
+       return "mypage/result";
+   }
+   
+   @RequestMapping(value="uploadAjax.do", method=RequestMethod.POST)
+   @ResponseBody
     public String upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         multipartRequest.setCharacterEncoding("utf-8");
         
         List<AttachFileVO> fileVOList = fileProcess(multipartRequest, request);
         Map<String, Object> filemap = new HashMap<String, Object>();
-	    filemap.put("list", fileVOList);
+       filemap.put("list", fileVOList);
         int insertResult = mypageService.insertProcessFile(filemap);
         
         //회원 정보 Process Table에 Insert
@@ -180,29 +180,29 @@ public class MypageController {
         vo.setUpUserId(loginMemberId);
         mypageService.insertProcess(vo);
         
-	    String msg = "ng";
-	    
-	    if(insertResult > 0) {
-	    	msg = "ok";
-	    }
+       String msg = "ng";
+       
+       if(insertResult > 0) {
+          msg = "ok";
+       }
         return msg;
         
     }
     
     private List<AttachFileVO> fileProcess(MultipartHttpServletRequest multipartRequest, HttpServletRequest request) 
         throws Exception{
-    	HttpSession session = request.getSession();
-    	
-    	List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
+       HttpSession session = request.getSession();
+       
+       List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
         List<String> fileList = new ArrayList<String>();
         Iterator<String> fileNames = multipartRequest.getFileNames();
         int cnt = 1;
         while(fileNames.hasNext()) {
-        	
-        	
-        	UUID uuid = UUID.randomUUID();
-        	
-        	System.out.println("uuid : " + uuid);
+           
+           
+           UUID uuid = UUID.randomUUID();
+           
+           System.out.println("uuid : " + uuid);
             String fileName = fileNames.next();
             System.out.println("fileName : " + fileName);
             MultipartFile mFile = multipartRequest.getFile(fileName);

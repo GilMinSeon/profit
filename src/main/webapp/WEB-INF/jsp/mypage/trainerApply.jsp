@@ -15,6 +15,18 @@ input:-webkit-autofill {
   -webkit-text-fill-color: black !important;
   
 }
+textarea::placeholder {
+	color:black;
+}
+textarea::-webkit-input-placeholder {
+	color:#ccc;
+}
+textarea:-ms-input-placeholder {
+	color:#ccc;
+}
+
+
+
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
@@ -226,7 +238,7 @@ input:-webkit-autofill {
 											<h5 style="display: inline; float: left; color: black;">소속헬스장</h5>
 											&nbsp;
 										</div>
-										<input id="trainerGym" name="trainerGym" type="text" placeholder="GYM Name" name="trainerGym"
+										<input id="trainerGym" name="trainerGym" type="text" placeholder="소속 헬스장을 입력하세요" name="trainerGym"
 											style="background-color: #3f51b50d; color: black;"
 											value="">
 									</div>
@@ -241,14 +253,7 @@ input:-webkit-autofill {
 											<div class="col-lg-12"></div>
 											<div class="col-lg-12 text-center">
 												<textarea  
-													id="trainerAward" name="trainerAward" style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-
-                                    </textarea>
+													id="trainerAward" name="trainerAward" style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;" placeholder="수상 이력을 입력하세요"></textarea>
 
 											</div>
 										</div>
@@ -265,14 +270,7 @@ input:-webkit-autofill {
 											<div class="col-lg-12"></div>
 											<div class="col-lg-12 text-center">
 												<textarea id="trainerCareer" name="trainerCareer"
-													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-
-                                    </textarea>
+													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;" placeholder="경력을 입력하세요"></textarea>
 
 											</div>
 										</div>
