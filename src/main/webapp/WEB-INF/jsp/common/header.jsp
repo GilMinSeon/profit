@@ -73,22 +73,22 @@
                     <c:set var="memberId" value="${sessionScope.memberId}"/>
                     <c:set var="memberGubun" value="${sessionScope.memberGubun}"/>
                     <c:if test="${memberId == null }">
-                    	<a href="login" style="color: gray;font-size: 0.9em;padding-left: 10px;">로그인</a>
-                    	<a href="join" style="color: gray;font-size: 0.9em;padding-left: 10px;">회원가입</a>
+                    	<a href="login.do" style="color: gray;font-size: 0.9em;padding-left: 10px;">로그인</a>
+                    	<a href="join.do" style="color: gray;font-size: 0.9em;padding-left: 10px;">회원가입</a>
                     </c:if>
                     <c:if test="${memberId != null }">
                     	<c:if test="${memberGubun == 'U' }">
                     	<img src="./resources/img/header/user.png" width="16px" height="16px">
-	                    <a href="trainerPermitList" style="color: gray;font-size: 0.9em;padding-left: 10px;">${sessionScope.memberNickname }님 (회원)</a>
+	                    <a href="trainerPermitList.do" style="color: gray;font-size: 0.9em;padding-left: 10px;">${sessionScope.memberNickname }님 (회원)</a>
 	                    </c:if>
                     	
 	                    <c:if test="${memberGubun == 'T' }">	
                     	<img src="./resources/img/header/health.png" width="16px" height="16px">
-	                    <a href="trainerPermitList" style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 10px;">${sessionScope.memberNickname }님 (트레이너)</a>
+	                    <a href="trainerPermitList.do" style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 10px;">${sessionScope.memberNickname }님 (트레이너)</a>
 	                    </c:if>
 	                    <img src="./resources/img/header/lock.png" width="16px" height="16px;">
-	                    <a href="myinfo" style="color: gray;font-size: 0.9em;padding-left: 0px;">마이페이지</a>
-                    	<a href="logout" style="color: gray;font-size: 0.9em;padding-left: 10px;cursor: pointer;">로그아웃</a>
+	                    <a href="myinfo.do" style="color: gray;font-size: 0.9em;padding-left: 0px;">마이페이지</a>
+                    	<a href="logout.do" style="color: gray;font-size: 0.9em;padding-left: 10px;cursor: pointer;">로그아웃</a>
                     </c:if>
                     
                     
@@ -107,22 +107,22 @@
                         <nav class="header__menu" >
                             <ul>
                                 <li class="active"><a href="home">Home</a></li>
-                                <li><a href="aiTeachList">AI교정</a></li>
-								<li><a href="#">식단관리</a>
+                                <li><a href="aiTeachList.do">AI교정</a></li>
+								<li><a>식단관리</a>
                                     <ul class="dropdown">
-                                        <li><a href="chatList">1:1 상담</a></li>
+                                        <li><a href="chatList.do">1:1 상담</a></li>
                                         <li><a href="">칼로리 계산기</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="lessonList">온라인클래스</a></li>
-                                <li><a href="#">커뮤니티</a>
+                                <li><a href="lessonList.do">온라인클래스</a></li>
+                                <li><a>커뮤니티</a>
                                     <ul class="dropdown">
-                                        <li><a href="recipeList">레시피</a></li>
-                                        <li><a href="boardList">자유게시판</a></li>
+                                        <li><a href="recipeList.do">레시피</a></li>
+                                        <li><a href="boardList.do">자유게시판</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="noticeList">공지사항</a></li>
-                                <li><a href="qnaList">문의하기</a></li>
+                                <li><a href="noticeList.do">공지사항</a></li>
+                                <li><a href="qnaList.do">문의하기</a></li>
 <!--                                 <li><a href="#">예시</a> -->
 <!--                                     <ul class="dropdown"> -->
 <!--                                         <li><a href="aboutUs">aboutUs</a></li> -->
