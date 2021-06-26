@@ -2,18 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.profit.mapper.MypageMapper">
 
-    <!-- 아이디 중복 검사 -->
-<!--     <select id="selectMemberIdCheck" parameterType="String" resultType="int"> -->
-<!--         select count(*) from MEMBER where MEMBER_ID = #{memberId} -->
-<!--     </select> -->
-	<resultMap id="processMemberInfo" type="Map">
-		<result property="memberName" column="memberName"/>
-		<result property="memberGender" column="memberGender"/>
-		<result property="memberMobile" column="memberMobile"/>
-	</resultMap>
-    
+
     <!-- 회원 기본정보 가져오기 -->
-    <select id="selectMemberInfo" parameterType="String" resultMap="processMemberInfo">
+    <select id="selectMemberInfo" parameterType="String" resultType="egovMap">
         select 
         	member_name, 
         	member_gender, 

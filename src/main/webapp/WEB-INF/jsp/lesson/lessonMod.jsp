@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
 <head>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
@@ -104,8 +107,169 @@ $(document).ready(function(){
 	});
 });
 
-</script>
+function fn_lessonMod(){
+	var lessonTitle = $("#lessonTitle").val();
+	var lessonCategorySeq = $("input:radio[name=cate_type]:checked").val();
+	var lessonTitleComment = $("#lessonTitleComment").val();
+	var lessonBalance = $("#count1").val();
+	var lessonFlex = $("#count2").val();
+	var lessonStrong = $("#count3").val();
+	var lessonCore = $("#count4").val();
+	var lessonIntro = $("#lessonIntro").val();
+	var lessonPrice = $("#lessonPrice").val();
+	var lessonMonth = $("#lessonMonth").val();
+	var filePath_temp=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
+	//전체경로를 \ 나눔.
+	var filePathSplit = filePath_temp.split('\\'); 
+	//전체경로를 \로 나눈 길이.
+	var filePathLength = filePathSplit.length;
+	var fileRealName = filePathSplit[2];
+	var filePath= uploadPath + fileRealName;
+	var fileSaveName = guid() + "_" + fileRealName;
+	
+	console.log(lessonTitle);
+	console.log(lessonCategorySeq);
+	console.log(lessonTitleComment);
+	console.log(lessonBalance);
+	console.log(lessonFlex);
+	console.log(lessonStrong);
+	console.log(lessonCore);
+	console.log(lessonIntro);
+	console.log(lessonPrice);
+	console.log(lessonMonth);
+	console.log(filePath);
+	console.log(fileRealName);
+	console.log(fileSaveName);
+	
+	var chk_radio = document.getElementsByName('cate_type');
+	var sel_type = null;
+	for(var i=0;i<chk_radio.length;i++){
+		if(chk_radio[i].checked == true){ 
+			sel_type = chk_radio[i].value;
+		}
+	}
 
+	if(sel_type == null){
+        alert("카테고리를 선택하세요."); 
+		return;
+	}
+
+	
+	if(lessonTitle==""){
+		alert("제목을 입력해주세요.");
+		$("#lessonTitle").focus();
+		return;
+	}
+	
+	if(lessonTitleComment==""){
+		alert("강의소개를 입력해주세요.");
+		$("#lessonTitleComment").focus();
+		return;
+	}
+	
+	if(lessonMonth==""){
+		alert("강의일수를 입력해주세요.");
+		$("#lessonMonth").focus();
+		return;
+	}
+	
+	
+	if(lessonIntro==""){
+		alert("강의소개를 입력해주세요.");
+		$("#lessonIntro").focus();
+		return;
+	}	
+	
+	
+	if(lessonPrice==""){
+		alert("강의 가격을 입력해주세요.");
+		$("#lessonPrice").focus();
+		return;
+	}
+	
+	var price_reg = /^[0-9]*$/;
+	if (!price_reg.test(lessonPrice)) {
+		alert("가격은 (특수기호없이)숫자만 입력해주세요. \n ex) 300000");
+		$("#lessonPrice").focus();
+		return false;
+	}
+	
+	var month_reg = /^(0[1-9]|1[012])$/;
+	if (!month_reg.test(lessonMonth)) {
+		alert("수강기간은 1월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
+		$("#lessonMonth").focus();
+		return false;
+	}
+	
+	var fileCheck = document.getElementById("file").value;
+    if(!fileCheck){
+        alert("파일을 첨부해 주세요");
+        return false;
+    }
+	
+	var param = "";
+	param += "dummy=" + Math.random();
+	param += "&lessonTitle="+lessonTitle;
+	param += "&lessonCategorySeq="+lessonCategorySeq;
+	param += "&lessonTitleComment="+lessonTitleComment;
+	param += "&lessonBalance="+lessonBalance;
+	param += "&lessonFlex="+lessonFlex;
+	param += "&lessonStrong="+lessonStrong;
+	param += "&lessonCore="+lessonCore;
+	param += "&lessonIntro="+lessonIntro;
+	param += "&lessonPrice="+lessonPrice;
+	param += "&lessonMonth="+lessonMonth;
+	param += "&filePath="+filePath;
+	param += "&fileRealName="+fileRealName;
+	param += "&fileSaveName="+fileSaveName;
+
+	console.log(param)
+	$.ajax({
+		url : "lesson_modAjax.do",
+		data : param,
+		dataType : "text",
+// 		type : "post",
+		async: false,
+		statusCode : {
+			404 : function() {
+				alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
+			}
+		},
+		success : function(data) {
+			console.log(data);
+			if(data =="ok"){
+				alert("강의가 정상적으로 수정되었습니다.")
+				location.href="lessonDetail.do?lessonSeq"+lessonSeq;
+			}else{
+				alert("추가도중 문제가 생겼습니다.");
+				return;
+			}
+		}
+	});
+}
+
+</script>
+<style>
+.site-btn_s{
+font-size: 14px;
+	color: #5768AD;
+	font-weight: 700;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 14px 50px;
+	background: #ffffff;
+	border: none;
+	letter-spacing: 2px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+.site-btn_s:hover{
+background: #ffffff;
+	border: 1px solid #5768AD;
+	color: #5768AD;
+	cursor: pointer;
+}
+</style>
 </head>
 <body>
 	<!-- Breadcrumb Begi -->
@@ -130,7 +294,7 @@ $(document).ready(function(){
 			<br />
 			${resultList}
 			<main role="main" class="container">
-				<form name="form" method="post" action="lessonAdd" style="text-align: center;" enctype="multipart/form-data">
+				<form name="form"  action="lessonMod" style="text-align: center;" enctype="multipart/form-data">
 					<div class="write-title">
 						<label>
 							<p>
@@ -139,8 +303,9 @@ $(document).ready(function(){
 							</p>
 						</label>
 						<div class="c_radio">
+						<c:if test="${resultList.lessonCategorySeq eq '1'}">
 							<div style="display: inline-block;">
-								<input type="radio" name="cate_type" id="gym" value="1" autocomplete="off" style="opacity: 0;">
+								<input type="radio" name="cate_type" id="gym" value="1" autocomplete="off" style="opacity: 0;" checked>
 								<label for="gym">헬스</label>
 								<input type="radio" name="cate_type" id="yoga" value="2" autocomplete="off" style="opacity: 0">
 								<label for="yoga">요가</label>
@@ -151,6 +316,53 @@ $(document).ready(function(){
 								<input type="radio" name="cate_type" id="exercise" value="4" autocomplete="off" style="opacity: 0">
 								<label for="exercise">맨몸운동</label>
 							</div>
+						</c:if>
+						
+						<c:if test="${resultList.lessonCategorySeq eq '2'}">
+							<div style="display: inline-block;">
+								<input type="radio" name="cate_type" id="gym" value="1" autocomplete="off" style="opacity: 0;" >
+								<label for="gym">헬스</label>
+								<input type="radio" name="cate_type" id="yoga" value="2" autocomplete="off" style="opacity: 0" checked>
+								<label for="yoga">요가</label>
+							</div>
+							<div style="display: inline-block;">
+								<input type="radio" name="cate_type" id="filates" value="3" autocomplete="off" style="opacity: 0">
+								<label for="filates">필라테스</label>
+								<input type="radio" name="cate_type" id="exercise" value="4" autocomplete="off" style="opacity: 0">
+								<label for="exercise">맨몸운동</label>
+							</div>
+						</c:if>
+						
+						<c:if test="${resultList.lessonCategorySeq eq '3'}">
+							<div style="display: inline-block;">
+								<input type="radio" name="cate_type" id="gym" value="1" autocomplete="off" style="opacity: 0;">
+								<label for="gym">헬스</label>
+								<input type="radio" name="cate_type" id="yoga" value="2" autocomplete="off" style="opacity: 0">
+								<label for="yoga">요가</label>
+							</div>
+							<div style="display: inline-block;">
+								<input type="radio" name="cate_type" id="filates" value="3" autocomplete="off" style="opacity: 0" checked>
+								<label for="filates">필라테스</label>
+								<input type="radio" name="cate_type" id="exercise" value="4" autocomplete="off" style="opacity: 0">
+								<label for="exercise">맨몸운동</label>
+							</div>
+						</c:if>
+						
+						<c:if test="${resultList.lessonCategorySeq eq '4'}">
+							<div style="display: inline-block;">
+								<input type="radio" name="cate_type" id="gym" value="1" autocomplete="off" style="opacity: 0;">
+								<label for="gym">헬스</label>
+								<input type="radio" name="cate_type" id="yoga" value="2" autocomplete="off" style="opacity: 0">
+								<label for="yoga">요가</label>
+							</div>
+							<div style="display: inline-block;">
+								<input type="radio" name="cate_type" id="filates" value="3" autocomplete="off" style="opacity: 0">
+								<label for="filates">필라테스</label>
+								<input type="radio" name="cate_type" id="exercise" value="4" autocomplete="off" style="opacity: 0" checked>
+								<label for="exercise">맨몸운동</label>
+							</div>
+						</c:if>
+						
 						</div>
 					</div>
 					<p>
@@ -224,7 +436,9 @@ $(document).ready(function(){
 						
 						<p>
 							<label for="lessonPrice" style="float:left;">강의소개 : </label>
-							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" value="${resultList.lessonIntro}" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."></textarea>
+							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....." style="">
+${resultList.lessonIntro}
+							</textarea>
 						</p>
 						
 						<p>
@@ -250,8 +464,9 @@ $(document).ready(function(){
 					<br />
 					</form>
 					<div style="text-align: right;">
-                             <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_lessonAdd()">등록</button>
+                             <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_lessonMod()">수정완료</button>
                     </div>
+					
 					
 			</main>
 		</section>

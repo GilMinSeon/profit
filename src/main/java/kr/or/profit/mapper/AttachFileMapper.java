@@ -8,4 +8,8 @@ public interface AttachFileMapper {
 	
 	//온라인클래스 강의등록 파일
 	int insertLessonFile(AttachFileVO vo) throws Exception;
+
+	//온라인클래스 강의 수정 파일
+	int updateLessonFile(AttachFileVO vo) throws Exception;
+
 }

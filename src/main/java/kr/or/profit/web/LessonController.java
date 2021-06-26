@@ -94,8 +94,8 @@ public class LessonController {
 		System.out.println(fileVO.getFileRealName());
 		
 		String message = "";
-		int cnt = lessonService.insertLesson(lessonVO);
-		int cnt1 = fileService.insertLessonFile(fileVO);
+		int cnt = fileService.insertLessonFile(fileVO);
+		int cnt1 = lessonService.insertLesson(lessonVO);
 		if(cnt == 1 && cnt1 ==1) {
 			message = "ok";
 		}
@@ -108,7 +108,7 @@ public class LessonController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "lessonMod.do", method = RequestMethod.GET)
+	@RequestMapping(value = "lessonMod.do")
 	public String lessonMod(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
 		Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
 		model.addAttribute("resultList", lessonDetailList);
@@ -116,21 +116,29 @@ public class LessonController {
 		return "lesson/lessonMod";
 	}
 	
-//	@RequestMapping(value = "lesson_upd", method = RequestMethod.POST)
-//	@ResponseBody
-//	public String lessonMod(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
-//		
-//		model = model.addAttribute("data", lessonVO);
-//		
-//		String message = "";
-//		int cnt = lessonService.updateLesson(lessonVO);
-//		int cnt1 = fileService.insertLessonFile(fileVO);
-//		if(cnt == 1 && cnt1 ==1) {
-//			message = "ok";
-//		}
-//		return message;
-//	}
+	@RequestMapping(value = "lesson_modAjax.do")
+	@ResponseBody
+	public String lessonModFinish(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
+		
+		model = model.addAttribute("data", lessonVO);
+		
+		String message = "";
+		int cnt = lessonService.updateLesson(lessonVO);
+		int cnt1 = fileService.updateLessonFile(fileVO);
+		if(cnt == 1 && cnt1 ==1) {
+			message = "ok";
+		}
+		return message;
+	}
 	
+	/**
+	 * 강의 삭제
+	 */
+	@RequestMapping(value = "lesson_delAjax.do", method = RequestMethod.GET)
+	public String lessonDel(LessonVO lessonVO, Locale locale, Model model) {
+		int cnt = lessonService.deleteLesson(lessonVO);
+		return "lesson/classDetail";
+	}
 	
 
 	@RequestMapping(value = "classDetail.do", method = RequestMethod.GET)

@@ -2,6 +2,7 @@ package kr.or.profit.vo;
 
 public class LessonVO {
 	private String lessonSeq;
+	private String fileSeq;
 	private String commonSeq;
 	private String lessonCategorySeq;
 	private String lessonTitle;
@@ -18,14 +19,17 @@ public class LessonVO {
 	private String inDate;
 	private String upUserId;
 	private String upDate;
-	private String lessonHit;
-	
-	
 	public String getLessonSeq() {
 		return lessonSeq;
 	}
 	public void setLessonSeq(String lessonSeq) {
 		this.lessonSeq = lessonSeq;
+	}
+	public String getFileSeq() {
+		return fileSeq;
+	}
+	public void setFileSeq(String fileSeq) {
+		this.fileSeq = fileSeq;
 	}
 	public String getCommonSeq() {
 		return commonSeq;
@@ -123,12 +127,12 @@ public class LessonVO {
 	public void setUpDate(String upDate) {
 		this.upDate = upDate;
 	}
-	public String getLessonHit() {
-		return lessonHit;
-	}
-	public void setLessonHit(String lessonHit) {
-		this.lessonHit = lessonHit;
-	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

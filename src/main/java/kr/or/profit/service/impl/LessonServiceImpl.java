@@ -25,10 +25,10 @@ public class LessonServiceImpl implements LessonService {
 	}
 
 	//강의 수정
-//	@Override
-//	public int updateLesson(LessonVO vo) throws Exception {
-//		return lessonDAO.updateLesson(vo);
-//	}
+	@Override
+	public int updateLesson(LessonVO vo) throws Exception {
+		return lessonDAO.updateLesson(vo);
+	}
 
 	//강의 목록조회
 	@Override
@@ -41,6 +41,15 @@ public class LessonServiceImpl implements LessonService {
 	public Map<String, Object> selectLessonDetail(LessonVO vo) throws Exception {
 		return lessonDAO.selectLessonDetail(vo);
 	}
+
+	//강의 삭제(비활성화여부)
+	@Override
+	public int deleteLesson(LessonVO vo) throws Exception {
+		return lessonDAO.deleteLesson(vo);
+		
+	}
+
+	
 	
 
 

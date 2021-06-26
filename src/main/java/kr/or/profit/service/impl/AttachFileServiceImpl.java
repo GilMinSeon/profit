@@ -20,4 +20,11 @@ public class AttachFileServiceImpl implements AttachFileService {
 		return fileDAO.insertLessonFile(vo);
 	}
 
+	//온라인클래스 강의 수정 파일
+	@Override
+	public int updateLessonFile(AttachFileVO vo) throws Exception {
+		return fileDAO.updateLessonFile(vo);
+	}
+
+
 }

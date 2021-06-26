@@ -27,7 +27,7 @@
 				UP_USER_ID,
 				UP_DATE
 			)
-			VALUES (#{ , jdbcType=VARCHAR},
+			VALUES (#{lessonSeq, jdbcType=VARCHAR},
 					#{commonSeq, jdbcType=VARCHAR},
 					#{lessonCategorySeq, jdbcType=VARCHAR},
 					#{lessonTitle, jdbcType=VARCHAR},
@@ -52,24 +52,23 @@
         select count(*) from LESSON
     </select>
     
-<!--    	<update id="updateLesson"> -->
+    <update id="updateLesson" parameterType="LessonVO">
 
-<!-- 			UPDATE LESSON -->
-<!-- 			SET LESSON_CATEGORY_SEQ=#{lessonCategorySeq} -->
-<!-- 				, LESSON_TITLE=#{lessonTitle} -->
-<!-- 				, LESSON_TITLE_COMMENT=#{lessonTitleComment} -->
-<!-- 				, LESSON_BALANCE=#{lessonBalance} -->
-<!-- 				, LESSON_FLEX=#{lessonFlex} -->
-<!-- 				, LESSON_STRONG=#{lessonStrong} -->
-<!-- 				, LESSON_CORE=#{lessonCore} -->
-<!-- 				, LESSON_INTRO=#{lessonIntro} -->
-<!-- 				, LESSON_PRICE=#{lessonPrice} -->
-<!-- 				, LESSON_MONTH=#{lessonMonth} -->
-<!-- 				, UP_USER_ID=1 -->
-<!-- 				, UP_DATE= to_char(sysdate, 'YYYYMMDD.HH24MISS') -->
-<!-- 				  WHERE LESSON_SEQ=#{lessonSeq} -->
+			UPDATE LESSON
+			SET LESSON_CATEGORY_SEQ = #{lessonCategorySeq, jdbcType=VARCHAR},
+				LESSON_TITLE = #{lessonTitle, jdbcType=VARCHAR},
+				LESSON_TITLE_COMMENT = #{lessonTitleComment, jdbcType=VARCHAR},
+				LESSON_BALANCE = #{lessonBalance, jdbcType=VARCHAR},
+				LESSON_FLEX = #{lessonFlex, jdbcType=VARCHAR},
+				LESSON_STRONG = #{lessonStrong, jdbcType=VARCHAR},
+				LESSON_CORE = #{lessonCore, jdbcType=VARCHAR},
+				LESSON_INTRO = #{lessonIntro, jdbcType=VARCHAR},
+				LESSON_PRICE = #{lessonPrice, jdbcType=VARCHAR},
+                LESSON_MONTH = #{lessonMonth, jdbcType=VARCHAR},
+                UP_DATE = to_char(sysdate, 'YYYYMMDD.HH24MISS')
+            WHERE LESSON_SEQ = #{lessonSeq, jdbcType=VARCHAR}
 
-<!-- 	</update> -->
+	</update>
 	    
 	    
 	    <select id="selectLessonList"  resultType="egovMap">	<!-- egovMap :  key 에 대하여 Camel Case 변환하여 super.put -->
@@ -120,6 +119,25 @@
 			WHERE A.LESSON_SEQ=#{lessonSeq, jdbcType=VARCHAR}
 
 	</select>
+	
+
+    <update id="deleteLesson" parameterType="LessonVO">
+
+			UPDATE LESSON
+			SET LESSON_CATEGORY_SEQ = #{lessonCategorySeq, jdbcType=VARCHAR},
+				LESSON_TITLE = #{lessonTitle, jdbcType=VARCHAR},
+				LESSON_TITLE_COMMENT = #{lessonTitleComment, jdbcType=VARCHAR},
+				LESSON_BALANCE = #{lessonBalance, jdbcType=VARCHAR},
+				LESSON_FLEX = #{lessonFlex, jdbcType=VARCHAR},
+				LESSON_STRONG = #{lessonStrong, jdbcType=VARCHAR},
+				LESSON_CORE = #{lessonCore, jdbcType=VARCHAR},
+				LESSON_INTRO = #{lessonIntro, jdbcType=VARCHAR},
+				LESSON_PRICE = #{lessonPrice, jdbcType=VARCHAR},
+                LESSON_MONTH = #{lessonMonth, jdbcType=VARCHAR},
+                UP_DATE = to_char(sysdate, 'YYYYMMDD.HH24MISS')
+            WHERE LESSON_SEQ = #{lessonSeq, jdbcType=VARCHAR}
+
+	</update>
    	
     
 </mapper>

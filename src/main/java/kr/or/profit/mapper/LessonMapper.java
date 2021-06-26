@@ -13,13 +13,21 @@ public interface LessonMapper {
 	int insertLesson(LessonVO vo) throws Exception;
 
 	//강의 수정
-//	int updateLesson(LessonVO vo) throws Exception;
-
+	int updateLesson(LessonVO vo) throws Exception;
+	
 	//강의 목록 조회
 	List<?> selectLessonList() throws Exception;
 
 	//강의 상세조회
 	Map<String, Object> selectLessonDetail(LessonVO vo) throws Exception;
+
+	//강의 삭제(비활성화 여부)
+	int deleteLesson(LessonVO vo) throws Exception;
+
+	
+	
+
+	
 
 
 	
