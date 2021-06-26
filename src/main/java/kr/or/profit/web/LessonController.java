@@ -47,7 +47,7 @@ public class LessonController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "lessonList", method = RequestMethod.GET)
+	@RequestMapping(value = "lessonList.do", method = RequestMethod.GET)
 	public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
 		List<?> lessonList = lessonService.selectLessonList();
 		model.addAttribute("resultList", lessonList);
@@ -79,7 +79,7 @@ public class LessonController {
 	
 	
 	
-	@RequestMapping(value = "lessonDetail")
+	@RequestMapping(value = "lessonDetail.do")
 	public String lessonDetail(@RequestParam(value = "lessonSeq") String lessonSeq, HttpServletRequest request,AttachFileVO fileVO, Model model) throws Exception  { 
 //		lessonSeq = request.getParameter("lessonSeq");
 //		model.addAttribute("lessonSeq", lessonSeq);
@@ -123,13 +123,13 @@ public class LessonController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "lessonAdd", method = RequestMethod.GET)
+	@RequestMapping(value = "lessonAdd.do", method = RequestMethod.GET)
 	public String lessonAdd(Locale locale, Model model) {
 		
 		return "lesson/lessonAdd";
 	}
 	
-	@RequestMapping(value = "lesson_ins", method = RequestMethod.POST)
+	@RequestMapping(value = "lesson_insAjax.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
 //		System.out.println(lessonVO.getLessonTitle());
@@ -150,7 +150,7 @@ public class LessonController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "lessonMod", method = RequestMethod.GET)
+	@RequestMapping(value = "lessonMod.do", method = RequestMethod.GET)
 	public String lessonMod(Locale locale, Model model) {
 		
 		return "lesson/lessonMod";
@@ -173,17 +173,17 @@ public class LessonController {
 	
 	
 
-	@RequestMapping(value = "classDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "classDetail.do", method = RequestMethod.GET)
 	public String classDetail(Locale locale, Model model) {
 		
 		return "lesson/classDetail";
 	}
-	@RequestMapping(value = "classAdd", method = RequestMethod.GET)
+	@RequestMapping(value = "classAdd.do", method = RequestMethod.GET)
 	public String classAdd(Locale locale, Model model) {
 		
 		return "lesson/classAdd";
 	}
-	@RequestMapping(value = "classMod", method = RequestMethod.GET)
+	@RequestMapping(value = "classMod.do", method = RequestMethod.GET)
 	public String classMod(Locale locale, Model model) {
 		
 		return "lesson/classMod";
