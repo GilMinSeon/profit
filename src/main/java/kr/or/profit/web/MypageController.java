@@ -218,6 +218,7 @@ public class MypageController {
         Iterator<String> fileNames = multipartRequest.getFileNames();
         
         while(fileNames.hasNext()) {
+        	int cnt = 1;
         	UUID uuid = UUID.randomUUID();
         	
         	System.out.println("uuid : " + uuid);
@@ -240,15 +241,15 @@ public class MypageController {
             String memberId = (String)session.getAttribute("memberId");
             //attach_file 테이블에 저장할 vo list
             AttachFileVO attachvo = new AttachFileVO();
-           
-            attachvo.setMemberId(memberId);
+            attachvo.setFileDetailSeq(Integer.toString(cnt));
             attachvo.setFileRealName(originalFileName);
             attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
             attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
             attachvo.setInUserId(memberId);
             attachvo.setUpUserId(memberId);
             fileVOList.add(attachvo);
-        }
+            cnt++;
+          }
         System.out.println("insert 할 것");
         return fileVOList;
     }

@@ -69,9 +69,9 @@
 	<insert id="insertProcessFile" parameterType="java.util.Map" > 
 		<selectKey resultType="string" keyProperty="proSeq" order="BEFORE">
         		select 
-					NVL(max(to_number(process_seq)),0) + 1 
+					NVL(max(to_number(file_seq)),0) + 1 
         		from 
-        			process
+        			attach_file
     	</selectKey> 
 		
 	    <foreach collection="list" item="item" index="index" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
@@ -80,8 +80,7 @@
 		   	attach_file
 		   		(
 		   			file_seq, 
-		   			member_id, 
-		   			process_seq, 
+		   			file_detail_seq, 
 		   			file_real_name, 
 		   			file_save_name, 
 		   			file_path, 
