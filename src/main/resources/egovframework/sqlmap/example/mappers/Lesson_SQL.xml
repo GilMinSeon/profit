@@ -3,13 +3,14 @@
 
 <mapper namespace="kr.or.profit.mapper.LessonMapper">
 	
-	<insert id="insertLesson" parameterType="LessonVO">
+	<insert id="insertLesson">
 	    <selectKey order="BEFORE" keyProperty="lessonSeq" resultType="String">
 			SELECT NVL(MAX(TO_NUMBER(LESSON_SEQ)),0)+1 FROM LESSON
 		</selectKey>
 		<![CDATA[
 			INSERT INTO LESSON
 			(	LESSON_SEQ,
+				FILE_SEQ,
 				COMMON_SEQ,
 				LESSON_CATEGORY_SEQ,
 				LESSON_TITLE,
@@ -28,7 +29,8 @@
 				UP_DATE
 			)
 			VALUES (#{lessonSeq, jdbcType=VARCHAR},
-					#{commonSeq, jdbcType=VARCHAR},
+					#{fileSeq, jdbcType=VARCHAR},
+					4,
 					#{lessonCategorySeq, jdbcType=VARCHAR},
 					#{lessonTitle, jdbcType=VARCHAR},
 					#{lessonTitleComment, jdbcType=VARCHAR},
@@ -41,9 +43,9 @@
 					'n',
 					#{lessonMonth, jdbcType=VARCHAR},
 					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'),
+					sysdate,
 					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'))
+					sysdate)
 		]]>
 	</insert>
 	

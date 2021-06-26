@@ -270,7 +270,7 @@ function fn_lessonAdd(){
 			console.log(data);
 			if(data =="ok"){
 				alert("강의가 정상적으로 추가되었습니다.")
-				location.href="lessonList.do"
+				location.href="lessonAdd.do"
 			}else{
 				alert("추가도중 문제가 생겼습니다.");
 				return;
