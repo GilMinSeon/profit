@@ -3,6 +3,7 @@ package kr.or.profit.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.ProcessVO;
 
 public interface MypageService {
@@ -14,5 +15,5 @@ public interface MypageService {
 	public int insertProcess(ProcessVO vo) throws Exception;
 	
 	//파일 추가
-	public int insertProcessFile(List list) throws Exception;
+	public int insertProcessFile(Map map) throws Exception;
 }

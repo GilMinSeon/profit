@@ -3,7 +3,10 @@ package kr.or.profit.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.ProcessVO;
 
 //Mapper Interface => 메서드명과 쿼리ID를 매핑하여 쿼리호출
@@ -17,5 +20,5 @@ public interface MypageMapper {
 	public int insertProcess(ProcessVO vo);
 	
 	//파일추가
-	public int insertProcessFile(List list);
+	public int insertProcessFile(Map map);
 }
