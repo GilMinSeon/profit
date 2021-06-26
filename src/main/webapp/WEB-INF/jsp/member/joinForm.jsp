@@ -121,7 +121,7 @@ input:-webkit-autofill {
 			$.ajax({
 				type : "POST",
 				data : "memberId=" + memberId, //json
-				url : "idcheck",
+				url : "idcheckAjax.do",
 				dataType : "text", //리턴타입
 
 				//전송 후 세팅
@@ -155,7 +155,7 @@ input:-webkit-autofill {
 			$.ajax({
 				type : "POST",
 				data : "memberNickname=" + memberNickname, //json
-				url : "nicknamecheck",
+				url : "nicknamecheckAjax.do",
 				dataType : "text", //리턴타입
 
 				//전송 후 세팅
@@ -188,7 +188,7 @@ input:-webkit-autofill {
 			$.ajax({
 				type : "POST",
 				data : "memberEmail=" + memberEmail, //json
-				url : "emailcheck",
+				url : "emailcheckAjax.do",
 				dataType : "text", //리턴타입
 
 				//전송 후 세팅
@@ -245,7 +245,7 @@ input:-webkit-autofill {
 		<div class="container">
 			<div class="appointment__text">
 				<!-- <form class="appointment__form" action="#"> -->
-				<form class="appointment__form" action="joinMemberTable" id="frm" method="post">
+				<form class="appointment__form" action="joinAjax.do" id="frm" method="post">
 					<div class="text-center">
 
 						<!-- 1. 아이디 // 1) 아이디 중복검사 -->

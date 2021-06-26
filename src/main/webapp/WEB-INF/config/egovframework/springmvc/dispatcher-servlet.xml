@@ -17,9 +17,24 @@
     <!-- 로그인 인터셉터 -->
     <mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/**/*"/>
-			<mvc:mapping path="/*"/>
-			<mvc:exclude-mapping path="/**/*Ajax.do"/>
+		    <mvc:mapping path="/*.do" />
+		    
+			<mvc:exclude-mapping path="/*Ajax.do"/>
+			<mvc:exclude-mapping path="/login.do"/>
+			<mvc:exclude-mapping path="/logout.do"/>
+			<mvc:exclude-mapping path="/home.do"/>
+			<mvc:exclude-mapping path="/join.do"/>
+			<mvc:exclude-mapping path="/findId.do"/>
+			<mvc:exclude-mapping path="/findPwd.do"/>
+			
+			<mvc:exclude-mapping path="/aiTeachList.do"/>
+			<mvc:exclude-mapping path="/chatList.do"/>
+			<mvc:exclude-mapping path="/recipeList.do"/>
+			<mvc:exclude-mapping path="/boardList.do"/>
+			<mvc:exclude-mapping path="/noticeList.do"/>
+			<mvc:exclude-mapping path="/qnaList.do"/>
+			<mvc:exclude-mapping path="/lessonList.do"/>
+			
 			
 			<bean class="kr.or.profit.cmmn.interceptor.AuthenticInterceptor" />
 		</mvc:interceptor>

@@ -35,14 +35,14 @@ function fn_login(){
 	$.ajax({
 		type : "POST",
 		data : "memberId=" + memberId +"&memberPwd=" + memberPwd, //json
-		url : "loginWriteSub",
+		url : "loginSubmitAjax.do",
 		dataType : "text", //리턴타입
 
 		//전송 후 세팅
 		success : function(result) {
 			if (result == "ok") {
 				alert(memberId+"님 로그인 되었습니다")
-				location.href="home";
+				location.href="home.do";
 			} else {
 				alert("로그인 정보를 다시 확인해주세요");
 			}
@@ -96,9 +96,9 @@ function fn_login(){
 							<input type="button" value="카카오로그인" id="submitBtn" style="background: yellow;font-size: 1.1em; ">
 						</div><br>
 							<div class="text-center">
-								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='findId'">아이디 찾기</h5>&nbsp;&nbsp;&nbsp;&nbsp;
-								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='findPwd'">비밀번호 찾기</h5>&nbsp;&nbsp;&nbsp;&nbsp;
-								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='join'">회원가입</h5>
+								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='findId.do'">아이디 찾기</h5>&nbsp;&nbsp;&nbsp;&nbsp;
+								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='findPwd.do'">비밀번호 찾기</h5>&nbsp;&nbsp;&nbsp;&nbsp;
+								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='join.do'">회원가입</h5>
 							</div>
 						
 					</div>

@@ -23,7 +23,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 		  String requestUrl = request.getRequestURL().toString(); 
 		  String contextPath = request.getContextPath();
 		  //로그인 경로 제외 
-		  if(requestUrl.contains(contextPath+"/login")){ 
+		  if(requestUrl.contains(contextPath+"/login.do")){ 
 		      return true;
 		  }
 
@@ -31,14 +31,9 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 		  if(requestUrl.contains(contextPath+"/resources")){ 
 		      return true;
 		  } 
-		  
-		  if(requestUrl.contains(contextPath+"/")){ 
-		      return true;
-		  } 
-		  
 
 		  if(id==null){ 
-		      response.sendRedirect(contextPath+"/login");
+		      response.sendRedirect(contextPath+"/login.do");
 		      return false; 
 		  } 
 
