@@ -2,8 +2,11 @@ package kr.or.profit.web;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +16,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.profit.service.AttachFileService;
 import kr.or.profit.service.LessonService;
@@ -42,11 +47,11 @@ public class LessonController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "lessonList", method = RequestMethod.GET)
+	@RequestMapping(value = "lessonList.do", method = RequestMethod.GET)
 	public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
 		List<?> lessonList = lessonService.selectLessonList();
 		model.addAttribute("resultList", lessonList);
-		System.out.println("dddddddddddd"+model);
+//		System.out.println("dddddddddddd"+model);
 		return "lesson/lessonList";
 	}
 	
@@ -58,13 +63,58 @@ public class LessonController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "lessonDetail", method = RequestMethod.GET)
-	public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
-		List<?> lessonDetailList = lessonService.selectLessonDetail();
+//	@RequestMapping(value="lessonDetail",method=RequestMethod.GET)
+//	public ModelAndView detail(@RequestParam Map<String, Object> map) throws Exception {
+//		Map<String, Object> detailMap = lessonService.selectLessonDetail(map);	
+//		
+//		ModelAndView mav = new ModelAndView();
+//		//뷰로 전달할 Map 데이터를 담음
+//		mav.addObject("data", detailMap);
+//		String lessonSeq = map.get("lessonSeq").toString();	//3
+//		mav.addObject("lessonSeq", lessonSeq);
+//		mav.setViewName("lesson/lessonDetail");
+//		
+//		return mav;
+//	}
+	
+	
+	
+	@RequestMapping(value = "lessonDetail.do")
+	public String lessonDetail(@RequestParam(value = "lessonSeq") String lessonSeq, HttpServletRequest request,AttachFileVO fileVO, Model model) throws Exception  { 
+//		lessonSeq = request.getParameter("lessonSeq");
+//		model.addAttribute("lessonSeq", lessonSeq);
+		System.out.println("lessonSeq" + lessonSeq);
+		List<?> lessonDetailList = lessonService.selectLessonDetail(lessonSeq);
 		model.addAttribute("resultList", lessonDetailList);
-		System.out.println("resultList"+model);
+		System.out.println("제발찍혀라" + model);
 		return "lesson/lessonDetail";
 	}
+	
+	
+	
+//	@RequestMapping(value = "lessonDetail", method = RequestMethod.GET)
+//	public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, HttpServletRequest request,String lessonSeq,AttachFileVO fileVO, Model model) throws Exception  { 
+//		lessonSeq = request.getParameter("lessonSeq");
+//		model.addAttribute("lessonSeq", lessonSeq);
+//		System.out.println("lessonSeq" + model);
+//		List<?> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
+//		model.addAttribute("resultList", lessonDetailList);
+//		System.out.println("제발찍혀라" + model);
+//		return "lesson/lessonDetail";
+//	}
+	
+	
+	
+//	@RequestMapping(value = {"lessonDetail","lessonDetail_view"}, method = RequestMethod.GET)
+//	@ResponseBody
+//	public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, HttpServletRequest request,String lessonSeq, AttachFileVO fileVO, Model model) throws Exception  { 
+//		lessonSeq = request.getParameter("lessonSeq");
+//		System.out.println("lessonSeq" + lessonSeq);
+//		List<?> lessonDetailList = lessonService.selectLessonDetail(lessonSeq);
+//		model.addAttribute("resultList", lessonDetailList);
+//		System.out.println("AAAAA"+model);
+//		return "lesson/lessonDetail";
+//	}
 	
 	/**
 	 * 강의 등록
@@ -73,13 +123,13 @@ public class LessonController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "lessonAdd", method = RequestMethod.GET)
+	@RequestMapping(value = "lessonAdd.do", method = RequestMethod.GET)
 	public String lessonAdd(Locale locale, Model model) {
 		
 		return "lesson/lessonAdd";
 	}
 	
-	@RequestMapping(value = "lesson_ins", method = RequestMethod.POST)
+	@RequestMapping(value = "lesson_insAjax.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
 //		System.out.println(lessonVO.getLessonTitle());
@@ -100,7 +150,7 @@ public class LessonController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "lessonMod", method = RequestMethod.GET)
+	@RequestMapping(value = "lessonMod.do", method = RequestMethod.GET)
 	public String lessonMod(Locale locale, Model model) {
 		
 		return "lesson/lessonMod";
@@ -123,17 +173,17 @@ public class LessonController {
 	
 	
 
-	@RequestMapping(value = "classDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "classDetail.do", method = RequestMethod.GET)
 	public String classDetail(Locale locale, Model model) {
 		
 		return "lesson/classDetail";
 	}
-	@RequestMapping(value = "classAdd", method = RequestMethod.GET)
+	@RequestMapping(value = "classAdd.do", method = RequestMethod.GET)
 	public String classAdd(Locale locale, Model model) {
 		
 		return "lesson/classAdd";
 	}
-	@RequestMapping(value = "classMod", method = RequestMethod.GET)
+	@RequestMapping(value = "classMod.do", method = RequestMethod.GET)
 	public String classMod(Locale locale, Model model) {
 		
 		return "lesson/classMod";

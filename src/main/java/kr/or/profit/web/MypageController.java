@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.profit.service.MemberService;
 import kr.or.profit.service.MypageService;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.ProcessVO;
 
 /**
@@ -50,36 +51,26 @@ public class MypageController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
 	private static final String CURR_IMAGE_REPO_PATH = 
-            "D:\\A_TeachingMaterial\\6.JspSpring\\other\\images";
-//	@RequestMapping(value="/form")
-//	public String form() {
-//	    return "uploadForm";
-//	}
-	
+            "\\\\192.168.41.6\\upload\\profit";
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "myinfo", method = RequestMethod.GET)
+	@RequestMapping(value = "myinfo.do", method = RequestMethod.GET)
 	public String myinfo(Locale locale, Model model) {
 		
 		return "mypage/myinfo";
 	}
 	
-	@RequestMapping(value = "bookmark", method = RequestMethod.GET)
+	@RequestMapping(value = "bookmark.do", method = RequestMethod.GET)
 	public String bookmark(Locale locale, Model model) {
 		
 		return "mypage/bookmark";
 	}
 	
-	@RequestMapping(value = "trainerApply", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "trainerApply.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String trainerApply(HttpServletRequest request, Model model) throws Exception {
 		HttpSession session = request.getSession();
 		
-		//로그인 생기면 제거해주세용~
-        session.setAttribute("memberId", "dpwls64");
-        session.setAttribute("memberGubun", "U");
-        //
-        
         String memberId = (String) session.getAttribute("memberId");
         List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
         String memberName = list.get(0).get("MEMBER_NAME");
@@ -94,84 +85,78 @@ public class MypageController {
         
 	}
 	
-	@RequestMapping(value = "trainerInfo", method = RequestMethod.GET)
+	@RequestMapping(value = "trainerInfo.do", method = RequestMethod.GET)
 	public String trainerInfo(Locale locale, Model model) {
 		
 		return "mypage/trainerInfo";
 	}
 	
-	@RequestMapping(value = "listenList", method = RequestMethod.GET)
+	@RequestMapping(value = "listenList.do", method = RequestMethod.GET)
 	public String listenList(Locale locale, Model model) {
 		
 		return "mypage/listenList";
 	}
 	
-	@RequestMapping(value = "teachList", method = RequestMethod.GET)
+	@RequestMapping(value = "teachList.do", method = RequestMethod.GET)
 	public String teachList(Locale locale, Model model) {
 		
 		return "mypage/teachList";
 	}
 	
-	@RequestMapping(value = "pwdMod", method = RequestMethod.GET)
+	@RequestMapping(value = "pwdMod.do", method = RequestMethod.GET)
 	public String pwdMod(Locale locale, Model model) {
 		
 		return "mypage/pwdMod";
 	}
 	
-	@RequestMapping(value = "mobileMod", method = RequestMethod.GET)
+	@RequestMapping(value = "mobileMod.do", method = RequestMethod.GET)
 	public String mobileMod(Locale locale, Model model) {
 		
 		return "mypage/mobileMod";
 	}
 
-	@RequestMapping(value = "payDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "payDetail.do", method = RequestMethod.GET)
 	public String payDetail(Locale locale, Model model) {
 		
 		return "mypage/payDetail";
 	}
 	
-	@RequestMapping(value = "ticketPayList", method = RequestMethod.GET)
+	@RequestMapping(value = "ticketPayList.do", method = RequestMethod.GET)
 	public String ticketPayList(Locale locale, Model model) {
 		
 		return "mypage/ticketPayList";
 	}
 	
-	@RequestMapping(value = "ticketPayDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "ticketPayDetail.do", method = RequestMethod.GET)
 	public String ticketPayDetail(Locale locale, Model model) {
 		
 		return "mypage/ticketPayDetail";
 	}
 	
-	@RequestMapping(value = "myChatList", method = RequestMethod.GET)
+	@RequestMapping(value = "myChatList.do", method = RequestMethod.GET)
 	public String myChatList(Locale locale, Model model) {
 		
 		return "mypage/myChatList";
 	}
 	
-	@RequestMapping(value = "myChatDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "myChatDetail.do", method = RequestMethod.GET)
 	public String myChatDetail(Locale locale, Model model) {
 		
 		return "mypage/myChatDetail";
 	}
 	
 	
-	@RequestMapping(value="form")
-	public String form() {
-	    return "mypage/test";
-	}
+//	@RequestMapping(value="form")
+//	public String form() {
+//	    return "mypage/test";
+//	}
 	
-	@RequestMapping(value="result", method= {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="result.do", method= {RequestMethod.POST, RequestMethod.GET})
 	public String result() {
 	    return "mypage/result";
 	}
 	
-//	@RequestMapping(value="upload", method=RequestMethod.GET)
-//    public ModelAndView uploadGet(ModelAndView mav) throws Exception{
-//		mav.setViewName("mypage/result");
-//		return mav;
-//	}
-	
-	@RequestMapping(value="upload", method=RequestMethod.POST)
+	@RequestMapping(value="uploadAjax.do", method=RequestMethod.POST)
 	@ResponseBody
     public String upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
@@ -200,12 +185,26 @@ public class MypageController {
 	    Enumeration enu = multipartRequest.getParameterNames();
 	        
 	    List fileList = fileProcess(multipartRequest);
-	    for(int i=0;i<fileList.size();i++) {
-        	String name = fileList.get(i).toString();
-        	map.put("file"+(i+1), name);
-        }
-        map.put("fileList", fileList);
-        
+	    List fileListUid = new ArrayList<>();
+	    List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
+	    
+	    for(int i=1; i<fileList.size()+1; i++) {
+	    	System.out.println("uid 이름");
+	    	fileListUid.add(multipartRequest.getParameter("file" + i + "_uid"));
+	    	
+	    	AttachFileVO fileVO = new AttachFileVO();
+	    	
+	    	String realname = multipartRequest.getParameter("file" + i);
+	    	String savename = multipartRequest.getParameter("file" + i + "_uid");
+	    	String path = CURR_IMAGE_REPO_PATH + savename;
+	    	
+	    	fileVO.setMemberId((String)session.getAttribute("memberId"));
+	    	fileVO.setFileRealName(realname);
+	    	fileVO.setFileSaveName(savename);
+	    	fileVO.setFilePath(path);
+	    	
+	    	fileVOList.add(fileVO);
+	    }
         
         return "ok";
         

@@ -2,27 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="kr.or.profit.mapper.LessonMapper">
-    
-    <resultMap id="lesson" type="kr.or.profit.vo.LessonVO">
-		<result property="lessonSeq" column="lesson_seq"/>
-		<result property="commonSeq" column="common_seq"/>
-		<result property="lessonCategorySeq" column="lesson_category_seq"/>
-		<result property="lessonTitle" column="lesson_title"/>
-		<result property="lessonTitleComment" column="lesson_title_comment"/>
-		<result property="lessonBalance" column="lesson_balance"/>
-		<result property="lessonFlex" column="lesson_flex"/>
-		<result property="lessonStrong" column="lesson_strong"/>
-		<result property="lessonCore" column="lesson_core"/>
-		<result property="lessonIntro" column="lesson_intro"/>
-		<result property="lessonPrice" column="lesson_price"/>
-		<result property="lessonPrivateFlag" column="lesson_private_flag"/>
-		<result property="lessonMonth" column="lesson_month"/>
-		<result property="inUserId" column="in_user_id"/>
-		<result property="inDate" column="in_date"/>
-		<result property="upUserId" column="up_user_id"/>
-		<result property="upDate" column="up_date"/>
-		<result property="lessonHit" column="lesson_hit"/>
-	</resultMap>
 	
 	<insert id="insertLesson" parameterType="LessonVO">
 	    <selectKey order="BEFORE" keyProperty="lessonSeq" resultType="String">
@@ -129,7 +108,7 @@
 	</select>
 	    
    	
-    <select id="selectLessonDetail" resultMap="lesson">
+    <select id="selectLessonDetail" resultType="egovMap">
 
 		SELECT A.LESSON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
         A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_PATH

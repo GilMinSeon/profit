@@ -1,6 +1,7 @@
 package kr.or.profit.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.or.profit.vo.LessonVO;
 
@@ -17,7 +18,12 @@ public interface LessonService {
 	public List<?> selectLessonList() throws Exception;
 
 	//강의 상세조회
-	public List<?> selectLessonDetail() throws Exception;
+//	public List<?> selectLessonDetail(String lessonSeq) throws Exception;
+
+//	public List<?> selectLessonDetail(LessonVO lessonVO) throws Exception;
+	public List<?> selectLessonDetail(String lessonSeq) throws Exception;
+
+//	public Map<String, Object> selectLessonDetail(Map<String, Object> map) throws Exception;
 
 
 	

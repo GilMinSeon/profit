@@ -4,7 +4,10 @@
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+
 <body>
+
 	<!-- Breadcrumb Begin -->
 	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg">
 		<div class="container">
@@ -276,7 +279,7 @@
    		 	</div>
 			<div class="row">
 			<c:forEach var="result" items="${resultList}" varStatus="status">
-<!-- 			<input type="hidden" name="lessonSeq"> -->
+			<input type="hidden" name="lessonSeq">
 				<div class="col-lg-4 col-md-6">
 					<div class="classes__item classes__item__page">
 						<div class="classes__item__pic set-bg" data-setbg=${result.filePath} style="background-image: url(&quot;./resources/img/classes/classes-1.jpg&quot;);"></div>
@@ -316,7 +319,7 @@
 									<h6 style="margin-bottom: 25px;">${result.inUserId}</h6>
 								</div>
 							</div>
-							<a href="lessonDetail?lessonSeq=${result.lessonSeq}" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+							<a href="lessonDetail?lessonSeq=${result.lessonSeq}"  class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
 						</div>
 					</div>
 				</div>
@@ -342,5 +345,40 @@
 	<script src="./resources/js/jquery.slicknav.js"></script>
 	<script src="./resources/js/owl.carousel.min.js"></script>
 	<script src="./resources/js/main.js"></script>
+	
+
+	<script>
+// 	function fn_lessonDetail(lessonSeq){
+// 		var params = location.search.substr(location.search.indexOf("?") + 1);
+// 		var lessonSeq = params.substr(params.indexOf("=")+1);	
+// 		console.log(lessonSeq);
+// 		var param = "";
+// 		param += "dummy=" + Math.random();
+// 		param += "&lessonSeq="+lessonSeq;
+		
+// 		$.ajax({
+// 			url : "lessonDetail_view",
+// 			data : param,
+// 			dataType : "text",
+// 			statusCode : {
+// 				404 : function() {
+// 					alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
+// 				}
+// 			},
+// // 			success : function(data) {
+// // 				if(data.msg =="ok"){
+// // 					alert("정상적으로 삭제되었습니다.");
+// // 					location.href="home";
+					
+// // 				}else{
+// // 					alert("삭제 도중 문제가 생겼습니다");
+// // 				}
+// // 			}
+// 		});
+// 	}
+	
+	
+	</script>
+	
 </body>
 </html>

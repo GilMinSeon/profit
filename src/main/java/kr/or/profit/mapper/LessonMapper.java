@@ -1,9 +1,9 @@
 package kr.or.profit.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
-import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.LessonVO;
 
 @Mapper("lessonMapper")
@@ -19,7 +19,13 @@ public interface LessonMapper {
 	List<?> selectLessonList() throws Exception;
 
 	//강의 상세조회
-	List<?> selectLessonDetail() throws Exception;
+//	List<?> selectLessonDetail(String lessonSeq) throws Exception;
+
+//	List<?> selectLessonDetail(LessonVO vo) throws Exception;
+	List<?> selectLessonDetail(String lessonSeq) throws Exception;
+
+//	Map<String, Object> selectLessonDetail(Map<String, Object> map) throws Exception;
+
 
 	
 

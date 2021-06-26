@@ -12,4 +12,7 @@ public interface MypageService {
 	
 	//프로세스정보추가
 	public int insertProcess(ProcessVO vo) throws Exception;
+	
+	//파일 추가
+	public int insertProcessFile(List list) throws Exception;
 }

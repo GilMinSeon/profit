@@ -15,4 +15,7 @@ public interface MypageMapper {
 	
 	//프로세스정보추가
 	public int insertProcess(ProcessVO vo);
+	
+	//파일추가
+	public int insertProcessFile(List list);
 }
