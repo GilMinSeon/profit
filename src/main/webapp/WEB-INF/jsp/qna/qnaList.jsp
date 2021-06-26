@@ -1,10 +1,60 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+* {
+	box-sizing: border-box;
+}
+
+.que:first-child {
+	border-top: 1px solid black;
+}
+
+.que {
+	position: relative;
+	padding: 17px 0;
+	cursor: pointer;
+	font-size: 20px;
+	border-bottom: 1px solid #dddddd;
+}
+
+.que::before {
+	display: inline-block;
+	content: 'Q';
+	font-size: 16px;
+	font-family: "DM Sans";
+	color: #006633;
+	margin-right: 5px;
+}
+
+.que.on>span {
+	font-weight: bold;
+	color: #006633;
+}
+
+.anw {
+	display: none;
+	overflow: hidden;
+	font-family: "DM Sans";
+	font-size: 16px;
+	background-color: #f4f4f2;
+	padding: 27px 0;
+}
+
+.anw::before {
+	display: inline-block;
+	font-size: 16px;
+	font-weight: bold;
+	color: #666;
+	margin-right: 5px;
+}
+</style>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 	<!-- Breadcrumb Begi -->
@@ -32,148 +82,43 @@
 					<div class="faq__accordion">
 						<h3>FAQ</h3>
 						<br>
-						<div class="accordion" id="accordionExample">
-
-
-							<div class="card">
-								<div class="card-heading active">
-									<a data-toggle="collapse" data-target="#collapseOne"> <span>How
-											to join the community?</span>
-									</a>
-								</div>
-								<div id="collapseOne" class="collapse show"
-									data-parent="#accordionExample">
-									<div class="card-body">
-										<p>No. You may not transfer, trade, or otherwise exchange
-											ClassPass credits. If you’re interested in gifting ClassPass
-											to someone, you can purchase a gift card here.</p>
-										<p>Please allow 1 day for tracking information to update
-											on your order. If you are unable to track your order, please
-											let us know and we'll be happy to assist.</p>
-										<h6>
-											Still need help? <a href="#">Get in touch with us.</a>
-										</h6>
-									</div>
-									<div class="classes__item__text" style="text-align: right;">
-										<a href="faqMod" class="class-btn">수정</a>
-										
-										<a href="qnaList" class="class-btn">삭제</a>
-									</div>
-								</div>
+						<script type="text/javascript">
+							$(document).ready(
+									function() {
+										$(".que").click(
+												function() {
+													$(this).next(".anw").stop()
+															.slideToggle(300);
+												});
+									});
+						</script>
+						<div id="Accordion_wrap">
+							<!-- 아코디언 시작 -->
+							<!-- 1아코디언 -->
+							<div class="que">
+								<span>This is first question.</span>
 							</div>
-
-
-							<div class="card">
-								<div class="card-heading">
-									<a data-toggle="collapse" data-target="#collapseTwo"> <span>Can
-											I give my credits to someone else?</span>
-									</a>
-								</div>
-								<div id="collapseTwo" class="collapse"
-									data-parent="#accordionExample">
-									<div class="card-body">
-										<p>No. You may not transfer, trade, or otherwise exchange
-											ClassPass credits. If you’re interested in gifting ClassPass
-											to someone, you can purchase a gift card here.</p>
-										<p>Please allow 1 day for tracking information to update
-											on your order. If you are unable to track your order, please
-											let us know and we'll be happy to assist.</p>
-										<h6>
-											Still need help? <a href="#">Get in touch with us.</a>
-										</h6>
-									</div>
-								</div>
+							<div class="anw">
+								<span>This is first answer.</span>
 							</div>
-							<div class="card">
-								<div class="card-heading">
-									<a data-toggle="collapse" data-target="#collapseThree"> <span>How
-											to watch video workouts?</span>
-									</a>
-								</div>
-								<div id="collapseThree" class="collapse"
-									data-parent="#accordionExample">
-									<div class="card-body">
-										<p>No. You may not transfer, trade, or otherwise exchange
-											ClassPass credits. If you’re interested in gifting ClassPass
-											to someone, you can purchase a gift card here.</p>
-										<p>Please allow 1 day for tracking information to update
-											on your order. If you are unable to track your order, please
-											let us know and we'll be happy to assist.</p>
-										<h6>
-											Still need help? <a href="#">Get in touch with us.</a>
-										</h6>
-									</div>
-								</div>
+							<!--2아코디언 -->
+							<div class="que">
+								<span>This is second question.</span>
 							</div>
-							<div class="card">
-								<div class="card-heading">
-									<a data-toggle="collapse" data-target="#collapseFour"> <span>What
-											is Zogin?</span>
-									</a>
-								</div>
-								<div id="collapseFour" class="collapse"
-									data-parent="#accordionExample">
-									<div class="card-body">
-										<p>No. You may not transfer, trade, or otherwise exchange
-											ClassPass credits. If you’re interested in gifting ClassPass
-											to someone, you can purchase a gift card here.</p>
-										<p>Please allow 1 day for tracking information to update
-											on your order. If you are unable to track your order, please
-											let us know and we'll be happy to assist.</p>
-										<h6>
-											Still need help? <a href="#">Get in touch with us.</a>
-										</h6>
-									</div>
-								</div>
+							<div class="anw">
+								<span>This is second answer.</span>
 							</div>
-							<div class="card">
-								<div class="card-heading">
-									<a data-toggle="collapse" data-target="#collapseFive"> <span>How
-											many times can I visit a studio each cycle?</span>
-									</a>
-								</div>
-								<div id="collapseFive" class="collapse"
-									data-parent="#accordionExample">
-									<div class="card-body">
-										<p>No. You may not transfer, trade, or otherwise exchange
-											ClassPass credits. If you’re interested in gifting ClassPass
-											to someone, you can purchase a gift card here.</p>
-										<p>Please allow 1 day for tracking information to update
-											on your order. If you are unable to track your order, please
-											let us know and we'll be happy to assist.</p>
-										<h6>
-											Still need help? <a href="#">Get in touch with us.</a>
-										</h6>
-									</div>
-								</div>
+							<!-- 3아코디언 -->
+							<div class="que">
+								<span>This is third question.</span>
 							</div>
-							<div class="card">
-								<div class="card-heading">
-									<a data-toggle="collapse" data-target="#collapseSix"> <span>What
-											is the class cancellation policy?</span>
-									</a>
-								</div>
-								<div id="collapseSix" class="collapse"
-									data-parent="#accordionExample">
-									<div class="card-body">
-										<p>No. You may not transfer, trade, or otherwise exchange
-											ClassPass credits. If you’re interested in gifting ClassPass
-											to someone, you can purchase a gift card here.</p>
-										<p>Please allow 1 day for tracking information to update
-											on your order. If you are unable to track your order, please
-											let us know and we'll be happy to assist.</p>
-										<h6>
-											Still need help? <a href="#">Get in touch with us.</a>
-										</h6>
-									</div>
-								</div>
+							<div class="anw">
+								<span>This is third answer.</span>
 							</div>
+							<!-- 아코디언 끝 -->
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="classes__item__text" style="text-align: right;">
-				<a href="faqAdd" class="class-btn">등록</a>
 			</div>
 		</div>
 	</div>
@@ -193,39 +138,29 @@
 						<th scope="col">작성일</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<th scope="row">1</th>
-						<td colspan="3"><a href="qnaDetail"
-							style="text-decoration: none; color: blue;"> 회원정지 </a></td>
-						<td>O</td>
-						<td>2021/01/02</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td colspan="3"><a href="qnaDetail"
-							style="text-decoration: none; color: blue;"> 이벤트 문의 </a></td>
-						<td>X</td>
-						<td>2021/01/02</td>
-					</tr>
-					<tr>
-						<th scope="row">3</th>
-						<td colspan="3"><a href="qnaDetail"
-							style="text-decoration: none; color: blue;"> 신고 트레이너 </a></td>
-						<td>X</td>
-						<td>2021/01/02</td>
-					</tr>
+					<tbody>
+					<c:forEach var="data" items="${data}" varStatus="status">
+						<tr>
+							<th scope="row">${status.count}</th>
+							<td colspan="3"><a href="qnaDetail"
+								style="text-decoration: none; color: blue;"> ${data.communityTitle} </a></td>
+							<td>${data.cnt}</td>
+							<td>${data.inDate}</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 			<div class="classes__item__text" style="text-align: right;">
 				<a href="qnaAdd" class="class-btn">등록</a>
 			</div>
+			
 		</div>
 	</section>
 	<!-- Classes Section End -->
 
 	<!-- Js Plugins -->
-	<script src="./resources/js/jquery-3.3.1.min.js"></script>
+	
+
 	<script src="./resources/js/bootstrap.min.js"></script>
 	<script src="./resources/js/jquery.nice-select.min.js"></script>
 	<script src="./resources/js/jquery.barfiller.js"></script>
