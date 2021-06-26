@@ -1,57 +1,28 @@
 package kr.or.profit.vo;
 
+import java.sql.Date;
+
 public class AttachFileVO {
 	private String fileSeq;
-	private String communitySeq;
-	private String memberId;
-	private String lessonDetailSeq;
-	private String chattingDetailSeq;
-	private String processSeq;
+	private String fileDetailSeq;
 	private String fileRealName;
 	private String fileSaveName;
 	private String filePath;
 	private String inUserId;
-	private String inDate;
+	private Date inDate;
 	private String upUserId;
-	private String upDate;
-	private String lessonSeq;
-	
-	
+	private Date upDate;
 	public String getFileSeq() {
 		return fileSeq;
 	}
 	public void setFileSeq(String fileSeq) {
 		this.fileSeq = fileSeq;
 	}
-	public String getCommunitySeq() {
-		return communitySeq;
+	public String getFileDetailSeq() {
+		return fileDetailSeq;
 	}
-	public void setCommunitySeq(String communitySeq) {
-		this.communitySeq = communitySeq;
-	}
-	public String getMemberId() {
-		return memberId;
-	}
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
-	public String getLessonDetailSeq() {
-		return lessonDetailSeq;
-	}
-	public void setLessonDetailSeq(String lessonDetailSeq) {
-		this.lessonDetailSeq = lessonDetailSeq;
-	}
-	public String getChattingDetailSeq() {
-		return chattingDetailSeq;
-	}
-	public void setChattingDetailSeq(String chattingDetailSeq) {
-		this.chattingDetailSeq = chattingDetailSeq;
-	}
-	public String getProcessSeq() {
-		return processSeq;
-	}
-	public void setProcessSeq(String processSeq) {
-		this.processSeq = processSeq;
+	public void setFileDetailSeq(String fileDetailSeq) {
+		this.fileDetailSeq = fileDetailSeq;
 	}
 	public String getFileRealName() {
 		return fileRealName;
@@ -77,10 +48,10 @@ public class AttachFileVO {
 	public void setInUserId(String inUserId) {
 		this.inUserId = inUserId;
 	}
-	public String getInDate() {
+	public Date getInDate() {
 		return inDate;
 	}
-	public void setInDate(String inDate) {
+	public void setInDate(Date inDate) {
 		this.inDate = inDate;
 	}
 	public String getUpUserId() {
@@ -89,18 +60,17 @@ public class AttachFileVO {
 	public void setUpUserId(String upUserId) {
 		this.upUserId = upUserId;
 	}
-	public String getUpDate() {
+	public Date getUpDate() {
 		return upDate;
 	}
-	public void setUpDate(String upDate) {
+	public void setUpDate(Date upDate) {
 		this.upDate = upDate;
 	}
-	public String getLessonSeq() {
-		return lessonSeq;
-	}
-	public void setLessonSeq(String lessonSeq) {
-		this.lessonSeq = lessonSeq;
-	}
+	
+	
+	
+	
+	
 	
 	
 	
