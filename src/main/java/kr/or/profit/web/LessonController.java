@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.tiles.autotag.core.runtime.annotation.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -95,8 +97,13 @@ public class LessonController {
 		
 		String message = "";
 		int cnt = fileService.insertLessonFile(fileVO);
+		System.out.println(fileVO.getFileSeq());
+		String fileSeq = fileVO.getFileSeq();
+		
+		lessonVO.setFileSeq(fileSeq);
+		
 		int cnt1 = lessonService.insertLesson(lessonVO);
-		if(cnt == 1 && cnt1 ==1) {
+		if(cnt == 1 && cnt1 == 1 ) {
 			message = "ok";
 		}
 		return message;
@@ -136,7 +143,7 @@ public class LessonController {
 	 */
 	@RequestMapping(value = "lesson_delAjax.do", method = RequestMethod.GET)
 	public String lessonDel(LessonVO lessonVO, Locale locale, Model model) {
-		int cnt = lessonService.deleteLesson(lessonVO);
+//		int cnt = lessonService.deleteLesson(lessonVO);
 		return "lesson/classDetail";
 	}
 	
