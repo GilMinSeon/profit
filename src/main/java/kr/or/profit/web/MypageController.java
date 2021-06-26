@@ -153,104 +153,104 @@ public class MypageController {
 	    return "mypage/result";
 	}
 	
-	@RequestMapping(value="uploadAjax.do", method=RequestMethod.POST)
-	@ResponseBody
-    public String upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
-        HttpSession session = request.getSession();
-        multipartRequest.setCharacterEncoding("utf-8");
-        
-        List<AttachFileVO> fileVOList = fileProcess(multipartRequest, request);
-        Map<String, Object> filemap = new HashMap<String, Object>();
-	    filemap.put("list", fileVOList);
-        int insertResult = mypageService.insertProcessFile(filemap);
-        
-        //회원 정보 Process Table에 Insert
-//        String trainerAward = multipartRequest.getParameter("trainerAward");
-//        String trainerCareer = multipartRequest.getParameter("trainerCareer");
-//        String trainerGym = multipartRequest.getParameter("trainerGym");
+//	@RequestMapping(value="uploadAjax.do", method=RequestMethod.POST)
+//	@ResponseBody
+//    public String upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
+//        HttpSession session = request.getSession();
+//        multipartRequest.setCharacterEncoding("utf-8");
 //        
-//        System.out.println("-----------------------------------");
-//        System.out.println(trainerAward);
-//        System.out.println(trainerCareer);
-//        System.out.println(trainerGym);
-//        System.out.println("-----------------------------------");
-//        
-//        
-//        ProcessVO vo = new ProcessVO();
-//        
-//        String loginMemberId = (String)session.getAttribute("memberId");
-//        vo.setMemberId(loginMemberId);
-//        vo.setTrainerAward(trainerAward);
-//        vo.setTrainerCareer(trainerCareer);
-//        vo.setTrainerGym(trainerGym);
-//        vo.setInUserId(loginMemberId);
-//        vo.setUpUserId(loginMemberId);
-//        mypageService.insertProcess(vo);
-        
-        
-        //다중파일 List로 담아 File 테이블에 추가
-//	    Map map = new HashMap();
-//	    Enumeration enu = multipartRequest.getParameterNames();
-	        
-//	    List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
-	    
-//	    int insertResult = mypageService.insertProcessFile(fileVOList);
-	    
-//	    Map<String, Object> filemap = new HashMap<String, Object>();
+//        List<AttachFileVO> fileVOList = fileProcess(multipartRequest, request);
+//        Map<String, Object> filemap = new HashMap<String, Object>();
 //	    filemap.put("list", fileVOList);
-//	    int insertResult = mypageService.insertProcessFile(filemap);
-	    
-	    String msg = "ng";
-	    
-	    if(insertResult > 0) {
-	    	msg = "ok";
-	    }
-        return msg;
-        
-    }
+//        int insertResult = mypageService.insertProcessFile(filemap);
+//        
+//        //회원 정보 Process Table에 Insert
+////        String trainerAward = multipartRequest.getParameter("trainerAward");
+////        String trainerCareer = multipartRequest.getParameter("trainerCareer");
+////        String trainerGym = multipartRequest.getParameter("trainerGym");
+////        
+////        System.out.println("-----------------------------------");
+////        System.out.println(trainerAward);
+////        System.out.println(trainerCareer);
+////        System.out.println(trainerGym);
+////        System.out.println("-----------------------------------");
+////        
+////        
+////        ProcessVO vo = new ProcessVO();
+////        
+////        String loginMemberId = (String)session.getAttribute("memberId");
+////        vo.setMemberId(loginMemberId);
+////        vo.setTrainerAward(trainerAward);
+////        vo.setTrainerCareer(trainerCareer);
+////        vo.setTrainerGym(trainerGym);
+////        vo.setInUserId(loginMemberId);
+////        vo.setUpUserId(loginMemberId);
+////        mypageService.insertProcess(vo);
+//        
+//        
+//        //다중파일 List로 담아 File 테이블에 추가
+////	    Map map = new HashMap();
+////	    Enumeration enu = multipartRequest.getParameterNames();
+//	        
+////	    List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
+//	    
+////	    int insertResult = mypageService.insertProcessFile(fileVOList);
+//	    
+////	    Map<String, Object> filemap = new HashMap<String, Object>();
+////	    filemap.put("list", fileVOList);
+////	    int insertResult = mypageService.insertProcessFile(filemap);
+//	    
+//	    String msg = "ng";
+//	    
+//	    if(insertResult > 0) {
+//	    	msg = "ok";
+//	    }
+//        return msg;
+//        
+//    }
     
-    private List<AttachFileVO> fileProcess(MultipartHttpServletRequest multipartRequest, HttpServletRequest request) 
-        throws Exception{
-    	HttpSession session = request.getSession();
-    	
-    	List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
-        List<String> fileList = new ArrayList<String>();
-        Iterator<String> fileNames = multipartRequest.getFileNames();
-        
-        while(fileNames.hasNext()) {
-        	UUID uuid = UUID.randomUUID();
-        	
-        	System.out.println("uuid : " + uuid);
-            String fileName = fileNames.next();
-            System.out.println("fileName : " + fileName);
-            MultipartFile mFile = multipartRequest.getFile(fileName);
-            String originalFileName = mFile.getOriginalFilename();
-//            fileList.add(originalFileName);
-            File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
-            if(mFile.getSize() != 0) {
-                if(!file.exists()) {
-                    if(file.getParentFile().mkdir()) {
-                        file.createNewFile();
-                    }
-                }
-                
-                mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName));
-            }
-            
-            String memberId = (String)session.getAttribute("memberId");
-            //attach_file 테이블에 저장할 vo list
-            AttachFileVO attachvo = new AttachFileVO();
-           
-            attachvo.setMemberId(memberId);
-            attachvo.setFileRealName(originalFileName);
-            attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
-            attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
-            attachvo.setInUserId(memberId);
-            attachvo.setUpUserId(memberId);
-            fileVOList.add(attachvo);
-        }
-        System.out.println("insert 할 것");
-        return fileVOList;
-    }
+//    private List<AttachFileVO> fileProcess(MultipartHttpServletRequest multipartRequest, HttpServletRequest request) 
+//        throws Exception{
+//    	HttpSession session = request.getSession();
+//    	
+//    	List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
+//        List<String> fileList = new ArrayList<String>();
+//        Iterator<String> fileNames = multipartRequest.getFileNames();
+//        
+//        while(fileNames.hasNext()) {
+//        	UUID uuid = UUID.randomUUID();
+//        	
+//        	System.out.println("uuid : " + uuid);
+//            String fileName = fileNames.next();
+//            System.out.println("fileName : " + fileName);
+//            MultipartFile mFile = multipartRequest.getFile(fileName);
+//            String originalFileName = mFile.getOriginalFilename();
+////            fileList.add(originalFileName);
+//            File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
+//            if(mFile.getSize() != 0) {
+//                if(!file.exists()) {
+//                    if(file.getParentFile().mkdir()) {
+//                        file.createNewFile();
+//                    }
+//                }
+//                
+//                mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName));
+//            }
+//            
+//            String memberId = (String)session.getAttribute("memberId");
+//            //attach_file 테이블에 저장할 vo list
+//            AttachFileVO attachvo = new AttachFileVO();
+//           
+//            attachvo.setMemberId(memberId);
+//            attachvo.setFileRealName(originalFileName);
+//            attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
+//            attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
+//            attachvo.setInUserId(memberId);
+//            attachvo.setUpUserId(memberId);
+//            fileVOList.add(attachvo);
+//        }
+//        System.out.println("insert 할 것");
+//        return fileVOList;
+//    }
     
 }

@@ -116,29 +116,29 @@ public class LessonController {
 		return "lesson/lessonMod";
 	}
 	
-	@RequestMapping(value = "lesson_modAjax.do")
-	@ResponseBody
-	public String lessonModFinish(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
-		
-		model = model.addAttribute("data", lessonVO);
-		
-		String message = "";
-		int cnt = lessonService.updateLesson(lessonVO);
-		int cnt1 = fileService.updateLessonFile(fileVO);
-		if(cnt == 1 && cnt1 ==1) {
-			message = "ok";
-		}
-		return message;
-	}
-	
-	/**
-	 * 강의 삭제
-	 */
-	@RequestMapping(value = "lesson_delAjax.do", method = RequestMethod.GET)
-	public String lessonDel(LessonVO lessonVO, Locale locale, Model model) {
-		int cnt = lessonService.deleteLesson(lessonVO);
-		return "lesson/classDetail";
-	}
+//	@RequestMapping(value = "lesson_modAjax.do")
+//	@ResponseBody
+//	public String lessonModFinish(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
+//		
+//		model = model.addAttribute("data", lessonVO);
+//		
+//		String message = "";
+//		int cnt = lessonService.updateLesson(lessonVO);
+//		int cnt1 = fileService.updateLessonFile(fileVO);
+//		if(cnt == 1 && cnt1 ==1) {
+//			message = "ok";
+//		}
+//		return message;
+//	}
+//	
+//	/**
+//	 * 강의 삭제
+//	 */
+//	@RequestMapping(value = "lesson_delAjax.do", method = RequestMethod.GET)
+//	public String lessonDel(LessonVO lessonVO, Locale locale, Model model) {
+//		int cnt = lessonService.deleteLesson(lessonVO);
+//		return "lesson/classDetail";
+//	}
 	
 
 	@RequestMapping(value = "classDetail.do", method = RequestMethod.GET)
