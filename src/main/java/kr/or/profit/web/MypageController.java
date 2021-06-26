@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -71,11 +72,16 @@ public class MypageController {
 	public String trainerApply(HttpServletRequest request, Model model) throws Exception {
 		HttpSession session = request.getSession();
 		
+		//좀이따 지워야함
+		session.setAttribute("memberId", "S00001");
+		
         String memberId = (String) session.getAttribute("memberId");
+        System.out.println("memberId : " + memberId);
         List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
-        String memberName = list.get(0).get("MEMBER_NAME");
-        String memberGender = list.get(0).get("MEMBER_GENDER");
-        String memberMobile = list.get(0).get("MEMBER_MOBILE");
+        System.out.println(list.toString());
+        String memberName = list.get(0).get("memberName");
+        String memberGender = list.get(0).get("memberGender");
+        String memberMobile = list.get(0).get("memberMobile");
 
         model.addAttribute("memberName", memberName);
         model.addAttribute("memberGender", memberGender);
@@ -145,12 +151,6 @@ public class MypageController {
 		return "mypage/myChatDetail";
 	}
 	
-	
-//	@RequestMapping(value="form")
-//	public String form() {
-//	    return "mypage/test";
-//	}
-	
 	@RequestMapping(value="result.do", method= {RequestMethod.POST, RequestMethod.GET})
 	public String result() {
 	    return "mypage/result";
@@ -180,6 +180,7 @@ public class MypageController {
         vo.setUpUserId(loginMemberId);
         mypageService.insertProcess(vo);
         
+        
         //다중파일 List로 담아 File 테이블에 추가
 	    Map map = new HashMap();
 	    Enumeration enu = multipartRequest.getParameterNames();
@@ -189,22 +190,24 @@ public class MypageController {
 	    List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
 	    
 	    for(int i=1; i<fileList.size()+1; i++) {
-	    	System.out.println("uid 이름");
-	    	fileListUid.add(multipartRequest.getParameter("file" + i + "_uid"));
+//	    	System.out.println("uid 이름");
+//	    	fileListUid.add(multipartRequest.getParameter("file" + i + "_uid"));
 	    	
-	    	AttachFileVO fileVO = new AttachFileVO();
+//	    	AttachFileVO fileVO = new AttachFileVO();
 	    	
-	    	String realname = multipartRequest.getParameter("file" + i);
-	    	String savename = multipartRequest.getParameter("file" + i + "_uid");
-	    	String path = CURR_IMAGE_REPO_PATH + savename;
+//	    	String realname = multipartRequest.getParameter("file" + i);
+//	    	String savename = multipartRequest.getParameter("file" + i + "_uid");
+//	    	String path = CURR_IMAGE_REPO_PATH + savename;
 	    	
-	    	fileVO.setMemberId((String)session.getAttribute("memberId"));
-	    	fileVO.setFileRealName(realname);
-	    	fileVO.setFileSaveName(savename);
-	    	fileVO.setFilePath(path);
-	    	
-	    	fileVOList.add(fileVO);
+//	    	fileVO.setMemberId((String)session.getAttribute("memberId"));
+//	    	fileVO.setFileRealName(realname);
+//	    	fileVO.setFileSaveName(savename);
+//	    	fileVO.setFilePath(path);
+//	    	
+//	    	fileVOList.add(fileVO);
 	    }
+	    
+	    
         
         return "ok";
         
@@ -216,18 +219,20 @@ public class MypageController {
         Iterator<String> fileNames = multipartRequest.getFileNames();
         
         while(fileNames.hasNext()) {
+        	UUID uuid = UUID.randomUUID();
             String fileName = fileNames.next();
             MultipartFile mFile = multipartRequest.getFile(fileName);
             String originalFileName = mFile.getOriginalFilename();
             fileList.add(originalFileName);
-            File file = new File(CURR_IMAGE_REPO_PATH + "\\" + fileName);
+            File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid + fileName);
             if(mFile.getSize() != 0) {
                 if(!file.exists()) {
                     if(file.getParentFile().mkdir()) {
                         file.createNewFile();
                     }
                 }
-                mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + originalFileName));
+                
+                mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + uuid + originalFileName));
             }
         }
         return fileList;
