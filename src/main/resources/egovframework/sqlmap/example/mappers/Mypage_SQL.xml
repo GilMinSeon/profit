@@ -17,10 +17,13 @@
     
     
     <!-- 프로세스테이블에 정보 추가 -->
-    <insert id="insertProcess" parameterType="ProcessVO" useGeneratedKeys="true" keyProperty="process_id">
+    <insert id="insertProcess" parameterType="ProcessVO">
     
-    	<selectKey resultType="string" keyProperty="boardID" order="BEFORE">
-        	SELECT MAX(boardID)+1 FROM board        
+    	<selectKey resultType="string" keyProperty="fileSeq" order="BEFORE">
+        		select 
+					NVL(max(to_number(file_seq)),0)
+        		from 
+        			attach_file
     	</selectKey>
       		  
         <![CDATA[
@@ -49,7 +52,7 @@
 					from process
 				), 
 				#{memberId}, 
-				<!-- 여기를 채워야함 -->
+				#{fileSeq},
 				#{trainerAward}, 
 				#{trainerCareer}, 
 				#{trainerGym},
@@ -60,28 +63,22 @@
         		sysdate, 
         		#{upUserId}, 
         		sysdate
-        		
+        		)
         ]]>
 	        
     </insert>
     
 <!-- 파일 테이블에 데이터 추가 -->
+	
+	
 	<insert id="insertProcessFile" parameterType="java.util.Map" > 
-		<selectKey resultType="string" keyProperty="proSeq" order="BEFORE">
-        		select 
-					NVL(max(to_number(process_seq)),0) + 1 
-        		from 
-        			process
-    	</selectKey> 
-		
 	    <foreach collection="list" item="item" index="index" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
 	    	 
 			into 
 		   	attach_file
 		   		(
 		   			file_seq, 
-		   			member_id, 
-		   			process_seq, 
+		   			file_detail_seq, 
 		   			file_real_name, 
 		   			file_save_name, 
 		   			file_path, 
@@ -93,26 +90,24 @@
 			values 
 	        
 	        (
-		    		(
-		    			select 
-							NVL(max(to_number(file_seq)),0) + 1 
-        				from 
-        					attach_file
-        			),
-        			#{item.memberId}, 
-        			${index}, 
+		    	(
+		    		select 
+						NVL(max(to_number(file_seq)),0) + 1 
+        			from 
+        				attach_file),
+        			#{item.fileDetailSeq}, 
         			#{item.fileRealName}, 
         			#{item.fileSaveName}, 
         			#{item.filePath}, 
         			#{item.inUserId}, 
-        			'20210626.111111', 
-        			#{item.upUserId}, 
-        			'20210626.111111'
-        		)
+        			sysdate, 
+        			#{item.upUserId, jdbcType=VARCHAR}, 
+        			sysdate
+        	)
 	        
 	        
 	    </foreach>
-	    
 	</insert>
+	
 
 </mapper>
