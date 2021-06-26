@@ -18,12 +18,8 @@ public interface LessonService {
 	public List<?> selectLessonList() throws Exception;
 
 	//강의 상세조회
-//	public List<?> selectLessonDetail(String lessonSeq) throws Exception;
+	public Map<String, Object> selectLessonDetail(LessonVO lessonVO) throws Exception;
 
-//	public List<?> selectLessonDetail(LessonVO lessonVO) throws Exception;
-	public List<?> selectLessonDetail(String lessonSeq) throws Exception;
-
-//	public Map<String, Object> selectLessonDetail(Map<String, Object> map) throws Exception;
 
 
 	

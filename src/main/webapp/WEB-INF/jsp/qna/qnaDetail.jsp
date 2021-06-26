@@ -54,6 +54,33 @@
                     </div>
                 </div>
             </div>
+                            <div class="col-lg-4 order-lg-1 order-2" style="width: 100%;flex: 0 0 100%;max-width: 100%;padding-right: 0px;margin-left: 23px;">
+                
+                    <div class="blog__sidebar">
+                        
+                        <div class="blog__sidebar__comment" style="overflow:scroll; height: 500px;">
+                            <h4>댓글</h4>
+                            <div class="classes__sidebar__comment">
+                                <div class="classes__sidebar__comment__pic">
+                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
+                                    <div class="classes__sidebar__comment__rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-o"></i>
+                                    </div>
+                                </div>
+                                <div class="classes__sidebar__comment__text">
+                                    <span>04 Mar 2018</span>
+                                    <h6>Brandon Kelley</h6>
+                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
+                                        adipisci velit,</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </section>
     <!-- Blog Details Section End -->

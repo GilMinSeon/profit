@@ -1,5 +1,6 @@
 package kr.or.profit.web;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import javax.annotation.Resource;
@@ -11,13 +12,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.or.profit.cmmn.TestMailer;
 import kr.or.profit.service.MemberService;
 import kr.or.profit.vo.MemberVO;
 
 @Controller
 public class MemberController {
+	
+	@Resource(name = "testMailer")
+	private TestMailer testMailer;
 	
 	@Resource(name = "memberService")
 	private MemberService memberService;
@@ -49,14 +55,9 @@ public class MemberController {
 	@RequestMapping(value = "joinAjax.do", method = RequestMethod.POST)
 	public String joinMemberTable(@ModelAttribute MemberVO vo, HttpServletRequest request) throws Exception {
 		request.setCharacterEncoding("utf-8");
-
-		System.out.println(vo.getMemberId());
-		System.out.println(vo.getMemberName());
-		System.out.println(vo.getMemberGender());
-		System.out.println("여기여기");
 		memberService.insertMember(vo);
 		
-		return "member/findPwd";
+		return "redirect:home.do";
 	}
 	
 	
@@ -101,7 +102,6 @@ public class MemberController {
 	public String loginProcessing(MemberVO vo, HttpSession session) throws Exception{
 		String msg = "";
 		MemberVO membervo = memberService.selectMemberCount(vo);
-		//System.out.println("sisi"+membervo.getMemberGubun());
 		if(membervo != null) {
 			//session 생성
 			session.setAttribute("memberId", membervo.getMemberId());
@@ -125,6 +125,37 @@ public class MemberController {
 		return "redirect:home.do";
 
 	}
-
+	
+	
+	
+	@RequestMapping(value = "/sendmailAjax.do")
+	@ResponseBody
+	public String sendmail(String memberEmail, String emailNum) {
+		try {
+			testMailer.sendMail(memberEmail, "PROFIT 회원가입 인증메일입니다. 인증번호를 확인해주세요.", 
+					"안녕하세요 PROFIT 입니다.\n회원님의 인증번호는 "+emailNum+" 입니다.\n 홈페이지에서 이메일 인증번호를 입력하시면 회원가입이 완료됩니다 :) ");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";			
+		}
+		
+//		try {
+//			testMailer.sendMail("받는대상", "이것은 제목", "스프링으로 구현해서 보내본다.","E:/파일위치","보낼파일명.확장자");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return "fail";			
+//		}		
+		return "ok";
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

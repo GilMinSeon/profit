@@ -27,7 +27,7 @@
 				UP_USER_ID,
 				UP_DATE
 			)
-			VALUES (#{lessonSeq, jdbcType=VARCHAR},
+			VALUES (#{ , jdbcType=VARCHAR},
 					#{commonSeq, jdbcType=VARCHAR},
 					#{lessonCategorySeq, jdbcType=VARCHAR},
 					#{lessonTitle, jdbcType=VARCHAR},

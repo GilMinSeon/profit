@@ -275,7 +275,7 @@
 			</div>
 			<div class="classes__item__text" style="text-align: right;padding-top: 0;">
                  <span class="blinking">내 강의 등록하러 가기 → </span>&nbsp;
-                 <a href="lessonAdd" class="class-btn_w">강의등록</a>
+                 <a href="lessonAdd.do" class="class-btn_w">강의등록</a>
    		 	</div>
 			<div class="row">
 			<c:forEach var="result" items="${resultList}" varStatus="status">
@@ -319,7 +319,7 @@
 									<h6 style="margin-bottom: 25px;">${result.inUserId}</h6>
 								</div>
 							</div>
-							<a href="lessonDetail?lessonSeq=${result.lessonSeq}"  class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+							<a href="lessonDetail.do?lessonSeq=${result.lessonSeq}"  class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
 						</div>
 					</div>
 				</div>
