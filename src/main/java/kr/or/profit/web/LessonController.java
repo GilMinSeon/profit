@@ -1,12 +1,18 @@
 package kr.or.profit.web;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.tiles.autotag.core.runtime.annotation.Parameter;
@@ -21,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.profit.service.AttachFileService;
@@ -36,7 +44,8 @@ import kr.or.profit.vo.LessonVO;
 public class LessonController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LessonController.class);
-	
+	private static final String CURR_IMAGE_REPO_PATH = 
+            "\\\\192.168.41.6\\upload\\profit";
 	@Resource(name="lessonService")
 	private LessonService lessonService;
 	
@@ -89,10 +98,39 @@ public class LessonController {
 		return "lesson/lessonAdd";
 	}
 	
+//	@RequestMapping(value = "lesson_insAjax.do", method = RequestMethod.POST)
+//	@ResponseBody
+//	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
+////		System.out.println(lessonVO.getLessonTitle());
+//		
+//		System.out.println(fileVO.getFileRealName());
+//		
+//		String message = "";
+//		int cnt = fileService.insertLessonFile(fileVO);
+//		System.out.println(fileVO.getFileSeq());
+//		String fileSeq = fileVO.getFileSeq();
+//		
+//		lessonVO.setFileSeq(fileSeq);
+//		
+//		int cnt1 = lessonService.insertLesson(lessonVO);
+//		if(cnt == 1 && cnt1 == 1 ) {
+//			message = "ok";
+//		}
+//		return message;
+//	}
+	
 	@RequestMapping(value = "lesson_insAjax.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
-//		System.out.println(lessonVO.getLessonTitle());
+	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, MultipartHttpServletRequest multipartRequest,HttpServletRequest request,Model model) throws Exception  {
+		HttpSession session = request.getSession();		
+		multipartRequest.setCharacterEncoding("utf-8");
+		
+		List<AttachFileVO> fileVOList = fileLesson(multipartRequest, request);
+        Map<String, Object> filemap = new HashMap<String, Object>();
+        filemap.put("list", fileVOList);
+        int insertResult = lessonService.insertLessonFile(filemap);
+		
+		
 		System.out.println(fileVO.getFileRealName());
 		
 		String message = "";
@@ -108,6 +146,55 @@ public class LessonController {
 		}
 		return message;
 	}
+	
+    private List<AttachFileVO> fileLesson(MultipartHttpServletRequest multipartRequest, HttpServletRequest request) 
+            throws Exception{
+           HttpSession session = request.getSession();
+           
+           List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
+            List<String> fileList = new ArrayList<String>();
+            Iterator<String> fileNames = multipartRequest.getFileNames();
+            int cnt = 1;
+            while(fileNames.hasNext()) {
+               
+               
+               UUID uuid = UUID.randomUUID();
+               
+               System.out.println("uuid : " + uuid);
+                String fileName = fileNames.next();
+                System.out.println("fileName : " + fileName);
+                MultipartFile mFile = multipartRequest.getFile(fileName);
+                String originalFileName = mFile.getOriginalFilename();
+                File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
+                if(mFile.getSize() != 0) {
+                    if(!file.exists()) {
+                        if(file.getParentFile().mkdir()) {
+                            file.createNewFile();
+                        }
+                    }
+                    
+                    mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName));
+                }
+                
+                String memberId = (String)session.getAttribute("memberId");
+                //attach_file 테이블에 저장할 vo list
+                AttachFileVO attachvo = new AttachFileVO();
+                attachvo.setFileDetailSeq(Integer.toString(cnt));
+                attachvo.setFileRealName(originalFileName);
+                attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
+                attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
+                attachvo.setInUserId(memberId);
+                attachvo.setUpUserId(memberId);
+                fileVOList.add(attachvo);
+                cnt++;
+              }
+//            System.out.println("insert 할 것");
+            return fileVOList;
+        }
+	
+	
+	
+	
 	
 	/**
 	 * 강의를 수정한다 
