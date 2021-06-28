@@ -81,4 +81,18 @@
     </select>
 
 
+	<!-- 민선 아이디 찾기 -->
+	
+	<select id="selectByFindId" parameterType="MemberVO" resultType="string">
+		select member_id
+		from member
+		where member_name = #{memberName}
+		and member_email = #{memberEmail} 
+		and member_route = 'U'
+	
+	</select>
+
+
+
+
 </mapper>

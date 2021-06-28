@@ -28,4 +28,7 @@ public interface MemberService {
 	
 
 	public int kakaoSelectById(String memberId) throws Exception;
+	
+	
+	public String selectByFindId(MemberVO vo) throws Exception;
 }

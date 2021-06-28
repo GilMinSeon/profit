@@ -29,7 +29,11 @@ public interface MemberMapper {
 
 	//아이디 찾기
 	public MemberVO findId(Map<String, Object> map);
-
+	
+	
+	//민선 아이디 찾기
+	public String selectByFindId(MemberVO vo);
+	
 	
 	public void kakaoInsertMember(MemberVO vo);
 	
