@@ -7,6 +7,7 @@
 <title>bulletin_write</title>
 <script>
 var uploadPath = "Y:/profit/";
+
 $(document).ready(function(){
 	$('#minus1').click(function(e){
 		e.preventDefault();
@@ -149,7 +150,13 @@ function fn_lessonAdd(){
 	var lessonIntro = $("#lessonIntro").val();
 	var lessonPrice = $("#lessonPrice").val();
 	var lessonMonth = $("#lessonMonth").val();
-	var filePath=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
+	var file_val=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
+	var filePathSplit = file_val.split('\\');
+	var fileRealName = filePathSplit[2];
+	var fileSaveName = guid() + "_" + fileRealName
+	var filePath= fileSaveName;
+	
+	
 	//전체경로를 \ 나눔.
 // 	var filePathSplit = filePath_temp.split('\\'); 
 // 	//전체경로를 \로 나눈 길이.
@@ -168,6 +175,9 @@ function fn_lessonAdd(){
 	console.log(lessonIntro);
 	console.log(lessonPrice);
 	console.log(lessonMonth);
+	console.log(file_val);
+	console.log(fileRealName);
+	console.log(fileSaveName);
 	console.log(filePath);
 	
 	var chk_radio = document.getElementsByName('cate_type');
@@ -248,6 +258,8 @@ function fn_lessonAdd(){
 	param += "&lessonIntro="+lessonIntro;
 	param += "&lessonPrice="+lessonPrice;
 	param += "&lessonMonth="+lessonMonth;
+	param += "&fileRealName="+fileRealName;
+	param += "&fileSaveName="+fileSaveName;
 	param += "&filePath="+filePath;
 
 	console.log(param)
