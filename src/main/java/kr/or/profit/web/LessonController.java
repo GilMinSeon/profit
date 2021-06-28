@@ -136,7 +136,7 @@ public class LessonController {
 	 */
 	@RequestMapping(value = "lesson_delAjax.do", method = RequestMethod.GET)
 	public String lessonDel(LessonVO lessonVO, Locale locale, Model model) {
-		int cnt = lessonService.deleteLesson(lessonVO);
+//		int cnt = lessonService.deleteLesson(lessonVO);
 		return "lesson/classDetail";
 	}
 	

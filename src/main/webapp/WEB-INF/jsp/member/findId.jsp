@@ -25,10 +25,6 @@
 				<div class="col-lg-12">
 					<div class="breadcrumb__text">
 						<h2>아이디 찾기</h2>
-						<!-- <div class="breadcrumb__widget">
-                            <a href="./index.html">Home</a>
-                            <span>Our Classes</span>
-                        </div> -->
 					</div>
 				</div>
 			</div>
@@ -37,34 +33,36 @@
 	<!-- Breadcrumb End -->
 
 	<!-- Appoinment Section Begin -->
-	<section class="appointment" style="margin-top: 50px; margin-bottom: 50px;">
+	<section class="appointment"
+		style="margin-top: 50px; margin-bottom: 50px;">
 		<div class="container">
 			<div class="appointment__text">
-				<!-- <div class="row">
-					<div class="col-lg-12">
-						<div class="section-title">
-							<h2 style="font-size: 35px;"></h2>
-						</div>
+
+				<form class="appointment__form" name="form" method="POST"
+					action="/findId.do">
+					<div class="col-lg-6 text-center"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<input name="memberName" type="text" placeholder="이름">
 					</div>
-				</div> -->
-				<form action="#" class="appointment__form">
-					<div class="text-center" >
-						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto; ">
-							<input type="text" placeholder="이름" >
-						</div>
-						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto; ">
-							<input type="text" placeholder="이메일">
-						</div>
-						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto; ">
-							<input type="button" value="아이디 찾기" id="submitBtn" style="font-size: 1.1em;"><br>
-						</div><br>
-							<div class="text-center">
-								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='login'">로그인</h5>&nbsp;&nbsp;&nbsp;&nbsp;
-								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='findPwd'">비밀번호 찾기</h5>&nbsp;&nbsp;&nbsp;&nbsp;
-							</div>
-						
+					<div class="col-lg-6 text-center"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<input name="memberEmail" type="text" placeholder="이메일">
+					</div>
+					<div class="col-lg-6 text-center"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<input type="submit" value="아이디 찾기" id="submitBtn"
+							style="font-size: 1.1em; cursor: pointer;"><br>
 					</div>
 				</form>
+				<br>
+				<div class="text-center">
+					<h5 style="display: inline; color: white; cursor: pointer;"
+						onClick="location.href='login'">로그인</h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<h5 style="display: inline; color: white; cursor: pointer;"
+						onClick="location.href='findPwd'">비밀번호 찾기</h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+				</div>
 			</div>
 		</div>
 	</section>

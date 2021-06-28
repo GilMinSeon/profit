@@ -2,6 +2,7 @@ package kr.or.profit.web;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,16 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import antlr.collections.List;
 import kr.or.profit.cmmn.TestMailer;
 import kr.or.profit.service.MemberService;
 import kr.or.profit.vo.MemberVO;
 
 @Controller
 public class MemberController {
-	
+
 	@Resource(name = "testMailer")
 	private TestMailer testMailer;
-	
+
 	@Resource(name = "memberService")
 	private MemberService memberService;
 
@@ -41,10 +43,10 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "findId.do", method = RequestMethod.GET)
-	public String findId(Locale locale, Model model) {
-
+	public String findId(@RequestParam Map<String, Object> map, Model model) {
 		return "member/findId";
 	}
+
 
 	@RequestMapping(value = "findPwd.do", method = RequestMethod.GET)
 	public String findPwd(Locale locale, Model model) {
@@ -56,11 +58,11 @@ public class MemberController {
 	public String joinMemberTable(@ModelAttribute MemberVO vo, HttpServletRequest request) throws Exception {
 		request.setCharacterEncoding("utf-8");
 		memberService.insertMember(vo);
-		
+
 		return "redirect:home.do";
 	}
-	
-	
+
+
 	@RequestMapping("idcheckAjax.do")
 	@ResponseBody
 	public String selectMemberIdCheck(String memberId) throws Exception{
@@ -73,7 +75,7 @@ public class MemberController {
 		System.out.println(message);
 		return message;
 	}
-	
+
 	@RequestMapping("nicknamecheckAjax.do")
 	@ResponseBody
 	public String selectMemberNicknameCheck(String memberNickname) throws Exception{
@@ -84,7 +86,7 @@ public class MemberController {
 		}
 		return message;
 	}
-	
+
 	@RequestMapping("emailcheckAjax.do")
 	@ResponseBody
 	public String selectMemberEmailCheck(String memberEmail) throws Exception{
@@ -95,8 +97,8 @@ public class MemberController {
 		}
 		return message;
 	}
-	
-	
+
+
 	@RequestMapping("loginSubmitAjax.do")
 	@ResponseBody
 	public String loginProcessing(MemberVO vo, HttpSession session) throws Exception{
@@ -112,11 +114,11 @@ public class MemberController {
 		}else {
 			msg = "no";
 		}
-		
+
 		return msg;
 	}
-	
-	
+
+
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.removeAttribute("memberId");
@@ -125,37 +127,70 @@ public class MemberController {
 		return "redirect:home.do";
 
 	}
-	
-	
-	
+
+
+
 	@RequestMapping(value = "/sendmailAjax.do")
 	@ResponseBody
 	public String sendmail(String memberEmail, String emailNum) {
 		try {
-			testMailer.sendMail(memberEmail, "PROFIT 회원가입 인증메일입니다. 인증번호를 확인해주세요.", 
+			testMailer.sendMail(memberEmail, "PROFIT 회원가입 인증메일입니다. 인증번호를 확인해주세요.",
 					"안녕하세요 PROFIT 입니다.\n회원님의 인증번호는 "+emailNum+" 입니다.\n 홈페이지에서 이메일 인증번호를 입력하시면 회원가입이 완료됩니다 :) ");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "fail";			
+			return "fail";
 		}
-		
+
 //		try {
 //			testMailer.sendMail("받는대상", "이것은 제목", "스프링으로 구현해서 보내본다.","E:/파일위치","보낼파일명.확장자");
 //		} catch (Exception e) {
 //			e.printStackTrace();
-//			return "fail";			
-//		}		
+//			return "fail";
+//		}
 		return "ok";
-	}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}
+
+
+	/**
+	 * 아이디 찾기 개수
+	 * @author 박상빈
+	 * @param map
+	 * findIdCheck에서 이름과 메일을 받아온다
+	 * @return "member/findId"
+	 * @exception Exception
+	*/
+	public int findIdCnt(Map<String, Object> map) throws Exception{
+
+//		memberService.findId(map)실행하면 쿼리까지 가서 돌아온 값을 findIdCheck로 받는다.
+		int findIdCnt = memberService.findIdCnt(map);
+		System.out.println("돌아옴Cnt : " + findIdCnt);
+		return findIdCnt;
+	}
+
+	/**
+	 * 아이디 찾기
+	 * @author 박상빈
+	 * @param map
+	 * 이름과 메일을 받아온다
+	 * @return "member/findId"
+	 * @exception Exception
+	*/
+	@RequestMapping(value = "findId.do", method = RequestMethod.POST)
+	public String findIdCheck(@RequestParam Map<String, Object> map, Model model) throws Exception{
+		int findIdCnt = findIdCnt(map);
+		System.out.println("findIdCnt = " + findIdCnt);
+
+//		memberService.findId(map)실행하면 쿼리까지 가서 돌아온 값을 findIdCheck로 받는다.
+		MemberVO findId = memberService.findId(map);
+		System.out.println("돌아옴 : " + findId.getInUserId());
+		return "member/findId";
+	}
+
+
+
+
+
+
+
+
 }
