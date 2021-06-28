@@ -15,49 +15,96 @@ input:-webkit-autofill {
   -webkit-text-fill-color: black !important;
   
 }
-textarea::placeholder {
-	color:black;
+#trainerAward::-webkit-input-placeholder, #trainerCareer::-webkit-input-placeholder{
+        color:gray;
 }
-textarea::-webkit-input-placeholder {
-	color:#ccc;
-}
-textarea:-ms-input-placeholder {
-	color:#ccc;
-}
-
-
 
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
 
     
-    var cnt = 1;
-    function fn_addFile(){
-        $("#d_file").append("<br>" + "<input type='file' class='file_choice' name='file" + cnt + "' onchange='fn_attach_file("+cnt+")'/>");
-//         					"<input type='hidden' name='file"+cnt+"_uid' />");
-        cnt++;
+	var cnt = 1;
+	function fn_addFile(){
+	    $("#d_file").append("<br>" + "<input type='file' id='file"+cnt+"' class='file_choice' name='file" + cnt + "' onchange='fn_attach_file("+cnt+")'/>");
+	    
+	    cnt++;
+	}
+	
+	function fn_delFile(){
+		cnt -= 1;
+		$("#file"+cnt).remove();
+		
+	}
+  
+// 	function fn_attach_file(cnt){
+// 		var cur = $("input[name=file" + cnt + "]").val();
+// 		var curSplit = cur.split("\\");
+// 		var nameLength = curSplit.length;
+// 		var fileName = curSplit[nameLength-1];
+// 	}
+  
+// 	 function guid() {
+// 	  function _s4() {
+// 	    return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
+// 	  }
+// 	  return _s4() + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + _s4() + _s4();
+// 	}
+	 
+	function fn_submit(){
+		var msg = "ok";
+		
+		for(var i=1; i<cnt; i++){
+			var file_val = $("#file"+i).val();
+			if(!file_val){
+				msg = "ng";
+			}
+		}
+		
+		if(msg=="ok"){
+			var apply = confirm("신청서를 제출하시겠습니까?");
+			if(apply == true){
+				send_file();
+			}
+			else{
+				alert("신청이 취소되었습니다.")
+			}
+		}else{
+			alert("첨부하지 않은 파일은 삭제해주세요");
+			
+		}
+	}
+
+    function send_file(){
+    	var formData = new FormData($('#frm')[0]);
+	    	$.ajax({
+	    		type : 'post',
+	    		url : 'uploadAjax.do',
+	    		data : formData,
+	    		processData : false,
+	    		contentType : false,
+	    		async:false,
+	    		dataType:"text",
+	    		success : function(data){
+    			if(data=="ok"){
+	    			alert("신청이 정상적으로 완료되었습니다.");
+	    			location.href="home.do";
+    			}else if(data=="no"){
+    				alert("신청이 실패하였습니다. 다시 시도해주세요");
+    			}else{
+    				alert("신청이 실패하였습니다. 다시 시도해주세요");
+    			}
+    		},
+	    		error : function(error){
+	    			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+	    			console.log(error);
+	    			console.log(error.status);
+	    		}
+	    		
+	    		
+	    	})
     }
-    
-    function fn_attach_file(cnt){
-//     	alert(cnt);
-//     	var cur=$('#file' + cnt).val();
-    	var cur = $("input[name=file" + cnt + "]").val();
-    	var curSplit = cur.split("\\");
-    	var nameLength = curSplit.length;
-    	var fileName = curSplit[nameLength-1];
-//     	var fileSaveName = guid() + "_" + fileName;
-//     	alert(fileName);
-//     	$("input[name=file"+cnt+"_uid]").val(fileSaveName);
-    }
-    
-    function guid() {
-  	  function _s4() {
-  	    return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
-  	  }
-  	  return _s4() + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + _s4() + _s4();
-  }
-    
+	 
     $(function(){
     	
     	if(${memberGender.equals('F')}){
@@ -70,34 +117,11 @@ textarea:-ms-input-placeholder {
     	}
     	
     	$("#frm").submit(function(){
+    		
+    		
+    		
+//     		send_file();
     	
-   	    	var formData = new FormData($('#frm')[0]);
-   	    	$.ajax({
-   	    		type : 'post',
-   	    		url : 'uploadAjax.do',
-   	    		data : formData,
-   	    		processData : false,
-   	    		contentType : false,
-   	    		async:false,
-   	    		dataType:"text",
-   	    		success : function(data){
-	    			if(data=="ok"){
-   	    			alert("신청이 정상적으로 완료되었습니다.");
-   	    			location.href="home";
-	    			}else if(data=="no"){
-	    				alert("신청이 실패하였습니다. 다시 시도해주세요");
-	    			}else{
-	    				alert("신청이 실패하였습니다. 다시 시도해주세요");
-	    			}
-	    		},
-   	    		error : function(error){
-   	    			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
-   	    			console.log(error);
-   	    			console.log(error.status);
-   	    		}
-   	    		
-   	    		
-   	    	})
     	    
     	})
     })
@@ -286,9 +310,10 @@ textarea:-ms-input-placeholder {
 											<div class="col-lg-12" style="text-align: right; float: left; padding: 0; margin: 0;">
 
            										 
-											            <input type="button" class="file_add" value="파일 추가" onClick="fn_addFile()"><br>
+											            <input type="button" class="file_add" value="파일 추가" onClick="fn_addFile()">
+											            <input type="button" class="file_add" value="파일 삭제" onClick="fn_delFile()">
 											            
-											            <div id="d_file">
+											            <div id="d_file" style="text-align: left;">
 											            
 											            </div>
 											            
@@ -304,7 +329,7 @@ textarea:-ms-input-placeholder {
 
 									<br>
 									<div class="col-lg-12" style="text-align: right;">
-			                             <input type="submit" class="file_add" value="신청" style="width: 100%;">
+			                             <input type="button" class="file_add" value="신청" style="width: 100%;" onclick="fn_submit()">
 			                        </div>
 						
 						</form>

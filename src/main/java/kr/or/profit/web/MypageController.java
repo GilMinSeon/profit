@@ -161,7 +161,6 @@ public class MypageController {
         
         //파일업로드
         List<AttachFileVO> fileVOList = fileProcess(multipartRequest, request);
-        String fileSeq = fileVOList.get(0).getFileSeq();
         
         //파일 DB 저장
         Map<String, Object> filemap = new HashMap<String, Object>();
@@ -176,7 +175,6 @@ public class MypageController {
         ProcessVO vo = new ProcessVO();
         
         String loginMemberId = (String)session.getAttribute("memberId");
-        vo.setFileSeq(fileSeq);
         vo.setMemberId(loginMemberId);
         vo.setTrainerAward(trainerAward);
         vo.setTrainerCareer(trainerCareer);
