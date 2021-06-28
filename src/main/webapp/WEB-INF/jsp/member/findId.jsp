@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="zxx">
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
 #submitBtn {
 	font-size: 14px;
@@ -16,10 +18,40 @@
 	letter-spacing: 2px;
 }
 </style>
+<script type="text/javascript">
+	function fn_findId() {
+		var memberName = $.trim($("#memberName").val()); //현재 창에 입력된 값
+		var memberEmail = $.trim($("#memberEmail").val()); //현재 창에 입력된 값
+		if(memberName == "" || memberName == null){
+			alert("이름을 입력해주세요")
+			return false;
+		}
+		if(memberEmail == "" || memberEmail == null){
+			alert("이메일을 입력해주세요")
+			return false;
+		}
+		$.ajax({
+			type : "POST",
+			data : "memberName=" + memberName + "&memberEmail=" + memberEmail, 
+			url : "findIdAjax.do",
+			//전송 후 세팅
+			success : function(data) {
+				if (data.msg == "ok") {
+					alert(data.id);
+				} else {
+					alert("nono")
+				}
+			},
+			error : function() {
+				alert("오류발생");
+			}
+
+		})
+	}
+</script>
 <body>
 	<!-- Breadcrumb Begin -->
-	<section class="breadcrumb-option set-bg"
-		data-setbg="./resources/img/breadcrumb.jpg">
+	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -33,34 +65,30 @@
 	<!-- Breadcrumb End -->
 
 	<!-- Appoinment Section Begin -->
-	<section class="appointment"
-		style="margin-top: 50px; margin-bottom: 50px;">
+	<section class="appointment" style="margin-top: 50px; margin-bottom: 50px;">
 		<div class="container">
 			<div class="appointment__text">
 
-				<form class="appointment__form" name="form" method="POST"
-					action="/findId.do">
-					<div class="col-lg-6 text-center"
-						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-						<input name="memberName" type="text" placeholder="이름">
+				<form class="appointment__form" name="form" method="POST" action="/findId.do">
+					<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<input name="memberName" type="text" placeholder="이름" id="memberName">
 					</div>
-					<div class="col-lg-6 text-center"
-						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-						<input name="memberEmail" type="text" placeholder="이메일">
+					<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<input name="memberEmail" type="text" placeholder="이메일" id="memberEmail">
 					</div>
-					<div class="col-lg-6 text-center"
-						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-						<input type="submit" value="아이디 찾기" id="submitBtn"
-							style="font-size: 1.1em; cursor: pointer;"><br>
+					<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<input type="button" value="아이디 찾기" id="submitBtn" style="font-size: 1.1em; cursor: pointer;"
+							onclick="fn_findId()"><br>
+					</div>
+					<div>
+					${map.id }
 					</div>
 				</form>
 				<br>
 				<div class="text-center">
-					<h5 style="display: inline; color: white; cursor: pointer;"
-						onClick="location.href='login'">로그인</h5>
+					<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='login'">로그인</h5>
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<h5 style="display: inline; color: white; cursor: pointer;"
-						onClick="location.href='findPwd'">비밀번호 찾기</h5>
+					<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='findPwd'">비밀번호 찾기</h5>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 				</div>
 			</div>

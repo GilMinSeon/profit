@@ -7,6 +7,7 @@ import kr.or.profit.vo.MemberVO;
 public interface MemberService {
 	//회원가입-등록처리
 	public void insertMember(MemberVO vo) throws Exception;
+	public void kakaoInsertMember(MemberVO vo) throws Exception;
 
 	//아이디 중복검사
 	public int selectMemberIdCheck(String memberId) throws Exception;
@@ -24,6 +25,10 @@ public interface MemberService {
 	public int  findIdCnt(Map<String, Object> map) throws Exception;
 	//아이디 찾기
 	public MemberVO  findId(Map<String, Object> map) throws Exception;
+	
 
-
+	public int kakaoSelectById(String memberId) throws Exception;
+	
+	
+	public String selectByFindId(MemberVO vo) throws Exception;
 }
