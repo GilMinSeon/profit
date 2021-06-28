@@ -22,18 +22,18 @@
 
     <!-- Blog Details Section Begin -->
     <section class="blog-details spad">
-    	
+
         <div class="container">
-        
+
             <div class="row" style="justify-content: center">
-                
+
                 <div class="col-lg-8 order-lg-2 order-1">
                 	<div style="margin-bottom: 30px;text-align: center;">
                 		<span style="font-size: 1.3em; font-weight: bold;">100일만에 -10kg만든 운동법</span>
                 	</div>
                 	<div  style="text-align: right;margin-bottom: 5px;">
-        				<span style="margin-left: 30px;">답변확인&nbsp;&nbsp;&nbsp;<a>O</a></span> 
-        				<span style="margin-left: 30px;">작성일&nbsp;&nbsp;&nbsp;<a>2021-06-15</a></span> 
+        				<span style="margin-left: 30px;">답변확인&nbsp;&nbsp;&nbsp;<a>O</a></span>
+        				<span style="margin-left: 30px;">작성일&nbsp;&nbsp;&nbsp;<a>2021-06-15</a></span>
         			</div>
                     <div class="blog__details">
                         <div class="blog__details__large">
@@ -47,17 +47,17 @@
                                 party. </p>
                         </div>
                         <div class="classes__item__text" style="text-align: center;">
-                            <a href="qnaList" class="class-btn">목록</a>
-	                        <a href="qnaMod" class="class-btn">수정</a>
-	                        <a href="qnaList" class="class-btn">삭제</a>
+                            <a href="qnaList.do" class="class-btn">목록</a>
+	                        <a href="qnaMod.do" class="class-btn">수정</a>
+	                        <a href="qnaList.do" class="class-btn">삭제</a>
                         </div>
                     </div>
                 </div>
             </div>
                             <div class="col-lg-4 order-lg-1 order-2" style="width: 100%;flex: 0 0 100%;max-width: 100%;padding-right: 0px;margin-left: 23px;">
-                
+
                     <div class="blog__sidebar">
-                        
+
                         <div class="blog__sidebar__comment" style="overflow:scroll; height: 500px;">
                             <h4>댓글</h4>
                             <div class="classes__sidebar__comment">

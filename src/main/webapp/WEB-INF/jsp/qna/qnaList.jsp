@@ -83,14 +83,11 @@
 						<h3>FAQ</h3>
 						<br>
 						<script type="text/javascript">
-							$(document).ready(
-									function() {
-										$(".que").click(
-												function() {
-													$(this).next(".anw").stop()
-															.slideToggle(300);
-												});
-									});
+							$(document).ready(function() {
+								$(".que").click(function() {
+									$(this).next(".anw").stop().slideToggle(300);
+								});
+							});
 						</script>
 						<div id="Accordion_wrap">
 							<!-- 아코디언 시작 -->
@@ -138,28 +135,38 @@
 						<th scope="col">작성일</th>
 					</tr>
 				</thead>
-					<tbody>
+				<tbody>
 					<c:forEach var="data" items="${data}" varStatus="status">
 						<tr>
 							<th scope="row">${status.count}</th>
-							<td colspan="3"><a href="qnaDetail"
-								style="text-decoration: none; color: blue;"> ${data.communityTitle} </a></td>
-							<td>${data.cnt}</td>
+							<td colspan="3">
+								<a href="qnaDetail.do"style="text-decoration: none; color: blue;">
+									${data.commonTitle}
+								</a>
+							</td>
+							<td>
+								<c:set var="cnt" value="${data.cnt}" />
+								<c:if test="${cnt == '0' }">
+									<c:out value="X" />
+								</c:if> <c:if test="${cnt > '0' }">
+									<c:out value="O" />
+								</c:if>
+							</td>
 							<td>${data.inDate}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 			<div class="classes__item__text" style="text-align: right;">
-				<a href="qnaAdd" class="class-btn">등록</a>
+				<a href="qnaAdd.do" class="class-btn">등록</a>
 			</div>
-			
+
 		</div>
 	</section>
 	<!-- Classes Section End -->
 
 	<!-- Js Plugins -->
-	
+
 
 	<script src="./resources/js/bootstrap.min.js"></script>
 	<script src="./resources/js/jquery.nice-select.min.js"></script>

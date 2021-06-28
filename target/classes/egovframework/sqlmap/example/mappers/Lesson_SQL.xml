@@ -3,13 +3,14 @@
 
 <mapper namespace="kr.or.profit.mapper.LessonMapper">
 	
-	<insert id="insertLesson" parameterType="LessonVO">
+	<insert id="insertLesson">
 	    <selectKey order="BEFORE" keyProperty="lessonSeq" resultType="String">
 			SELECT NVL(MAX(TO_NUMBER(LESSON_SEQ)),0)+1 FROM LESSON
 		</selectKey>
 		<![CDATA[
 			INSERT INTO LESSON
 			(	LESSON_SEQ,
+				FILE_SEQ,
 				COMMON_SEQ,
 				LESSON_CATEGORY_SEQ,
 				LESSON_TITLE,
@@ -28,7 +29,8 @@
 				UP_DATE
 			)
 			VALUES (#{lessonSeq, jdbcType=VARCHAR},
-					#{commonSeq, jdbcType=VARCHAR},
+					#{fileSeq, jdbcType=VARCHAR},
+					4,
 					#{lessonCategorySeq, jdbcType=VARCHAR},
 					#{lessonTitle, jdbcType=VARCHAR},
 					#{lessonTitleComment, jdbcType=VARCHAR},
@@ -41,16 +43,54 @@
 					'n',
 					#{lessonMonth, jdbcType=VARCHAR},
 					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'),
+					sysdate,
 					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'))
+					sysdate)
 		]]>
 	</insert>
 	
+	<!-- 강의사진 파일테이블에 추가 -->
+	<insert id="insertLessonFile" parameterType="java.util.Map" > 
+	     <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
+		</selectKey>
+       INSERT 
+         INTO 
+            ATTACH_FILE
+               (
+                  FILE_SEQ, 
+                  FILE_DETAIL_SEQ, 
+                  FILE_REAL_NAME, 
+                  FILE_SAVE_NAME, 
+                  FILE_PATH, 
+                  IN_USER_ID, 
+                  IN_DATE, 
+                  UP_USER_ID, 
+                  UP_DATE
+               )
+         VALUES 
+           
+           (
+               #{fileSeq},
+               #1, 
+               #{item.fileRealName}, 
+               #{item.fileSaveName}, 
+               #{item.filePath}, 
+               #{item.inUserId}, 
+               sysdate, 
+               #{item.upUserId, jdbcType=VARCHAR}, 
+               sysdate
+           )
+           
+           
+   </insert>
+	
+	
+	
 	<!-- 강의 등록 체크 -->
-    <select id="insertLessonCheck" parameterType="String" resultType="int">
-        select count(*) from LESSON
-    </select>
+<!--     <select id="insertLessonCheck" parameterType="String" resultType="int"> -->
+<!--         select count(*) from LESSON -->
+<!--     </select> -->
     
     <update id="updateLesson" parameterType="LessonVO">
 

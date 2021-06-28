@@ -3,45 +3,35 @@
 
 <mapper namespace="kr.or.profit.mapper.AttachFileMapper">
 
-    	<insert id="insertLessonFile" parameterType="fileVO">
-	    <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
-			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
-		</selectKey>
-		<![CDATA[
-			INSERT INTO ATTACH_FILE
-			(	FILE_SEQ,
-				COMMUNITY_SEQ,
-				MEMBER_ID,
-				LESSON_DETAIL_SEQ,
-				CHATTING_DETAIL_SEQ,
-				PROCESS_SEQ,
-				FILE_REAL_NAME,
-				FILE_SAVE_NAME,
-				FILE_PATH,
-				IN_USER_ID,
-				IN_DATE,
-				UP_USER_ID,
-				UP_DATE,
-				LESSON_SEQ
-			)
-			VALUES (#{fileSeq, jdbcType=VARCHAR},
-					#{communitySeq, jdbcType=VARCHAR},
-					#{memberId, jdbcType=VARCHAR},
-					#{lessonDetailSeq, jdbcType=VARCHAR},
-					#{chattingDetailSeq, jdbcType=VARCHAR},
-					#{processSeq, jdbcType=VARCHAR},
-					#{fileRealName, jdbcType=VARCHAR},
-					#{fileSaveName, jdbcType=VARCHAR},
-					#{filePath, jdbcType=VARCHAR},
-					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'),
-					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'),
-					#{lessonSeq, jdbcType=VARCHAR})
-		]]>
-	</insert>
+<!--     	<insert id="insertLessonFile" parameterType="fileVO"> -->
+<!-- 	    <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String"> -->
+<!-- 			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE -->
+<!-- 		</selectKey> -->
+<!-- 		<![CDATA[ -->
+<!-- 			INSERT INTO ATTACH_FILE -->
+<!-- 			(	FILE_SEQ, -->
+<!-- 				FILE_DETAIL_SEQ, -->
+<!-- 				FILE_REAL_NAME, -->
+<!-- 				FILE_SAVE_NAME, -->
+<!-- 				FILE_PATH, -->
+<!-- 				IN_USER_ID, -->
+<!-- 				IN_DATE, -->
+<!-- 				UP_USER_ID, -->
+<!-- 				UP_DATE -->
+<!-- 			) -->
+<!-- 			VALUES (#{fileSeq, jdbcType=VARCHAR}, -->
+<!-- 					0, -->
+<!-- 					#{fileRealName, jdbcType=VARCHAR}, -->
+<!-- 					#{fileSaveName, jdbcType=VARCHAR}, -->
+<!-- 					#{filePath, jdbcType=VARCHAR}, -->
+<!-- 					#{inUserId, jdbcType=VARCHAR}, -->
+<!-- 					sysdate, -->
+<!-- 					#{upUserId, jdbcType=VARCHAR}, -->
+<!-- 					sysdate) -->
+<!-- 		]]> -->
+<!-- 	</insert> -->
 	
-    <update id="updateLessonFile" parameterType="fileVO">
+<!--     <update id="updateLessonFile" parameterType="fileVO"> -->
 
 <!-- 			UPDATE ATTACH_FILE -->
 <!-- 			SET ID=#{id} -->
@@ -50,7 +40,7 @@
 <!-- 				, USE_YN=#{useYn} -->
 <!-- 				  WHERE ID=#{id} -->
 
-	</update>
+<!-- 	</update> -->
    	
  
     
