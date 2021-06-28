@@ -756,10 +756,10 @@ ol {
 }
 
 .appointment__form .file_add{
-	font-size: 1.1em;
+	font-size: 1.0em;
     color: white;
     background-color: #5768AD;
-    width: 141px;
+    width: 120px;
     height: 50px;
     margin-right: 7px;
     padding-right: 28px;

@@ -21,8 +21,8 @@
     
        <selectKey resultType="string" keyProperty="fileSeq" order="BEFORE">
               select 
-                  NVL(max(to_number(process_seq)),0) + 1 
-               from process
+                  NVL(max(to_number(file_seq)),0)
+               from attach_file
        </selectKey>
               
         <![CDATA[
@@ -30,7 +30,7 @@
            into 
         process
            (
-              process_seq,
+              	process_seq,
 	            member_id,
 	            file_seq,
 	            trainer_award,
@@ -45,7 +45,11 @@
 	            up_date
            )
          values(
-            #{fileSeq}, 
+            (
+            	select 
+                  NVL(max(to_number(process_seq)),0) + 1 
+               from process
+            ), 
             #{memberId}, 
             #{fileSeq},
             #{trainerAward}, 
