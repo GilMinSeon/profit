@@ -54,7 +54,7 @@
 	     <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
 			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
 		</selectKey>
-       <foreach collection="list" item="item" index="index" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+       INSERT 
          INTO 
             ATTACH_FILE
                (
@@ -83,7 +83,6 @@
            )
            
            
-       </foreach>
    </insert>
 	
 	

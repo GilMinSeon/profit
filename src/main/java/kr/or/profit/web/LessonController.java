@@ -123,8 +123,8 @@ public class LessonController {
 	@ResponseBody
 	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, MultipartHttpServletRequest multipartRequest,HttpServletRequest request,Model model) throws Exception  {
 //		HttpSession session = request.getSession();		
+		System.out.println("여기는??");
 		multipartRequest.setCharacterEncoding("utf-8");
-		
 		//파일업로드
 		List<AttachFileVO> fileVOList = fileLesson(multipartRequest, request);
 		
@@ -141,6 +141,7 @@ public class LessonController {
         
         //파일seq를 lessonvo에 셋팅
 		String fileSeq = fileVOList.get(0).getFileSeq();
+		System.out.println("여기"+fileSeq);
 		lessonVO.setFileSeq(fileSeq);
         
         
