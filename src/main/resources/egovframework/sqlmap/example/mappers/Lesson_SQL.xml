@@ -49,10 +49,49 @@
 		]]>
 	</insert>
 	
+	<!-- 강의사진 파일테이블에 추가 -->
+	<insert id="insertLessonFile" parameterType="java.util.Map" > 
+	     <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
+		</selectKey>
+       <foreach collection="list" item="item" index="index" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+         INTO 
+            ATTACH_FILE
+               (
+                  FILE_SEQ, 
+                  FILE_DETAIL_SEQ, 
+                  FILE_REAL_NAME, 
+                  FILE_SAVE_NAME, 
+                  FILE_PATH, 
+                  IN_USER_ID, 
+                  IN_DATE, 
+                  UP_USER_ID, 
+                  UP_DATE
+               )
+         VALUES 
+           
+           (
+               #{fileSeq},
+               #1, 
+               #{item.fileRealName}, 
+               #{item.fileSaveName}, 
+               #{item.filePath}, 
+               #{item.inUserId}, 
+               sysdate, 
+               #{item.upUserId, jdbcType=VARCHAR}, 
+               sysdate
+           )
+           
+           
+       </foreach>
+   </insert>
+	
+	
+	
 	<!-- 강의 등록 체크 -->
-    <select id="insertLessonCheck" parameterType="String" resultType="int">
-        select count(*) from LESSON
-    </select>
+<!--     <select id="insertLessonCheck" parameterType="String" resultType="int"> -->
+<!--         select count(*) from LESSON -->
+<!--     </select> -->
     
     <update id="updateLesson" parameterType="LessonVO">
 

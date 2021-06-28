@@ -149,14 +149,14 @@ function fn_lessonAdd(){
 	var lessonIntro = $("#lessonIntro").val();
 	var lessonPrice = $("#lessonPrice").val();
 	var lessonMonth = $("#lessonMonth").val();
-	var filePath_temp=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
+	var filePath=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
 	//전체경로를 \ 나눔.
-	var filePathSplit = filePath_temp.split('\\'); 
-	//전체경로를 \로 나눈 길이.
-	var filePathLength = filePathSplit.length;
-	var fileRealName = filePathSplit[2];
-	var filePath= uploadPath + fileRealName;
-	var fileSaveName = guid() + "_" + fileRealName;
+// 	var filePathSplit = filePath_temp.split('\\'); 
+// 	//전체경로를 \로 나눈 길이.
+// 	var filePathLength = filePathSplit.length;
+// 	var fileRealName = filePathSplit[2];
+// 	var filePath= uploadPath + fileRealName;
+// 	var fileSaveName = guid() + "_" + fileRealName;
 	
 	console.log(lessonTitle);
 	console.log(lessonCategorySeq);
@@ -169,8 +169,6 @@ function fn_lessonAdd(){
 	console.log(lessonPrice);
 	console.log(lessonMonth);
 	console.log(filePath);
-	console.log(fileRealName);
-	console.log(fileSaveName);
 	
 	var chk_radio = document.getElementsByName('cate_type');
 	var sel_type = null;
@@ -251,8 +249,6 @@ function fn_lessonAdd(){
 	param += "&lessonPrice="+lessonPrice;
 	param += "&lessonMonth="+lessonMonth;
 	param += "&filePath="+filePath;
-	param += "&fileRealName="+fileRealName;
-	param += "&fileSaveName="+fileSaveName;
 
 	console.log(param)
 	$.ajax({
@@ -270,12 +266,12 @@ function fn_lessonAdd(){
 			console.log(data);
 			if(data =="ok"){
 				alert("강의가 정상적으로 추가되었습니다.")
-				location.href="lessonAdd.do"
+				location.href="lessonList.do"
 			}else{
-				alert("추가도중 문제가 생겼습니다.");
+				alert("추가도중 문제가 생겼습니다. 다시 시도해 주세요");
 				return;
 			}
-		}
+		},
 	});
 	
 }
@@ -325,7 +321,7 @@ background: #ffffff;
 			<br />
 			<br />
 			<main role="main" class="container">
-				<form name="form" method="post" action="lessonAdd" style="text-align: center;" enctype="multipart/form-data">
+				<form name="form" method="post" action="lessonAdd" style="text-align: center;"  enctype="multipart/form-data">
 					<div class="write-title">
 						<label>
 							<p>
