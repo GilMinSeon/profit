@@ -7,6 +7,7 @@
 <title>bulletin_write</title>
 <script>
 var uploadPath = "Y:/profit/";
+
 $(document).ready(function(){
 	$('#minus1').click(function(e){
 		e.preventDefault();
@@ -149,14 +150,20 @@ function fn_lessonAdd(){
 	var lessonIntro = $("#lessonIntro").val();
 	var lessonPrice = $("#lessonPrice").val();
 	var lessonMonth = $("#lessonMonth").val();
-	var filePath_temp=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
-	//전체경로를 \ 나눔.
-	var filePathSplit = filePath_temp.split('\\'); 
-	//전체경로를 \로 나눈 길이.
-	var filePathLength = filePathSplit.length;
+	var file_val=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
+	var filePathSplit = file_val.split('\\');
 	var fileRealName = filePathSplit[2];
-	var filePath= uploadPath + fileRealName;
-	var fileSaveName = guid() + "_" + fileRealName;
+	var fileSaveName = guid() + "_" + fileRealName
+	var filePath= fileSaveName;
+	
+	
+	//전체경로를 \ 나눔.
+// 	var filePathSplit = filePath_temp.split('\\'); 
+// 	//전체경로를 \로 나눈 길이.
+// 	var filePathLength = filePathSplit.length;
+// 	var fileRealName = filePathSplit[2];
+// 	var filePath= uploadPath + fileRealName;
+// 	var fileSaveName = guid() + "_" + fileRealName;
 	
 	console.log(lessonTitle);
 	console.log(lessonCategorySeq);
@@ -168,9 +175,10 @@ function fn_lessonAdd(){
 	console.log(lessonIntro);
 	console.log(lessonPrice);
 	console.log(lessonMonth);
-	console.log(filePath);
+	console.log(file_val);
 	console.log(fileRealName);
 	console.log(fileSaveName);
+	console.log(filePath);
 	
 	var chk_radio = document.getElementsByName('cate_type');
 	var sel_type = null;
@@ -250,9 +258,9 @@ function fn_lessonAdd(){
 	param += "&lessonIntro="+lessonIntro;
 	param += "&lessonPrice="+lessonPrice;
 	param += "&lessonMonth="+lessonMonth;
-	param += "&filePath="+filePath;
 	param += "&fileRealName="+fileRealName;
 	param += "&fileSaveName="+fileSaveName;
+	param += "&filePath="+filePath;
 
 	console.log(param)
 	$.ajax({
@@ -272,10 +280,10 @@ function fn_lessonAdd(){
 				alert("강의가 정상적으로 추가되었습니다.")
 				location.href="lessonList.do"
 			}else{
-				alert("추가도중 문제가 생겼습니다.");
+				alert("추가도중 문제가 생겼습니다. 다시 시도해 주세요");
 				return;
 			}
-		}
+		},
 	});
 	
 }
@@ -325,7 +333,7 @@ background: #ffffff;
 			<br />
 			<br />
 			<main role="main" class="container">
-				<form name="form" method="post" action="lessonAdd" style="text-align: center;" enctype="multipart/form-data">
+				<form name="form" method="post" action="lessonAdd" style="text-align: center;"  enctype="multipart/form-data">
 					<div class="write-title">
 						<label>
 							<p>

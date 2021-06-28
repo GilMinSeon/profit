@@ -24,6 +24,10 @@ public interface LessonMapper {
 	//강의 삭제(비활성화 여부)
 	int deleteLesson(LessonVO vo) throws Exception;
 
+	//강의 파일 추가
+	int insertLessonFile(Map map);
+
+
 	
 	
 

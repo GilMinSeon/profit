@@ -16,8 +16,25 @@
 	letter-spacing: 2px;
 }
 </style>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script type="text/javascript">
-//	eef1a02352721088684fbc2e07a2ef7a
+	window.Kakao.init("eef1a02352721088684fbc2e07a2ef7a");
+	
+	function fn_kakaoLogin(){
+		window.Kakao.Auth.login({
+			scope : 'account_email, gender', 
+			success : function(authObj){
+				console.log(authObj);
+				window.Kakao.API.request({
+					url : '/v2/user/me',
+					success : res => {
+						const kakao_account = res.kakao_account;
+						console.log(kakao_account);
+					}
+				})
+			}
+		});
+	}
 
 
 
@@ -98,7 +115,7 @@ function fn_login(){
 						</div>
 						<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto; ">
 							<input type="button" value="로그인" id="submitBtn" style="font-size: 1.1em;" onclick="fn_login()"><br>
-							<input type="button" value="카카오로그인" id="submitBtn" style="background: yellow;font-size: 1.1em; ">
+							<input type="button" value="카카오로그인" id="submitBtn" style="background: yellow;font-size: 1.1em;" onclick="fn_kakaoLogin()">
 						</div><br>
 							<div class="text-center">
 								<h5 style="display: inline; color: white; cursor: pointer;" onClick="location.href='findId.do'">아이디 찾기</h5>&nbsp;&nbsp;&nbsp;&nbsp;
