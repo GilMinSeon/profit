@@ -26,7 +26,7 @@ input:-webkit-autofill {
     
 	var cnt = 1;
 	function fn_addFile(){
-	    $("#d_file").append("<br>" + "<input type='file' id='file"+cnt+"' class='file_choice' name='file" + cnt + "' onchange='fn_attach_file("+cnt+")'/>");
+	    $("#d_file").append("<br>" + "<input type='file' id='file"+cnt+"' class='file_choice' name='file" + cnt + "'/>");
 	    
 	    cnt++;
 	}
@@ -37,20 +37,6 @@ input:-webkit-autofill {
 		
 	}
   
-// 	function fn_attach_file(cnt){
-// 		var cur = $("input[name=file" + cnt + "]").val();
-// 		var curSplit = cur.split("\\");
-// 		var nameLength = curSplit.length;
-// 		var fileName = curSplit[nameLength-1];
-// 	}
-  
-// 	 function guid() {
-// 	  function _s4() {
-// 	    return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
-// 	  }
-// 	  return _s4() + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + _s4() + _s4();
-// 	}
-	 
 	function fn_submit(){
 		var msg = "ok";
 		
@@ -116,14 +102,6 @@ input:-webkit-autofill {
     		$("input:radio[id='male']").prop("checked", true); 
     	}
     	
-    	$("#frm").submit(function(){
-    		
-    		
-    		
-//     		send_file();
-    	
-    	    
-    	})
     })
 </script>
 <body>
