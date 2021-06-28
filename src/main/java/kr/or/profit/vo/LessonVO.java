@@ -19,6 +19,7 @@ public class LessonVO {
 	private String inDate;
 	private String upUserId;
 	private String upDate;
+	
 	public String getLessonSeq() {
 		return lessonSeq;
 	}

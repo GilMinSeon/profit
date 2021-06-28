@@ -51,9 +51,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//강의 파일 추가
 	@Override
-	public int insertLessonFile(Map<String, Object> map) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertLessonFile(Map map) throws Exception {
+		return lessonDAO.insertLessonFile(map);
 	}
 
 	

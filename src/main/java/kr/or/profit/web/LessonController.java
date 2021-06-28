@@ -60,9 +60,9 @@ public class LessonController {
 	 */
 	@RequestMapping(value = "lessonList.do", method = RequestMethod.GET)
 	public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
-		List<?> lessonList = lessonService.selectLessonList();
-		model.addAttribute("resultList", lessonList);
-//		System.out.println("dddddddddddd"+model);
+//		List<?> lessonList = lessonService.selectLessonList();
+//		model.addAttribute("resultList", lessonList);
+////		System.out.println("dddddddddddd"+model);
 		return "lesson/lessonList";
 	}
 	
@@ -76,9 +76,9 @@ public class LessonController {
 	 */
 	@RequestMapping(value = "lessonDetail.do", method = RequestMethod.GET)
 	public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
-		Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
-		model.addAttribute("resultList", lessonDetailList);
-		System.out.println("제발찍혀라" + model);
+//		Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
+//		model.addAttribute("resultList", lessonDetailList);
+//		System.out.println("제발찍혀라" + model);
 		return "lesson/lessonDetail";
 	}
 	
@@ -122,29 +122,37 @@ public class LessonController {
 	@RequestMapping(value = "lesson_insAjax.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String lessonAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, MultipartHttpServletRequest multipartRequest,HttpServletRequest request,Model model) throws Exception  {
-		HttpSession session = request.getSession();		
+//		HttpSession session = request.getSession();		
 		multipartRequest.setCharacterEncoding("utf-8");
 		
+		//파일업로드
 		List<AttachFileVO> fileVOList = fileLesson(multipartRequest, request);
+		
+		//파일 db저장
         Map<String, Object> filemap = new HashMap<String, Object>();
         filemap.put("list", fileVOList);
         int insertResult = lessonService.insertLessonFile(filemap);
 		
+//		System.out.println(fileVO.getFileRealName());
 		
-		System.out.println(fileVO.getFileRealName());
-		
-		String message = "";
-		int cnt = fileService.insertLessonFile(fileVO);
-		System.out.println(fileVO.getFileSeq());
-		String fileSeq = fileVO.getFileSeq();
-		
+//		String message = "";
+//		int cnt = fileService.insertLessonFile(fileVO);
+//		System.out.println(fileVO.getFileSeq());
+        
+        //파일seq를 lessonvo에 셋팅
+		String fileSeq = fileVOList.get(0).getFileSeq();
 		lessonVO.setFileSeq(fileSeq);
-		
-		int cnt1 = lessonService.insertLesson(lessonVO);
-		if(cnt == 1 && cnt1 == 1 ) {
-			message = "ok";
-		}
-		return message;
+        
+        
+//        String loginMemberId = (String)session.getAttribute("memberId");
+		lessonService.insertLesson(lessonVO);
+
+		String msg = "ng";
+	       
+	       if(insertResult > 0) {
+	          msg = "ok";
+	       }
+	        return msg;
 	}
 	
     private List<AttachFileVO> fileLesson(MultipartHttpServletRequest multipartRequest, HttpServletRequest request) 
@@ -154,7 +162,7 @@ public class LessonController {
            List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
             List<String> fileList = new ArrayList<String>();
             Iterator<String> fileNames = multipartRequest.getFileNames();
-            int cnt = 1;
+//            int cnt = 1;
             while(fileNames.hasNext()) {
                
                
@@ -179,14 +187,14 @@ public class LessonController {
                 String memberId = (String)session.getAttribute("memberId");
                 //attach_file 테이블에 저장할 vo list
                 AttachFileVO attachvo = new AttachFileVO();
-                attachvo.setFileDetailSeq(Integer.toString(cnt));
+//                attachvo.setFileDetailSeq(Integer.toString(cnt));
                 attachvo.setFileRealName(originalFileName);
                 attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
                 attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
                 attachvo.setInUserId(memberId);
                 attachvo.setUpUserId(memberId);
                 fileVOList.add(attachvo);
-                cnt++;
+//                cnt++;
               }
 //            System.out.println("insert 할 것");
             return fileVOList;
@@ -204,9 +212,9 @@ public class LessonController {
 	 */
 	@RequestMapping(value = "lessonMod.do")
 	public String lessonMod(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
-		Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
-		model.addAttribute("resultList", lessonDetailList);
-		System.out.println("수정으로 간다" + model);
+//		Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
+//		model.addAttribute("resultList", lessonDetailList);
+//		System.out.println("수정으로 간다" + model);
 		return "lesson/lessonMod";
 	}
 	
@@ -218,8 +226,8 @@ public class LessonController {
 		
 		String message = "";
 		int cnt = lessonService.updateLesson(lessonVO);
-		int cnt1 = fileService.updateLessonFile(fileVO);
-		if(cnt == 1 && cnt1 ==1) {
+//		int cnt1 = fileService.updateLessonFile(fileVO);
+		if(cnt == 1 ) {
 			message = "ok";
 		}
 		return message;

@@ -23,6 +23,7 @@ public interface LessonService {
 	//강의 삭제
 	public int deleteLesson(LessonVO lessonVO) throws Exception;
 
+
 	//강의 파일 추가
 	public int insertLessonFile(Map<String, Object> map) throws Exception;
 
