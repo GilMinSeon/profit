@@ -159,9 +159,13 @@ public class MypageController {
         HttpSession session = request.getSession();
         multipartRequest.setCharacterEncoding("utf-8");
         
+        //파일업로드
         List<AttachFileVO> fileVOList = fileProcess(multipartRequest, request);
+        String fileSeq = fileVOList.get(0).getFileSeq();
+        
+        //파일 DB 저장
         Map<String, Object> filemap = new HashMap<String, Object>();
-       filemap.put("list", fileVOList);
+        filemap.put("list", fileVOList);
         int insertResult = mypageService.insertProcessFile(filemap);
         
         //회원 정보 Process Table에 Insert
@@ -172,6 +176,7 @@ public class MypageController {
         ProcessVO vo = new ProcessVO();
         
         String loginMemberId = (String)session.getAttribute("memberId");
+        vo.setFileSeq(fileSeq);
         vo.setMemberId(loginMemberId);
         vo.setTrainerAward(trainerAward);
         vo.setTrainerCareer(trainerCareer);
@@ -194,7 +199,7 @@ public class MypageController {
        HttpSession session = request.getSession();
        
        List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
-        List<String> fileList = new ArrayList<String>();
+//        List<String> fileList = new ArrayList<String>();
         Iterator<String> fileNames = multipartRequest.getFileNames();
         int cnt = 1;
         while(fileNames.hasNext()) {
