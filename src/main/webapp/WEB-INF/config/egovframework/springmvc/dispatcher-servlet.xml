@@ -37,6 +37,10 @@
 			<mvc:exclude-mapping path="/classDetail.do"/>
 			
 			
+			<mvc:exclude-mapping path="/kakaoCallback.do"/>
+			<mvc:exclude-mapping path="/kakaoLogout.do"/>
+			
+			
 			<bean class="kr.or.profit.cmmn.interceptor.AuthenticInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

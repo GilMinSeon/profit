@@ -91,8 +91,6 @@
                     	<a href="logout.do" style="color: gray;font-size: 0.9em;padding-left: 10px;cursor: pointer;">로그아웃</a>
                     </c:if>
                     
-                    
-                    
                     </div>
       	    </div>
         </div>
