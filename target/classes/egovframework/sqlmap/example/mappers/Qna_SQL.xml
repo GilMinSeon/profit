@@ -17,37 +17,28 @@
 		<result property="upDate" column="UP_DATE"/>
 	</resultMap>
 
-	<!-- qna 목록 -->
+	<!-- qna 목록 댓글 개수 -->
 	<select id="qnaList"  resultType="egovMap">
 		SELECT
-		    B.CNT,
-		    A.COMMUNITY_SEQ,
-		    A.COMMON_SEQ,
-		    A.COMMUNITY_CATEGORY_SEQ,
-		    A.FILE_SEQ,
-		    A.COMMON_TITLE,
-		    A.COMMON_CONTENT,
-		    A.COMMON_HIT,
-		    A.COMMON_DEL_FLAG,
-		    A.IN_USER_ID,
-		    TO_CHAR(A.IN_DATE, 'YYYY/MM/DD') IN_DATE,
-		    A.UP_USER_ID,
-            TO_CHAR(A.UP_DATE, 'YYYY/MM/DD') UP_DATE
+		    COMMUNITY_SEQ,
+		    COMMON_SEQ,
+		    COMMUNITY_CATEGORY_SEQ,
+		    FILE_SEQ,
+		    COMMON_TITLE,
+		    COMMON_CONTENT,
+		    COMMON_HIT,
+		    COMMON_DEL_FLAG,
+		    IN_USER_ID,
+		    TO_CHAR(IN_DATE, 'YYYY/MM/DD') IN_DATE,
+		    UP_USER_ID,
+		    TO_CHAR(UP_DATE, 'YYYY/MM/DD') IN_DATE
 		FROM
-		    COMMUNITY A,
-		    (  SELECT
-		            COMMUNITY_SEQ,
-		            COUNT(*)  CNT
-		        FROM
-		            REPLY
-		        GROUP BY
-		            COMMUNITY_SEQ) B
+		    COMMUNITY
 		WHERE
-		    A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
-		AND
-			A.COMMON_SEQ = '8'
+			COMMON_SEQ = '8'
 	</select>
 
+<!-- 	글등록 -->
 	<insert id="qnaInsert" parameterType="hashMap">
 		INSERT INTO COMMUNITY
 			(
@@ -71,7 +62,7 @@
                     COMMUNITY)+1,
 				'8',
 				null,
-				null,
+				#{files},
 				#{title},
 				#{contents},
 				'0',
@@ -83,4 +74,45 @@
 						)
 	</insert>
 
+<!-- 	상세보기 -->
+	<select id="qnaDetail" resultType="egovMap">
+		SELECT
+		    COMMUNITY_SEQ,
+		    COMMON_SEQ,
+		    COMMUNITY_CATEGORY_SEQ,
+		    FILE_SEQ,
+		    COMMON_TITLE,
+		    COMMON_CONTENT,
+		    COMMON_HIT,
+		    COMMON_DEL_FLAG,
+		    IN_USER_ID,
+		    TO_CHAR(IN_DATE, 'YYYY/MM/DD') IN_DATE,
+		    UP_USER_ID,
+		    TO_CHAR(UP_DATE, 'YYYY/MM/DD') UP_DATE
+		FROM
+		    COMMUNITY
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+	</select>
+
+<!-- 	글수정 -->
+	<update id="qnaUpdate" parameterType="hashMap" >
+		UPDATE
+		    COMMUNITY
+		SET
+		    FILE_SEQ        = #{files},
+		    COMMON_TITLE    = #{title},
+		    COMMON_CONTENT  = #{contents},
+		    UP_DATE         = SYSDATE
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+	</update>
+
+<!-- 	글 삭제 -->
+	<delete id="qnaDelete" parameterType="hashMap" >
+		DELETE FROM
+		    community
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+	</delete>
 </mapper>
