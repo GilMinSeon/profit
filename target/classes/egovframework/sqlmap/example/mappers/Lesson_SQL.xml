@@ -3,13 +3,14 @@
 
 <mapper namespace="kr.or.profit.mapper.LessonMapper">
 	
-	<insert id="insertLesson" parameterType="LessonVO">
+	<insert id="insertLesson">
 	    <selectKey order="BEFORE" keyProperty="lessonSeq" resultType="String">
 			SELECT NVL(MAX(TO_NUMBER(LESSON_SEQ)),0)+1 FROM LESSON
 		</selectKey>
 		<![CDATA[
 			INSERT INTO LESSON
 			(	LESSON_SEQ,
+				FILE_SEQ,
 				COMMON_SEQ,
 				LESSON_CATEGORY_SEQ,
 				LESSON_TITLE,
@@ -28,7 +29,8 @@
 				UP_DATE
 			)
 			VALUES (#{lessonSeq, jdbcType=VARCHAR},
-					#{commonSeq, jdbcType=VARCHAR},
+					#{fileSeq, jdbcType=VARCHAR},
+					'4',
 					#{lessonCategorySeq, jdbcType=VARCHAR},
 					#{lessonTitle, jdbcType=VARCHAR},
 					#{lessonTitleComment, jdbcType=VARCHAR},
@@ -40,17 +42,61 @@
 					#{lessonPrice, jdbcType=VARCHAR},
 					'n',
 					#{lessonMonth, jdbcType=VARCHAR},
-					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'),
-					1,
-					to_char(sysdate, 'YYYYMMDD.HH24MISS'))
+					#{inUserId, jdbcType=VARCHAR},
+					sysdate,
+					#{upUserId, jdbcType=VARCHAR},
+					sysdate)
 		]]>
 	</insert>
 	
+	<!-- 강의사진 파일테이블에 추가 -->
+	<insert id="insertLessonFile" parameterType="java.util.Map" > 
+	     <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
+		</selectKey>
+		 <foreach collection="list" item="item" index="index" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+           
+         into 
+            attach_file
+               (
+                  file_seq, 
+                  file_detail_seq, 
+                  file_real_name, 
+                  file_save_name, 
+                  file_path, 
+                  in_user_id, 
+                  in_date, 
+                  up_user_id, 
+                  up_date
+               )
+         values 
+           
+           (
+             (
+                select 
+                  NVL(max(to_number(file_seq)),0) + 1 
+                 from 
+                    attach_file),
+                 1, 
+                 #{item.fileRealName}, 
+                 #{item.fileSaveName}, 
+                 #{item.filePath}, 
+                 #{item.inUserId}, 
+                 sysdate, 
+                 #{item.upUserId, jdbcType=VARCHAR}, 
+                 sysdate
+           )
+           
+           
+       </foreach>
+   </insert>
+	
+	
+	
 	<!-- 강의 등록 체크 -->
-    <select id="insertLessonCheck" parameterType="String" resultType="int">
-        select count(*) from LESSON
-    </select>
+<!--     <select id="insertLessonCheck" parameterType="String" resultType="int"> -->
+<!--         select count(*) from LESSON -->
+<!--     </select> -->
     
     <update id="updateLesson" parameterType="LessonVO">
 
@@ -71,9 +117,9 @@
 	</update>
 	    
 	    
-	    <select id="selectLessonList"  resultType="egovMap">	<!-- egovMap :  key 에 대하여 Camel Case 변환하여 super.put -->
+	    <select id="selectLessonList"  resultType="egovMap">	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
 
-			SELECT A.LESSON_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, B.LESSON_GOOD, A.IN_USER_ID, C.LESSON_REPLY, D.FILE_PATH, E.LESSON_CATEGORY_NAME
+			SELECT A.LESSON_SEQ ,A.FILE_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, B.LESSON_GOOD, A.IN_USER_ID, C.LESSON_REPLY, D.FILE_PATH, E.LESSON_CATEGORY_NAME
 				FROM LESSON A
 				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
 				                FROM BOOKGOOD
@@ -84,9 +130,9 @@
 				                FROM REPLY
 				                GROUP BY LESSON_SEQ) C
 				ON A.LESSON_SEQ = C.LESSON_SEQ
-				    LEFT OUTER JOIN (SELECT LESSON_SEQ, FILE_PATH
-				                FROM ATTACH_FILE) D
-				ON A.LESSON_SEQ = D.LESSON_SEQ
+				    LEFT OUTER JOIN (SELECT FILE_SEQ,FILE_PATH
+				                FROM ATTACH_FILE ) D
+				ON A.FILE_SEQ = D.FILE_SEQ
 				    LEFT OUTER JOIN (SELECT LESSON_CATEGORY_SEQ, LESSON_CATEGORY_NAME
 				                FROM LESSON_CATEGORY) E
 				ON A.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ
@@ -107,16 +153,17 @@
 	</select>
 	    
    	
+	    <!-- 강의 상세보기 -->
     <select id="selectLessonDetail" resultType="egovMap">
 
-		SELECT A.LESSON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
-        A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_PATH
+		SELECT A.LESSON_SEQ, A.FILE_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
+        A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_SAVE_NAME
 			FROM LESSON A
-			    LEFT OUTER JOIN (SELECT LESSON_SEQ, FILE_PATH
-			                FROM ATTACH_FILE) B
-			ON A.LESSON_SEQ = B.LESSON_SEQ
+			    LEFT OUTER JOIN (SELECT FILE_SEQ, FILE_SAVE_NAME
+			                FROM ATTACH_FILE ) B
+			ON A.FILE_SEQ = B.FILE_SEQ
 			
-			WHERE A.LESSON_SEQ=#{lessonSeq, jdbcType=VARCHAR}
+			WHERE A.LESSON_SEQ= #{lessonSeq, jdbcType=VARCHAR}
 
 	</select>
 	
