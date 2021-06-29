@@ -32,6 +32,7 @@ import kr.or.profit.service.MemberService;
 import kr.or.profit.vo.KakaoProfile;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.OAuthToken;
+import net.sf.json.JSONObject;
 
 @Controller
 public class MemberController {
@@ -279,24 +280,33 @@ public class MemberController {
 	}
 	
 	//아이디 찾기
-	@RequestMapping("findIdAjax.do")
-	@ResponseBody
-	public String selectByFindId(MemberVO vo) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		String msg = "";
+	@RequestMapping(value = "findIdAjax.do", produces = "application/text; charser=utf-8")
+	public @ResponseBody String selectByFindId(MemberVO vo) throws Exception {
+		//이 뻘짓 안해도 됨!! jsp에서 보낸 값 vo로 바로 셋팅해준다
+//		System.out.println(vo.getMemberName());
+//		System.out.println(vo.getMemberEmail());
+//		
+//		String memberName = vo.getMemberName();
+//		String memberEmail = vo.getMemberEmail();
+//		
+//		MemberVO memberVO = new MemberVO();
+//		
+//		memberVO.setMemberName(memberName);
+//		memberVO.setMemberEmail(memberEmail);
 		
 		String id = memberService.selectByFindId(vo);
 		
-		if (id != null) {
-			msg = "ok";
-			mav.addObject("msg", "ok");
-			mav.addObject("id", id);
-			
-			
-		}
-		System.out.println(msg);
+		System.out.println(id);
 		
-		return msg;
+		System.out.println("--------------------");
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("msg", "ok");
+		jsonObject.put("id", id);
+		
+		String jsonInfo = jsonObject.toString();
+		
+		return jsonInfo;
 	}
 	
 	
