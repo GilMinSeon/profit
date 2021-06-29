@@ -20,41 +20,85 @@
   
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <script>
-$(function(){
-	$('.summernote').summernote({
-	height: 600,
-	fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
-	fontNamesIgnoreCheck : [ '맑은고딕' ],
-	focus: true,
+var cnt = 1;
+var thumnail = "";
 
-	callbacks: {
-	onImageUpload: function(files, editor, welEditable) {
+$(function(){
+	
+	$('.summernote').summernote({
+		height: 600,
+		fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
+		fontNamesIgnoreCheck : [ '맑은고딕' ],
+		focus: true,
+
+		callbacks: {
+		onImageUpload: function(files, editor, welEditable) {
 	            for (var i = files.length - 1; i >= 0; i--) {
 	             sendFile(files[i], this);
 	            }
 	        }
-	}
+		}
 
 	});
 
-	})
+})
 
-	function sendFile(file, el) {
-	var form_data = new FormData();
-	       form_data.append('file', file);
-	       $.ajax({
-	         data: form_data,
-	         type: "POST",
-	         url: 'profileImage.do',
-	         cache: false,
-	         contentType: false,
-	         enctype: 'multipart/form-data',
-	         processData: false,
-	         success: function(img_name) {
-	           $(el).summernote('editor.insertImage', img_name);
-	         }
-	       });
-	    }
+function sendFile(file, el) {
+var form_data = new FormData();
+       form_data.append('file', file);
+       $.ajax({
+         data: form_data,
+         type: "POST",
+         url: 'profileImage.do',
+         cache: false,
+         contentType: false,
+         enctype: 'multipart/form-data',
+         processData: false,
+         success: function(img_name) {
+        	if(cnt == 1){
+        		thumnail = img_name;
+        		$('#hidden').val(img_name);
+        		cnt++;
+        	}
+            console.log(img_name);
+            setTimeout(function() {
+				$(el).summernote('editor.insertImage', img_name);
+			}, 5000);
+         }
+       });
+}
+
+
+function fn_boardAdd(){
+	var formData = new FormData($('#frm')[0]);
+	$.ajax({
+		type : 'post',
+		url : 'boardAddAjax.do',
+		data : formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+		if(data=="ok"){
+			alert("신청이 정상적으로 완료되었습니다.");
+			location.href="home.do";
+		}else if(data=="no"){
+			alert("신청이 실패하였습니다. 다시 시도해주세요");
+		}else{
+			alert("신청이 실패하였습니다. 다시 시도해주세요");
+		}
+	},
+		error : function(error){
+			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+}
+
 </script>
 
 
@@ -103,23 +147,25 @@ $(function(){
 	<br/><br/>
 		<main role="main" class="container">
 			<form name="form" id="frm">
-			<input type="hidden" name="folderName" value="images"/>
+			<input type="hidden" id="hidden" name="tumnail_img" value="none"/>
 				<div class="write-title">
 					<label>
 						<p>카테고리 선택<span style="color:red;"> *</span></p>
 					</label>
 					<div class="c_radio">
 						<div style="display: inline-block;">
-							<input type="radio" name="cate_type" id="exercise" value="exercise" autocomplete="off" style="opacity: 0;">
+							<input type="radio" name="cate_type" id="exercise" value="1" autocomplete="off" style="opacity: 0;">
 							<label for="exercise">운동</label>
-							<input type="radio" name="cate_type" id="food" value="food" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="food" value="2" autocomplete="off" style="opacity: 0">
 							<label for="food">식단</label>
 						</div>
 						<div style="display: inline-block;">
-							<input type="radio" name="cate_type" id="motive" value="motive" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="motive" value="3" autocomplete="off" style="opacity: 0">
 							<label for="motive">동기부여</label>
-							<input type="radio" name="cate_type" id="habit" value="habit" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="habit" value="4" autocomplete="off" style="opacity: 0">
 							<label for="habit">생활습관</label>
+							<input type="radio" name="cate_type" id="etc" value="5" autocomplete="off" style="opacity: 0">
+							<label for="etc">기타</label>
 						</div>
 					</div>
 				</div>
@@ -132,7 +178,7 @@ $(function(){
 				</div>
 				
 				<div class="class__filter__input">
-					<button id="hover_btn" type="submit" style="width: 10%; padding: 5px;">등록</button>
+					<button id="hover_btn" type="button" style="width: 10%; padding: 5px;" onclick="fn_boardAdd()">등록</button>
 				</div>
 			</form>
 		</main>

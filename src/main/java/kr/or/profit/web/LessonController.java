@@ -63,6 +63,7 @@ public class LessonController {
    public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
       List<?> lessonList = lessonService.selectLessonList();
       model.addAttribute("resultList", lessonList);
+      List<?> lessonTopList = lessonService.selectTopLessonList();
 //      System.out.println("dddddddddddd"+model);
       return "lesson/lessonList";
    }
@@ -349,24 +350,24 @@ public class LessonController {
    }
    
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
    /**
     * 강의 삭제
+ * @throws Exception 
     */
    @RequestMapping(value = "lesson_delAjax.do", method = RequestMethod.GET)
-   public String lessonDel(LessonVO lessonVO, Locale locale, Model model) {
-//      int cnt = lessonService.deleteLesson(lessonVO);
-      return "lesson/classDetail";
+   @ResponseBody
+   public String lessonDel(LessonVO lessonVO, Locale locale, Model model) throws Exception {
+      String lessonSeq = lessonVO.getLessonSeq();
+      System.out.println("lessonSeq?= " + lessonSeq);
+      lessonVO.setLessonSeq(lessonSeq);
+	  int cnt = lessonService.deleteLesson(lessonVO);
+      String msg = "ng";
+      
+      if(cnt > 0) {
+         msg = "ok";
+      }
+      System.out.println(msg);
+       return msg;
    }
    
 
