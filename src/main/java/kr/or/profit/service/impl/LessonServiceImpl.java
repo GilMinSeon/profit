@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.profit.mapper.LessonMapper;
 import kr.or.profit.service.LessonService;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.LessonVO;
 
 @Service("lessonService")
@@ -54,6 +55,8 @@ public class LessonServiceImpl implements LessonService {
 	public int insertLessonFile(Map map) throws Exception {
 		return lessonDAO.insertLessonFile(map);
 	}
+
+
 
 	
 	

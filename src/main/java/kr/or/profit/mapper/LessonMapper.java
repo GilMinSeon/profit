@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.LessonVO;
 
 @Mapper("lessonMapper")
@@ -25,7 +26,8 @@ public interface LessonMapper {
 	int deleteLesson(LessonVO vo) throws Exception;
 
 	//강의 파일 추가
-	int insertLessonFile(Map map);
+
+	int insertLessonFile(Map map) throws Exception;
 
 
 	
