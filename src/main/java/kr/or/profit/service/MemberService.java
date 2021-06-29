@@ -1,12 +1,12 @@
 package kr.or.profit.service;
 
-import java.util.Map;
-
 import kr.or.profit.vo.MemberVO;
 
 public interface MemberService {
 	//회원가입-등록처리
 	public void insertMember(MemberVO vo) throws Exception;
+	
+	//카카오 회원가입
 	public void kakaoInsertMember(MemberVO vo) throws Exception;
 
 	//아이디 중복검사
@@ -21,14 +21,15 @@ public interface MemberService {
 	//로그인 처리
 	public MemberVO selectMemberCount(MemberVO vo) throws Exception;
 
-	//아이디 찾기 개수
-	public int  findIdCnt(Map<String, Object> map) throws Exception;
-	//아이디 찾기
-	public MemberVO  findId(Map<String, Object> map) throws Exception;
-	
-
+	//이미 카카오 회원가입 되어있는지 검사
 	public int kakaoSelectById(String memberId) throws Exception;
 	
-	
+	//아이디 찾기
 	public String selectByFindId(MemberVO vo) throws Exception;
+	
+	//비밀번호 찾기
+	public int selectByFindPwd(MemberVO vo) throws Exception;
+	
+	//임시 비밀번호로 update
+	public void updateTempPwd(MemberVO vo)throws Exception;
 }

@@ -1,6 +1,7 @@
 package kr.or.profit.web;
 
-import java.util.HashMap;
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -14,7 +15,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,11 +42,10 @@ public class MemberController {
 
 	@Resource(name = "memberService")
 	private MemberService memberService;
-	
-	
 
 	// 민선-카카오 로그인
-	@RequestMapping(value = "kakaoCallback.do", produces = "application/json", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "kakaoCallback.do", produces = "application/json", method = { RequestMethod.GET,
+			RequestMethod.POST })
 	@ResponseBody // data를 리턴해주는 컨트롤러 함수가 된다
 	public ModelAndView kakaoCallback(String code, HttpSession session) throws Exception {
 		// 2단계 시작
@@ -82,37 +81,29 @@ public class MemberController {
 		oauthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
 
 		System.out.println("카카오 엑세스 토큰 : " + oauthToken.getAccess_token());
-		
-		
-		
-		///////////////////////////두번째 단계
+
+		/////////////////////////// 두번째 단계
 		RestTemplate rt2 = new RestTemplate();
-		
-		//HttpHeader 오브젝트 생성
+
+		// HttpHeader 오브젝트 생성
 		HttpHeaders headers2 = new HttpHeaders();
-		headers2.add("Authorization", "Bearer "+oauthToken.getAccess_token());
+		headers2.add("Authorization", "Bearer " + oauthToken.getAccess_token());
 		headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-		//HttpHeader와 HttpBody를 하나의 오브젝트에 담기
-		HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 = 
-			new HttpEntity<>(headers2);
-		
-		//HttpHeader와 HttpBody를 하나의 오브젝트에 담기
-		ResponseEntity<String> response2 = rt2.exchange(
-				"https://kapi.kakao.com/v2/user/me", 
-				HttpMethod.POST,
-				kakaoProfileRequest2, 
-				String.class);
-		//두번째 단계 => return response2.getBody(); : 코드 받고 액세스 토큰 요청받고 액세스 토큰으로 회원정보까지 조회해서 그 결과가 담겨서 보여진다
-		
-		
-		
+		// HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+		HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 = new HttpEntity<>(headers2);
+
+		// HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+		ResponseEntity<String> response2 = rt2.exchange("https://kapi.kakao.com/v2/user/me", HttpMethod.POST,
+				kakaoProfileRequest2, String.class);
+		// 두번째 단계 => return response2.getBody(); : 코드 받고 액세스 토큰 요청받고 액세스 토큰으로 회원정보까지
+		// 조회해서 그 결과가 담겨서 보여진다
+
 		ObjectMapper objectMapper2 = new ObjectMapper();
 		KakaoProfile kakaoProfile = null;
 		kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
-		
-		
-		//Member오브젝트 : 
+
+		// Member오브젝트 :
 //		System.out.println("카카오 아이디(시퀀스 번호)" + kakaoProfile.getId());
 //		System.out.println("카카오 이메일" + kakaoProfile.getKakao_account().getEmail());;
 //		System.out.println("-------------------------------");
@@ -121,50 +112,46 @@ public class MemberController {
 //		System.out.println("memberName : " + kakaoProfile.getKakao_account().getProfile().getNickname());
 //		System.out.println("memberNickname : " +kakaoProfile.getKakao_account().getProfile().getNickname());
 //		System.out.println("memberEmail : " + kakaoProfile.getKakao_account().getEmail());
-		
+
 		MemberVO vo = new MemberVO();
-		vo.setMemberId(kakaoProfile.getId()+ "@K");
-		vo.setMemberPwd(kakaoProfile.getId()+ "@K");
+		vo.setMemberId(kakaoProfile.getId() + "@K");
+		vo.setMemberPwd(kakaoProfile.getId() + "@K");
 		vo.setMemberName(kakaoProfile.getKakao_account().getProfile().getNickname());
 		vo.setMemberNickname(kakaoProfile.getKakao_account().getProfile().getNickname());
 		vo.setMemberEmail(kakaoProfile.getKakao_account().getEmail());
-		
+
 //		System.out.println(vo.getMemberId());
 //		System.out.println(vo.getMemberPwd());
 //		System.out.println(vo.getMemberName());
 //		System.out.println(vo.getMemberNickname());
 //		System.out.println(vo.getMemberEmail());
-		
-		
-		//가입자인지 비가입자인이 체크해서 처리
-		String memberId = kakaoProfile.getId()+ "@K";
+
+		// 가입자인지 비가입자인이 체크해서 처리
+		String memberId = kakaoProfile.getId() + "@K";
 		int cnt = memberService.kakaoSelectById(memberId);
 		System.out.println(cnt);
-		if(cnt == 0) {
-			//회원가입
+		if (cnt == 0) {
+			// 회원가입
 			memberService.kakaoInsertMember(vo);
-			//로그인처리까지
+			// 로그인처리까지
 			session.setAttribute("memberId", vo.getMemberId());
 			session.setAttribute("memberNickname", vo.getMemberNickname());
 			session.setAttribute("memberGubun", "U");
 			System.out.println("1111");
-		}else {
-			//로그인처리
+		} else {
+			// 로그인처리
 			session.setAttribute("memberId", vo.getMemberId());
 			session.setAttribute("memberNickname", vo.getMemberNickname());
 			session.setAttribute("memberGubun", "U");
 			System.out.println("2222");
-			
+
 		}
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("redirect:home.do"); 
+		mav.setViewName("redirect:home.do");
 		return mav;
 
 	}
 
-	
-	
-	
 	@RequestMapping(value = "login.do", method = RequestMethod.GET)
 	public String loginForm(Locale locale, Model model) {
 
@@ -278,67 +265,80 @@ public class MemberController {
 //		}
 		return "ok";
 	}
-	
-	//아이디 찾기
+
+	// 아이디 찾기
 	@RequestMapping(value = "findIdAjax.do", produces = "application/text; charser=utf-8")
 	public @ResponseBody String selectByFindId(MemberVO vo) throws Exception {
-		
+
 		String id = memberService.selectByFindId(vo);
-		
+
 		JSONObject jsonObject = new JSONObject();
-		
-		if(id != null) {
+
+		if (id != null) {
 			jsonObject.put("msg", "ok");
 			jsonObject.put("id", id);
-		}else {
+		} else {
 			jsonObject.put("msg", "no");
 		}
 		String jsonInfo = jsonObject.toString();
 		return jsonInfo;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	/**
-	 * 아이디 찾기 개수
-	 * 
-	 * @author 박상빈
-	 * @param map findIdCheck에서 이름과 메일을 받아온다
-	 * @return "member/findId"
-	 * @exception Exception
-	 */
-	public int findIdCnt(Map<String, Object> map) throws Exception {
+	// 비밀번호 찾기
+	@RequestMapping(value = "findPwdAjax.do", produces = "application/text; charser=utf-8")
+	public @ResponseBody String selectByFindPwd(MemberVO vo) throws Exception {
 
-//		memberService.findId(map)실행하면 쿼리까지 가서 돌아온 값을 findIdCheck로 받는다.
-		int findIdCnt = memberService.findIdCnt(map);
-		System.out.println("돌아옴Cnt : " + findIdCnt);
-		return findIdCnt;
+		// db에 정보 있는지 확인
+		int cnt = memberService.selectByFindPwd(vo);
+		
+		JSONObject jsonObject = new JSONObject();
+		if (cnt == 1) {
+			//일단 여기서 ok 메세지 보내기
+			jsonObject.put("msg", "ok");
+			
+			// 임시비밀번호 생성
+			String tempPwd = getRamdomPassword(10);
+			System.out.println(tempPwd);
+
+			// member테이블에서 임시 비밀번호로 변경
+			MemberVO tempVO = new MemberVO();
+			tempVO.setMemberId(vo.getMemberId());
+			tempVO.setMemberPwd(tempPwd);
+			memberService.updateTempPwd(tempVO);
+
+			// 메일보내기
+			try {
+				testMailer.sendMail(vo.getMemberEmail(), "안녕하세요 PROFIT입니다. 임시 비밀번호를 확인해주세요.",
+						"안녕하세요 PROFIT 입니다.\n회원님의 임시비밀번호는 " + tempPwd+ " 입니다."
+								+ "\n 임시비밀번호로 로그인 하신 후 내정보에서 비밀번호를 변경해주세요 :) ");
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "fail";
+			}
+			
+			
+		}else {
+			jsonObject.put("msg", "no");
+		}
+		String jsonInfo = jsonObject.toString();
+		return jsonInfo;
+		
 	}
 
-	/**
-	 * 아이디 찾기
-	 * 
-	 * @author 박상빈
-	 * @param map 이름과 메일을 받아온다
-	 * @return "member/findId"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "findId.do", method = RequestMethod.POST)
-	public String findIdCheck(@RequestParam Map<String, Object> map, Model model) throws Exception {
-		int findIdCnt = findIdCnt(map);
-		System.out.println("findIdCnt = " + findIdCnt);
-
-//		memberService.findId(map)실행하면 쿼리까지 가서 돌아온 값을 findIdCheck로 받는다.
-		MemberVO findId = memberService.findId(map);
-		System.out.println("돌아옴 : " + findId.getInUserId());
-		return "member/findId";
+	public String getRamdomPassword(int size) {
+		char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+				'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a',
+				'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+				'w', 'x', 'y', 'z', '!', '@', '#', '$', '%', '^', '&' };
+		StringBuffer sb = new StringBuffer();
+		SecureRandom sr = new SecureRandom();
+		sr.setSeed(new Date().getTime());
+		int idx = 0;
+		int len = charSet.length;
+		for (int i = 0; i < size; i++) {
+			idx = sr.nextInt(len);
+			sb.append(charSet[idx]);
+		}
+		return sb.toString();
 	}
-
 }
