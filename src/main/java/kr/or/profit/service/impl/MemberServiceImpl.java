@@ -67,6 +67,11 @@ public class MemberServiceImpl implements MemberService{
 		return memberMapper.kakaoSelectById(memberId);
 	}
 
+	@Override
+	public String selectByFindId(MemberVO vo) throws Exception {
+		return memberMapper.selectByFindId(vo);
+	}
+
 
 
 }

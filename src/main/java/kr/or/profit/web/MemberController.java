@@ -3,19 +3,18 @@ package kr.or.profit.web;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,7 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import antlr.collections.List;
 import kr.or.profit.cmmn.TestMailer;
 import kr.or.profit.service.MemberService;
 import kr.or.profit.vo.KakaoProfile;
@@ -279,6 +277,36 @@ public class MemberController {
 //		}
 		return "ok";
 	}
+	
+	//아이디 찾기
+	@RequestMapping("findIdAjax.do")
+	@ResponseBody
+	public String selectByFindId(MemberVO vo) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		String msg = "";
+		
+		String id = memberService.selectByFindId(vo);
+		
+		if (id != null) {
+			msg = "ok";
+			mav.addObject("msg", "ok");
+			mav.addObject("id", id);
+			
+			
+		}
+		System.out.println(msg);
+		
+		return msg;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * 아이디 찾기 개수

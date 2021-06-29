@@ -66,26 +66,27 @@
 
 	<section class="classes spad">
 		<main role="main" class="container">
-			<h3>👨‍🎓 문의 해주세요</h3><br>
-			<form name="form" method="POST" action="/qnaList">
-				<div class="pt-1"></div>
-				<input type="text" name="title" placeholder="제목을 입력하세요"
-					style="border-radius: 5px; width: 100%; padding: 5px;">
-				<div class="pt-1">
-					<textarea id="summernote" name="contents"></textarea>
-				</div>
-				<script>
+		<h3>👨‍🎓 문의 해주세요</h3>
+		<br>
+		<form name="form" method="POST" action="/qnaAdd.do">
+			<div class="pt-1"></div>
+			<input type="text" name="title" placeholder="제목을 입력하세요"
+				style="border-radius: 5px; width: 100%; padding: 5px;">
+			<div class="pt-1">
+				<textarea id="summernote" name="contents"></textarea>
+			</div>
+			<script>
 				$('#summernote').summernote({
-						placeholder : '내용을 입력해주세요',
-						tabsize : 2,
-						height : 300
-					});
-				</script>
-				<div class="pt-1 text-right">
-					<button id="hover_btn" class="btn btn btn-success" type="submit"
-						style="width: 10%; padding: 5px;">등록</button>
-				</div>
-			</form>
+					placeholder : '내용을 입력해주세요',
+					tabsize : 2,
+					height : 300
+				});
+			</script>
+			<div class="pt-1 text-right">
+				<button id="hover_btn" class="btn btn btn-success" type="submit"
+					style="width: 10%; padding: 5px;">등 록</button>
+			</div>
+		</form>
 		</main>
 	</section>
 </body>
