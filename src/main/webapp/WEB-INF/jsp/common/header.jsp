@@ -67,7 +67,7 @@
 
             <div style="width: 100%; ">
             		<div class="header__logo header_info" style="display: inline-block;padding-left: 15%;">
-                            <a href="home"><img src="./resources/img/logo.png" alt=""></a>
+                            <a href="home.do"><img src="./resources/img/logo.png" alt=""></a>
                     </div>
                     <div class="header_info" style="vertical-align: bottom;text-align: right;float: right;height: 100%;padding-top: 70px;padding-right: 50px;">
                     <c:set var="memberId" value="${sessionScope.memberId}"/>
@@ -78,16 +78,26 @@
                     </c:if>
                     <c:if test="${memberId != null }">
                     	<c:if test="${memberGubun == 'U' }">
-                    	<img src="./resources/img/header/user.png" width="16px" height="16px">
-	                    <a href="trainerPermitList.do" style="color: gray;font-size: 0.9em;padding-left: 10px;">${sessionScope.memberNickname }님 (회원)</a>
+                    	<img src="./resources/img/header/user.png" width="16px" height="19px" style="padding-bottom: 3px;">
+	                    <a style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 10px;">${sessionScope.memberNickname }님 (회원)</a>&nbsp;
+	                    
+	                    <img src="./resources/img/header/lock.png" width="16px" height="19px" style="padding-bottom: 3px;">
+	                    <a href="myinfo.do" style="color: gray;font-size: 0.9em;padding-left: 0px;">마이페이지</a>
 	                    </c:if>
                     	
 	                    <c:if test="${memberGubun == 'T' }">	
-                    	<img src="./resources/img/header/health.png" width="16px" height="16px">
-	                    <a href="trainerPermitList.do" style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 10px;">${sessionScope.memberNickname }님 (트레이너)</a>
-	                    </c:if>
-	                    <img src="./resources/img/header/lock.png" width="16px" height="16px;">
+                    	<img src="./resources/img/header/check-mark.png" width="16px" height="18px" style="padding-bottom: 3px;">
+	                    <a style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 10px;">${sessionScope.memberNickname }님 (트레이너)</a>&nbsp;
+	                    
+	                    <img src="./resources/img/header/lock.png" width="16px" height="19px" style="padding-bottom: 3px;">
 	                    <a href="myinfo.do" style="color: gray;font-size: 0.9em;padding-left: 0px;">마이페이지</a>
+	                    </c:if>
+	                    
+	                    <c:if test="${memberId == '1' }">	
+                    	<img src="./resources/img/header/user.png" width="16px" height="19px" style="padding-bottom: 3px;">
+	                    <a style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 5px;">관리자님</a>
+	                    </c:if>
+	                    
                     	<a href="logout.do" style="color: gray;font-size: 0.9em;padding-left: 10px;cursor: pointer;">로그아웃</a>
                     </c:if>
                     
@@ -103,6 +113,9 @@
         
                     <div class="col-lg-9 col-md-9" style="max-width: 100%;margin: 0;">
                         <nav class="header__menu" >
+                        	
+                        	<!-- 일반탭 -->
+                        	<c:if test="${memberGubun == 'T'||memberGubun == 'U'|| memberId == null}">
                             <ul>
                                 <li class="active"><a href="home">Home</a></li>
                                 <li><a href="aiTeachList.do">AI교정</a></li>
@@ -121,19 +134,35 @@
                                 </li>
                                 <li><a href="noticeList.do">공지사항</a></li>
                                 <li><a href="qnaList.do">문의하기</a></li>
-<!--                                 <li><a href="#">예시</a> -->
-<!--                                     <ul class="dropdown"> -->
-<!--                                         <li><a href="aboutUs">aboutUs</a></li> -->
-<!--                                         <li><a href="blog">blog</a></li> -->
-<!--                                         <li><a href="blogDetail">blogDetails</a></li> -->
-<!--                                         <li><a href="classes">classes</a></li> -->
-<!--                                         <li><a href="classesDetail">classesDetails</a></li> -->
-<!--                                         <li><a href="contact">contact</a></li> -->
-<!--                                         <li><a href="faq">faq</a></li> -->
-<!--                                         <li><a href="pricing">pricing</a></li> -->
-<!--                                     </ul> -->
-<!--                                 </li> -->
                             </ul>
+                           </c:if> 
+                           
+                           <!-- 관리자탭 -->
+                           <c:if test="${memberId == '1' }">
+                            <ul>
+                                <li><a href="trainerPermitList.do">트레이너 승인</a></li>
+                                <li><a href="adminMemberList.do">회원관리</a></li>
+                                <li><a href="adminChatList.do">1:1상담 관리</a></li>
+                                <li><a href="adminLessonList.do">온라인클래스 관리</a></li>
+                                <li><a href="">매출관리</a></li>
+                                <li><a href="noticeList.do">공지사항</a></li>
+                                <li><a href="qnaList.do">문의하기</a></li>
+                                <li><a href="#">회원페이지</a>
+                                    <ul class="dropdown">
+                                        <li><a href="aiTeachList.do">AI교정</a></li>
+                                        <li><a href="chatList.do">1:1 상담</a></li>
+                                        <li><a href="">칼로리 계산기</a></li>
+                                        <li><a href="lessonList.do">온라인클래스</a></li>
+                                        <li><a href="recipeList.do">레시피</a></li>
+                                        <li><a href="boardList.do">자유게시판</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                           </c:if> 
+                           
+                           
+                            
+                            
                         </nav>
                     </div>
                 </div>
