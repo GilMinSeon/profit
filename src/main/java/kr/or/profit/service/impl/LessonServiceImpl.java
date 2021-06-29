@@ -56,6 +56,12 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.insertLessonFile(map);
 	}
 
+	//강의 파일 수정
+	@Override
+	public int updateLessonFile(Map map) throws Exception {
+		return lessonDAO.updateLessonFile(map);
+	}
+
 
 
 	

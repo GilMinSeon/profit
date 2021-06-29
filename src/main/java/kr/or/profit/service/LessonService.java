@@ -26,8 +26,10 @@ public interface LessonService {
 
 
 	//강의 파일 추가
-
 	public int insertLessonFile(Map map) throws Exception;
+
+	//강의 파일 수정
+	public int updateLessonFile(Map map) throws Exception;
 
 
 

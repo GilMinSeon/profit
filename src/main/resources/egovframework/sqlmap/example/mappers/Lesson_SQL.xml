@@ -91,13 +91,9 @@
        </foreach>
    </insert>
 	
-	
-	
-	<!-- 강의 등록 체크 -->
-<!--     <select id="insertLessonCheck" parameterType="String" resultType="int"> -->
-<!--         select count(*) from LESSON -->
-<!--     </select> -->
     
+    
+    <!-- 강의 수정하기 -->
     <update id="updateLesson" parameterType="LessonVO">
 
 			UPDATE LESSON
@@ -111,10 +107,29 @@
 				LESSON_INTRO = #{lessonIntro, jdbcType=VARCHAR},
 				LESSON_PRICE = #{lessonPrice, jdbcType=VARCHAR},
                 LESSON_MONTH = #{lessonMonth, jdbcType=VARCHAR},
-                UP_DATE = to_char(sysdate, 'YYYYMMDD.HH24MISS')
+                UP_USER_ID = #{upUserId, jdbcType=VARCHAR},
+                UP_DATE = SYSDATE
             WHERE LESSON_SEQ = #{lessonSeq, jdbcType=VARCHAR}
 
 	</update>
+	
+    
+    
+      <!-- 강의  파일 수정하기 -->
+    <update id="updateLessonFile" parameterType="LessonVO">
+
+			UPDATE ATTACH_FILE
+			SET FILE_REAL_NAME = #{fileRealName, jdbcType=VARCHAR},
+			    FILE_SAVE_NAME = #{fileSaveName, jdbcType=VARCHAR},
+			    FILE_PATH =#{filePath, jdbcType=VARCHAR},
+			    UP_USER_ID=#{upUserId, jdbcType=VARCHAR},
+			    UP_DATE = SYSDATE
+			WHERE FILE_SEQ =#{fileSeq, jdbcType=VARCHAR}
+
+	</update>
+    
+    
+    
 	    
 	    
 	    <select id="selectLessonList"  resultType="egovMap">	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
@@ -157,9 +172,9 @@
     <select id="selectLessonDetail" resultType="egovMap">
 
 		SELECT A.LESSON_SEQ, A.FILE_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
-        A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_SAVE_NAME
+        A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_SAVE_NAME, B.FILE_REAL_NAME
 			FROM LESSON A
-			    LEFT OUTER JOIN (SELECT FILE_SEQ, FILE_SAVE_NAME
+			    LEFT OUTER JOIN (SELECT FILE_SEQ, FILE_SAVE_NAME , FILE_REAL_NAME
 			                FROM ATTACH_FILE ) B
 			ON A.FILE_SEQ = B.FILE_SEQ
 			
@@ -167,7 +182,7 @@
 
 	</select>
 	
-
+	<!--  -->
     <update id="deleteLesson" parameterType="LessonVO">
 
 			UPDATE LESSON

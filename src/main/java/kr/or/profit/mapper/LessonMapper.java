@@ -29,6 +29,9 @@ public interface LessonMapper {
 
 	int insertLessonFile(Map map) throws Exception;
 
+	//강의 파일 수정
+	int updateLessonFile(Map map) throws Exception;
+
 
 	
 	

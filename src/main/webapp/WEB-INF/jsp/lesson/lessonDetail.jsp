@@ -80,7 +80,7 @@ function fn_delLesson(){
 			<div class="row">
 				<div class="col-lg-7 p-0" style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
 					<div class="about__pic" style="">
-						<img src="/filepath/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;">
+						<img src="Y:\192.168.41.6\upload\profit\'"+ ${resultList.fileSaveName}"'" alt="강의 이미지" style="width: 85%; height: 450px;">
 					</div>
 				</div>
 				<div class="col-lg-5 p-0">
