@@ -1,13 +1,9 @@
 package kr.or.profit.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.or.profit.mapper.MemberMapper;
 import kr.or.profit.service.MemberService;
 import kr.or.profit.vo.MemberVO;
@@ -48,19 +44,6 @@ public class MemberServiceImpl implements MemberService{
 		return memberMapper.selectMemberCount(vo);
 	}
 
-	//아이디 찾기 개수
-	@Override
-	public int findIdCnt(Map<String, Object> map) throws Exception {
-		System.out.println("IMPLCnt옴 : " + map);
-		return memberMapper.findIdCnt(map);
-	}
-	//아이디 찾기
-	@Override
-	public MemberVO findId(Map<String, Object> map) throws Exception {
-		System.out.println("IMPL옴 : " + map);
-		return memberMapper.findId(map);
-	}
-	
 	
 	@Override
 	public int kakaoSelectById(String memberId) throws Exception {
@@ -70,6 +53,16 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public String selectByFindId(MemberVO vo) throws Exception {
 		return memberMapper.selectByFindId(vo);
+	}
+
+	@Override
+	public int selectByFindPwd(MemberVO vo) throws Exception {
+		return memberMapper.selectByFindPwd(vo);
+	}
+
+	@Override
+	public void updateTempPwd(MemberVO vo) throws Exception {
+		memberMapper.updateTempPwd(vo);
 	}
 
 

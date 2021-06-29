@@ -23,8 +23,23 @@ public class QnaServiceImpl implements QnaService{
 
 	@Override
 	public int qnaInsert(Map<String, Object> map) throws Exception {
-		System.out.println("서비스옴 = " + map);
 		return mapper.qnaInsert(map);
+	}
+
+	@Override
+	public Map<String, Object> qnaDetail(Map<String, Object> map) throws Exception {
+		return mapper.qnaDetail(map);
+	}
+
+	@Override
+	public int qnaUpdate(Map<String, Object> map) throws Exception {
+		return mapper.qnaUpdate(map);
+	}
+
+	@Override
+	public int qnaDelete(Map<String, Object> map) throws Exception {
+		System.out.println("서비스옴 = " + map);
+		return mapper.qnaDelete(map);
 	}
 
 

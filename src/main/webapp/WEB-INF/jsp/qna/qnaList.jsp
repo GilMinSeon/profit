@@ -55,6 +55,14 @@
 }
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+
+function fn_detail(communitySeq){
+// 	alert("wjdtkd")
+	location.href="qnaDetail.do?communitySeq="+communitySeq;
+}
+
+</script>
 </head>
 <body>
 	<!-- Breadcrumb Begi -->
@@ -140,17 +148,17 @@
 						<tr>
 							<th scope="row">${status.count}</th>
 							<td colspan="3">
-								<a href="qnaDetail.do"style="text-decoration: none; color: blue;">
+								<a href="${path}qnaDetail.do?communitySeq=${data.communitySeq}" style="text-decoration: none; color: blue;">
 									${data.commonTitle}
 								</a>
 							</td>
 							<td>
-								<c:set var="cnt" value="${data.cnt}" />
-								<c:if test="${cnt == '0' }">
-									<c:out value="X" />
-								</c:if> <c:if test="${cnt > '0' }">
-									<c:out value="O" />
-								</c:if>
+<%-- 								<c:set var="cnt" value="${data.cnt}" /> --%>
+<%-- 								<c:if test="${cnt == '0' }"> --%>
+<%-- 									<c:out value="X" /> --%>
+<%-- 								</c:if> <c:if test="${cnt > '0' }"> --%>
+<%-- 									<c:out value="O" /> --%>
+<%-- 								</c:if> --%>
 							</td>
 							<td>${data.inDate}</td>
 						</tr>
