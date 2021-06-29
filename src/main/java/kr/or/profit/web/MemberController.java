@@ -282,30 +282,18 @@ public class MemberController {
 	//아이디 찾기
 	@RequestMapping(value = "findIdAjax.do", produces = "application/text; charser=utf-8")
 	public @ResponseBody String selectByFindId(MemberVO vo) throws Exception {
-		//이 뻘짓 안해도 됨!! jsp에서 보낸 값 vo로 바로 셋팅해준다
-//		System.out.println(vo.getMemberName());
-//		System.out.println(vo.getMemberEmail());
-//		
-//		String memberName = vo.getMemberName();
-//		String memberEmail = vo.getMemberEmail();
-//		
-//		MemberVO memberVO = new MemberVO();
-//		
-//		memberVO.setMemberName(memberName);
-//		memberVO.setMemberEmail(memberEmail);
 		
 		String id = memberService.selectByFindId(vo);
 		
-		System.out.println(id);
-		
-		System.out.println("--------------------");
-		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("msg", "ok");
-		jsonObject.put("id", id);
 		
+		if(id != null) {
+			jsonObject.put("msg", "ok");
+			jsonObject.put("id", id);
+		}else {
+			jsonObject.put("msg", "no");
+		}
 		String jsonInfo = jsonObject.toString();
-		
 		return jsonInfo;
 	}
 	
