@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>bulletin_write</title>
 <script>
-var uploadPath = "Y:/profit/";
+// var uploadPath = "Y:/profit/";
 
 $(document).ready(function(){
 	$('#minus1').click(function(e){
@@ -106,188 +106,120 @@ $(document).ready(function(){
 	});
 		
 		
-		
-	$("#exe_btn").hide();
-  	var fileTarget = $('#file'); 
-  	fileTarget.on('change', function(){ // 값이 변경되면
-     	var cur=$(".filebox input[type='file']").val();
-  	
-     	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
-     	var nameLength = curSplit.length;
-     	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
-
-    	$(".upload-name").val(fileName);
-  	}); 
 });
 
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#preview_img').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(input.files[0]);
-    }
-    $("#exe_btn").show();
-}
 
-function guid() {
-	  function _s4() {
-	    return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
-	  }
-	  return _s4() + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + '-' + _s4() + _s4() + _s4();
-}
-
-
-function fn_lessonAdd(){
-	var lessonTitle = $("#lessonTitle").val();
-	var lessonCategorySeq = $("input:radio[name=cate_type]:checked").val();
-	var lessonTitleComment = $("#lessonTitleComment").val();
-	var lessonBalance = $("#count1").val();
-	var lessonFlex = $("#count2").val();
-	var lessonStrong = $("#count3").val();
-	var lessonCore = $("#count4").val();
-	var lessonIntro = $("#lessonIntro").val();
-	var lessonPrice = $("#lessonPrice").val();
-	var lessonMonth = $("#lessonMonth").val();
-	var file_val=$(".filebox input[type='file']").val();	//C:\fakepath\bookmark_full.PNG
-	var filePathSplit = file_val.split('\\');
-	var fileRealName = filePathSplit[2];
-	var fileSaveName = guid() + "_" + fileRealName
-	var filePath= fileSaveName;
+function fn_submit(){
+	var msg = "ok";
 	
 	
-	//전체경로를 \ 나눔.
-// 	var filePathSplit = filePath_temp.split('\\'); 
-// 	//전체경로를 \로 나눈 길이.
-// 	var filePathLength = filePathSplit.length;
-// 	var fileRealName = filePathSplit[2];
-// 	var filePath= uploadPath + fileRealName;
-// 	var fileSaveName = guid() + "_" + fileRealName;
-	
-	console.log(lessonTitle);
-	console.log(lessonCategorySeq);
-	console.log(lessonTitleComment);
-	console.log(lessonBalance);
-	console.log(lessonFlex);
-	console.log(lessonStrong);
-	console.log(lessonCore);
-	console.log(lessonIntro);
-	console.log(lessonPrice);
-	console.log(lessonMonth);
-	console.log(file_val);
-	console.log(fileRealName);
-	console.log(fileSaveName);
-	console.log(filePath);
-	
-	var chk_radio = document.getElementsByName('cate_type');
-	var sel_type = null;
-	for(var i=0;i<chk_radio.length;i++){
-		if(chk_radio[i].checked == true){ 
-			sel_type = chk_radio[i].value;
+	if(msg=="ok"){
+		var save = confirm("강의를 등록하시겠습니까?");
+		if(save == true){
+			send_file();
+		}
+		else{
+			alert("등록이 취소되었습니다.")
 		}
 	}
+}
 
-	if(sel_type == null){
-        alert("카테고리를 선택하세요."); 
-		return;
-	}
+
+function send_file(){
+	var formData = new FormData($('#frm')[0]);
+	
+	formData.append("lessonCategorySeq", $("input:radio[name=cate_type]:checked").val());
+
+	console.log(formData);
 
 	
-	if(lessonTitle==""){
-		alert("제목을 입력해주세요.");
-		$("#lessonTitle").focus();
-		return;
-	}
-	
-	if(lessonTitleComment==""){
-		alert("강의소개를 입력해주세요.");
-		$("#lessonTitleComment").focus();
-		return;
-	}
-	
-	if(lessonMonth==""){
-		alert("강의일수를 입력해주세요.");
-		$("#lessonMonth").focus();
-		return;
-	}
-	
-	
-	if(lessonIntro==""){
-		alert("강의소개를 입력해주세요.");
-		$("#lessonIntro").focus();
-		return;
-	}	
-	
-	
-	if(lessonPrice==""){
-		alert("강의 가격을 입력해주세요.");
-		$("#lessonPrice").focus();
-		return;
-	}
-	
-	var price_reg = /^[0-9]*$/;
-	if (!price_reg.test(lessonPrice)) {
-		alert("가격은 (특수기호없이)숫자만 입력해주세요. \n ex) 300000");
-		$("#lessonPrice").focus();
-		return false;
-	}
-	
-	var month_reg = /^(0[1-9]|1[012])$/;
-	if (!month_reg.test(lessonMonth)) {
-		alert("수강기간은 1월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
-		$("#lessonMonth").focus();
-		return false;
-	}
-	
-	var fileCheck = document.getElementById("file").value;
-    if(!fileCheck){
-        alert("파일을 첨부해 주세요");
-        return false;
-    }
-	
-	var param = "";
-	param += "dummy=" + Math.random();
-	param += "&lessonTitle="+lessonTitle;
-	param += "&lessonCategorySeq="+lessonCategorySeq;
-	param += "&lessonTitleComment="+lessonTitleComment;
-	param += "&lessonBalance="+lessonBalance;
-	param += "&lessonFlex="+lessonFlex;
-	param += "&lessonStrong="+lessonStrong;
-	param += "&lessonCore="+lessonCore;
-	param += "&lessonIntro="+lessonIntro;
-	param += "&lessonPrice="+lessonPrice;
-	param += "&lessonMonth="+lessonMonth;
-	param += "&fileRealName="+fileRealName;
-	param += "&fileSaveName="+fileSaveName;
-	param += "&filePath="+filePath;
-
-	console.log(param)
 	$.ajax({
-		url : "lesson_insAjax.do",
-		data : param,
-		dataType : "text",
-		type : "post",
-		async: false,
-		statusCode : {
-			404 : function() {
-				alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
-			}
-		},
-		success : function(data) {
-			console.log(data);
-			if(data =="ok"){
-				alert("강의가 정상적으로 추가되었습니다.")
-				location.href="lessonList.do"
-			}else{
-				alert("추가도중 문제가 생겼습니다. 다시 시도해 주세요");
-				return;
-			}
-		},
-	});
+		type : 'post',
+		url : 'lesson_insAjax.do',
+		data : formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+		if(data=="ok"){
+			alert("등록이 정상적으로 완료되었습니다.");
+			location.href="lessonList.do";
+		}else if(data=="no"){
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
+		}else{
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
+		}
+	},
+		error : function(error){
+			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+	
 	
 }
 
+// if(sel_type == null){
+//  	alert("카테고리를 선택하세요."); 
+// 	return;
+// }
+
+
+// if(lessonTitle==""){
+// 	alert("제목을 입력해주세요.");
+// 	$("#lessonTitle").focus();
+// 	return;
+// }
+
+// if(lessonTitleComment==""){
+// 	alert("강의소개를 입력해주세요.");
+// 	$("#lessonTitleComment").focus();
+// 	return;
+// }
+
+// if(lessonMonth==""){
+// 	alert("강의일수를 입력해주세요.");
+// 	$("#lessonMonth").focus();
+// 	return;
+// }
+
+
+// if(lessonIntro==""){
+// 	alert("강의소개를 입력해주세요.");
+// 	$("#lessonIntro").focus();
+// 	return;
+// }	
+
+
+// if(lessonPrice==""){
+// 	alert("강의 가격을 입력해주세요.");
+// 	$("#lessonPrice").focus();
+// 	return;
+// }
+
+// var price_reg = /^[0-9]*$/;
+// if (!price_reg.test(lessonPrice)) {
+// 	alert("가격은 (특수기호없이)숫자만 입력해주세요. \n ex) 300000");
+// 	$("#lessonPrice").focus();
+// 	return false;
+// }
+
+// var month_reg = /^(0[1-9]|1[012])$/;
+// if (!month_reg.test(lessonMonth)) {
+// 	alert("수강기간은 1월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
+// 	$("#lessonMonth").focus();
+// 	return false;
+// }
+
+// var fileCheck = document.getElementById("file").value;
+// if(!fileCheck){
+//  alert("파일을 첨부해 주세요");
+//  return false;
+// }
 </script>
 <style>
 .site-btn_s{
@@ -333,7 +265,7 @@ background: #ffffff;
 			<br />
 			<br />
 			<main role="main" class="container">
-				<form name="form" method="post" action="lessonAdd" style="text-align: center;"  enctype="multipart/form-data">
+				<form  id="frm" method="post" action="lessonList.do" style="text-align: center;"  enctype="multipart/form-data">
 					<div class="write-title">
 						<label>
 							<p>
@@ -438,23 +370,27 @@ background: #ffffff;
 						</p>
 						
 						<p>
-							<div class="filebox" style="text-align: left;margin-top: 30px;"> 
-							  <label for="file">파일첨부</label> 
-							  <input type="file" id="file" onchange="readURL(this);"> 
-							  <input class="upload-name" value="첨부파일이 없습니다." readonly="readonly">
-							</div>
-							<div class="ai-thumnail-wrapper" style="width: 100%; height: autox;">
-						        <div class="img_wrap ai-thumbnail" style="text-align: center;">
-						            <img id="preview_img" />
-						        </div>
-						    </div>
+<!-- 							<div class="filebox" style="text-align: left;margin-top: 30px;">  -->
+<!-- 							  <label for="file">파일첨부</label>  -->
+<!-- 							  <input type="file" id="file" onchange="readURL(this);">  -->
+<!-- 							  <input class="upload-name" value="첨부파일이 없습니다." readonly="readonly"> -->
+<!-- 							</div> -->
+<!-- 							<div class="ai-thumnail-wrapper" style="width: 100%; height: autox;"> -->
+<!-- 						        <div class="img_wrap ai-thumbnail" style="text-align: center;"> -->
+<!-- 						            <img id="preview_img" /> -->
+<!-- 						        </div> -->
+<!-- 						    </div> -->
+
+								<div>
+									<input type="file" id="file" name="file" value="파일첨부">
+								</div>
 						</p>
 						
 					<br />
-					</form>
 					<div style="text-align: right;">
-                             <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_lessonAdd()">등록</button>
+                             <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_submit()">등록</button>
                     </div>
+					</form>
 					
 			</main>
 		</section>

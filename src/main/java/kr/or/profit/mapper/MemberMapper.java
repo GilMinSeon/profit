@@ -23,20 +23,20 @@ public interface MemberMapper {
 
 	//로그인 처리
 	public MemberVO selectMemberCount(MemberVO vo);
-
-	//아이디 찾기 개수
-	public int findIdCnt(Map<String, Object> map);
-
+	
 	//아이디 찾기
-	public MemberVO findId(Map<String, Object> map);
-	
-	
-	//민선 아이디 찾기
 	public String selectByFindId(MemberVO vo);
 	
+	//비밀번호 찾기
+	public int selectByFindPwd(MemberVO vo);
 	
+	//임시비밀번호 업데이트
+	public void updateTempPwd(MemberVO vo);
+	
+	//카카오 회원가입
 	public void kakaoInsertMember(MemberVO vo);
 	
+	//카카오 회원인지 검사
 	public int kakaoSelectById(String memberId);
 
 }

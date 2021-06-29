@@ -80,7 +80,7 @@ function fn_delLesson(){
 			<div class="row">
 				<div class="col-lg-7 p-0" style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
 					<div class="about__pic" style="">
-						<img src="./resources/img/classes/pul.gif" alt="" style="width: 85%; height: 450px;">
+						<img src="http://192.168.41.6:9999/upload/profit/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;">
 					</div>
 				</div>
 				<div class="col-lg-5 p-0">
@@ -99,28 +99,28 @@ function fn_delLesson(){
 						</div>
 						<div class="about__bar">
 							<div class="about__bar__item">
-								<p>Breathing</p>
+								<p>Breathing</p><br/>
 								<div id="bar1" class="barfiller">
 									<span class="tip" style="left: 562.603px; transition: left 1s ease-in-out 0s;">82%</span>
 									<span class="fill" data-percentage="${resultList.lessonBalance}" style="background: rgb(87, 104, 173); width: 590.4px; transition: width 1s ease-in-out 0s;"></span>
 								</div>
 							</div>
 							<div class="about__bar__item">
-								<p>Flexibility</p>
+								<p>Flexibility</p><br/>
 								<div id="bar2" class="barfiller">
 									<span class="tip" style="left: 497.803px; transition: left 1s ease-in-out 0s;">73%</span>
 									<span class="fill" data-percentage="${resultList.lessonFlex}" style="background: rgb(87, 104, 173); width: 525.6px; transition: width 1s ease-in-out 0s;"></span>
 								</div>
 							</div>
 							<div class="about__bar__item">
-								<p>Strongness</p>
+								<p>Strongness</p><br/>
 								<div id="bar3" class="barfiller">
 									<span class="tip" style="left: 562.603px; transition: left 1s ease-in-out 0s;">82%</span>
 									<span class="fill" data-percentage="${resultList.lessonStrong}" style="background: rgb(87, 104, 173); width: 590.4px; transition: width 1s ease-in-out 0s;"></span>
 								</div>
 							</div>
 							<div class="about__bar__item">
-								<p>Core</p>
+								<p>Core</p><br/>
 								<div id="bar4" class="barfiller">
 									<span class="tip" style="left: 591.403px; transition: left 1s ease-in-out 0s;">86%</span>
 									<span class="fill" data-percentage="${resultList.lessonCore}" style="background: rgb(87, 104, 173); width: 619.2px; transition: width 1s ease-in-out 0s;"></span>

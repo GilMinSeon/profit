@@ -30,7 +30,7 @@
 			)
 			VALUES (#{lessonSeq, jdbcType=VARCHAR},
 					#{fileSeq, jdbcType=VARCHAR},
-					4,
+					'4',
 					#{lessonCategorySeq, jdbcType=VARCHAR},
 					#{lessonTitle, jdbcType=VARCHAR},
 					#{lessonTitleComment, jdbcType=VARCHAR},
@@ -42,9 +42,9 @@
 					#{lessonPrice, jdbcType=VARCHAR},
 					'n',
 					#{lessonMonth, jdbcType=VARCHAR},
-					1,
+					#{inUserId, jdbcType=VARCHAR},
 					sysdate,
-					1,
+					#{upUserId, jdbcType=VARCHAR},
 					sysdate)
 		]]>
 	</insert>
@@ -54,44 +54,46 @@
 	     <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
 			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
 		</selectKey>
-       INSERT 
-         INTO 
-            ATTACH_FILE
+		 <foreach collection="list" item="item" index="index" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+           
+         into 
+            attach_file
                (
-                  FILE_SEQ, 
-                  FILE_DETAIL_SEQ, 
-                  FILE_REAL_NAME, 
-                  FILE_SAVE_NAME, 
-                  FILE_PATH, 
-                  IN_USER_ID, 
-                  IN_DATE, 
-                  UP_USER_ID, 
-                  UP_DATE
+                  file_seq, 
+                  file_detail_seq, 
+                  file_real_name, 
+                  file_save_name, 
+                  file_path, 
+                  in_user_id, 
+                  in_date, 
+                  up_user_id, 
+                  up_date
                )
-         VALUES 
+         values 
            
            (
-               #{fileSeq},
-               #1, 
-               #{item.fileRealName}, 
-               #{item.fileSaveName}, 
-               #{item.filePath}, 
-               #{item.inUserId}, 
-               sysdate, 
-               #{item.upUserId, jdbcType=VARCHAR}, 
-               sysdate
+             (
+                select 
+                  NVL(max(to_number(file_seq)),0) + 1 
+                 from 
+                    attach_file),
+                 1, 
+                 #{item.fileRealName}, 
+                 #{item.fileSaveName}, 
+                 #{item.filePath}, 
+                 #{item.inUserId}, 
+                 sysdate, 
+                 #{item.upUserId, jdbcType=VARCHAR}, 
+                 sysdate
            )
            
            
+       </foreach>
    </insert>
 	
-	
-	
-	<!-- 강의 등록 체크 -->
-<!--     <select id="insertLessonCheck" parameterType="String" resultType="int"> -->
-<!--         select count(*) from LESSON -->
-<!--     </select> -->
     
+    
+    <!-- 강의 수정하기 -->
     <update id="updateLesson" parameterType="LessonVO">
 
 			UPDATE LESSON
@@ -105,15 +107,34 @@
 				LESSON_INTRO = #{lessonIntro, jdbcType=VARCHAR},
 				LESSON_PRICE = #{lessonPrice, jdbcType=VARCHAR},
                 LESSON_MONTH = #{lessonMonth, jdbcType=VARCHAR},
-                UP_DATE = to_char(sysdate, 'YYYYMMDD.HH24MISS')
+                UP_USER_ID = #{upUserId, jdbcType=VARCHAR},
+                UP_DATE = SYSDATE
             WHERE LESSON_SEQ = #{lessonSeq, jdbcType=VARCHAR}
 
 	</update>
-	    
-	    
-	    <select id="selectLessonList"  resultType="egovMap">	<!-- egovMap :  key 에 대하여 Camel Case 변환하여 super.put -->
+	
+    
+    
+      <!-- 강의  파일 수정하기 -->
+    <update id="updateLessonFile" parameterType="LessonVO">
 
-			SELECT A.LESSON_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, B.LESSON_GOOD, A.IN_USER_ID, C.LESSON_REPLY, D.FILE_PATH, E.LESSON_CATEGORY_NAME
+			UPDATE ATTACH_FILE
+			SET FILE_REAL_NAME = #{fileRealName, jdbcType=VARCHAR},
+			    FILE_SAVE_NAME = #{fileSaveName, jdbcType=VARCHAR},
+			    FILE_PATH =#{filePath, jdbcType=VARCHAR},
+			    UP_USER_ID=#{upUserId, jdbcType=VARCHAR},
+			    UP_DATE = SYSDATE
+			WHERE FILE_SEQ =#{fileSeq, jdbcType=VARCHAR}
+
+	</update>
+    
+    
+    
+	    
+	    
+	    <select id="selectLessonList"  resultType="egovMap">	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
+
+			SELECT A.LESSON_SEQ ,A.FILE_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, B.LESSON_GOOD, A.IN_USER_ID, C.LESSON_REPLY, D.FILE_PATH,D.FILE_SAVE_NAME, E.LESSON_CATEGORY_NAME
 				FROM LESSON A
 				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
 				                FROM BOOKGOOD
@@ -124,9 +145,9 @@
 				                FROM REPLY
 				                GROUP BY LESSON_SEQ) C
 				ON A.LESSON_SEQ = C.LESSON_SEQ
-				    LEFT OUTER JOIN (SELECT LESSON_SEQ, FILE_PATH
-				                FROM ATTACH_FILE) D
-				ON A.LESSON_SEQ = D.LESSON_SEQ
+				    LEFT OUTER JOIN (SELECT FILE_SEQ,FILE_PATH,FILE_SAVE_NAME
+				                FROM ATTACH_FILE ) D
+				ON A.FILE_SEQ = D.FILE_SEQ
 				    LEFT OUTER JOIN (SELECT LESSON_CATEGORY_SEQ, LESSON_CATEGORY_NAME
 				                FROM LESSON_CATEGORY) E
 				ON A.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ
@@ -147,20 +168,21 @@
 	</select>
 	    
    	
+	    <!-- 강의 상세보기 -->
     <select id="selectLessonDetail" resultType="egovMap">
 
-		SELECT A.LESSON_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
-        A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_PATH
+		SELECT A.LESSON_SEQ, A.FILE_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
+        A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_SAVE_NAME, B.FILE_REAL_NAME
 			FROM LESSON A
-			    LEFT OUTER JOIN (SELECT LESSON_SEQ, FILE_PATH
-			                FROM ATTACH_FILE) B
-			ON A.LESSON_SEQ = B.LESSON_SEQ
+			    LEFT OUTER JOIN (SELECT FILE_SEQ, FILE_SAVE_NAME , FILE_REAL_NAME
+			                FROM ATTACH_FILE ) B
+			ON A.FILE_SEQ = B.FILE_SEQ
 			
-			WHERE A.LESSON_SEQ=#{lessonSeq, jdbcType=VARCHAR}
+			WHERE A.LESSON_SEQ= #{lessonSeq, jdbcType=VARCHAR}
 
 	</select>
 	
-
+	<!--  -->
     <update id="deleteLesson" parameterType="LessonVO">
 
 			UPDATE LESSON
