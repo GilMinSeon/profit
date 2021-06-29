@@ -31,16 +31,16 @@
 			return false;
 		}
 		$.ajax({
-			type : "POST",
-			data : "memberName=" + memberName + "&memberEmail=" + memberEmail, 
+			type : "get",
+			async : true,
+			data : {memberName:memberName, memberEmail:memberEmail}, 
 			url : "findIdAjax.do",
 			//전송 후 세팅
-			success : function(data) {
-				if (data.msg == "ok") {
-					alert(data.id);
-				} else {
-					alert("nono")
-				}
+			success : function(data, textStatus) {
+				var jsonInfo = JSON.parse(data);
+				console.log(jsonInfo)
+				alert(jsonInfo.msg)
+				alert(jsonInfo.id)
 			},
 			error : function() {
 				alert("오류발생");
@@ -79,9 +79,6 @@
 					<div class="col-lg-6 text-center" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
 						<input type="button" value="아이디 찾기" id="submitBtn" style="font-size: 1.1em; cursor: pointer;"
 							onclick="fn_findId()"><br>
-					</div>
-					<div>
-					${map.id }
 					</div>
 				</form>
 				<br>
