@@ -258,9 +258,10 @@ public class LessonController {
            
            System.out.println("uuid : " + uuid);
            String fileName = fileNames.next();
-           System.out.println("fileName : " + fileName);
+           System.out.println("fileName 은 뭘까 : " + fileName);
            MultipartFile mFile = multipartRequest.getFile(fileName);
            String originalFileName = mFile.getOriginalFilename();
+           System.out.println("오리지널 파일은 가지고 오냐? "+originalFileName);
            File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
            if(mFile.getSize() != 0) {
                if(!file.exists()) {
@@ -301,11 +302,30 @@ public class LessonController {
        String lessonIntro = multipartRequest.getParameter("lessonIntro");
        String lessonPrice = multipartRequest.getParameter("lessonPrice");
        String lessonMonth = multipartRequest.getParameter("lessonMonth");
+       String fileSeq = multipartRequest.getParameter("fileSeq");
+       String lessonSeq = multipartRequest.getParameter("lessonSeq");
+       
+       System.out.println("카테고리는 무엇? "+lessonCategorySeq);
+       System.out.println("제목 무엇? "+lessonTitle);
+       System.out.println("코멘트는 무엇? "+lessonTitleComment);
+       System.out.println("밸런스 무엇? "+lessonBalance);
+       System.out.println("유연 무엇? "+lessonFlex);
+       System.out.println("스트롱는 무엇? "+lessonStrong);
+       System.out.println("코어 무엇? "+lessonCore);
+       System.out.println("스트롱는 무엇? "+lessonStrong);
+       System.out.println("인트로 무엇? "+lessonIntro);
+       System.out.println("가격 무엇? "+lessonPrice);
+       System.out.println("기간 무엇? "+lessonMonth);
+       System.out.println("파일시퀀 무엇? "+fileSeq);
+       System.out.println("레슨시퀀 무엇? "+lessonSeq);
+       
        
        LessonVO vo = new LessonVO();
        String loginMemberId = (String)session.getAttribute("memberId");
-       String fileSeq = (String) filemap.get("fileSeq");
+//       String fileSeq = (String) filemap.get("fileSeq");
+       System.out.println("여기 파일시ㅁ퀀은 뭐니? " + fileSeq);
        vo.setFileSeq(fileSeq);
+       vo.setLessonSeq(lessonSeq);
        vo.setLessonCategorySeq(lessonCategorySeq);
        vo.setLessonTitle(lessonTitle);
        vo.setLessonTitleComment(lessonTitleComment);

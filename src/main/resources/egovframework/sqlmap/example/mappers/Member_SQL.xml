@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.profit.mapper.MemberMapper">
 
-    <insert id="insertMember" parameterType="MemberVO">
+	<!-- 회원가입 -->
+	<insert id="insertMember" parameterType="MemberVO">
         <![CDATA[
         insert into MEMBER(
         	MEMBER_ID, MEMBER_PWD, MEMBER_NAME, MEMBER_NICKNAME, MEMBER_MOBILE,
@@ -27,10 +28,10 @@
         	to_char(sysdate, 'YYYYMMDD.HH24MISS')
         )
         ]]>
-    </insert>
-    
-    
-        <insert id="kakaoInsertMember" parameterType="MemberVO">
+	</insert>
+
+	<!-- 카카오 회원가입 -->
+	<insert id="kakaoInsertMember" parameterType="MemberVO">
         <![CDATA[
         insert into MEMBER(
         	MEMBER_ID, MEMBER_PWD, MEMBER_NAME, MEMBER_NICKNAME,
@@ -48,51 +49,73 @@
         	
         )
         ]]>
-    </insert>
-    
-    <!-- 이미 카카오 로그인 회원인지 아닌지 검사 -->
-	<select id="kakaoSelectById" parameterType="String" resultType="int">
+	</insert>
+
+	<!-- 이미 카카오 로그인 회원인지 아닌지 검사 -->
+	<select id="kakaoSelectById" parameterType="String"
+		resultType="int">
 		select count(*)
 		from MEMBER
-		where MEMBER_ID = #{memberId} and MEMBER_ROUTE = 'K'
-	</select>    
+		where MEMBER_ID = #{memberId} and
+		MEMBER_ROUTE = 'K'
+	</select>
 
-    <!-- 아이디 중복 검사 -->
-    <select id="selectMemberIdCheck" parameterType="String" resultType="int">
-        select count(*) from MEMBER where MEMBER_ID = #{memberId}
-    </select>
+	<!-- 아이디 중복 검사 -->
+	<select id="selectMemberIdCheck" parameterType="String"
+		resultType="int">
+		select count(*) from MEMBER where MEMBER_ID = #{memberId}
+	</select>
 
-    <!-- 닉네임 중복 검사 -->
-    <select id="selectMemberNicknameCheck" parameterType="String" resultType="int">
-        select count(*) from MEMBER where MEMBER_NICKNAME = #{memberNickname}
-    </select>
+	<!-- 닉네임 중복 검사 -->
+	<select id="selectMemberNicknameCheck" parameterType="String"
+		resultType="int">
+		select count(*) from MEMBER where MEMBER_NICKNAME = #{memberNickname}
+	</select>
 
-    <!-- 닉네임 중복 검사 -->
-    <select id="selectMemberEmailCheck" parameterType="String" resultType="int">
-        select count(*) from MEMBER where MEMBER_EMAIL = #{memberEmail}
-    </select>
-
-
-    <!-- 로그인처리 -->
-    <select id="selectMemberCount" parameterType="MemberVO" resultType="MemberVO">
-        select MEMBER_ID as memberId, MEMBER_NICKNAME as memberNickname, MEMBER_GUBUN as memberGubun
-        from MEMBER
-        where MEMBER_ID = #{memberId} and MEMBER_PWD = #{memberPwd}
-    </select>
-
-
-	<!-- 민선 아이디 찾기 -->
-	
-	<select id="selectByFindId" parameterType="MemberVO" resultType="string">
-		select member_id
-		from member
-		where member_name = #{memberName}
-		and member_email = #{memberEmail} 
-		and member_route = 'U'
-	
+	<!-- 이메일 중복 검사 -->
+	<select id="selectMemberEmailCheck" parameterType="String"
+		resultType="int">
+		select count(*) from MEMBER where MEMBER_EMAIL = #{memberEmail}
 	</select>
 
 
+	<!-- 로그인처리 -->
+	<select id="selectMemberCount" parameterType="MemberVO"
+		resultType="MemberVO">
+		select MEMBER_ID as memberId, MEMBER_NICKNAME as memberNickname,
+		MEMBER_GUBUN as memberGubun
+		from MEMBER
+		where MEMBER_ID = #{memberId} and MEMBER_PWD = #{memberPwd}
+	</select>
+
+
+	<!-- 아이디 찾기 -->
+	<select id="selectByFindId" parameterType="MemberVO"
+		resultType="string">
+		select member_id
+		from member
+		where member_name =
+		#{memberName}
+		and member_email = #{memberEmail}
+		and member_route = 'U'
+	</select>
+
+	<!-- 비밀번호 찾기 -->
+	<select id="selectByFindPwd" parameterType="MemberVO"
+		resultType="int">
+		select count(*)
+		from member
+		where member_id = #{memberId}
+		and member_email = #{memberEmail}
+		and member_route = 'U'
+	</select>
+
+	<!-- 임시비밀번호로 update -->
+	<update id="updateTempPwd" parameterType="MemberVO">
+		update member
+		set member_pwd = #{memberPwd}
+		where member_id = #{memberId}
+	</update>
 
 
 </mapper>
