@@ -22,6 +22,11 @@ public class MemberServiceImpl implements MemberService{
 	public void insertMember(MemberVO vo) throws Exception {
 		memberMapper.insertMember(vo);
 	}
+	
+	@Override
+	public void kakaoInsertMember(MemberVO vo) throws Exception {
+		memberMapper.kakaoInsertMember(vo);
+	}
 
 	@Override
 	public int selectMemberIdCheck(String memberId) throws Exception {
@@ -55,7 +60,17 @@ public class MemberServiceImpl implements MemberService{
 		System.out.println("IMPL옴 : " + map);
 		return memberMapper.findId(map);
 	}
+	
+	
+	@Override
+	public int kakaoSelectById(String memberId) throws Exception {
+		return memberMapper.kakaoSelectById(memberId);
+	}
 
+	@Override
+	public String selectByFindId(MemberVO vo) throws Exception {
+		return memberMapper.selectByFindId(vo);
+	}
 
 
 

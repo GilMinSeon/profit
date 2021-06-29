@@ -1,6 +1,5 @@
 package kr.or.profit.mapper;
 
-import java.util.List;
 import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
@@ -30,6 +29,14 @@ public interface MemberMapper {
 
 	//아이디 찾기
 	public MemberVO findId(Map<String, Object> map);
-
+	
+	
+	//민선 아이디 찾기
+	public String selectByFindId(MemberVO vo);
+	
+	
+	public void kakaoInsertMember(MemberVO vo);
+	
+	public int kakaoSelectById(String memberId);
 
 }
