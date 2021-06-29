@@ -317,7 +317,7 @@ public class LessonController {
        vo.setLessonPrice(lessonPrice);
        vo.setLessonMonth(lessonMonth);
        vo.setUpUserId(loginMemberId);
-       lessonService.insertLesson(vo);
+       lessonService.updateLesson(vo);
       
       String msg = "ng";
       
