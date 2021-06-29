@@ -32,6 +32,9 @@ public interface LessonMapper {
 	//강의 파일 수정
 	int updateLessonFile(Map map) throws Exception;
 
+	//인기강의 조회
+	List<?> selectTopLessonList() throws Exception;
+
 
 	
 	

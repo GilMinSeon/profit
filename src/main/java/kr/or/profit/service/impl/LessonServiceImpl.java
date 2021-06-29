@@ -62,6 +62,12 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.updateLessonFile(map);
 	}
 
+	//인기강의 조회
+	@Override
+	public List<?> selectTopLessonList() throws Exception {
+		return lessonDAO.selectTopLessonList();
+	}
+
 
 
 	

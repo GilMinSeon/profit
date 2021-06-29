@@ -31,6 +31,9 @@ public interface LessonService {
 	//강의 파일 수정
 	public int updateLessonFile(Map map) throws Exception;
 
+	//인기강의 조회
+	public List<?> selectTopLessonList()throws Exception;
+
 
 
 

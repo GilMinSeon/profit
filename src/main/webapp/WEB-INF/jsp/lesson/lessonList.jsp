@@ -79,7 +79,7 @@
 													<h6 style="margin-bottom: 25px;">뽀미언니</h6>
 												</div>
 											</div>
-											<a href="lessionDetail" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+											<a href="lessonDetail.do?lessonSeq=${result.lessonSeq}" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
 										</div>
 									</div>
 								</div>
