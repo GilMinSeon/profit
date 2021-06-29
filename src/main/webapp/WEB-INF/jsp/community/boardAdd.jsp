@@ -20,7 +20,11 @@
   
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <script>
+var cnt = 1;
+var thumnail = "";
+
 $(function(){
+	
 	$('.summernote').summernote({
 		height: 600,
 		fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
@@ -51,22 +55,50 @@ var form_data = new FormData();
          enctype: 'multipart/form-data',
          processData: false,
          success: function(img_name) {
-           console.log(img_name);
-           setTimeout(function() {
+        	if(cnt == 1){
+        		thumnail = img_name;
+        		$('#hidden').val(img_name);
+        		cnt++;
+        	}
+            console.log(img_name);
+            setTimeout(function() {
 				$(el).summernote('editor.insertImage', img_name);
 			}, 5000);
          }
        });
 }
 
-// function boardAdd(){
-// 	var apply = confirm("글을 등록하시겠습니까?");
-// 	if(apply == true){
-// 		send_file();
-// 	}
-	
-// }
-	    
+
+function fn_boardAdd(){
+	var formData = new FormData($('#frm')[0]);
+	$.ajax({
+		type : 'post',
+		url : 'boardAddAjax.do',
+		data : formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+		if(data=="ok"){
+			alert("신청이 정상적으로 완료되었습니다.");
+			location.href="home.do";
+		}else if(data=="no"){
+			alert("신청이 실패하였습니다. 다시 시도해주세요");
+		}else{
+			alert("신청이 실패하였습니다. 다시 시도해주세요");
+		}
+	},
+		error : function(error){
+			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+}
+
 </script>
 
 
@@ -114,8 +146,8 @@ var form_data = new FormData();
 	</div>
 	<br/><br/>
 		<main role="main" class="container">
-			<form name="form" id="frm" action="boardAddAjax.do" method="post">
-			<input type="hidden" name="folderName" value="images"/>
+			<form name="form" id="frm">
+			<input type="hidden" id="hidden" name="tumnail_img" value="none"/>
 				<div class="write-title">
 					<label>
 						<p>카테고리 선택<span style="color:red;"> *</span></p>
@@ -132,6 +164,8 @@ var form_data = new FormData();
 							<label for="motive">동기부여</label>
 							<input type="radio" name="cate_type" id="habit" value="4" autocomplete="off" style="opacity: 0">
 							<label for="habit">생활습관</label>
+							<input type="radio" name="cate_type" id="etc" value="5" autocomplete="off" style="opacity: 0">
+							<label for="etc">기타</label>
 						</div>
 					</div>
 				</div>
@@ -144,7 +178,7 @@ var form_data = new FormData();
 				</div>
 				
 				<div class="class__filter__input">
-					<button id="hover_btn" type="submit" style="width: 10%; padding: 5px;">등록</button>
+					<button id="hover_btn" type="button" style="width: 10%; padding: 5px;" onclick="fn_boardAdd()">등록</button>
 				</div>
 			</form>
 		</main>

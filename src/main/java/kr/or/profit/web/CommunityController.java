@@ -27,7 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.JsonObject;
 
 import kr.or.profit.service.CommunityService;
+import kr.or.profit.service.impl.AttachFileServiceImpl;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.CommunityVO;
+
 
 
 /**
@@ -132,16 +135,43 @@ public class CommunityController {
 		String cate_type = request.getParameter("cate_type");
 		String title = request.getParameter("title");
 		String editordata = request.getParameter("editordata");
+		String tumnail = request.getParameter("tumnail_img");
 		System.out.println("cate_type : " + cate_type);
 		System.out.println("title : " + title);
 		System.out.println("editordata : " + editordata);
+		System.out.println("thumnail : " + tumnail);
 		
+		int index1= tumnail.indexOf("profit/") + 43; 
+		String fileRealName = tumnail.substring(index1);
+		
+		int index2= tumnail.indexOf("profit/") + 7; 
+		String fileSaveName = tumnail.substring(index2);
+		System.out.println("path : " + tumnail);
+		
+		String fileSeq = null;
+		
+		if(!tumnail.equals("none")) {
+			AttachFileVO filevo = new AttachFileVO();
+			filevo.setFileRealName(fileRealName);
+			filevo.setFileSaveName(fileSaveName);
+			filevo.setFilePath(tumnail);
+			filevo.setInUserId(memberId);
+			filevo.setUpUserId(memberId);
+			communityService.insertBoardFile(filevo);
+			fileSeq = filevo.getFileSeq();
+			System.out.println("fileSeq : " + fileSeq);
+		}
+		
+		System.out.println("fileSeq : " + fileSeq);
 		CommunityVO vo = new CommunityVO();
+		
 		vo.setCommunityCategorySeq(cate_type);
 		vo.setCommonTitle(title);
 		vo.setCommonContent(editordata);
+		vo.setFileSeq(fileSeq);
 		vo.setInUserId(memberId);
 		vo.setUpUserId(memberId);
+		
 		
 		int insertResult = communityService.insertBoard(vo);
 		

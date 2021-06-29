@@ -3,6 +3,7 @@
 
 <mapper namespace="kr.or.profit.mapper.CommunityMapper">
 	
+    <!-- 자유게시판 글 추가 -->
 	<insert id="insertBoard">
 	    <selectKey order="BEFORE" keyProperty="communitySeq" resultType="String">
 			SELECT NVL(MAX(TO_NUMBER(COMMUNITY_SEQ)),0)+1 FROM COMMUNITY
@@ -26,11 +27,44 @@
 				#{communitySeq},
 				'5',
 				#{communityCategorySeq, jdbcType=VARCHAR},
-				null,
+				#{fileSeq, jdbcType=VARCHAR},
 				#{commonTitle, jdbcType=VARCHAR},
 				#{commonContent, jdbcType=VARCHAR},
 				'0',
 				'N',
+				#{inUserId, jdbcType=VARCHAR},
+				sysdate,
+				#{upUserId, jdbcType=VARCHAR},
+				sysdate
+			)
+		]]>
+	</insert>
+	
+	
+	<!-- 자유게시판 글 추가 시 썸네일 사진 추가 -->
+	<insert id="insertBoardFile">
+	    <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
+		</selectKey>
+		<![CDATA[
+			INSERT INTO ATTACH_FILE
+			(	FILE_SEQ,
+				FILE_DETAIL_SEQ,
+				FILE_REAL_NAME,
+				FILE_SAVE_NAME,
+				FILE_PATH,
+				IN_USER_ID,
+				IN_DATE,
+				UP_USER_ID,
+				UP_DATE
+			)
+			VALUES 
+			(
+				#{fileSeq, jdbcType=VARCHAR},
+				'1',
+				#{fileRealName, jdbcType=VARCHAR},
+				#{fileSaveName, jdbcType=VARCHAR},
+				#{filePath, jdbcType=VARCHAR},
 				#{inUserId, jdbcType=VARCHAR},
 				sysdate,
 				#{upUserId, jdbcType=VARCHAR},
