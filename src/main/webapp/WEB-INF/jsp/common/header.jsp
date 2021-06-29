@@ -106,14 +106,14 @@
                             <ul>
                                 <li class="active"><a href="home">Home</a></li>
                                 <li><a href="aiTeachList.do">AI교정</a></li>
-								<li><a>식단관리</a>
+								<li><a href="#">식단관리</a>
                                     <ul class="dropdown">
                                         <li><a href="chatList.do">1:1 상담</a></li>
                                         <li><a href="">칼로리 계산기</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="lessonList.do">온라인클래스</a></li>
-                                <li><a>커뮤니티</a>
+                                <li><a href="#">커뮤니티</a>
                                     <ul class="dropdown">
                                         <li><a href="recipeList.do">레시피</a></li>
                                         <li><a href="boardList.do">자유게시판</a></li>
