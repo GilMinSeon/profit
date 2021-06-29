@@ -7,9 +7,11 @@ import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -24,6 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.JsonObject;
 
+import kr.or.profit.service.CommunityService;
+import kr.or.profit.vo.CommunityVO;
+
 
 /**
  * 
@@ -31,6 +36,8 @@ import com.google.gson.JsonObject;
  */
 @Controller
 public class CommunityController {
+	@Resource(name = "communityService")
+	private CommunityService communityService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CommunityController.class);
 	
@@ -85,17 +92,10 @@ public class CommunityController {
 		return "community/boardMod";
 	}
 	
-//	@RequestMapping(value = "uploadSummernoteImageFileAjax.do", method = RequestMethod.GET)
-//	public String uploadSummernoteImageFileAjax(Locale locale, Model model) {
-//		System.out.println("제발");
-//		return "community/boardAdd";
-//	}
-	
 	@RequestMapping(value="profileImage.do",  method=RequestMethod.POST)
 	@ResponseBody
-	public void profileUpload(String folderName, MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void profileUpload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	response.setContentType("text/html;charset=utf-8");
-	System.out.println("folderName : " + folderName );
 	System.out.println("휴...");
 	PrintWriter out = response.getWriter();
 	// 업로드할 폴더 경로
@@ -109,16 +109,54 @@ public class CommunityController {
 	System.out.println("원본 파일명 : " + org_filename);
 	System.out.println("저장할 파일명 : " + str_filename);
 
-	String filepath = realFolder + "\\" + folderName + "\\" + str_filename;
+	String filepath = "\\\\192.168.41.6\\upload\\profit" + "\\" +str_filename;
 	System.out.println("파일경로 : " + filepath);
+	String finalpath = "http://192.168.41.6:9999/upload/profit/" + str_filename;
+	System.out.println("최종경로 : " + finalpath);
 
 	File f = new File(filepath);
 	if (!f.exists()) {
 	f.mkdirs();
 	}
 	file.transferTo(f);
-	out.println("profileUpload/"+folderName+"/"+str_filename);
+	out.println(finalpath);
 	out.close();
+	}
+	
+	@RequestMapping(value = "boardAddAjax.do", method = RequestMethod.POST)
+	public String boardAddAjax(HttpServletResponse response, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		PrintWriter out = response.getWriter();
+		
+		String cate_type = request.getParameter("cate_type");
+		String title = request.getParameter("title");
+		String editordata = request.getParameter("editordata");
+		System.out.println("cate_type : " + cate_type);
+		System.out.println("title : " + title);
+		System.out.println("editordata : " + editordata);
+		
+		CommunityVO vo = new CommunityVO();
+		vo.setCommunityCategorySeq(cate_type);
+		vo.setCommonTitle(title);
+		vo.setCommonContent(editordata);
+		vo.setInUserId(memberId);
+		vo.setUpUserId(memberId);
+		
+		int insertResult = communityService.insertBoard(vo);
+		
+		String msg = "ng";
+	       
+        if(insertResult > 0) {
+           msg = "ok";
+           out.println("alert('정상적으로 등록되었습니다')");
+           return "community/boardList";
+        }else {
+        	out.println("alert('추가 도중 문제가 발생하였습니다. 다시 시도해 주세요')");
+           return "community/boardAdd";
+        }
+        
+		
 	}
 	
 }

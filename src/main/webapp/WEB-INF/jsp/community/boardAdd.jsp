@@ -22,39 +22,51 @@
 <script>
 $(function(){
 	$('.summernote').summernote({
-	height: 600,
-	fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
-	fontNamesIgnoreCheck : [ '맑은고딕' ],
-	focus: true,
+		height: 600,
+		fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
+		fontNamesIgnoreCheck : [ '맑은고딕' ],
+		focus: true,
 
-	callbacks: {
-	onImageUpload: function(files, editor, welEditable) {
+		callbacks: {
+		onImageUpload: function(files, editor, welEditable) {
 	            for (var i = files.length - 1; i >= 0; i--) {
 	             sendFile(files[i], this);
 	            }
 	        }
-	}
+		}
 
 	});
 
-	})
+})
 
-	function sendFile(file, el) {
-	var form_data = new FormData();
-	       form_data.append('file', file);
-	       $.ajax({
-	         data: form_data,
-	         type: "POST",
-	         url: 'profileImage.do',
-	         cache: false,
-	         contentType: false,
-	         enctype: 'multipart/form-data',
-	         processData: false,
-	         success: function(img_name) {
-	           $(el).summernote('editor.insertImage', img_name);
-	         }
-	       });
-	    }
+function sendFile(file, el) {
+var form_data = new FormData();
+       form_data.append('file', file);
+       $.ajax({
+         data: form_data,
+         type: "POST",
+         url: 'profileImage.do',
+         cache: false,
+         contentType: false,
+         enctype: 'multipart/form-data',
+         processData: false,
+         success: function(img_name) {
+           console.log(img_name);
+           setTimeout(function() {
+				$(el).summernote('editor.insertImage', img_name);
+			}, 5000);
+         }
+       });
+}
+
+// function boardAdd(){
+// 	var apply = confirm("글을 등록하시겠습니까?");
+// 	if(apply == true){
+// 		send_file();
+// 	}
+	
+// }
+	    
 </script>
 
 
@@ -102,7 +114,7 @@ $(function(){
 	</div>
 	<br/><br/>
 		<main role="main" class="container">
-			<form name="form" id="frm">
+			<form name="form" id="frm" action="boardAddAjax.do" method="post">
 			<input type="hidden" name="folderName" value="images"/>
 				<div class="write-title">
 					<label>
@@ -110,15 +122,15 @@ $(function(){
 					</label>
 					<div class="c_radio">
 						<div style="display: inline-block;">
-							<input type="radio" name="cate_type" id="exercise" value="exercise" autocomplete="off" style="opacity: 0;">
+							<input type="radio" name="cate_type" id="exercise" value="1" autocomplete="off" style="opacity: 0;">
 							<label for="exercise">운동</label>
-							<input type="radio" name="cate_type" id="food" value="food" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="food" value="2" autocomplete="off" style="opacity: 0">
 							<label for="food">식단</label>
 						</div>
 						<div style="display: inline-block;">
-							<input type="radio" name="cate_type" id="motive" value="motive" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="motive" value="3" autocomplete="off" style="opacity: 0">
 							<label for="motive">동기부여</label>
-							<input type="radio" name="cate_type" id="habit" value="habit" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="habit" value="4" autocomplete="off" style="opacity: 0">
 							<label for="habit">생활습관</label>
 						</div>
 					</div>
