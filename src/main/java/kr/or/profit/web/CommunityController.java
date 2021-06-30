@@ -201,12 +201,19 @@ public class CommunityController {
 			System.out.println("fileSeq : " + fileSeq);
 		}
 		
+		
 		CommunityVO vo = new CommunityVO();
 		
 		vo.setCommunityCategorySeq(cate_type);
 		vo.setCommonTitle(title);
 		vo.setCommonContent(editordata);
-		vo.setFileSeq(fileSeq);
+		
+		if(fileSeq == null) {
+			System.out.println("널이라고");
+			vo.setFileSeq("0");
+		}else {
+			vo.setFileSeq(fileSeq);
+		}
 		vo.setInUserId(memberId);
 		vo.setUpUserId(memberId);
 		

@@ -5,7 +5,32 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <style>
+
+.classes__item__text .class-btn:hover {
+    background: #ffffff;
+    border: 1px solid #5768AD;
+    color: #5768AD;
+}
+
+.classes__item__text .class-btn {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    background:#5768AD;
+    display: inline-block;
+    border: 1px solid rgba(155, 158, 163, 0.2);
+    padding: 10px 20px 7px;
+    border-radius: 2px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+
 </style>
+
 <body>
 
 
@@ -27,9 +52,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="section-title">
-                        <h3>인기 게시판글 TOP 3</h3>
-                        <p>지금 가장 인기있는 게시판글을 확인해 보세요!!</p>
+                    <div class="section-title" style="margin-top: 50px;">
+                        <h2 style="font-weight: bold;">🏆인기글 TOP 6</h2>
+                        <br>
+                        <p style="color: #535353;font-size: 1.2em;">지금 가장 조회수가 많은 게시판글을 확인해 보세요!!</p>
                     </div>
                 </div>
             </div>
@@ -208,7 +234,7 @@
             	<input type="hidden" name="boardSeq">
 				<div class="col-lg-4 col-md-6">
 					<div class="classes__item classes__item__page">
-						<div class="classes__item__pic set-bg" style="overflow: hidden;"><img src="./resources/img/common/11.gif"></div>
+						<div class="classes__item__pic set-bg" style="overflow: hidden;"><img src="${result.filePath }"></div>
 						<div class="classes__item__text" style="padding-left: 10px; padding-right: 10px;">
 							<div style="text-align: right;">
 								<div style="display: inline-block; vertical-align: middle;">
@@ -236,20 +262,19 @@
 									<p>${result.boardBook}&nbsp;&nbsp;</p>
 								</div>
 							</div>
-							<p style="color:#00CE88;font-weight:800px">카테고리 | <span style="color:#00CE88">${result.communityCategoryName}</span></p>
-							<h4 style="margin-bottom: 30px;">
+							<p style="font-weight: bold; color: #8B94B5;">카테고리 | <span>${result.communityCategoryName}</span></p>
+							<h4 style="margin-bottom: 10px;">
 								<a href="lessionDetail" style="font-size: 0.8em;font-weight: bold;">${result.commonTitle}</a>
 							</h4>
 							<div>
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
 								</div>
-								&nbsp;
 								<div style="display: inline-block;">
-									<h6 style="margin-bottom: 25px;">${result.inUserId}</h6>
+									<h6 style="margin-bottom: 25px;color:#535353">${result.inUserId}</h6>
 								</div>
 							</div>
-							<a href="boardDetail.do?lessonSeq=${result.commonSeq}"  class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+							<a href="boardDetail.do?communitySeq=${result.communitySeq}"  class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
 						</div>
 					</div>
 				</div>
