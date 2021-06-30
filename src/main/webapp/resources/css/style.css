@@ -759,10 +759,11 @@ ol {
 	font-size: 1.0em;
     color: white;
     background-color: #5768AD;
-    width: 120px;
+    width: 130px;
     height: 50px;
     margin-right: 7px;
     padding-right: 28px;
+    padding-left:28px;
     font-weight: bold;
 }
 

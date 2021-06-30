@@ -107,7 +107,7 @@ public class CommunityController {
 
 	// 업로드할 파일 이름
 	String org_filename = file.getOriginalFilename();
-	String str_filename = uuid.toString() + org_filename;
+	String str_filename = uuid.toString() + "_" + org_filename;
 
 	System.out.println("원본 파일명 : " + org_filename);
 	System.out.println("저장할 파일명 : " + str_filename);
@@ -127,10 +127,10 @@ public class CommunityController {
 	}
 	
 	@RequestMapping(value = "boardAddAjax.do", method = RequestMethod.POST)
+	@ResponseBody
 	public String boardAddAjax(HttpServletResponse response, HttpServletRequest request) throws Exception{
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
-		PrintWriter out = response.getWriter();
 		
 		String cate_type = request.getParameter("cate_type");
 		String title = request.getParameter("title");
@@ -141,16 +141,17 @@ public class CommunityController {
 		System.out.println("editordata : " + editordata);
 		System.out.println("thumnail : " + tumnail);
 		
-		int index1= tumnail.indexOf("profit/") + 43; 
-		String fileRealName = tumnail.substring(index1);
-		
-		int index2= tumnail.indexOf("profit/") + 7; 
-		String fileSaveName = tumnail.substring(index2);
-		System.out.println("path : " + tumnail);
 		
 		String fileSeq = null;
 		
-		if(!tumnail.equals("none")) {
+		if(!tumnail.isEmpty()) {
+			int index1= tumnail.indexOf("profit/") + 44; 
+			String fileRealName = tumnail.substring(index1);
+			
+			int index2= tumnail.indexOf("profit/") + 7; 
+			String fileSaveName = tumnail.substring(index2);
+			System.out.println("path : " + tumnail);
+			
 			AttachFileVO filevo = new AttachFileVO();
 			filevo.setFileRealName(fileRealName);
 			filevo.setFileSaveName(fileSaveName);
@@ -162,7 +163,6 @@ public class CommunityController {
 			System.out.println("fileSeq : " + fileSeq);
 		}
 		
-		System.out.println("fileSeq : " + fileSeq);
 		CommunityVO vo = new CommunityVO();
 		
 		vo.setCommunityCategorySeq(cate_type);
@@ -174,18 +174,14 @@ public class CommunityController {
 		
 		
 		int insertResult = communityService.insertBoard(vo);
-		
+		System.out.println("insertResult : " + insertResult);
 		String msg = "ng";
 	       
         if(insertResult > 0) {
            msg = "ok";
-           out.println("alert('정상적으로 등록되었습니다')");
-           return "community/boardList";
-        }else {
-        	out.println("alert('추가 도중 문제가 발생하였습니다. 다시 시도해 주세요')");
-           return "community/boardAdd";
         }
         
+        return msg;
 		
 	}
 	

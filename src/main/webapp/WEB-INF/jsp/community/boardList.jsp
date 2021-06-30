@@ -196,7 +196,7 @@
             
             <div class="classes__item__text" style="text-align: right;padding-top: 0;">
                  <span class="blinking">당신의 특별한 Tip을 공유해보세요 → </span>&nbsp;
-                 <a href="boardAdd" class="class-btn_w">글쓰기</a>
+                 <a href="boardAdd.do" class="class-btn_w">글쓰기</a>
    		 	</div>
             
             <div class="row">
