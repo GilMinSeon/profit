@@ -44,7 +44,7 @@
                         <div class="classes__item__text" style="padding-top: 10px;padding-bottom: 10px; padding-left: 0;padding-right: 0;">
                             <div style="text-align: right;">
 	                            <div style="display: inline-block;vertical-align: middle;">
-	                            	<img src="./resources/img/common/look.PNG" style="width:30px;height: 20px;opacity: 0.5;">
+	                            	<img src="./resources/img/common/hit.png" style="width:30px;height: 20px;opacity: 0.5;">
 	                            </div>
 	                            <div style="display: inline-block;">
 	                            	<p>${resultTop.lessonHit}</p>
@@ -138,24 +138,22 @@
 						<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
 							<div style="text-align: right;">
 								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/look.PNG" style="width: 30px; height: 20px; opacity: 0.5;">
+									<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 								</div>
-								<div style="display: inline-block;">
-									<p>${result.lessonHit }</p>
+								<div style="display: inline-block;vertical-align:sub;">
+									<p style="margin:0;">${result.lessonHit }&nbsp;&nbsp;</p>
 								</div>
-								|&nbsp;
 								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/reply.PNG" style="width: 24px; height: 19px; opacity: 0.5;">
+									<img src="./resources/img/common/reply.png" style="width: 17px; height: 17px; opacity: 0.5;">
 								</div>
-								<div style="display: inline-block;">
-									<p>${result.lessonReply}</p>
+								<div style="display: inline-block;vertical-align:sub;">
+									<p>${result.lessonReply}&nbsp;&nbsp;</p>
 								</div>
-								|&nbsp;
 								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/good.PNG" style="width: 22px; height: 20px;">
+									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
 								</div>
-								<div style="display: inline-block;">
-									<p>${result.lessonGood}</p>
+								<div style="display: inline-block;vertical-align:sub;">
+									<p>${result.lessonGood}&nbsp;&nbsp;</p>
 								</div>
 							</div>
 							<p>카테고리 | <span>${result.lessonCategoryName}</span></p>
