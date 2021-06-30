@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
 
 public interface MypageService {
@@ -16,4 +17,11 @@ public interface MypageService {
 	
 	//파일 추가
 	public int insertProcessFile(Map map) throws Exception;
+	
+	
+	
+	//민선 
+	//회원 모든 정보 select
+	public MemberVO selectAllMemberInfo(String memberId) throws Exception;
+	
 }

@@ -11,6 +11,7 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.or.profit.mapper.MypageMapper;
 import kr.or.profit.service.MypageService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
 
 @Service("mypageService")
@@ -35,6 +36,13 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 	@Override
 	public int insertProcessFile(Map map) throws Exception {
 		return mypageDAO.insertProcessFile(map);
+	}
+
+	
+	
+	@Override
+	public MemberVO selectAllMemberInfo(String memberId) throws Exception {
+		return mypageDAO.selectAllMemberInfo(memberId);
 	}
 
 	

@@ -17,6 +17,16 @@ public class MemberVO {
 	private String upUserId;
 	private String upDate;
 	
+	//필요한 컬럼 추가
+	private String filePath;
+	
+	
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
 	public String getMemberId() {
 		return memberId;
 	}

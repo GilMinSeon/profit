@@ -64,8 +64,8 @@ public class LessonController {
    public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
       List<?> lessonList = lessonService.selectLessonList();
       model.addAttribute("resultList", lessonList);
-      List<?> lessonTopList = lessonService.selectTopLessonList();
-      model.addAttribute("resultTopList", lessonTopList);
+//      List<?> lessonTopList = lessonService.selectTopLessonList();
+//      model.addAttribute("resultTopList", lessonTopList);
       System.out.println("dddddddddddd"+model);
       return "lesson/lessonList";
    }

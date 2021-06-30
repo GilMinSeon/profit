@@ -81,10 +81,6 @@ function fn_boardAdd(){
 		return;
 	}
 	
-	alert("category : " + category);
-	alert("title : " + title);
-	alert("editordata : " + editordata);
-	
 	var tumnail = $("form img").first().attr("src");
 	$('#hidden').val(tumnail);
 	
@@ -99,16 +95,16 @@ function fn_boardAdd(){
 		dataType:"text",
 		success : function(data){
 		if(data=="ok"){
-			alert("신청이 정상적으로 완료되었습니다.");
+			alert("글이 정상적으로 등록되었습니다.");
 			location.href="home.do";
 		}else if(data=="no"){
-			alert("신청이 실패하였습니다. 다시 시도해주세요");
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
 		}else{
-			alert("신청이 실패하였습니다. 다시 시도해주세요");
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
 		}
 	},
 		error : function(error){
-			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
 			console.log(error);
 			console.log(error.status);
 		}
@@ -206,7 +202,7 @@ function fn_boardAdd(){
 				
 				<div class="class__filter__input" style="text-align: right;">
 					<button id="hover_btn" type="button" style="width: 150px;height:45px; padding: 5px;font-size:1.0em;" onclick="fn_boardAdd()">등록</button>
-					<button id="hover_btn" type="button" style="width: 150px;height:45px; padding: 5px;font-size:1.0em;" onclick="">목록</button>
+					<button id="hover_btn" type="button" style="width: 150px;height:45px; padding: 5px;font-size:1.0em;" onclick="location.href='boardList.do'">목록</button>
 				</div>
 				
 			</form>
