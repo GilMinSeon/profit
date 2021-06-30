@@ -34,6 +34,7 @@ import kr.or.profit.service.impl.AttachFileServiceImpl;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.LessonVO;
+import net.sf.json.JSONObject;
 
 
 
@@ -234,12 +235,17 @@ public class CommunityController {
 		int insertResult = communityService.insertBoard(vo);
 		System.out.println("insertResult : " + insertResult);
 		String msg = "ng";
+		
+		JSONObject jsonObject = new JSONObject();
 	       
         if(insertResult > 0) {
-           msg = "ok";
+        	jsonObject.put("msg", "ok");
+        	jsonObject.put("communitySeq", vo.getCommunitySeq());
+        }else {
+        	jsonObject.put("msg", "ng");
         }
-        model.addAttribute(vo.getCommonSeq());
-        return msg;
+        String jsonInfo = jsonObject.toString();
+        return jsonInfo;
 		
 	}
 	
