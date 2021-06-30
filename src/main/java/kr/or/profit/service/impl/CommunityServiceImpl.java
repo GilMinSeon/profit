@@ -32,6 +32,13 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDAO.insertBoardFile(vo);
 	}
 
+	
+	//자유게시판 목록 조회
+	@Override
+	public List<Map<String, String>> selectBoardList() throws Exception {
+		return communityDAO.selectBoardList();
+	}
+
 
 
 	

@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -71,8 +73,19 @@ public class CommunityController {
 		return "community/recipeMod";
 	}
 	
-	@RequestMapping(value = "boardList", method = RequestMethod.GET)
-	public String boardList(Locale locale, Model model) {
+	/**
+    * 자유게시판 목록 페이지 
+    * @author 정예진
+    * @param 
+    * @return String - community/boardAdd
+    * @throws Exception
+    */
+	
+	@RequestMapping(value = "boardList.do",  method = {RequestMethod.GET, RequestMethod.POST})
+	public String boardList(Model model) throws Exception{
+		List<Map<String, String>> boardList = communityService.selectBoardList();
+		model.addAttribute("boardList", boardList);
+		System.out.println("출력 : " + boardList.get(0).get("communityCategoryName"));
 		
 		return "community/boardList";
 	}
@@ -83,17 +96,34 @@ public class CommunityController {
 		return "community/boardDetail";
 	}
 	
-	@RequestMapping(value = "boardAdd.do", method = RequestMethod.GET)
-	public String boardAdd(Locale locale, Model model) {
-		
-		return "community/boardAdd";
-	}
+	
 	
 	@RequestMapping(value = "boardMod", method = RequestMethod.GET)
 	public String boardMod(Locale locale, Model model) {
 		
 		return "community/boardMod";
 	}
+	
+	/**
+    * 자유게시판 글 추가 페이지 이동
+    * @author 정예진
+    * @param 
+    * @return String - community/boardAdd
+    * @throws Exception
+    */
+	@RequestMapping(value = "boardAdd.do", method = RequestMethod.GET)
+	public String boardAdd() {
+		
+		return "community/boardAdd";
+	}
+	
+	/**
+    * 게시판 이미지 업로드 
+    * @author 정예진
+    * @param MultipartFile,HttpServletRequest,HttpServletResponse
+    * @return
+    * @throws Exception
+    */
 	
 	@RequestMapping(value="profileImage.do",  method=RequestMethod.POST)
 	@ResponseBody
@@ -126,6 +156,14 @@ public class CommunityController {
 	out.close();
 	}
 	
+	
+	/**
+    * 자유게시판 글 등록
+    * @author 정예진
+    * @param HttpServletRequest,HttpServletResponse
+    * @return String - msg
+    * @throws Exception
+    */
 	@RequestMapping(value = "boardAddAjax.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String boardAddAjax(HttpServletResponse response, HttpServletRequest request) throws Exception{
