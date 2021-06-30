@@ -106,34 +106,35 @@ $(document).ready(function(){
 		$('#count4').val(num);
 	});
 		
-		$("#exe_btn").hide();
-	  	var fileTarget = $('#file'); 
-	  	fileTarget.on('change', function(){ // 값이 변경되면
-	     	var cur=$(".filebox input[type='file']").val();
+// 		$("#exe_btn").hide();
+// 	  	var fileTarget = $('#file'); 
+// 	  	fileTarget.on('change', function(){ // 값이 변경되면
+// 	     	var cur=$(".filebox input[type='file']").val();
 	  	
-	     	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
-	     	var nameLength = curSplit.length;
-	     	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
+// 	     	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
+// 	     	var nameLength = curSplit.length;
+// 	     	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
 
-	    	$(".upload-name").val(fileName);
-	  	});
+// 	    	$(".upload-name").val(fileName);
+// 	  	});
 });
 
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#preview_img').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(input.files[0]);
-    }
-    $("#exe_btn").show();
-}
+// function readURL(input) {
+//     if (input.files && input.files[0]) {
+//         var reader = new FileReader();
+//         reader.onload = function (e) {
+//             $('#preview_img').attr('src', e.target.result);
+//         }
+//         reader.readAsDataURL(input.files[0]);
+//     }
+//     $("#exe_btn").show();
+// }
 
 function fn_submitMod(){
-var msg = "ok";
 	
 	
+	
+	var msg = "ok";
 	if(msg=="ok"){
 		var save = confirm("정말 강의를 수정하시겠습니까?");
 		if(save == true){
@@ -148,23 +149,8 @@ var msg = "ok";
 
 function send_updateLesson(){
 	var formData = new FormData($('#frm')[0]);
-	
-// 	formData.append("lessonTitle", $("#lessonTitle").val());
+	var lessonSeq = $("input:hidden[name=lessonSeq]").val()
 	formData.append("lessonCategorySeq", $("input:radio[name=cate_type]:checked").val());
-// 	formData.append("lessonTitleComment", $("#lessonTitleComment").val());
-// 	formData.append("lessonBalance", $("#count1").val());
-// 	formData.append("lessonFlex", $("#count2").val());
-// 	formData.append("lessonStrong", $("#count3").val());
-// 	formData.append("lessonCore", $("#count4").val());
-// 	formData.append("lessonIntro", $("#lessonIntro").val());
-// 	formData.append("lessonPrice", $("#lessonPrice").val());
-// 	formData.append("lessonMonth", $("#lessonMonth").val());
-// 	formData.append("lessonSeq", $("input:hidden[name=lessonSeq]").val());
-// 	formData.append("fileSeq", $("input:hidden[name=fileSeq]").val());
-	
-	
-	
-	
 	
 	$.ajax({
 		type : 'post',
@@ -177,10 +163,8 @@ function send_updateLesson(){
 		success : function(data){
 		if(data=="ok"){
 			alert("수정이 정상적으로 완료되었습니다.");
-			location.href="lessonDetail.do";
+// 			location.href="lessonDetail.do?lessonSeq=" + lessonSeq;
 		}else if(data=="no"){
-			alert("수정에 실패하였습니다. 다시 시도해주세요");
-		}else{
 			alert("수정에 실패하였습니다. 다시 시도해주세요");
 		}
 	},
@@ -193,7 +177,76 @@ function send_updateLesson(){
 		
 	})
 	
+}
+
+// function fn_check(){
+
+// 	if($("#lessonTitle").val()==""){
+// 		alert("제목을 입력해주세요.");
+// 		$("#lessonTitle").focus();
+// 		return;
+// 	}
 	
+// 	if($("#lessonTitleComment").val()==""){
+// 		alert("강의소개를 입력해주세요.");
+// 		$("#lessonTitleComment").focus();
+// 		return;
+// 	}
+
+// 	if($("#lessonMonth").val()==""){
+// 		alert("강의일수를 입력해주세요.");
+// 		$("#lessonMonth").focus();
+// 		return;
+// 	}
+
+
+// 	if($("#lessonIntro").val()==""){
+// 		alert("강의소개를 입력해주세요.");
+// 		$("#lessonIntro").focus();
+// 		return;
+// 	}	
+
+
+// 	if($("#lessonPrice").val()==""){
+// 		alert("강의 가격을 입력해주세요.");
+// 		$("#lessonPrice").focus();
+// 		return;
+// 	}
+
+// 	var price_reg = /^[0-9]*$/;
+// 	if (!price_reg.test($("#lessonPrice").val())) {
+// 		alert("가격은 (특수기호없이)숫자만 입력해주세요. \n ex) 300000");
+// 		$("#lessonPrice").focus();
+// 		return false;
+// 	}
+
+// 	var month_reg = /^(0[1-9]|1[012])$/;
+// 	if (!month_reg.test($("#lessonMonth").val())) {
+// 		alert("수강기간은 1월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
+// 		$("#lessonMonth").focus();
+// 		return false;
+// 	}
+	
+// 	var fileCheck = document.getElementById("file").value;
+// 	 if(!fileCheck){
+// 	     alert("파일을 첨부해 주세요");
+// 	     return false;
+//  	}
+	
+// 	 fn_submitMod();
+// }
+
+
+function fn_delFile(){
+	var msg = "ok";
+	if(msg=="ok"){
+		var save = confirm("파일을 삭제 하시겠습니까?");
+		$("#fileRealName").val("");
+		$("#d_file").html("<input type='file' id='file' name='file'>");
+	}
+		else{
+			alert("수정이 취소되었습니다.")
+		}
 	
 	
 }
@@ -242,9 +295,8 @@ background: #ffffff;
 			</div>
 			<br />
 			<br />
-			${resultList}
 			<main role="main" class="container">
-				<form id="frm" action="lessonDetail.do" method="post" style="text-align: center;" enctype="multipart/form-data">
+				<form id="frm" action="lessonList.do" method="post" style="text-align: center;" enctype="multipart/form-data">
 				<input type="hidden" name="lessonSeq" value="${resultList.lessonSeq}"/>
 				<input type="hidden" name="fileSeq" value="${resultList.fileSeq}"/>
 					<div class="write-title">
@@ -401,21 +453,36 @@ ${resultList.lessonIntro}
 						</p>
 						
 						<p>
-							<div class="filebox" style="text-align: left;margin-top: 30px;"> 
-							  <label for="file">파일첨부</label> 
-							  <input type="file" id="file" onchange="readURL(this);"> 
-							  <input class="upload-name" value="${resultList.fileRealName}" readonly="readonly">
-							</div>
-							<div class="ai-thumnail-wrapper" style="width: 100%; height: autox;">
-						        <div class="img_wrap ai-thumbnail" style="text-align: center;">
-						            <img id="preview_img" />
-						        </div>
-						    </div>
+<!-- 							<div class="filebox" style="text-align: left;margin-top: 30px;">  -->
+<!-- 							  <label for="file">파일첨부</label>  -->
+<!-- 							  <input type="file" id="file" onchange="readURL(this);">  -->
+<%-- 							  <input class="upload-name" value="${resultList.fileRealName}" readonly="readonly"> --%>
+<!-- 							</div> -->
+<!-- 							<div class="ai-thumnail-wrapper" style="width: 100%; height: autox;"> -->
+<!-- 						        <div class="img_wrap ai-thumbnail" style="text-align: center;"> -->
+<!-- 						            <img id="preview_img" /> -->
+<!-- 						        </div> -->
+<!-- 						    </div> -->
 						    
 						    
 <!-- 						    <div> -->
 <!-- 									<input type="file" id="file" name="file" value="파일첨부"> -->
 <!-- 								</div> -->
+
+							<div class="form-group" style="float: left;">
+							<div id="d_file">
+								<div style="display:inline-block;">
+									<span>첨부파일 : </span>
+								</div>
+								<div style="display:inline-block;">
+							    <input type="text" class="form-control" id="fileRealName" style="width:auto;" value="${resultList.fileRealName}">
+								</div>
+								<div style="display:inline-block;">
+									<input type="button" value="X" id="btn_x" onclick="fn_delFile()">
+								</div>
+								
+							</div>
+							</div>
 						</p>
 						
 					<br />

@@ -259,10 +259,10 @@ background: #ffffff;
 	<!-- Breadcrumb End -->
 	<div class="container">
 		<section class="classes spad">
-			<div>
-				<h3 style="padding-left: 15px; color: #263246; font-family: DM Sans, sans-serif; font-weight: 400;">강의를 등록해주세요 </h3>
+			<div style="text-align:center;">
+				<h3 style="padding-left: 15px; color: #263246; font-family: DM Sans, sans-serif; font-weight: 400; font-size: 1.5em;">강의를 등록해주세요 </h3><br/>
+				<p style="color: #E84D4D;">▶ 모든 사항은 반드시 입력해야 합니다.</p>
 			</div>
-			<br />
 			<br />
 			<main role="main" class="container">
 				<form  id="frm" method="post" action="lessonList.do" style="text-align: center;"  enctype="multipart/form-data">
@@ -270,7 +270,6 @@ background: #ffffff;
 						<label>
 							<p>
 								카테고리 선택
-								<span style="color: red;"> *</span>
 							</p>
 						</label>
 						<div class="c_radio">

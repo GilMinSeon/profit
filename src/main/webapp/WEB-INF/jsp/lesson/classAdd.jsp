@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="breadcrumb__text">
-						<h2>강의 등록</h2>
+						<h2>상세 강의 등록</h2>
 					</div>
 				</div>
 			</div>
@@ -22,14 +22,14 @@
 	<!-- Blog Section Begin -->
 	<section class="blog spad">
 		<div class="container">
-			<div class="row">
-				<!-- 여기부터 달라짐 -->
+<!-- 			<div class="row"> -->
+<!-- 				여기부터 달라짐 -->
 				<div class="col-lg-8 order-lg-2 order-1">
 					<div class="row" style="display: inline-block; width: 100%;">
-						<!-- Appoinment Section Begin -->
+<!-- 						Appoinment Section Begin -->
 						<section class="appointment" style="margin-bottom: 50px;">
 							<div class="container">
-								<div class="appointment__text" style="background-color: #9e9e9e0a">
+								<div class="appointment__text" style="background-color: #9e9e9e0a;width:100%;padding:15px 0px 15px 0px;">
 									<form action="#" class="appointment__form">
 										<div class="text-center">
 											<h4 style="font-family: DM Sans, sans-serif; color: #111111; font-weight: 400;">강의 등록</h4>
@@ -91,9 +91,9 @@
 								</div>
 							</div>
 						</section>
-						<!-- Appoinment Section End -->
+<!-- 						Appoinment Section End -->
 					</div>
-				</div>
+<!-- 				</div> -->
 			</div>
 		</div>
 	</section>
