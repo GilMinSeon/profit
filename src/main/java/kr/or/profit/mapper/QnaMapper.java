@@ -15,5 +15,11 @@ public interface QnaMapper {
 
 	int qnaInsert(Map<String, Object>map) throws Exception;
 
+	Map<String, Object> qnaDetail(Map<String, Object> map) throws Exception;
+
+	int qnaUpdate(Map<String, Object> map) throws Exception;
+
+	int qnaDelete(Map<String, Object> map) throws Exception;
+
 
 }

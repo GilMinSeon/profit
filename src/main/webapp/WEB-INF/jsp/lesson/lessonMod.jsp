@@ -106,29 +106,29 @@ $(document).ready(function(){
 		$('#count4').val(num);
 	});
 		
-// 		$("#exe_btn").hide();
-// 	  	var fileTarget = $('#file'); 
-// 	  	fileTarget.on('change', function(){ // 값이 변경되면
-// 	     	var cur=$(".filebox input[type='file']").val();
+		$("#exe_btn").hide();
+	  	var fileTarget = $('#file'); 
+	  	fileTarget.on('change', function(){ // 값이 변경되면
+	     	var cur=$(".filebox input[type='file']").val();
 	  	
-// 	     	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
-// 	     	var nameLength = curSplit.length;
-// 	     	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
+	     	var curSplit  = cur.split("\\");    //   "\" 로 전체 url 을 나눈다
+	     	var nameLength = curSplit.length;
+	     	var fileName         = curSplit[nameLength-1];   // 나누어진 배열의 맨 끝이 파일명이다
 
-// 	    	$(".upload-name").val(fileName);
-// 	  	});
+	    	$(".upload-name").val(fileName);
+	  	});
 });
 
-// function readURL(input) {
-//     if (input.files && input.files[0]) {
-//         var reader = new FileReader();
-//         reader.onload = function (e) {
-//             $('#preview_img').attr('src', e.target.result);
-//         }
-//         reader.readAsDataURL(input.files[0]);
-//     }
-//     $("#exe_btn").show();
-// }
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#preview_img').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+    $("#exe_btn").show();
+}
 
 function fn_submitMod(){
 var msg = "ok";
@@ -149,18 +149,18 @@ var msg = "ok";
 function send_updateLesson(){
 	var formData = new FormData($('#frm')[0]);
 	
-	formData.append("lessonTitle", $("#lessonTitle").val());
+// 	formData.append("lessonTitle", $("#lessonTitle").val());
 	formData.append("lessonCategorySeq", $("input:radio[name=cate_type]:checked").val());
-	formData.append("lessonTitleComment", $("#lessonTitleComment").val());
-	formData.append("lessonBalance", $("#count1").val());
-	formData.append("lessonFlex", $("#count2").val());
-	formData.append("lessonStrong", $("#count3").val());
-	formData.append("lessonCore", $("#count4").val());
-	formData.append("lessonIntro", $("#lessonIntro").val());
-	formData.append("lessonPrice", $("#lessonPrice").val());
-	formData.append("lessonMonth", $("#lessonMonth").val());
-	formData.append("lessonSeq", $("input:hidden[name=lessonSeq]").val());
-	formData.append("fileSeq", $("input:hidden[name=fileSeq]").val());
+// 	formData.append("lessonTitleComment", $("#lessonTitleComment").val());
+// 	formData.append("lessonBalance", $("#count1").val());
+// 	formData.append("lessonFlex", $("#count2").val());
+// 	formData.append("lessonStrong", $("#count3").val());
+// 	formData.append("lessonCore", $("#count4").val());
+// 	formData.append("lessonIntro", $("#lessonIntro").val());
+// 	formData.append("lessonPrice", $("#lessonPrice").val());
+// 	formData.append("lessonMonth", $("#lessonMonth").val());
+// 	formData.append("lessonSeq", $("input:hidden[name=lessonSeq]").val());
+// 	formData.append("fileSeq", $("input:hidden[name=fileSeq]").val());
 	
 	
 	
@@ -244,7 +244,7 @@ background: #ffffff;
 			<br />
 			${resultList}
 			<main role="main" class="container">
-				<form name="form"  action="lessonMod" style="text-align: center;" enctype="multipart/form-data">
+				<form id="frm" action="lessonDetail.do" method="post" style="text-align: center;" enctype="multipart/form-data">
 				<input type="hidden" name="lessonSeq" value="${resultList.lessonSeq}"/>
 				<input type="hidden" name="fileSeq" value="${resultList.fileSeq}"/>
 					<div class="write-title">

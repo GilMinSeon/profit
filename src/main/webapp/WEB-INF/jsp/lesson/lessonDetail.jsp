@@ -24,15 +24,11 @@ function fn_delLesson(){
    			url : "lesson_delAjax.do",
    			data : param,
    			dataType : "text",
-   			statusCode : {
-   				404 : function() {
-   					alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
-   				}
-   			},
+   			async:false,
    			success : function(data) {
    				if(data == "ok"){
    					alert("해당 강의가 비활성화 되었습니다. \n 추후 활성화를 원하시면 마이페이지에서 수정해주세요.");	
-   					location.reload();
+   					location.href="lessonList.do"
    				} else{
    					alert("비활성화에 실패하였습니다. 다시 한 번 시도해주세요")
    				}
@@ -180,7 +176,7 @@ function fn_delLesson(){
 				<div class="classes__item__text" style="text-align: right;">
 					<a href="lessonList.do" class="class-btn">목록</a>
 					<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
-					<a href="#" onclick="fn_delLesson()" class="class-btn">삭제</a>
+					<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
 					<a href="classAdd.do" class="class-btn">강의추가</a>
 				</div>
 				<div class="d-flex justify-content-between align-items-center has-border">

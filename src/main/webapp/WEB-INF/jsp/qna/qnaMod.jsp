@@ -23,6 +23,7 @@
 	rel="stylesheet">
 <script
 	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>bulletin_write</title>
@@ -46,9 +47,20 @@
 	color: #ffffff;
 }
 </style>
+
 </head>
 <body style="padding-top: 5rem;">
 
+
+
+
+<script type="text/javascript">
+	window.onload = function() {
+		var str = document.getElementById("text");
+		str.innerHTML = "${data.commonContent}";
+	};
+</script>
+<c:set var="data" value="${data}" />
 	<!-- Breadcrumb Begi -->
 	<section class="breadcrumb-option set-bg"
 		data-setbg="./resources/img/breadcrumb.jpg"
@@ -66,32 +78,37 @@
 	<!-- Breadcrumb End -->
 
 
+
+
 	<section class="classes spad">
 		<main role="main" class="container">
-			<form name="form" method="get" action="/qnaDetail">
-				<h3>📑 문의 수정해주세요</h3><br>
-				<div class="pt-1"></div>
-				<input type="text" name="title" placeholder="제목을 입력하세요"
-					style="border-radius: 5px; width: 100%; padding: 5px;">
-				<div class="pt-1">
-					<textarea id="summernote" name="contents"></textarea>
-				</div>
-				<script>
-					$('#summernote').summernote({
-						placeholder : '내용을 입력해주세요',
-						tabsize : 2,
-						height : 300
-					});
-				</script>
-				<div class="pt-1 text-right">
-					<button id="hover_btn" class="btn btn btn-success" type="button"
-						style="width: 10%; padding: 5px;"
-						onclick="location.href='qnaList'">목록</button>
-						
-					<button id="hover_btn" class="btn btn btn-success" type="submit"
-						style="width: 10%; padding: 5px;">수정</button>
-				</div>
-			</form>
+		<form name="form" method="POST" action="/qnaMod.do?communitySeq=${data.communitySeq}">
+			<h3>📑 문의 수정해주세요</h3>
+			<br>
+			<div class="pt-1"></div>
+			<input type="text" name="title" value="${data.commonTitle}"
+				style="border-radius: 5px; width: 100%; padding: 5px;">
+			<div class="pt-1">
+				<textarea id="summernote" name="contents">
+					<p id="text">${data.commonContent}</p>
+				</textarea>
+			</div>
+			<script>
+				$('#summernote').summernote({});
+			</script>
+
+
+
+
+
+			<div class="pt-1 text-right">
+				<button id="hover_btn" class="btn btn btn-success" type="button"
+					style="width: 10%; padding: 5px;" onclick="location.href='qnaList.do'">목록</button>
+
+				<button id="hover_btn" class="btn btn btn-success" type="submit"
+					style="width: 10%; padding: 5px;">수정</button>
+			</div>
+		</form>
 		</main>
 	</section>
 </body>
