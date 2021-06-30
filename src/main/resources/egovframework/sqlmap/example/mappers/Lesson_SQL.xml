@@ -138,15 +138,20 @@
 					    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'
 					    ELSE A.LESSON_TITLE
 					    END AS LESSON_TITLE, 
-				  	A.LESSON_TITLE_COMMENT, A.LESSON_PRIVATE_FLAG, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, B.LESSON_GOOD, A.IN_USER_ID, C.LESSON_REPLY, D.FILE_PATH,D.FILE_SAVE_NAME, E.LESSON_CATEGORY_NAME
-				FROM LESSON A
+				  	A.LESSON_TITLE_COMMENT, A.LESSON_PRIVATE_FLAG, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, A.IN_USER_ID, D.FILE_PATH,D.FILE_SAVE_NAME, E.LESSON_CATEGORY_NAME
+				,NVL(B.LESSON_GOOD,0) as LESSON_good,
+                    NVL(f.LESSON_BOOK,0) as LESSON_book,
+                    NVL(C.LESSON_REPLY,0) as LESSON_reply
+                
+                FROM LESSON A
 				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
 				                FROM BOOKGOOD
 				                WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G'
 				                GROUP BY LESSON_SEQ) B
 				ON A.LESSON_SEQ = B.LESSON_SEQ
 				    LEFT OUTER JOIN(SELECT LESSON_SEQ,COUNT(*) AS LESSON_REPLY
-				                FROM REPLY
+                                FROM REPLY
+                                WHERE REPLY_DEL_FLAG='N'
 				                GROUP BY LESSON_SEQ) C
 				ON A.LESSON_SEQ = C.LESSON_SEQ
 				    LEFT OUTER JOIN (SELECT FILE_SEQ,FILE_PATH,FILE_SAVE_NAME
@@ -155,6 +160,11 @@
 				    LEFT OUTER JOIN (SELECT LESSON_CATEGORY_SEQ, LESSON_CATEGORY_NAME
 				                FROM LESSON_CATEGORY) E
 				ON A.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ
+					LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_BOOK
+										FROM BOOKGOOD
+										WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B'
+										GROUP BY LESSON_SEQ) F
+				ON A.LESSON_SEQ = F.LESSON_SEQ
 
 <!-- 			WHERE 1=1 -->
 <!-- 			<if test="searchKeyword != null and searchKeyword != ''"> -->
@@ -204,6 +214,8 @@
 				            LEFT OUTER JOIN (SELECT LESSON_CATEGORY_SEQ, LESSON_CATEGORY_NAME
 				                        FROM LESSON_CATEGORY) E
 				        ON A.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ
+				        	
+				        
 				        order by TO_NUMBER(A.LESSON_HIT) desc
 				) T
 				where rownum &lt; 4
@@ -234,6 +246,50 @@
             WHERE LESSON_SEQ = #{lessonSeq, jdbcType=VARCHAR}
 
 	</update>
+	
+    
+    
+    <!-- 상세 강의사진 파일테이블에 추가 -->
+	<insert id="insertClassFile" parameterType="java.util.Map" > 
+	     <selectKey order="BEFORE" keyProperty="fileSeq" resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 FROM ATTACH_FILE
+		</selectKey>
+		 <foreach collection="list" item="item" index="index" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+           
+         into 
+            attach_file
+               (
+                  file_seq, 
+                  file_detail_seq, 
+                  file_real_name, 
+                  file_save_name, 
+                  file_path, 
+                  in_user_id, 
+                  in_date, 
+                  up_user_id, 
+                  up_date
+               )
+         values 
+           
+           (
+             (
+                select 
+                  NVL(max(to_number(file_seq)),0) + 1 
+                 from 
+                    attach_file),
+                 #{item.fileDetailSeq}, 
+                 #{item.fileRealName}, 
+                 #{item.fileSaveName}, 
+                 #{item.filePath}, 
+                 #{item.inUserId}, 
+                 sysdate, 
+                 #{item.upUserId, jdbcType=VARCHAR}, 
+                 sysdate
+           )
+           
+           
+       </foreach>
+   </insert>
    	
     
 </mapper>

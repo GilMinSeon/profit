@@ -12,6 +12,7 @@ public class LessonDetailVO {
 	private Date inDate;
 	private String upUserId;
 	private Date upDate;
+	
 	public String getLessonDetailSeq() {
 		return lessonDetailSeq;
 	}

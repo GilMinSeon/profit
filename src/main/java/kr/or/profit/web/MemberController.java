@@ -114,8 +114,8 @@ public class MemberController {
 //		System.out.println("memberEmail : " + kakaoProfile.getKakao_account().getEmail());
 
 		MemberVO vo = new MemberVO();
-		vo.setMemberId(kakaoProfile.getId() + "@K");
-		vo.setMemberPwd(kakaoProfile.getId() + "@K");
+		vo.setMemberId(kakaoProfile.getId() + "@Kakao");
+		vo.setMemberPwd(kakaoProfile.getId() + "@Kakao");
 		vo.setMemberName(kakaoProfile.getKakao_account().getProfile().getNickname());
 		vo.setMemberNickname(kakaoProfile.getKakao_account().getProfile().getNickname());
 		vo.setMemberEmail(kakaoProfile.getKakao_account().getEmail());
@@ -127,7 +127,7 @@ public class MemberController {
 //		System.out.println(vo.getMemberEmail());
 
 		// 가입자인지 비가입자인이 체크해서 처리
-		String memberId = kakaoProfile.getId() + "@K";
+		String memberId = kakaoProfile.getId() + "@Kakao";
 		int cnt = memberService.kakaoSelectById(memberId);
 		System.out.println(cnt);
 		if (cnt == 0) {

@@ -155,8 +155,14 @@
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.lessonGood}&nbsp;&nbsp;</p>
 								</div>
+								<div style="display: inline-block; vertical-align: middle;">
+									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+								</div>
+								<div style="display: inline-block;vertical-align:sub;">
+									<p>${result.lessonBook}&nbsp;&nbsp;</p>
+								</div>
 							</div>
-							<p>카테고리 | <span>${result.lessonCategoryName}</span></p>
+							<p style="color:#CE60FA;">카테고리 | <span>${result.lessonCategoryName}</span></p>
 							<h4 style="margin-bottom: 30px;">
 								<a href="lessonDetail.do" style="font-size: 0.8em;font-weight: bold;">${result.lessonTitle}</a>
 							</h4>

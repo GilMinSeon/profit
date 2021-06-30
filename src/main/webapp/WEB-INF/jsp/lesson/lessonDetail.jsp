@@ -82,7 +82,7 @@ function fn_delLesson(){
 				<div class="col-lg-5 p-0">
 					<div class="about__text">
 						<div class="section-title">
-							<h2>${resultList.lessonTitle}</h2>
+							<h3>${resultList.lessonTitle}</h3>
 							<div>
 								<div style="display: inline-block;"><p>※ 한줄 소개 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>
@@ -178,7 +178,7 @@ function fn_delLesson(){
 					<a href="lessonList.do" class="class-btn">목록</a>
 					<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
 					<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
-					<a href="classAdd.do" class="class-btn">강의추가</a>
+					<a href="classAdd.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의추가</a>
 				</div>
 				<div class="d-flex justify-content-between align-items-center has-border">
 					<ul id="titeul" class="nav sub-nav sub-nav--has-border">

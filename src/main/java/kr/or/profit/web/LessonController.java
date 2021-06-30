@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.or.profit.service.AttachFileService;
 import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 
 /**
@@ -181,7 +182,7 @@ public class LessonController {
 	       List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
 	       
 	       Iterator<String> fileNames = multipartRequest.getFileNames();
-	       
+	       int cnt = 1;
 	       while(fileNames.hasNext()) {
 	           
 	           
@@ -208,12 +209,14 @@ public class LessonController {
 	            System.out.println("세션에 있니??  " + memberId);
 	            
 	            AttachFileVO attachvo = new AttachFileVO();
+	            attachvo.setFileDetailSeq(Integer.toString(cnt));
 	            attachvo.setFileRealName(originalFileName);
 	            attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
 	            attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
 	            attachvo.setInUserId(memberId);
 	            attachvo.setUpUserId(memberId);
 	            fileVOList.add(attachvo);
+	            cnt++;
 	          }
 	        System.out.println("insert 할 것");
 	        return fileVOList;
@@ -337,16 +340,71 @@ public class LessonController {
    }
    
 
+   
    @RequestMapping(value = "classDetail.do", method = RequestMethod.GET)
    public String classDetail(Locale locale, Model model) {
       
       return "lesson/classDetail";
    }
-   @RequestMapping(value = "classAdd.do", method = RequestMethod.GET)
+   
+   /**
+    * 상세 강의 등록
+    * @param locale
+    * @param model
+    * @return
+    */
+   @RequestMapping(value = "classAdd.do", method = {RequestMethod.GET, RequestMethod.POST})
    public String classAdd(Locale locale, Model model) {
       
       return "lesson/classAdd";
    }
+   
+   @RequestMapping(value = "class_insAjax.do", method = RequestMethod.POST)
+   @ResponseBody
+   public String classAdd(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
+      HttpSession session = request.getSession();      
+      multipartRequest.setCharacterEncoding("utf-8");
+   
+      //파일업로드
+        List<AttachFileVO> fileVOList = fileLesson(multipartRequest, request);
+        
+      //파일 DB 저장
+        Map<String, Object> filemap = new HashMap<String, Object>();
+        filemap.put("list", fileVOList);
+        System.out.println("filemap인데 파일이랑 영상이야  "+filemap.toString());
+        int insertResult = lessonService.insertClassFile(filemap);
+        
+        
+      //상세 강의 Table(LESSON_DETAIL)에 Insert
+        String lessonSeq = multipartRequest.getParameter("lessonSeq");
+        String lessonDetailTitle = multipartRequest.getParameter("lessonDetailTitle");
+        String lessonDetailContent = multipartRequest.getParameter("lessonDetailContent");
+        
+        LessonDetailVO vo = new LessonDetailVO();
+        
+        String loginMemberId = (String)session.getAttribute("memberId");
+        String fileSeq = (String) filemap.get("fileSeq");
+        vo.setFileSeq(fileSeq);
+        vo.setLessonSeq(lessonSeq);
+        vo.setLessonDetailTitle(lessonDetailTitle);
+        vo.setLessonDetailContent(lessonDetailContent);
+        vo.setInUserId(loginMemberId);
+        vo.setUpUserId(loginMemberId);
+//        lessonService.insertClass(vo);
+        
+        String msg = "ng";
+        
+        if(insertResult > 0) {
+           msg = "ok";
+        }
+         return msg;
+        
+   
+   }	   
+	   
+	   
+	   
+   
    @RequestMapping(value = "classMod.do", method = RequestMethod.GET)
    public String classMod(Locale locale, Model model) {
       

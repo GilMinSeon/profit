@@ -289,20 +289,20 @@ background: #ffffff;
 					</div>
 					<p>
 						<div class="form-group">
-							<label for="lessonPrice" style="float:left;">제목 : </label>
+							<label for="lessonPrice" style="float:left;">제목 </label>
 						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="ex)1강 전신스트레칭">
 						</div>
 					</p>
 					<p>	
 						<div class="form-group">
-							<label for="lessonPrice" style="float:left;">강의코멘트(부제목) : </label>
+							<label for="lessonPrice" style="float:left;">강의코멘트(부제목)</label>
 						    <input type="text" class="form-control" id="lessonTitleComment" name="lessonTitleComment" placeholder="ex)운동시작전 몸을 풀기위한 스트레칭 강의입니다...">
 						</div>
 					</p>
 					
 					<p>	
 						<div class="form-group">
-							<label for="lessonPrice" style="float:left;">강의기간 : </label>
+							<label for="lessonPrice" style="float:left;">강의기간 </label>
 						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)01">
 						</div>
 					</p>
@@ -357,13 +357,13 @@ background: #ffffff;
 						</p>
 						
 						<p>
-							<label for="lessonPrice" style="float:left;">강의소개 : </label>
+							<label for="lessonPrice" style="float:left;">강의소개 </label>
 							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."></textarea>
 						</p>
 						
 						<p>
 							<div class="form-group">
-								<label for="lessonPrice" style="float:left;">강의가격 : </label>
+								<label for="lessonPrice" style="float:left;">강의가격 </label>
 							    <input type="text" class="form-control" id="lessonPrice" name="lessonPrice"  placeholder="ex)530000">
 							</div>
 						</p>
@@ -380,7 +380,7 @@ background: #ffffff;
 <!-- 						        </div> -->
 <!-- 						    </div> -->
 
-								<div>
+								<div style="float: left;">
 									<input type="file" id="file" name="file" value="파일첨부">
 								</div>
 						</p>
