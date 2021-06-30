@@ -55,11 +55,8 @@ $(document).ready(function(){
 						<div class="blog__sidebar__categories">
 							<h4>카테고리</h4>
 							<ul>
-								<li><a href="trainerPermitList">트레이너승인</a></li>
-								<li><a href="adminMemberList">회원관리</a></li>
-								<li><a href="adminLessonList">온라인클래스 내역조회</a></li>
-								<li><a href="adminChatList">상담내역</a></li>
-								<li><a href="adminTicketPayList">이용권 구매내역</a></li>
+								<li><a href="trainerPermitList">회원조회</a></li>
+								<li><a href="adminMemberList">블랙리스트조회</a></li>
 							</ul>
 						</div>
 						<div class="blog__sidebar__recent">

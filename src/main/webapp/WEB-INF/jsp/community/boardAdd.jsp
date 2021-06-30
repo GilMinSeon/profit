@@ -20,8 +20,6 @@
   
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <script>
-var cnt = 1;
-var thumnail = "";
 
 $(function(){
 	
@@ -55,13 +53,9 @@ var form_data = new FormData();
          enctype: 'multipart/form-data',
          processData: false,
          success: function(img_name) {
-        	if(cnt == 1){
-        		thumnail = img_name;
-        		$('#hidden').val(img_name);
-        		cnt++;
-        	}
             console.log(img_name);
             setTimeout(function() {
+            	alert("파일첨부");
 				$(el).summernote('editor.insertImage', img_name);
 			}, 5000);
          }
@@ -70,6 +64,30 @@ var form_data = new FormData();
 
 
 function fn_boardAdd(){
+	var category = $("input[name='cate_type']:checked").val();
+	var title = $("input[name='title']").val();
+	var editordata= $("textarea[name='editordata']").val();
+	
+	if(!category){
+		alert("카테고리를 선택해주세요");
+		return;
+	}
+	if(!title){
+		alert("제목을 입력해주세요");
+		return;
+	}
+	if(!editordata){
+		alert("내용을 입력해주세요");
+		return;
+	}
+	
+	alert("category : " + category);
+	alert("title : " + title);
+	alert("editordata : " + editordata);
+	
+	var tumnail = $("form img").first().attr("src");
+	$('#hidden').val(tumnail);
+	
 	var formData = new FormData($('#frm')[0]);
 	$.ajax({
 		type : 'post',
@@ -106,18 +124,18 @@ function fn_boardAdd(){
 #hover_btn {
 	font-size: 14px;
 	font-weight: 700;
-	color: #5768AD;
+	color: white;
 	display: inline-block;
 	border: 1px solid rgba(155, 158, 163, 0.2);
 	padding: 10px 20px 7px;
 	border-radius: 2px;
-	background-color: white;
+	background-color: #5768AD;
 }
 
 #hover_btn:hover {
-	background: #5768AD;
+	background: white;
 	border: 1px solid #5768AD;
-	color: #ffffff;
+	color: #5768AD;
 }
 </style>
 </head>
@@ -141,16 +159,16 @@ function fn_boardAdd(){
 	
 	<div class="container">
 	<section class="classes spad">
-	<div>
+	<div style="text-align: center;">
 		<h3 style="padding-left: 15px;color: #263246;font-family:DM Sans,sans-serif;font-weight: 400;">🔎 회원들과 공유할 꿀Tip을 작성해주세요</h3>
 	</div>
 	<br/><br/>
 		<main role="main" class="container">
 			<form name="form" id="frm">
 			<input type="hidden" id="hidden" name="tumnail_img" value="none"/>
-				<div class="write-title">
+				<div class="write-title" style="margin-bottom: 5px;">
 					<label>
-						<p>카테고리 선택<span style="color:red;"> *</span></p>
+						<p style="font-weight:bold;">카테고리<span style="color:red;"> *</span></p>
 					</label>
 					<div class="c_radio">
 						<div style="display: inline-block;">
@@ -169,17 +187,28 @@ function fn_boardAdd(){
 						</div>
 					</div>
 				</div>
-				
+				<br><br>
+				<label>
+						<p style="font-weight:bold;margin-bottom:0">제목<span style="color:red;"> *</span></p>
+				</label>
+				<div style="text-align: center;">
 				<input type="text" name="title" placeholder="제목을 입력하세요"
-					style="border-radius: 5px; width: 100%; padding: 5px;">
+					style="width: 99%;border: none;border-bottom: 1px solid #D5D4D4;height: 54px;font-size: 15px;">
 				<br/>
-				<div class="container" style="margin-top:20px;margin-bottom:20px;padding:0">
+				</div>
+				<br><br>
+				<label>
+					<p style="font-weight:bold;margin-bottom:0">내용<span style="color:red;"> *</span></p>
+				</label>
+				<div class="container" style="margin-top:10px;margin-bottom:20px;padding:0">
 				  <textarea class="summernote" name="editordata"></textarea>    
 				</div>
 				
-				<div class="class__filter__input">
-					<button id="hover_btn" type="button" style="width: 10%; padding: 5px;" onclick="fn_boardAdd()">등록</button>
+				<div class="class__filter__input" style="text-align: right;">
+					<button id="hover_btn" type="button" style="width: 150px;height:45px; padding: 5px;font-size:1.0em;" onclick="fn_boardAdd()">등록</button>
+					<button id="hover_btn" type="button" style="width: 150px;height:45px; padding: 5px;font-size:1.0em;" onclick="">목록</button>
 				</div>
+				
 			</form>
 		</main>
 	</section>

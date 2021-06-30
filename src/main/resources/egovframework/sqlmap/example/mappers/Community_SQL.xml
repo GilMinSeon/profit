@@ -73,5 +73,59 @@
 		]]>
 	</insert>
 	
+	<!-- 자유게시판 목록 조회 -->
+	<select id="selectBoardList"  resultType="egovMap">	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
+
+		select 
+    a.community_seq, 
+    a.community_category_seq, 
+    a.file_seq, 
+    Case
+    WHEN LENGTH(a.common_title) > 20 THEN SubStr(a.common_title, 0, 20) || '...'
+    ELSE a.common_title
+    End as common_title,
+    a.common_content,
+    a.common_hit,
+    a.in_user_id, 
+    a.in_date,
+    b.file_path,
+    NVL(c.BOARD_GOOD,0) as board_good,
+    NVL(f.BOARD_BOOK,0) as board_book,
+    NVL(d.BOARD_REPLY,0) as board_reply,
+    e.COMMUNITY_CATEGORY_NAME
+from 
+community a
+left join attach_file b on
+(a.file_seq = b.file_seq)
+left join 
+(
+SELECT COMMUNITY_SEQ, COUNT(*) AS BOARD_GOOD
+		FROM BOOKGOOD
+		WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G'
+        GROUP BY COMMUNITY_SEQ
+) c on
+(a.community_seq = c.community_seq)
+left join
+(
+SELECT COMMUNITY_SEQ, COUNT(*) AS BOARD_REPLY
+FROM REPLY
+WHERE REPLY_DEL_FLAG='N'
+GROUP BY COMMUNITY_SEQ
+) d on
+(a.community_seq = d.community_seq)
+left join community_category
+ e on
+(a.COMMUNITY_CATEGORY_SEQ = e.community_category_seq)
+left join
+(
+SELECT COMMUNITY_SEQ, COUNT(*) AS BOARD_BOOK
+		FROM BOOKGOOD
+		WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B'
+        GROUP BY COMMUNITY_SEQ
+) f on
+(a.community_seq = c.community_seq)
+where a.common_seq = 5 and a.common_del_flag = 'N'
+order by a.in_date DESC
+	</select>
     
 </mapper>
