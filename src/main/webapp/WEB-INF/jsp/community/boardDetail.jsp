@@ -1,8 +1,36 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <script src="./resources/js/board.js"></script>
+<style>
+.classes__item__text .class-btn:hover {
+    background: #ffffff;
+    border: 1px solid #5768AD;
+    color: #5768AD;
+}
+
+.classes__item__text .class-btn {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    background:#5768AD;
+    display: inline-block;
+    border: 1px solid rgba(155, 158, 163, 0.2);
+    padding: 10px 20px 7px;
+    border-radius: 2px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+    width:140px;
+}
+
+</style>
 <body>
 
 
@@ -27,46 +55,54 @@
         
             <div class="row" style="justify-content: center">
                 
-                <div class="col-lg-8 order-lg-2 order-1">
-                	<div style="margin-bottom: 30px;text-align: center;">
-                		<span style="font-size: 1.3em; font-weight: bold;">100일만에 -10kg만든 운동법</span>
+                <div class="col-lg-8 order-lg-2 order-1" style="background-color: white;padding: 30px;border: 1px solid #ebecef;border-radius: 10px">
+                	<div style="margin-bottom: 30px;">
+                		<span style="font-size: 1.3em; font-weight: bold;color: #545454">${BoardDetail['commonTitle']}</span>
                 	</div>
+                	<div style="float: left;margin-left: 5px;padding-top:5px;">
+                        	<p style="font-weight: bold; color: #8B94B5;padding-right: 30px;">카테고리 | <span>${BoardDetail['communityCategoryName']}</span></p>
+                        </div>
                 	<div  style="text-align: right;margin-bottom: 5px;padding-right: 8px;">
-                        <div style="display: inline-block;vertical-align: middle;">
-                        	<img src="./resources/img/common/look.PNG" style="width:30px;height: 20px;opacity: 0.5;">
-                        </div>
-                        <div style="display: inline-block;">
-                        	<p>1000</p>
-                        </div> |&nbsp;
-                        <div style="display: inline-block;vertical-align: middle;">
-                        	<img src="./resources/img/common/reply.PNG" style="width:24px;height: 19px;opacity: 0.5;">
-                        </div>
-                        <div style="display: inline-block;">
-                        	<p>2000</p>
-                        </div> |&nbsp;
-                        <div style="display: inline-block;vertical-align: middle;">
-                        	<img src="./resources/img/common/good.PNG" style="width:22px;height: 20px;">
-                        </div>
-                        <div style="display: inline-block;">
-                        	<p>400</p>
-                        </div>&nbsp;
-                        <div style="display: inline-block;vertical-align: middle;">
-                        	<img src="./resources/img/common/bookmark_.PNG" style="width:22px;height: 20px;">
-                        </div> 
+                        
+                        <div style="display: inline-block; vertical-align: middle;">
+							<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
+						</div>
+						<div style="display: inline-block;vertical-align:sub;">
+							<p style="margin:0;">${BoardDetail['commonHit']}&nbsp;&nbsp;</p>
+						</div>
+						<div style="display: inline-block; vertical-align: middle;">
+							<img src="./resources/img/common/reply.png" style="width: 17px; height: 17px; opacity: 0.5;">
+						</div>
+						<div style="display: inline-block;vertical-align:sub;">
+							<p>${BoardDetail['boardReply']}&nbsp;&nbsp;</p>
+						</div>
+						<div style="display: inline-block; vertical-align: middle;">
+							<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+						</div>
+						<div style="display: inline-block;vertical-align:sub;">
+							<p>${BoardDetail['boardGood']}&nbsp;&nbsp;</p>
+						</div>
+						<div style="display: inline-block; vertical-align: middle;">
+							<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+						</div>
+						<div style="display: inline-block;vertical-align:sub;">
+							<p>${BoardDetail['boardBook']}&nbsp;&nbsp;</p>
+						</div> 
         			</div>
+        			<hr style="color: #545454">
                     <div class="blog__details">
-                    	<div style="border:1px solid; width: auto;height: 800px;" >
+                    	<div style="width: auto;min-height: 800px;" >
 						
 						
-						
-						<p>여기에 작성글이 들어옵니다</p>
+						${BoardDetail['commonContent']}
 						
 						</div>
-						
-                        <div class="classes__item__text" style="text-align: center;">
-                            <a href="boardList" class="class-btn">목록</a>
-	                        <a href="boardMod" class="class-btn">수정</a>
-	                        <a href="#" class="class-btn">삭제</a>
+						<div style="text-align: right;">
+                        	<div class="classes__item__text">
+	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
+		                        <a href="boardMod" class="class-btn" style="text-align: center;">수정</a>
+		                        <a href="#" class="class-btn" style="text-align: center;">삭제</a>
+                        	</div>
                         </div>
                     </div>
                 </div>
@@ -81,7 +117,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="leave__comment__text">
-                        <h2>자유롭게 댓글을 달아보세요😁</h2>
+                        <h2>😁자유롭게 댓글을 달아보세요</h2>
                         <form action="#">
                             <div class="row">
                                 <div class="col-lg-12">

@@ -11,6 +11,7 @@ import kr.or.profit.mapper.CommunityMapper;
 import kr.or.profit.service.CommunityService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.CommunityVO;
+import kr.or.profit.vo.LessonVO;
 
 @Service("communityService")
 public class CommunityServiceImpl implements CommunityService {
@@ -31,6 +32,28 @@ public class CommunityServiceImpl implements CommunityService {
 	public int insertBoardFile(AttachFileVO vo) throws Exception {
 		return communityDAO.insertBoardFile(vo);
 	}
+
+	
+	//자유게시판 목록 조회
+	@Override
+	public List<Map<String, String>> selectBoardList() throws Exception {
+		return communityDAO.selectBoardList();
+	}
+
+	
+	//자유게시판 인기글 조회
+	@Override
+	public List<Map<String, String>> selectBoardTopList() throws Exception {
+		return communityDAO.selectBoardTopList();
+	}
+
+	//자유게시판 상세글 조회
+	@Override
+	public Map<String, Object> selectBoardDetail(String communitySeq) throws Exception {
+		return communityDAO.selectBoardDetail(communitySeq);
+	}
+	
+
 
 
 
