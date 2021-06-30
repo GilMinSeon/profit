@@ -85,7 +85,7 @@ public class CommunityController {
 	public String boardList(Model model) throws Exception{
 		List<Map<String, String>> boardList = communityService.selectBoardList();
 		model.addAttribute("boardList", boardList);
-		System.out.println("출력 : " + boardList.get(0).get("communityCategoryName"));
+		System.out.println("출력 : " + boardList.get(0).get("communityTitle"));
 		
 		return "community/boardList";
 	}
