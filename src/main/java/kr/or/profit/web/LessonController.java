@@ -64,7 +64,8 @@ public class LessonController {
       List<?> lessonList = lessonService.selectLessonList();
       model.addAttribute("resultList", lessonList);
       List<?> lessonTopList = lessonService.selectTopLessonList();
-//      System.out.println("dddddddddddd"+model);
+      model.addAttribute("resultTopList", lessonTopList);
+      System.out.println("dddddddddddd"+model);
       return "lesson/lessonList";
    }
    
@@ -76,7 +77,7 @@ public class LessonController {
     * @return
     * @throws Exception
     */
-   @RequestMapping(value = "lessonDetail.do", method = RequestMethod.GET)
+   @RequestMapping(value = "lessonDetail.do",  method = {RequestMethod.GET, RequestMethod.POST})
    public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
       Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
       model.addAttribute("resultList", lessonDetailList);
@@ -228,7 +229,7 @@ public class LessonController {
     * @param model
     * @return
     */
-   @RequestMapping(value = "lessonMod.do", method = {RequestMethod.GET, RequestMethod.POST})
+   @RequestMapping(value = "lessonMod.do")
    public String lessonMod(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
       Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
       model.addAttribute("resultList", lessonDetailList);
@@ -247,98 +248,63 @@ public class LessonController {
    @RequestMapping(value = "lesson_modAjax.do", method = RequestMethod.POST)
    @ResponseBody
    public String lessonModFinish(MultipartHttpServletRequest multipartRequest, HttpServletResponse response, HttpServletRequest request) throws Exception{
-	   
-	   HttpSession session = request.getSession();  
-	   
-	   List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
-	   Iterator<String> fileNames = multipartRequest.getFileNames();
-	   
-	   while(fileNames.hasNext()) {
-           
-           UUID uuid = UUID.randomUUID();
-           
-           System.out.println("uuid : " + uuid);
-           String fileName = fileNames.next();
-           System.out.println("fileName 은 뭘까 : " + fileName);
-           MultipartFile mFile = multipartRequest.getFile(fileName);
-           String originalFileName = mFile.getOriginalFilename();
-           System.out.println("오리지널 파일은 가지고 오냐? "+originalFileName);
-           File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
-           if(mFile.getSize() != 0) {
-               if(!file.exists()) {
-                   if(file.getParentFile().mkdir()) {
-                       file.createNewFile();
-                   }
-               }
-                
-               mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName));
-           }
-	   
-       String memberId = (String)session.getAttribute("memberId");
-       AttachFileVO attachvo = new AttachFileVO();
-	   
-       attachvo.setFileRealName(originalFileName);
-       attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
-       attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
-       attachvo.setUpUserId(memberId);
-       fileVOList.add(attachvo);
-	   }
-	   
-	   multipartRequest.setCharacterEncoding("utf-8");
-	   
-	   //파일 DB 수정
-       Map<String, Object> filemap = new HashMap<String, Object>();
-       filemap.put("list", fileVOList);
-       int insertResult = lessonService.updateLessonFile(filemap);
-
+	    HttpSession session = request.getSession();      
+	    multipartRequest.setCharacterEncoding("utf-8");
+	      
+	      
+	    //파일업로드
+	    List<AttachFileVO> fileVOList = fileLesson(multipartRequest, request);
+	      
+	    //파일 DB 저장
+	    Map<String, Object> filemap = new HashMap<String, Object>();
+	    filemap.put("list", fileVOList);
+	    System.out.println("filemap이다 이놈아22  "+filemap.toString());
+	    int insertResult = lessonService.insertLessonFile(filemap);
+	    
+	  //강의 정보 Table에 update
+	  String lessonSeq = multipartRequest.getParameter("lessonSeq");
+      String lessonCategorySeq = multipartRequest.getParameter("lessonCategorySeq");
+      String lessonTitle = multipartRequest.getParameter("lessonTitle");
+      String lessonTitleComment = multipartRequest.getParameter("lessonTitleComment");
+      String lessonBalance = multipartRequest.getParameter("lessonBalance");
+      String lessonFlex = multipartRequest.getParameter("lessonFlex");
+      String lessonStrong = multipartRequest.getParameter("lessonStrong");
+      String lessonCore = multipartRequest.getParameter("lessonCore");
+      String lessonIntro = multipartRequest.getParameter("lessonIntro");
+      String lessonPrice = multipartRequest.getParameter("lessonPrice");
+      String lessonMonth = multipartRequest.getParameter("lessonMonth");
+	    
+      System.out.println("강의 seq 는 무엇? "+ lessonSeq);
+      System.out.println("카테고리는 무엇? "+lessonCategorySeq);
+      System.out.println("제목 무엇? "+lessonTitle);
+      System.out.println("코멘트는 무엇? "+lessonTitleComment);
+      System.out.println("밸런스 무엇? "+lessonBalance);
+      System.out.println("유연 무엇? "+lessonFlex);
+      System.out.println("스트롱는 무엇? "+lessonStrong);
+      System.out.println("코어 무엇? "+lessonCore);
+      System.out.println("스트롱는 무엇? "+lessonStrong);
+      System.out.println("인트로 무엇? "+lessonIntro);
+      System.out.println("가격 무엇? "+lessonPrice);
+      System.out.println("기간 무엇? "+lessonMonth);
        
-     //강의 정보 Table에 update
-       String lessonCategorySeq = multipartRequest.getParameter("lessonCategorySeq");
-       String lessonTitle = multipartRequest.getParameter("lessonTitle");
-       String lessonTitleComment = multipartRequest.getParameter("lessonTitleComment");
-       String lessonBalance = multipartRequest.getParameter("lessonBalance");
-       String lessonFlex = multipartRequest.getParameter("lessonFlex");
-       String lessonStrong = multipartRequest.getParameter("lessonStrong");
-       String lessonCore = multipartRequest.getParameter("lessonCore");
-       String lessonIntro = multipartRequest.getParameter("lessonIntro");
-       String lessonPrice = multipartRequest.getParameter("lessonPrice");
-       String lessonMonth = multipartRequest.getParameter("lessonMonth");
-       String fileSeq = multipartRequest.getParameter("fileSeq");
-       String lessonSeq = multipartRequest.getParameter("lessonSeq");
-       
-       System.out.println("카테고리는 무엇? "+lessonCategorySeq);
-       System.out.println("제목 무엇? "+lessonTitle);
-       System.out.println("코멘트는 무엇? "+lessonTitleComment);
-       System.out.println("밸런스 무엇? "+lessonBalance);
-       System.out.println("유연 무엇? "+lessonFlex);
-       System.out.println("스트롱는 무엇? "+lessonStrong);
-       System.out.println("코어 무엇? "+lessonCore);
-       System.out.println("스트롱는 무엇? "+lessonStrong);
-       System.out.println("인트로 무엇? "+lessonIntro);
-       System.out.println("가격 무엇? "+lessonPrice);
-       System.out.println("기간 무엇? "+lessonMonth);
-       System.out.println("파일시퀀 무엇? "+fileSeq);
-       System.out.println("레슨시퀀 무엇? "+lessonSeq);
-       
-       
-       LessonVO vo = new LessonVO();
-       String loginMemberId = (String)session.getAttribute("memberId");
-//       String fileSeq = (String) filemap.get("fileSeq");
-       System.out.println("여기 파일시ㅁ퀀은 뭐니? " + fileSeq);
-       vo.setFileSeq(fileSeq);
-       vo.setLessonSeq(lessonSeq);
-       vo.setLessonCategorySeq(lessonCategorySeq);
-       vo.setLessonTitle(lessonTitle);
-       vo.setLessonTitleComment(lessonTitleComment);
-       vo.setLessonBalance(lessonBalance);
-       vo.setLessonFlex(lessonFlex);
-       vo.setLessonStrong(lessonStrong);
-       vo.setLessonCore(lessonCore);
-       vo.setLessonIntro(lessonIntro);
-       vo.setLessonPrice(lessonPrice);
-       vo.setLessonMonth(lessonMonth);
-       vo.setUpUserId(loginMemberId);
-       lessonService.updateLesson(vo);
+      LessonVO vo = new LessonVO();
+      String loginMemberId = (String)session.getAttribute("memberId");
+      String fileSeq = (String) filemap.get("fileSeq");	//14
+      System.out.println("여기 fileSeq는 뭐니 " + fileSeq);
+      vo.setFileSeq(fileSeq);
+      vo.setLessonSeq(lessonSeq);
+      vo.setLessonCategorySeq(lessonCategorySeq);
+      vo.setLessonTitle(lessonTitle);
+      vo.setLessonTitleComment(lessonTitleComment);
+      vo.setLessonBalance(lessonBalance);
+      vo.setLessonFlex(lessonFlex);
+      vo.setLessonStrong(lessonStrong);
+      vo.setLessonCore(lessonCore);
+      vo.setLessonIntro(lessonIntro);
+      vo.setLessonPrice(lessonPrice);
+      vo.setLessonMonth(lessonMonth);
+      vo.setUpUserId(loginMemberId);
+      lessonService.updateLesson(vo);
       
       String msg = "ng";
       

@@ -174,6 +174,7 @@ function fn_delLesson(){
 			<main id="main" class="site-main" role="main">
 				<!-- 				<div id="" class=""> -->
 				<div class="classes__item__text" style="text-align: right;">
+					<a href="#" class="class-btn">강의 결제</a>
 					<a href="lessonList.do" class="class-btn">목록</a>
 					<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
 					<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
