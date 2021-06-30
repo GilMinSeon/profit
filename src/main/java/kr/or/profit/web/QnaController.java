@@ -2,6 +2,8 @@ package kr.or.profit.web;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.io.File;
 import java.io.PrintWriter;
 
 import javax.annotation.Resource;
@@ -176,4 +178,59 @@ public class QnaController {
 		System.out.println("가지고갈거 = " + qnaList);
 		return "redirect:qnaList.do";
 	}
+
+
+
+
+
+
+
+
+	/**
+	    * 게시판 이미지 업로드
+	    * @author 박상빈
+	    * @param MultipartFile,HttpServletRequest,HttpServletResponse
+	    * @return
+	    * 이미지,
+	    * file.transferTo(f); = 함수로 f에담아서 넘겨주는 듯하다
+	    * @throws Exception
+	    */
+
+		@RequestMapping(value="qnaProfileImage.do",  method=RequestMethod.POST)
+		@ResponseBody
+		public void qnaProfileImage(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		// 업로드할 폴더 경로
+		String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
+
+		UUID uuid = UUID.randomUUID();
+		System.out.println("uuid = " + uuid);
+		// 업로드할 파일 이름
+		String org_filename = file.getOriginalFilename();
+		String str_filename = uuid.toString() + "_psb_" + org_filename;
+
+		System.out.println("원본 파일명 : " + org_filename);
+		System.out.println("저장할 파일명 : " + str_filename);
+
+		String filepath = "\\\\192.168.41.6\\upload\\profit" + "\\" +str_filename;
+		System.out.println("파일경로 : " + filepath);
+		String finalpath = "http://192.168.41.6:9999/upload/profit/" + str_filename;
+		System.out.println("최종경로 : " + finalpath);
+
+		File f = new File(filepath);
+		if (!f.exists()) {
+		f.mkdirs();
+		}
+		file.transferTo(f);
+		out.println(finalpath);
+		out.close();
+		}
+
+
+
+
+
+
+
 }
