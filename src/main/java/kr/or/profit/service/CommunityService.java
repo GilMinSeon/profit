@@ -19,6 +19,9 @@ public interface CommunityService {
 	public List<Map<String, String>> selectBoardList() throws Exception;
 	
 	//자유게시판 인기글 목록 조회
-	public List<Map<String, String>> selectTopList() throws Exception;
+	public List<Map<String, String>> selectBoardTopList() throws Exception;
+	
+	//자유게시판 상세 글 조회
+	public Map<String, Object> selectBoardDetail(String communitySeq) throws Exception;
 
 }

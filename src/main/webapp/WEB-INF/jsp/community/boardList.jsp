@@ -73,7 +73,7 @@
 									<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
-									<p style="margin:0;">${result.commonHit }&nbsp;&nbsp;</p>
+									<p style="margin:0;">${result.commonHit}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/reply.png" style="width: 17px; height: 17px; opacity: 0.5;">

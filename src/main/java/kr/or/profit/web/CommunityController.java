@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,7 @@ import kr.or.profit.service.CommunityService;
 import kr.or.profit.service.impl.AttachFileServiceImpl;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.CommunityVO;
+import kr.or.profit.vo.LessonVO;
 
 
 
@@ -85,7 +87,7 @@ public class CommunityController {
 	public String boardList(Model model) throws Exception{
 		
 		//자유게시판 인기글 목록
-		List<Map<String, String>> boardTopList = communityService.selectTopList();
+		List<Map<String, String>> boardTopList = communityService.selectBoardTopList();
 		System.out.println("boardTopList.size : " + boardTopList.size());
 		model.addAttribute("boardTopList", boardTopList);
 		System.out.println("출력 : " + boardTopList.get(0).get("commonTitle"));
@@ -99,9 +101,11 @@ public class CommunityController {
 		return "community/boardList";
 	}
 	
-	@RequestMapping(value = "boardDetail", method = RequestMethod.GET)
-	public String boardDetail(Locale locale, Model model) {
-		
+	@RequestMapping(value = "boardDetail.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String boardDetail(@ModelAttribute("communityVO") CommunityVO communityVO, Model model) throws Exception{
+		String communitySeq = communityVO.getCommunitySeq();
+		Map<String, Object> boardDetail = communityService.selectBoardDetail(communitySeq);
+		model.addAttribute("BoardDetail" , boardDetail);
 		return "community/boardDetail";
 	}
 	
@@ -237,6 +241,13 @@ public class CommunityController {
         
         return msg;
 		
+	}
+	
+	
+	@RequestMapping(value = "blogDetails.do", method = RequestMethod.GET)
+	public String blogDetails(Locale locale, Model model) {
+		
+		return "blogDetails";
 	}
 	
 }
