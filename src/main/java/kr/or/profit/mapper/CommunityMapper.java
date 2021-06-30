@@ -19,6 +19,9 @@ public interface CommunityMapper {
 	//자유게시판 목록 조회
 	List<Map<String, String>> selectBoardList() throws Exception;
 	
+	//자유게시판 인기글 목록 조회
+	List<Map<String, String>> selectTopList() throws Exception;
+	
 
 	
 }

@@ -83,9 +83,18 @@ public class CommunityController {
 	
 	@RequestMapping(value = "boardList.do",  method = {RequestMethod.GET, RequestMethod.POST})
 	public String boardList(Model model) throws Exception{
+		
+		//자유게시판 인기글 목록
+		List<Map<String, String>> boardTopList = communityService.selectTopList();
+		System.out.println("boardTopList.size : " + boardTopList.size());
+		model.addAttribute("boardTopList", boardTopList);
+		System.out.println("출력 : " + boardTopList.get(0).get("commonTitle"));
+		
+		
+		
+		//자유게시판 목록
 		List<Map<String, String>> boardList = communityService.selectBoardList();
 		model.addAttribute("boardList", boardList);
-		System.out.println("출력 : " + boardList.get(0).get("communityTitle"));
 		
 		return "community/boardList";
 	}

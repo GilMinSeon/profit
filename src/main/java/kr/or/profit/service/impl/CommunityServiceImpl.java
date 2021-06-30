@@ -40,6 +40,12 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 
+	@Override
+	public List<Map<String, String>> selectTopList() throws Exception {
+		return communityDAO.selectTopList();
+	}
+
+
 
 	
 	

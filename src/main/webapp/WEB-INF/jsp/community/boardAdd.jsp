@@ -81,10 +81,6 @@ function fn_boardAdd(){
 		return;
 	}
 	
-	alert("category : " + category);
-	alert("title : " + title);
-	alert("editordata : " + editordata);
-	
 	var tumnail = $("form img").first().attr("src");
 	$('#hidden').val(tumnail);
 	
