@@ -208,7 +208,7 @@
             	<input type="hidden" name="boardSeq">
 				<div class="col-lg-4 col-md-6">
 					<div class="classes__item classes__item__page">
-						<div class="classes__item__pic set-bg" style="overflow: hidden;"><img src="http://192.168.41.6:9999/upload/profit/20f44b61-57eb-40ce-9067-47d663084e3d_스쿼트1.PNG"></div>
+						<div class="classes__item__pic set-bg" style="overflow: hidden;"><img src="./resources/img/common/11.gif"></div>
 						<div class="classes__item__text" style="padding-left: 10px; padding-right: 10px;">
 							<div style="text-align: right;">
 								<div style="display: inline-block; vertical-align: middle;">
@@ -236,7 +236,7 @@
 									<p>${result.boardBook}&nbsp;&nbsp;</p>
 								</div>
 							</div>
-							<p>카테고리 | <span>${result.communityCategoryName}</span></p>
+							<p style="color:#00CE88;font-weight:800px">카테고리 | <span style="color:#00CE88">${result.communityCategoryName}</span></p>
 							<h4 style="margin-bottom: 30px;">
 								<a href="lessionDetail" style="font-size: 0.8em;font-weight: bold;">${result.commonTitle}</a>
 							</h4>
