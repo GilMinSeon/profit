@@ -4,6 +4,113 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+<script>
+$(document).ready(function(){
+
+});
+
+function readURL(input) {
+if (input.files && input.files[0]) {
+ var reader = new FileReader();
+ reader.onload = function (e) {
+     $('#preview_img').attr('src', e.target.result);
+ }
+ reader.readAsDataURL(input.files[0]);
+}
+$("#exe_btn").show();
+}
+
+
+function fn_submit(){
+	var msg = "ok";
+	if(msg=="ok"){
+		var apply = confirm("상세강의를 등록하시겠습니까?");
+		if(apply == true){
+			send_file();
+		}
+		else{
+			alert("신청이 취소되었습니다.")
+		}
+	}
+}
+
+function send_file(){
+	var formData = new FormData($('#frm')[0]);
+	$.ajax({
+		type : 'post',
+		url : 'class_insAjax.do',
+		data : formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+		if(data=="ok"){
+			alert("등록이 정상적으로 완료되었습니다.");
+			location.href="lessonList.do";
+		}else if(data=="no"){
+			alert("신청이 실패하였습니다. 다시 시도해주세요");
+		}
+	},
+		error : function(error){
+			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+}
+</script>
+<style>
+.blinking{
+    animation:blinkingText 1.9s infinite;
+}
+ @keyframes blinkingText{ 
+     0%{     color: #4CED67;    } 
+     49%{    color: #4CED67; } 
+     60%{    color: transparent; } 
+     99%{    color:transparent;  } 
+     100%{   color: #000;    } 
+ }
+
+summary {
+    cursor: pointer;
+    text-decoration: underline;
+    float: left;
+  }
+summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+.site-btn_s{
+font-size: 14px;
+	color: #5768AD;
+	font-weight: 700;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 14px 50px;
+	background: #ffffff;
+	border: none;
+	letter-spacing: 2px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+.site-btn_s:hover{
+background: #ffffff;
+	border: 1px solid #5768AD;
+	color: #5768AD;
+	cursor: pointer;
+} 
+</style>
 </head>
 <body>
 	<!-- Breadcrumb Begin -->
@@ -19,85 +126,79 @@
 		</div>
 	</section>
 	<!-- Breadcrumb End -->
-	<!-- Blog Section Begin -->
-	<section class="blog spad">
-		<div class="container">
-<!-- 			<div class="row"> -->
-<!-- 				여기부터 달라짐 -->
-				<div class="col-lg-8 order-lg-2 order-1">
-					<div class="row" style="display: inline-block; width: 100%;">
-<!-- 						Appoinment Section Begin -->
-						<section class="appointment" style="margin-bottom: 50px;">
-							<div class="container">
-								<div class="appointment__text" style="background-color: #9e9e9e0a;width:100%;padding:15px 0px 15px 0px;">
-									<form action="#" class="appointment__form">
-										<div class="text-center">
-											<h4 style="font-family: DM Sans, sans-serif; color: #111111; font-weight: 400;">강의 등록</h4>
-											<br />
-											<p style="font-family: DM Sans, sans-serif; font-size: 1.2em; color: #5768AD;">영상/이미지 형식</p>
-											<p style="color: #5768AD;">▶ 이미지:100 MB, 동영상:5GB</p>
-											<p style="color: #5768AD;">
-												▶ 이미지:700 x 500
-												<span style="color: #FC7F65;">jpg</span>
-												파일로 첨부해주세요.
-											</p>
-											<p style="color: #5768AD;">
-												▶ 동영상:1280 x 720
-												<span style="color: #FC7F65;">avi</span>
-												파일로 첨부해주세요.
-											</p>
-											<br />
-											<br />
-											<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">강의명</h5>
-													&nbsp;
-												</div>
-												<input type="text" placeholder="예)다리튼튼" style="background-color: #3f51b50d; color: black;" value="">
-											</div>
-											<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">썸네일</h5>
-													&nbsp;
-													<div class="col-lg-12" style="text-align: right; float: left; padding: 0; margin: 0;">
-														<input type="button" value="이미지 추가" class="site-btn updateBtn" style="float: right; padding: 1px 6px; font-size: 0.8em; color: white; background-color: #5768AD; width: 130px; height: 40px; margin-right: 7px;" onclick="fn_update()">
-													</div>
-												</div>
-												<div class="input-group" style="margin-bottom: 5px;">
-													<input type="text" class="form-control" placeholder="썸네일 이미지" style="background-color: #3f51b50d; color: black; margin-bottom: 5px;">
-												</div>
-											</div>
-											<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">강의 영상</h5>
-													&nbsp;
-													<div class="col-lg-12" style="text-align: right; float: left; padding: 0; margin: 0;">
-														<input type="button" value="강의 영상추가" class="site-btn updateBtn" style="float: right; padding: 1px 6px; font-size: 0.8em; color: white; background-color: #5768AD; width: 130px; height: 40px; margin-right: 7px;" onclick="fn_update()">
-													</div>
-												</div>
-												<div class="input-group" style="margin-bottom: 5px;">
-													<input type="text" class="form-control" placeholder="강의를 위한 영상" style="background-color: #3f51b50d; color: black; margin-bottom: 5px;">
-												</div>
-											</div>
-											<br>
-											<div class="col-lg-12" style="text-align: right;">
-												<button type="submit" class="site-btn" style="font-size: 1.1em; color: white; background-color: #5768AD; width: 150px; height: 48px; margin-right: 7px;">신청</button>
-											</div>
-										</div>
-									</form>
-								</div>
-								<div class="classes__item__text" style="text-align: right;">
-									<a href="lessionDetail" class="class-btn">등록</a>
-								</div>
-							</div>
-						</section>
-<!-- 						Appoinment Section End -->
-					</div>
-<!-- 				</div> -->
+	<div class="container">
+		<section class="classes spad">
+			<div style="text-align:center;">
+				<h3 style="padding-left: 15px; color: #263246; font-family: DM Sans, sans-serif; font-weight: 400; font-size: 1.5em;">상세 강의를 등록해주세요 </h3><br/>
+				<p style="color: #E84D4D;">※ 모든 사항은 반드시 입력해야 합니다.</p>
+				<br />
+				<p style="font-family: DM Sans, sans-serif; font-size: 1.2em; color: #5768AD;">영상/이미지 형식</p>
+				<p style="color: #5768AD;">▶ 이미지 : 100 MB, 동영상 : 5GB</p>
+				<p style="color: #5768AD;">
+					▶ 이미지 : 700 x 500
+					<span style="color: #FC7F65;">jpg</span>
+					파일로 첨부해주세요.
+				</p>
+				<p style="color: #5768AD;">
+					▶ 동영상 : 1280 x 720
+					<span style="color: #FC7F65;">avi</span>
+					파일로 첨부해주세요.
+				</p>
+				<br />
+				
 			</div>
-		</div>
-	</section>
-	<!-- Blog Section End -->
+			<form  id="frm" method="post"  style="text-align: center;"  enctype="multipart/form-data">
+				<div class="write-title">
+					<p>
+						<div class="form-group">
+							<h5 style="display: inline; float: left; color: black;">상세 강의명</h5>
+						    &nbsp;
+						    <input type="text" class="form-control" id="lessonDetailTitle" name="lessonDetailTitle" placeholder="ex)1강 전신스트레칭">
+						</div>
+					</p>
+					<br/>
+					
+					<p>
+						<div class="form-group">
+						  <h5 style="display: inline; float: left; color: black;">썸네일 이미지</h5>
+						  &nbsp;
+						  <div class="file_pre" style="text-align: left;margin-top: 30px;">  
+						    <input type="file" id="file" onchange="readURL(this);"> 
+						  </div>
+						  <br/>
+						  <span class="blinking" style="float:left;"> 미리보기로 확인해보세요 →&nbsp;&nbsp;&nbsp;&nbsp; </span>
+						  <details>
+						  <summary>썸네일 미리보기</summary>
+						  <div>
+						  <img id="preview_img" style="width:auto;height:auto;object-fit:cover;" />
+							</div>
+						</details>
+					</div>
+					</p>
+				<br/>
+				
+					<p>
+						<div class="form-group">
+							<h5 style="display: inline; float: left; color: black;">강의 영상</h5>
+						    &nbsp;
+						    <div style="text-align: left;margin-top: 30px;">
+								<input type="file" id="file_dong">
+							</div>
+							
+						</div>
+					</p>
+				
+				<div style="text-align: right;">
+                      <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_submit()">등록</button>
+                 </div>
+				
+				</div>
+			</form>
+		</section>
+	</div>
+	
+	
+	
 	<!-- Js Plugins -->
 	<script src="./resources/js/jquery-3.3.1.min.js"></script>
 	<script src="./resources/js/bootstrap.min.js"></script>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 
 public interface LessonService {
@@ -33,6 +34,12 @@ public interface LessonService {
 
 	//인기강의 조회
 	public List<?> selectTopLessonList()throws Exception;
+
+	//상세 강의 파일등록
+	public int insertClassFile(Map map) throws Exception;
+
+	//상세 강의 등록
+//	public void insertClass(LessonDetailVO vo) throws Exception;
 
 
 

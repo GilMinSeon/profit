@@ -68,6 +68,12 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.selectTopLessonList();
 	}
 
+	//상세 강의 파일등록
+	@Override
+	public int insertClassFile(Map map) throws Exception {
+		return lessonDAO.insertClassFile(map);
+	}
+
 
 
 	
