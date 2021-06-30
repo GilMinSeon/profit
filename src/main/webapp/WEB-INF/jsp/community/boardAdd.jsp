@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
 <head>
 <title>bulletin_write</title>
@@ -22,7 +25,7 @@
 <script>
 
 $(function(){
-	
+	$('#loading').hide();
 	$('.summernote').summernote({
 		height: 600,
 		fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
@@ -52,12 +55,16 @@ var form_data = new FormData();
          contentType: false,
          enctype: 'multipart/form-data',
          processData: false,
+         beforeSend: function() {
+        	 $('#loading').show(); 
+	     },
          success: function(img_name) {
             console.log(img_name);
             setTimeout(function() {
-            	alert("파일첨부");
+            	alert("파일이 첨부되었습니다.");
+            	$('#loading').hide(); 
 				$(el).summernote('editor.insertImage', img_name);
-			}, 5000);
+			}, 4000);
          }
        });
 }
@@ -94,15 +101,16 @@ function fn_boardAdd(){
 		async:false,
 		dataType:"text",
 		success : function(data){
-		if(data=="ok"){
-			alert("글이 정상적으로 등록되었습니다.");
-			location.href="home.do";
-		}else if(data=="no"){
-			alert("등록이 실패하였습니다. 다시 시도해주세요");
-		}else{
-			alert("등록이 실패하였습니다. 다시 시도해주세요");
-		}
-	},
+			var jsonInfo = JSON.parse(data);
+			if(jsonInfo.msg=="ok"){
+				alert("글이 정상적으로 등록되었습니다.");
+				location.href="boardDetail.do?communitySeq=" + jsonInfo.communitySeq;
+			}else if(data=="ng"){
+				alert("등록이 실패하였습니다. 다시 시도해주세요");
+			}else{
+				alert("등록이 실패하였습니다. 다시 시도해주세요");
+			}
+		},
 		error : function(error){
 			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
 			console.log(error);
@@ -196,8 +204,12 @@ function fn_boardAdd(){
 				<label>
 					<p style="font-weight:bold;margin-bottom:0">내용<span style="color:red;"> *</span></p>
 				</label>
-				<div class="container" style="margin-top:10px;margin-bottom:20px;padding:0">
-				  <textarea class="summernote" name="editordata"></textarea>    
+				<div class="container" style="margin-top:10px;margin-bottom:20px;padding:0;position: relative;">
+				  <textarea class="summernote" name="editordata">
+				  </textarea>   
+				  <div id="loading" style="position: absolute;top: 50%;left: 50%;margin:-150px 0 0 -150px">
+				  	<img id="loading-image" src="./resources/img/common/loading.gif" alt="Loading..." />
+				  </div> 
 				</div>
 				
 				<div class="class__filter__input" style="text-align: right;">
