@@ -91,8 +91,7 @@
         			</div>
         			<hr style="color: #545454">
                     <div class="blog__details">
-                    	<div style="width: auto;height: 800px;" >
-						
+                    	<div style="width: auto;min-height: 800px;" >
 						
 						
 						${BoardDetail['commonContent']}
@@ -100,7 +99,7 @@
 						</div>
 						<div style="text-align: right;">
                         	<div class="classes__item__text">
-	                            <a href="boardList" class="class-btn" style="text-align: center;">목록</a>
+	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
 		                        <a href="boardMod" class="class-btn" style="text-align: center;">수정</a>
 		                        <a href="#" class="class-btn" style="text-align: center;">삭제</a>
                         	</div>
@@ -118,7 +117,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="leave__comment__text">
-                        <h2>자유롭게 댓글을 달아보세요😁</h2>
+                        <h2>😁자유롭게 댓글을 달아보세요</h2>
                         <form action="#">
                             <div class="row">
                                 <div class="col-lg-12">

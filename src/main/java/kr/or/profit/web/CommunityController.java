@@ -179,7 +179,7 @@ public class CommunityController {
     */
 	@RequestMapping(value = "boardAddAjax.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardAddAjax(HttpServletResponse response, HttpServletRequest request) throws Exception{
+	public String boardAddAjax(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception{
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
 		
@@ -238,7 +238,7 @@ public class CommunityController {
         if(insertResult > 0) {
            msg = "ok";
         }
-        
+        model.addAttribute(vo.getCommonSeq());
         return msg;
 		
 	}
