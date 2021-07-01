@@ -12,6 +12,7 @@ import kr.or.profit.service.CommunityService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.ReplyVO;
 
 @Service("communityService")
 public class CommunityServiceImpl implements CommunityService {
@@ -51,6 +52,25 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public Map<String, Object> selectBoardDetail(String communitySeq) throws Exception {
 		return communityDAO.selectBoardDetail(communitySeq);
+	}
+
+	//자유게시판 상세 댓글 나의 프로필 사진 조회
+	@Override
+	public String selectMyProfile(String memberId) throws Exception {
+		return communityDAO.selectMyProfile(memberId);
+	}
+	
+	//자유게시판 상세 댓글 추가
+	@Override
+	public int insertBoardReply(ReplyVO vo) throws Exception {
+		return communityDAO.insertBoardReply(vo);
+	}
+
+	
+	//댓글 리스트 가져오기
+	@Override
+	public List<Map<String, Object>> selectReplyList(String communitySeq) throws Exception {
+		return communityDAO.selectReplyList();
 	}
 	
 
