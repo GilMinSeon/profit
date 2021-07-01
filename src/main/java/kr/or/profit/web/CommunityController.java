@@ -119,12 +119,12 @@ public class CommunityController {
 		System.out.println("기본이미지 : " + myprofile);
 		boardDetail.put("MyProfileImage", myprofile);
 		
-		model.addAttribute("BoardDetail" , boardDetail);
-		System.out.println(model.toString());
-		
 		// 댓글 목록 가져오기
 		List<Map<String, Object>> replyList = communityService.selectReplyList(communitySeq);
+		boardDetail.put("replyList", replyList);
 		
+		model.addAttribute("BoardDetail" , boardDetail);
+		System.out.println(model.toString());
 		
 		return "community/boardDetail";
 	}
