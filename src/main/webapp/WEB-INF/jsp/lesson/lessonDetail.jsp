@@ -215,6 +215,7 @@ function fn_delLesson(){
 												<th style="color:white;">썸네일</th>
 												<th style="color:white;">상세 강의 명</th>
 												<th style="color:white;">재생시간</th>
+												<th style="color:white;">등록일</th>
 											</tr>
 										<c:forEach var="rclassList" items="${resultClassList}" varStatus="status">
 											<tr onclick="location.href='classDetail.do?lessonDetailSeq='+ ${rclassList.lessonDetailSeq}" style="cursor:pointer;">
@@ -224,6 +225,7 @@ function fn_delLesson(){
 												</td>
 												<td style="vertical-align: middle;">${rclassList.lessonDetailTitle}</td>
 												<td style="vertical-align: middle;">20:32</td>
+												<td style="vertical-align: middle;">${rclassList.inDate}</td>
 											</tr>
 										</c:forEach>
 										</tbody>

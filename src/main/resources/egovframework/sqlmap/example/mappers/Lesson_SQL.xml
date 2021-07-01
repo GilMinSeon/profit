@@ -331,7 +331,7 @@
 			        A.LESSON_DETAIL_TITLE,
 			        A.LESSON_DETAIL_CONTENT,
 			        A.IN_USER_ID,
-			        A.IN_DATE,
+			        TO_CHAR(A.IN_DATE,'YYYY-MM-DD') IN_DATE,
 			        A.UP_USER_ID,
 			        A.UP_DATE,
 			        B.FILE_SAVE_NAME,
@@ -358,7 +358,7 @@
 		        A.LESSON_DETAIL_TITLE,
 		        A.LESSON_DETAIL_CONTENT,
 		        A.IN_USER_ID,
-		        A.IN_DATE,
+		        TO_CHAR(A.IN_DATE,'YYYY-MM-DD') IN_DATE,
 		        A.UP_USER_ID,
 		        A.UP_DATE,
 		        B.FILE_SAVE_NAME
@@ -379,7 +379,7 @@
 
 	</delete>
 	
-	<select id="selectLessonList"  resultType="egovMap" parameterType="String">
+	<select id="selectCateLessonList"  resultType="egovMap" parameterType="String">
 	    SELECT A.LESSON_SEQ ,A.FILE_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, 
 					CASE
 					    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'

@@ -78,20 +78,29 @@ function fn_delClass(){
 						<table class="table table" style="text-align: center;">
 							<tbody>
 								<tr>
-									<th scope="row" style="background-color: #E6E6E6;">강의명</th>
+									<th scope="row" style="background-color: #E6E6E6;width:30%;">강의명</th>
 									<td>${classResult.lessonDetailTitle}</td>
 								</tr>
 								<tr>
-									<th scope="row" style="background-color: #E6E6E6;">영상시간</th>
+									<th scope="row" style="background-color: #E6E6E6;">상세 설명</th>
+									<td><div style="width:60%;height: auto; text-align: left;margin:0 auto;">${classResult.lessonDetailContent}</div></td>
+								</tr>
+								<tr>
+									<th scope="row" style="background-color: #E6E6E6;">강의 정보</th>
+									<td>
+										<span>재생시간</span><span>20:30</span> | 
+									</td>
+									
+								</tr>
+								<tr>
+									<th scope="row" style="background-color: #E6E6E6;">재생시간</th>
 									<td>20:30</td>
 								</tr>
 								<tr>
-									<th scope="row" style="background-color: #E6E6E6;">강의 상세 설명</th>
-									<td>${classResult.lessonDetailContent}</td>
+									<th scope="row" style="background-color: #E6E6E6;">등록일</th>
+									<td>${classResult.inDate}</td>
 								</tr>
-								<tr>
-									<th scope="row" colspan="2">강의 영상</th>
-								</tr>
+								
 								<tr>
 									<th scope="row" colspan="2">
 										<video id="videoplay" controls  src="http://192.168.41.6:9999/upload/profit/${classResult.fileSaveName}" width="100%" ></video>

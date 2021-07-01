@@ -23,10 +23,9 @@ function fn_selCate(){
 		dataType:"text",
 		success : function(data){
 		if(data=="ok"){
-			alert("등록이 정상적으로 완료되었습니다.");
-			location.href="lessonDetail.do?lessonSeq="+$("input:hidden[name=lessonSeq]").val();
+			
+			location.href="lessonList.do";
 		}else if(data=="no"){
-			alert("등록이 실패하였습니다. 다시 시도해주세요");
 		}
 	},
 		error : function(error){

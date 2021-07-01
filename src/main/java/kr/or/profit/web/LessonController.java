@@ -475,13 +475,16 @@ public class LessonController {
        return msg;
    }
    
-//   @RequestMapping(value = "searchCateAjax.do")
-//   @ResponseBody
-//   public String selectCate(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
-//	   String sel_value = request.getParameter("sel_value");
-//	   System.out.println("sel_value선택된 "+sel_value);
-//	   List<?> selCateLessonList = lessonService.selectCateLessonList(sel_value);
-//	   
-//	   return null;
-//   }
+   @RequestMapping(value = "searchCateAjax.do")
+   @ResponseBody
+   public String selectCate(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
+	   String sel_value = request.getParameter("sel_value");
+	   System.out.println("sel_value선택된 "+sel_value);
+	   List<?> selCateLessonList = lessonService.selectCateLessonList(sel_value);
+
+	   String msg = "ok";
+	      
+	     
+	    return msg;
+   }
 }
