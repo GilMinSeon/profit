@@ -34,6 +34,7 @@ import kr.or.profit.service.impl.AttachFileServiceImpl;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.ReplyVO;
 import net.sf.json.JSONObject;
 
 
@@ -91,22 +92,40 @@ public class CommunityController {
 		List<Map<String, String>> boardTopList = communityService.selectBoardTopList();
 		System.out.println("boardTopList.size : " + boardTopList.size());
 		model.addAttribute("boardTopList", boardTopList);
-		System.out.println("출력 : " + boardTopList.get(0).get("commonTitle"));
+		System.out.println("출력 : " + boardTopList.get(0).get("filePath"));
 		
 		
 		
 		//자유게시판 목록
 		List<Map<String, String>> boardList = communityService.selectBoardList();
 		model.addAttribute("boardList", boardList);
+		System.out.println("---------------------------");
+		System.out.println(model.toString());
 		
 		return "community/boardList";
 	}
 	
 	@RequestMapping(value = "boardDetail.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public String boardDetail(@ModelAttribute("communityVO") CommunityVO communityVO, Model model) throws Exception{
+	public String boardDetail(@ModelAttribute("communityVO") CommunityVO communityVO, Model model, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		//게시글 상세정보
 		String communitySeq = communityVO.getCommunitySeq();
 		Map<String, Object> boardDetail = communityService.selectBoardDetail(communitySeq);
+		
+		//댓글 내 프로필 사진 이미지 정보
+		String myprofile = communityService.selectMyProfile(memberId);
+		System.out.println("기본이미지 : " + myprofile);
+		boardDetail.put("MyProfileImage", myprofile);
+		
 		model.addAttribute("BoardDetail" , boardDetail);
+		System.out.println(model.toString());
+		
+		// 댓글 목록 가져오기
+		List<Map<String, Object>> replyList = communityService.selectReplyList(communitySeq);
+		
+		
 		return "community/boardDetail";
 	}
 	
@@ -250,10 +269,33 @@ public class CommunityController {
 	}
 	
 	
-	@RequestMapping(value = "blogDetails.do", method = RequestMethod.GET)
-	public String blogDetails(Locale locale, Model model) {
+	@RequestMapping(value = "replyAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String blogDetails(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
 		
-		return "blogDetails";
+		String communitySeq = request.getParameter("communitySeq");
+		String replyContent = request.getParameter("replyContent");
+		
+		System.out.println("communitySeq : " + communitySeq);
+		System.out.println("replyContent : " + replyContent);
+		
+		ReplyVO replyvo = new ReplyVO();
+		replyvo.setCommunitySeq(communitySeq);
+		replyvo.setReplyContent(replyContent);
+		replyvo.setInUserId(memberId);
+		replyvo.setUpUserId(memberId);
+		
+		int insertResult = communityService.insertBoardReply(replyvo);
+		
+
+	    String msg="ng";
+	    
+		if(insertResult > 0) {
+			msg = "ok";
+		}
+		return msg;
 	}
 	
 }
