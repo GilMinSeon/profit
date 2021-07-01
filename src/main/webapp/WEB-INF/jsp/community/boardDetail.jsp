@@ -50,9 +50,6 @@
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-$(function(){
-	$(".rereplyToggle").hide();
-});
 
 function fn_toggle(cnt){
 	$("#rereply_div"+ cnt).toggle("fast");
@@ -72,6 +69,39 @@ function fn_replyAdd(){
 			if(data=="ok"){
 				alert("댓글이 정상적으로 등록되었습니다.");
 				$("textarea[name=replyContent]").val('');
+				$(".replyarea").load(location.href + " .replyarea");
+			}else if(data=="ng"){
+				alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
+			}else{
+				alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
+			}
+		},
+		error : function(error){
+			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+}
+
+function fn_rereply(cnt){
+	var formData = new FormData($('#frm'+ cnt)[0]);
+	
+	$.ajax({
+		type : 'post',
+		url : 'rereplyAddAjax.do',
+		data : formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+			if(data=="ok"){
+				alert("댓글이 정상적으로 등록되었습니다.");
+				$("textarea[name=replyContent]").val('');
+				$(".replyarea").load(location.href + " .replyarea");
 			}else if(data=="ng"){
 				alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
 			}else{
@@ -180,7 +210,7 @@ function fn_replyAdd(){
                     </div>
                 </div>
                 
-                <div class="col-lg-4 order-lg-1 order-2" style="width: 100%;flex: 0 0 100%;max-width: 100%;padding-right: 0px;margin-left: 23px;">
+                <div id="reply_area" class="col-lg-4 order-lg-1 order-2 replyarea" style="width: 100%;flex: 0 0 100%;max-width: 100%;padding-right: 0px;margin-left: 23px;">
                 
                     <div class="blog__sidebar">
                         
@@ -188,9 +218,10 @@ function fn_replyAdd(){
                             <h4>댓글</h4>
 	                            <div class="classes__sidebar__comment" style="border-bottom: 0">
 	                                   <c:forEach var="result" items="${BoardDetail['replyList']}" varStatus="status">
-	                                
+	                                <form id="frm${status.count}">
+	                                <input type="hidden" name="communitySeq" value="${result.communitySeq}">
 	                                <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
-
+									<input type="hidden" name="replyParentSeq" value="${cnt}">
 	                                <div class="classes__sidebar__comment__pic" style="<c:if test="${result.replyDepth == 2}">margin-left:100px;</c:if>">
 	                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
 	                                </div>
@@ -205,21 +236,20 @@ function fn_replyAdd(){
 	                                    <div style="margin-top: 20px;">
 		                                    <p>${result.replyContent}<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"></p>
 	                                	</div>
-	                                	${result.replySeq}
-	                                	
 	                                </div><br>
 	                                <c:if test="${result.replyNextDepth == 1 || empty result.replyNextDepth}">
 	                                	<div class="row" >
-			                                <div id="rereply_div${cnt}" class="col-lg-12 rereplyToggle" style="margin-top: 15px;margin-left: 100px;">
+			                                <div id="rereply_div${cnt}" class="col-lg-12" style="margin-top: 15px;margin-left: 100px;display: none;">
 				                                <div class="classes__sidebar__comment__pic">
 				                                    <img src="${BoardDetail['MyProfileImage']}" alt="">
 				                                </div>
-			                                    <textarea id="reply" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
-			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: left;margin-top: 15px;margin-left: 5px;">답글작성</button>
+			                                    <textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
+			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
 			                                </div>
 			                            </div>
 	                                	<hr>
 	                                </c:if>
+	                                </form>
 	                                </c:forEach>
 	                            </div>
                             <form id="replyfrm">
