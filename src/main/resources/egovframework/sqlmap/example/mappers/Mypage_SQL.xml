@@ -134,7 +134,41 @@
 		where member_id = #{memberId}
 	</select>
 
+	
+	
+	<!-- 민선 내정보수정 -->
+	<update id="updateMemberInfo" parameterType="MemberVO">
+        update member
+        set  
+        member_name = #{memberName},
+        member_nickname = #{memberNickname},
+        member_mobile = #{memberMobile},
+        member_gender = #{memberGender},
+        member_weight = #{memberWeight},
+        member_height = #{memberHeight},
+        file_seq = (select nvl(max(file_seq),0) from attach_file)
+        where
+        member_id = #{memberId}
 
+	</update>
+	
+	
+	<update id="updateOnlyInfo" parameterType="MemberVO">
+		update member
+        set  
+        member_name = #{memberName},
+        member_nickname = #{memberNickname},
+        member_mobile = #{memberMobile},
+        member_gender = #{memberGender},
+        member_weight = #{memberWeight},
+        member_height = #{memberHeight}
+        where
+        member_id = #{memberId}
+	    
+	</update>
+	
+	
+	
 
 
 </mapper>

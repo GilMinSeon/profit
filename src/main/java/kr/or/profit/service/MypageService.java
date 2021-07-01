@@ -23,5 +23,10 @@ public interface MypageService {
 	//민선 
 	//회원 모든 정보 select
 	public MemberVO selectAllMemberInfo(String memberId) throws Exception;
+	//내정보 수정
+	public void updateMemberInfo(MemberVO vo) throws Exception;
+	
+	
+	public int updateOnlyInfo(MemberVO vo) throws Exception;
 	
 }

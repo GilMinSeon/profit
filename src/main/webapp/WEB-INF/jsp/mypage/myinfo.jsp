@@ -22,47 +22,65 @@
 		$("#exe_btn").show();
 	}
 
-	function fn_imageUpdate() {
-		/* 	$('#text').c({
-		 'display' : 'block'
-		 }); */
-
-		$('#after').css({
-			'display' : 'block'
-		});
-
-		$('#file').css({
-			'display' : 'block'
-		});
-
-		$('#before').css({
-			'display' : 'none'
-		});
-		/* 	$('.updateBtn').css({
-		 'display' : 'block'
-		 });
+	function fn_update() {
+		$('#file').css({'display' : 'block'});
+		$('#submit').css({'display' : 'block'});
+		$('#update').css({'display' : 'none'});
 		
-		
-		 $('#updBtn').attr({
-		 'value' : '수정완료'
-		 });
-		 $('.ta').prop('readonly', false); */
+		$('#memberName').prop('readonly', false); 
+		$('#memberNickname').prop('readonly', false); 
+		$('#memberMobile').prop('readonly', false); 
+		$('#memberWeight').prop('readonly', false); 
+		$('#memberHeight').prop('readonly', false); 
+		$("input:radio[id='female']").prop("disabled", false);
+		$("input:radio[id='male']").prop("disabled", false);
+
 	}
 
-	function fn_imageSubmit() {
-
-		alert("프로필 사진이 업로드 되었습니다.")
-		$('#before').css({
-			'display' : 'block'
-		});
-
-		$('#after').css({
-			'display' : 'none'
-		});
-
-		$('#file').css({
-			'display' : 'none'
-		});
+	function fn_submit() {
+		
+       var formData = new FormData($('#frm')[0]);
+          $.ajax({
+             type : 'post',
+             url : 'updateMyInfoAjax.do',
+             data : formData,
+             processData : false,
+             contentType : false,
+             async:false,
+             dataType:"text",
+             success : function(data){
+             if(data=="ok"){
+                alert("신청이 정상적으로 완료되었습니다.");
+                //location.href="home.do";
+             }else if(data=="no"){
+                alert("신청이 실패하였습니다. 다시 시도해주세요");
+             }else{
+                alert("신청이 실패하였습니다. 다시 시도해주세요");
+             }
+          },
+             error : function(error){
+                alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+                console.log(error);
+                console.log(error.status);
+             }
+             
+             
+          })
+		
+	
+		alert("내 정보가 수정되었습니다.")
+		$('#file').css({'display' : 'none'});
+		$('#submit').css({'display' : 'none'});
+		$('#update').css({'display' : 'block'});
+		$('#memberName').prop('readonly', true); 
+		$('#memberNickname').prop('readonly', true); 
+		$('#memberMobile').prop('readonly', true); 
+		$('#memberWeight').prop('readonly', true); 
+		$('#memberHeight').prop('readonly', true); 
+		$("input:radio[id='female']").prop("disabled", true);
+		$("input:radio[id='male']").prop("disabled", true);
+		
+		
 	}
 </script>
 <body>
@@ -145,158 +163,166 @@
 						<section class="appointment" style="margin-bottom: 50px;">
 							<div class="container">
 								<div class="appointment__text" style="background-color: #9e9e9e0a">
-									<form action="#" class="appointment__form">
-										<div class="text-center">
-											<!-- 프로필이미지 -->
-											<div class="classes__sidebar__instructor">
-												<div class="classes__sidebar__instructor__pic" style="float: none; margin-right: 0px; height: 170px;">
-													<img id="preview_img" src="${myInfo.filePath }" alt="">
-													<p id="before" onclick="fn_imageUpdate()" style="display: block; text-align: right; cursor: pointer;">프로필
-														사진 수정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-													<br>
-													<button id="after" type="button" onclick="location.href='pwdMod'" class="input-group-addon"
-														style="display: none; cursor: pointer; border: 1px solid #5768AD; margin-right: 10px; float: right; padding: 4px 13px; font-weight: bold; font-size: 0.9em;">수정완료</button>
-													<input id="file" type="file" onchange="readURL(this);"
-														style="display: none; float: right; width: 100px; height: 30px; padding-left: 0px; margin-bottom: 0px;">&nbsp;&nbsp;
+			<form id="frm" class="appointment__form" method="post" enctype="multipart/form-data">
+				<div class="text-center">
+					<!-- 프로필이미지 -->
+					<div class="classes__sidebar__instructor">
+						<div class="classes__sidebar__instructor__pic" style="float: none; margin-right: 0px; height: 170px;">
+							<img id="preview_img" src="${myInfo.filePath }" alt="">
+							<br>
+							<input id="file" type="file" onchange="readURL(this);" name="file"
+								style="display: none; float: right; width: 100px; height: 30px; padding-left: 0px; margin-bottom: 0px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</div>
 
-												</div>
+					</div>
+					
+					<!-- 아이디 -->
+					<div class="col-lg-6 text-center mypage_myinfo"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<div style="margin-bottom: 2px;">
+							<h5 style="display: inline; float: left; color: black;">아이디</h5>
+							&nbsp;
+						</div>
+						<input type="text" style="background-color: #3f51b50d; color: black;" readonly="readonly" 
+							value="${myInfo.memberId }">
+					</div>
 
-											</div>
-											
-											<!-- 아이디 -->
-											<div class="col-lg-6 text-center mypage_myinfo"
-												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">아이디</h5>
-													&nbsp;
-												</div>
-												<input type="text" style="background-color: #3f51b50d; color: black;" readonly="readonly"
-													value="${myInfo.memberId }">
-											</div>
+					<c:set var="memberRoute" value="${myInfo.memberRoute}" />
+					<c:if test="${memberRoute == 'U' }">
+						<!-- 비밀번호 (카카오 회원 안보임)-->
+						<div class="col-lg-6 text-center mypage_myinfo"
+							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+							<div style="margin-bottom: 2px;">
+								<h5 style="display: inline; float: left; color: black;">비밀번호</h5>
+								&nbsp;
+							</div>
+							<div class="input-group" style="margin-bottom: 20px;">
+								<input type="password" class="form-control" placeholder="Password" readonly="readonly"
+									style="background-color: #3f51b50d; color: black;" value="회원의 실제 비밀번호"> <span
+									class="input-group-addon" style="border: 1px solid #5768AD; border-radius: 4px;">
+									<button type="button" onclick="location.href='pwdMod'" class="input-group-addon"
+										style="font-weight: bold; font-size: 0.9em;">변경</button>
+								</span>
 
-											<c:set var="memberRoute" value="${myInfo.memberRoute}" />
-											<c:if test="${memberRoute == 'U' }">
-												<!-- 비밀번호 (카카오 회원 안보임)-->
-												<div class="col-lg-6 text-center mypage_myinfo"
-													style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-													<div style="margin-bottom: 2px;">
-														<h5 style="display: inline; float: left; color: black;">비밀번호</h5>
-														&nbsp;
-													</div>
-													<div class="input-group" style="margin-bottom: 20px;">
-														<input type="password" class="form-control" placeholder="Password" readonly="readonly"
-															style="background-color: #3f51b50d; color: black;" value="회원의 실제 비밀번호"> <span
-															class="input-group-addon" style="border: 1px solid #5768AD; border-radius: 4px;">
-															<button type="button" onclick="location.href='pwdMod'" class="input-group-addon"
-																style="font-weight: bold; font-size: 0.9em;">변경</button>
-														</span>
+							</div>
+						</div>
+					</c:if>
 
-													</div>
-												</div>
-											</c:if>
+					<!-- 이메일 -->
+					<div class="col-lg-6 text-center mypage_myinfo"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<div style="margin-bottom: 2px;">
+							<h5 style="display: inline; float: left; color: black;">이메일</h5>
+							&nbsp;
+						</div>
+						<div class="input-group" style="margin-bottom: 20px;">
+							<input type="text" class="form-control" placeholder="Mobile" readonly="readonly"
+								style="background-color: #3f51b50d; color: black;" value="${myInfo.memberEmail }">
 
-											<!-- 이메일 -->
-											<div class="col-lg-6 text-center mypage_myinfo"
-												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">이메일</h5>
-													&nbsp;
-												</div>
-												<div class="input-group" style="margin-bottom: 20px;">
-													<input type="text" class="form-control" placeholder="Mobile" readonly="readonly"
-														style="background-color: #3f51b50d; color: black;" value="${myInfo.memberEmail }">
+							<c:if test="${memberRoute == 'U' }">
+								<span class="input-group-addon" style="border: 1px solid #5768AD; border-radius: 4px;">
+									<button type="button" onclick="location.href='mobileMod'" class="input-group-addon"
+										style="font-weight: bold; font-size: 0.9em;">변경</button>
+								</span>
+							</c:if>
+						</div>
+					</div>
 
-													<c:if test="${memberRoute == 'U' }">
-														<span class="input-group-addon" style="border: 1px solid #5768AD; border-radius: 4px;">
-															<button type="button" onclick="location.href='mobileMod'" class="input-group-addon"
-																style="font-weight: bold; font-size: 0.9em;">변경</button>
-														</span>
-													</c:if>
-												</div>
-											</div>
-
-											<!-- 이름 -->
-											<div class="col-lg-6 text-center mypage_myinfo"
-												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">이름</h5>
-													&nbsp;
-												</div>
-												<input type="text" readonly="readonly" placeholder="Name" style="background-color: #3f51b50d; color: black;"
-													value="${myInfo.memberName }">
-											</div>
+					<!-- 이름 -->
+					<div class="col-lg-6 text-center mypage_myinfo"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<div style="margin-bottom: 2px;">
+							<h5 style="display: inline; float: left; color: black;">이름</h5>
+							&nbsp;
+						</div>
+						<input type="text" readonly="readonly" placeholder="Name" style="color: black;background-color: #3f51b50d;"
+							value="${myInfo.memberName }" name="memberName" id="memberName">
+					</div>
 
 
-											<!-- 닉네임 -->
-											<div class="col-lg-6 text-center mypage_myinfo"
-												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">닉네임</h5>
-													&nbsp;
-												</div>
-												<input type="text" readonly="readonly" placeholder="Nickname"
-													style="background-color: #3f51b50d; color: black;" value="${myInfo.memberNickname }">
-											</div>
+					<!-- 닉네임 -->
+					<div class="col-lg-6 text-center mypage_myinfo"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<div style="margin-bottom: 2px;">
+							<h5 style="display: inline; float: left; color: black;">닉네임</h5>
+							&nbsp;
+						</div>
+						<input type="text" readonly="readonly" placeholder="Nickname"
+							style="background-color: #3f51b50d; color: black;" value="${myInfo.memberNickname }" name="memberNickname" id="memberNickname"> 
+					</div>
 
-											<!-- 핸드폰 번호 -->
-											<div class="col-lg-6 text-center mypage_myinfo"
-												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">핸드폰 번호</h5>
-													&nbsp;
-												</div>
-												<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;"
-													value="${myInfo.memberMobile }">
-											</div>
-
-
-											<!-- 성별 -->
-											<div class="col-lg-6 text-center mypage_myinfo"
-												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">성별</h5>
-													&nbsp;
-												</div>
-												<div class="r_gender">
-													<input type="radio" name="gend_type" id="male" value="남자" autocomplete="off" style="opacity: 0;"
-														onclick="return(false);"> <label for="male" style="border: 1px solid; float: left;">남자</label> <input
-														type="radio" name="gend_type" id="female" value="여자" autocomplete="off" style="opacity: 0;"
-														onclick="return(false);"> <label for="female" style="border: 1px solid;">여자</label>
-												</div>
-											</div>
+					<!-- 핸드폰 번호 -->
+					<div class="col-lg-6 text-center mypage_myinfo"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<div style="margin-bottom: 2px;">
+							<h5 style="display: inline; float: left; color: black;">핸드폰 번호</h5>
+							&nbsp;
+						</div>
+						<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;"
+							value="${myInfo.memberMobile }" name="memberMobile" id="memberMobile">
+					</div>
 
 
-											<!-- 키 -->
-											<div class="col-lg-6 text-center mypage_myinfo"
-												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">키 (cm)</h5>
-													&nbsp;
-												</div>
-												<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;"
-													value="${myInfo.memberHeight }">
-											</div>
+					<!-- 성별 -->
+					<div class="col-lg-6 text-center mypage_myinfo"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<div style="margin-bottom: 2px;">
+							<h5 style="display: inline; float: left; color: black;">성별</h5>
+							&nbsp;
+						</div>
+						<div class="r_gender">
+						<c:set var="memberGender" value="${myInfo.memberGender}" />
+						<c:if test="${memberGender == 'F' }">
+							<input type="radio" name="memberGender" id="male" value="M" autocomplete="off" style="opacity: 0;"
+							disabled="disabled"> 
+							<label for="male" style="border: 1px solid; float: left;">남자</label> 
+							<input type="radio" name="memberGender" id="female" value="F" autocomplete="off" checked style="opacity: 0;"
+							disabled="disabled"> 
+							<label for="female" style="border: 1px solid;">여자</label>
+						</c:if>
+						<c:if test="${memberGender == 'M' }">
+							<input type="radio" name="memberGender" id="male" value="M" autocomplete="off" style="opacity: 0;" checked
+							disabled="disabled"> 
+							<label for="male" style="border: 1px solid; float: left;">남자</label> 
+							<input type="radio" name="memberGender" id="female" value="F" autocomplete="off" checked="checked" style="opacity: 0;"
+							disabled="disabled"> 
+							<label for="female" style="border: 1px solid;">여자</label>
+						</c:if>
+						</div>
+					</div>
 
-											<!-- 몸무게 -->
-											<div class="col-lg-6 text-center mypage_myinfo"
-												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-												<div style="margin-bottom: 2px;">
-													<h5 style="display: inline; float: left; color: black;">몸무게 (kg)</h5>
-													&nbsp;
-												</div>
-												<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;"
-													value="${myInfo.memberWeight }">
-											</div>
 
+					<!-- 키 -->
+					<div class="col-lg-6 text-center mypage_myinfo"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<div style="margin-bottom: 2px;">
+							<h5 style="display: inline; float: left; color: black;">키 (cm)</h5>
+							&nbsp;
+						</div>
+						<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;"name="memberHeight"
+							value="${myInfo.memberHeight }" id="memberHeight">
+					</div>
 
-											<!-- 수정하기 버튼 -->
-											<div class="col-lg-12" style="text-align: right;">
-												<button type="submit" class="site-btn"
-													style="font-size: 1.1em; color: white; background-color: #5768AD; width: 150px; height: 48px; margin-right: 7px;">수정하기</button>
-											</div>
+					<!-- 몸무게 -->
+					<div class="col-lg-6 text-center mypage_myinfo"
+						style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+						<div style="margin-bottom: 2px;">
+							<h5 style="display: inline; float: left; color: black;">몸무게 (kg)</h5>
+							&nbsp;
+						</div>
+						<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;"name="memberWeight"
+							value="${myInfo.memberWeight }" id="memberWeight">
+					</div>
 
-										</div>
-									</form>
+					<br>
+					<!-- 수정하기 버튼 -->
+					<div class="col-lg-12" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+                         <input id="update" type="button" class="file_add" value="수정하기" style="width: 100%; display: block;" onclick="fn_update()">
+                         <input id="submit" type="button" class="file_add" value="수정완료" style="background:orange; width: 100%; display: none;" onclick="fn_submit()">
+                    </div>
+
+				</div>
+			</form>
 								</div>
 							</div>
 						</section>
