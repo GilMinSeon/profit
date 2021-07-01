@@ -140,23 +140,43 @@
                            <!-- 관리자탭 -->
                            <c:if test="${memberId == '1' }">
                             <ul>
-                                <li><a href="trainerPermitList.do">트레이너 승인</a></li>
-                                <li><a href="adminMemberList.do">회원관리</a></li>
-                                <li><a href="adminChatList.do">1:1상담 관리</a></li>
-                                <li><a href="adminLessonList.do">온라인클래스 관리</a></li>
-                                <li><a href="">매출관리</a></li>
-                                <li><a href="noticeList.do">공지사항</a></li>
-                                <li><a href="qnaList.do">문의하기</a></li>
-                                <li><a href="#">회원페이지</a>
+                                <li><a href="home.do">HOME</a></li>
+                                
+                                <li><a href="#">회원관리</a>
                                     <ul class="dropdown">
-                                        <li><a href="aiTeachList.do">AI교정</a></li>
-                                        <li><a href="chatList.do">1:1 상담</a></li>
-                                        <li><a href="">칼로리 계산기</a></li>
-                                        <li><a href="lessonList.do">온라인클래스</a></li>
-                                        <li><a href="recipeList.do">레시피</a></li>
-                                        <li><a href="boardList.do">자유게시판</a></li>
+                                        <li><a href="trainerPermitList.do">트레이너 승인</a></li>
+                                        <li><a href="adminMemberList.do">회원조회</a></li>
                                     </ul>
                                 </li>
+                                
+                                <li><a href="#">강좌관리</a>
+                                    <ul class="dropdown">
+                                        <li><a href="adminLessonList.do">강좌리스트</a></li>
+                                        <li><a href="">결제/환불내역</a></li>
+                                        <li><a href="#">강좌통계</a></li>
+                                    </ul>
+                                </li>
+                                
+                                <li><a href="#">채팅관리</a>
+                                    <ul class="dropdown">
+                                        <li><a href="adminTicketPayList.do">이용권 사용내역</a></li>
+                                        <li><a href="adminChatList.do">결제/환불내역</a></li>
+                                        <li><a href="#">채팅통계</a></li>
+                                    </ul>
+                                </li>
+                                
+                                <li><a href="#">매출관리</a>
+                                    <ul class="dropdown">
+                                        <li><a href="aiTeachList.do">매출통계</a></li>
+                                        <li><a href="#">송금요청 리스트</a></li>
+                                        <li><a href="#">정산내역 조회</a></li>
+                                    </ul>
+                                </li>
+                                
+                                <li><a href="noticeList.do">공지사항</a></li>
+                                
+                                <li><a href="qnaList.do">문의하기</a></li>
+                                
                             </ul>
                            </c:if> 
                            
