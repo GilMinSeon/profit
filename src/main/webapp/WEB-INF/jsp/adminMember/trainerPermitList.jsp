@@ -155,6 +155,8 @@ $(document).ready(function(){
 			<!-- 새로 검색 -->
 			<div class="classes__filter">
 			<table class="table table-bordered" style="text-align: center;">
+			<h5>◼ 뭐시기뭐시기</h5>
+			<br>
 				<tbody>
 					<tr>
 						<th scope="row">오늘의 신규승인요청건수</th>
@@ -187,6 +189,8 @@ $(document).ready(function(){
 			
 			
 			    <div class="classes__filter" style="margin-bottom: 0px;">
+			    <h5>◼ 검색</h5>
+				<br>
                 <div class="row">
                     <div class="col-lg-12">
                         <form action="#">
