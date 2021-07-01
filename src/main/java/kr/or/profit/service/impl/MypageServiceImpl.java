@@ -45,6 +45,17 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 		return mypageDAO.selectAllMemberInfo(memberId);
 	}
 
+	@Override
+	public void updateMemberInfo(MemberVO vo) throws Exception {
+		mypageDAO.updateMemberInfo(vo);
+		
+	}
+
+	@Override
+	public int updateOnlyInfo(MemberVO vo) throws Exception {
+		return mypageDAO.updateOnlyInfo(vo);
+	}
+
 	
 
 

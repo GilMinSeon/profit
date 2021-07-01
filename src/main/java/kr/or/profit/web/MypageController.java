@@ -157,6 +157,132 @@ public class MypageController {
 	public String result() {
 		return "mypage/result";
 	}
+	
+	//민선 내정보 수정
+	@RequestMapping(value = "updateMyInfoAjax.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String uploadProfileImg(MultipartHttpServletRequest multipartRequest, HttpServletResponse response,
+			HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		multipartRequest.setCharacterEncoding("utf-8");
+		
+		Iterator<String> fileNames = multipartRequest.getFileNames();
+		String fileName = fileNames.next();
+		System.out.println("fileName : " + fileName);
+		MultipartFile mFile = multipartRequest.getFile(fileName);
+		
+		
+		String originalFileName = mFile.getOriginalFilename();
+		String msg = "";
+		System.out.println("originalFileName : "+originalFileName);
+		
+//		if(originalFileName == null) {
+//			System.out.println("제발제발제발");
+//		}
+		
+		if(originalFileName == "") {
+			System.out.println("제발제발22222");
+			String memberName = multipartRequest.getParameter("memberName");
+			String memberNickname = multipartRequest.getParameter("memberNickname");
+			String memberMobile = multipartRequest.getParameter("memberMobile");
+			String memberGender = multipartRequest.getParameter("memberGender");
+			String memberHeight = multipartRequest.getParameter("memberHeight");
+			String memberWeight = multipartRequest.getParameter("memberWeight");
+			System.out.println("----------------------------------");
+			System.out.println(memberName);
+			System.out.println(memberNickname);
+			System.out.println(memberMobile);
+			System.out.println(memberGender);
+			System.out.println(memberHeight);
+			System.out.println(memberWeight);
+			
+			System.out.println("프로필 사진 없을때 들어올곳");
+			
+			MemberVO vo = new MemberVO();
+			String memberId = (String) session.getAttribute("memberId");
+			vo.setMemberId(memberId);
+			vo.setMemberName(memberName);
+			vo.setMemberNickname(memberNickname);
+			vo.setMemberMobile(memberMobile);
+			vo.setMemberGender(memberGender);
+			vo.setMemberHeight(memberHeight);
+			vo.setMemberWeight(memberWeight);
+			
+			//update
+			int cnt = mypageService.updateOnlyInfo(vo);
+			
+			System.out.println("여기로 들어왔따!!!!");
+			System.out.println(cnt);
+			
+			
+			msg = "ok";
+			
+			
+		}else {
+		
+		System.out.println("여기로 안와야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		// 파일업로드
+		List<AttachFileVO> fileVOList = fileProcess(multipartRequest, request);
+		
+		// 파일 DB 저장
+		Map<String, Object> filemap = new HashMap<String, Object>();
+		filemap.put("list", fileVOList);
+		int insertResult = mypageService.insertProcessFile(filemap);
+		
+		System.out.println("int" + insertResult);
+		
+		//실제 member테이블 update
+		String memberName = multipartRequest.getParameter("memberName");
+		String memberNickname = multipartRequest.getParameter("memberNickname");
+		String memberMobile = multipartRequest.getParameter("memberMobile");
+		String memberGender = multipartRequest.getParameter("memberGender");
+		String memberHeight = multipartRequest.getParameter("memberHeight");
+		String memberWeight = multipartRequest.getParameter("memberWeight");
+		
+		System.out.println("----------------------------------");
+		System.out.println(memberName);
+		System.out.println(memberNickname);
+		System.out.println(memberMobile);
+		System.out.println(memberGender);
+		System.out.println(memberHeight);
+		System.out.println(memberWeight);
+		
+		
+		MemberVO vo = new MemberVO();
+
+		String memberId = (String) session.getAttribute("memberId");
+		vo.setMemberId(memberId);
+		vo.setMemberName(memberName);
+		vo.setMemberNickname(memberNickname);
+		vo.setMemberMobile(memberMobile);
+		vo.setMemberGender(memberGender);
+		vo.setMemberHeight(memberHeight);
+		vo.setMemberWeight(memberWeight);
+		
+		mypageService.updateMemberInfo(vo);
+		
+		msg = "ok";
+		}
+
+		System.out.println("여기는 와야함!!!!!!!!!!!!!!!!!!!!!!!!!");
+//		if (cnt > 0) {
+//			msg = "ok";
+//		}
+		return msg;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@RequestMapping(value = "uploadAjax.do", method = RequestMethod.POST)
 	@ResponseBody
@@ -205,6 +331,9 @@ public class MypageController {
 		List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
 //        List<String> fileList = new ArrayList<String>();
 		Iterator<String> fileNames = multipartRequest.getFileNames();
+		
+		
+		
 		int cnt = 1;
 		while (fileNames.hasNext()) {
 
@@ -215,6 +344,7 @@ public class MypageController {
 			System.out.println("fileName : " + fileName);
 			MultipartFile mFile = multipartRequest.getFile(fileName);
 			String originalFileName = mFile.getOriginalFilename();
+			//??
 			File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
 			if (mFile.getSize() != 0) {
 				if (!file.exists()) {
@@ -231,14 +361,24 @@ public class MypageController {
 			AttachFileVO attachvo = new AttachFileVO();
 			attachvo.setFileDetailSeq(Integer.toString(cnt));
 			attachvo.setFileRealName(originalFileName);
+			//여기가 str_filename
 			attachvo.setFileSaveName(uuid.toString() + "_" + originalFileName);
-			attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
+			
+			attachvo.setFilePath("http://192.168.41.6:9999/upload/profit/" + uuid.toString() + "_" + originalFileName);
+			
 			attachvo.setInUserId(memberId);
 			attachvo.setUpUserId(memberId);
 			fileVOList.add(attachvo);
 			cnt++;
 		}
 		System.out.println("insert 할 것");
+		System.out.println(fileVOList.get(0).getFileDetailSeq());
+		System.out.println(fileVOList.get(0).getFilePath());
+		System.out.println(fileVOList.get(0).getFileRealName());
+		System.out.println(fileVOList.get(0).getFileSaveName());
+		System.out.println(fileVOList.get(0).getFileSeq());
+		System.out.println(fileVOList.get(0).getInUserId());
+		
 		return fileVOList;
 	}
 

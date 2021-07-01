@@ -30,4 +30,8 @@ public interface MypageMapper {
 	//민선
 	//회원 모든 정보 select
 	public MemberVO selectAllMemberInfo(String memberId);
+	
+	public void updateMemberInfo(MemberVO vo);
+	
+	public int updateOnlyInfo(MemberVO vo);
 }
