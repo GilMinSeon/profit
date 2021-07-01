@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+.<!DOCTYPE html>
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
@@ -30,7 +30,64 @@
     width:140px;
 }
 
+#reply{
+
+    width: 90%;
+    font-size: 13px;
+    color: #6E7580;
+    padding-left: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 2px;
+    height: 50px;
+    margin-bottom: 35px;
+    resize: none;
+    padding-top: 14px;
+    margin-top: 15px;
+    
+}
+
 </style>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".rereplyToggle").hide();
+});
+
+function fn_toggle(cnt){
+	$("#rereply_div"+ cnt).toggle("fast");
+}
+
+function fn_replyAdd(){
+	var formData = new FormData($('#replyfrm')[0]);
+	$.ajax({
+		type : 'post',
+		url : 'replyAddAjax.do',
+		data : formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+			if(data=="ok"){
+				alert("댓글이 정상적으로 등록되었습니다.");
+				$("textarea[name=replyContent]").val('');
+			}else if(data=="ng"){
+				alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
+			}else{
+				alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
+			}
+		},
+		error : function(error){
+			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+}
+</script>
 <body>
 
 
@@ -63,7 +120,9 @@
                         	<p style="font-weight: bold; color: #8B94B5;padding-right: 30px;">카테고리 | <span>${BoardDetail['communityCategoryName']}</span></p>
                         </div>
                 	<div  style="text-align: right;margin-bottom: 5px;padding-right: 8px;">
-                        
+                        <div style="display: inline-block;vertical-align:sub;">
+							<p style="margin:0;">${BoardDetail['inDate']}&nbsp;&nbsp;</p>
+						</div>
                         <div style="display: inline-block; vertical-align: middle;">
 							<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 						</div>
@@ -118,16 +177,6 @@
                 <div class="col-lg-12">
                     <div class="leave__comment__text">
                         <h2>😁자유롭게 댓글을 달아보세요</h2>
-                        <form action="#">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                </div>
-                                <div class="col-lg-12 text-center">
-                                    <textarea placeholder="댓글을 입력해 주세요."></textarea>
-                                    <button type="submit" class="site-btn" style="font-size: 1.2em;">작성 완료</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 
@@ -135,98 +184,61 @@
                 
                     <div class="blog__sidebar">
                         
-                        <div class="blog__sidebar__comment" style="overflow:scroll; height: 500px;">
+                        <div class="blog__sidebar__comment" style="overflow-x:hidden;height: 500px;padding:10px;">
                             <h4>댓글</h4>
-                            <div class="classes__sidebar__comment">
-                                <div class="classes__sidebar__comment__pic">
-                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
-                                    <div class="classes__sidebar__comment__rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                    </div>
+	                            <div class="classes__sidebar__comment" style="border-bottom: 0">
+	                                   <c:forEach var="result" items="${BoardDetail['replyList']}" varStatus="status">
+	                                
+	                                <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
+
+	                                <div class="classes__sidebar__comment__pic" style="<c:if test="${result.replyDepth == 2}">margin-left:100px;</c:if>">
+	                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
+	                                </div>
+	                                <div class="classes__sidebar__comment__text">
+	                                    <h6>
+	                                     	${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
+	                                     	<c:if test="${result.replyDepth == 1}">
+	                                     	<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
+	                                     	</c:if>
+	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">2021-07-01</span>   
+	                                    </h6>   
+	                                    <div style="margin-top: 20px;">
+		                                    <p>${result.replyContent}<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"></p>
+	                                	</div>
+	                                	${result.replySeq}
+	                                	
+	                                </div><br>
+	                                <c:if test="${result.replyNextDepth == 1 || empty result.replyNextDepth}">
+	                                	<div class="row" >
+			                                <div id="rereply_div${cnt}" class="col-lg-12 rereplyToggle" style="margin-top: 15px;margin-left: 100px;">
+				                                <div class="classes__sidebar__comment__pic">
+				                                    <img src="${BoardDetail['MyProfileImage']}" alt="">
+				                                </div>
+			                                    <textarea id="reply" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
+			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: left;margin-top: 15px;margin-left: 5px;">답글작성</button>
+			                                </div>
+			                            </div>
+	                                	<hr>
+	                                </c:if>
+	                                </c:forEach>
+	                            </div>
+                            <form id="replyfrm">
+                            <input type="hidden" name="communitySeq" value="${BoardDetail['communitySeq']}">
+                            <div class="row">
+                                <div class="col-lg-12">
                                 </div>
-                                <div class="classes__sidebar__comment__text">
-                                    <span>04 Mar 2018</span>
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit,</p>
+                                <div class="col-lg-12">
+	                                <div class="classes__sidebar__comment__pic">
+	                                    <img src="${BoardDetail['MyProfileImage']}" alt="">
+	                                </div>
+                                    <textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 79%;float: left"></textarea>
+                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: right;margin-top: 15px;" onclick="fn_replyAdd()">댓글작성</button>
                                 </div>
+                                
                             </div>
-                            <div class="classes__sidebar__comment">
-                                <div class="classes__sidebar__comment__pic">
-                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
-                                    <div class="classes__sidebar__comment__rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                    </div>
-                                </div>
-                                <div class="classes__sidebar__comment__text">
-                                    <span>04 Mar 2018</span>
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit,</p>
-                                </div>
-                            </div>
-                            <div class="classes__sidebar__comment">
-                                <div class="classes__sidebar__comment__pic">
-                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
-                                    <div class="classes__sidebar__comment__rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                    </div>
-                                </div>
-                                <div class="classes__sidebar__comment__text">
-                                    <span>04 Mar 2018</span>
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit,</p>
-                                </div>
-                            </div>
-                            <div class="classes__sidebar__comment">
-                                <div class="classes__sidebar__comment__pic">
-                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
-                                    <div class="classes__sidebar__comment__rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                    </div>
-                                </div>
-                                <div class="classes__sidebar__comment__text">
-                                    <span>04 Mar 2018</span>
-                                    <h6>Brandon Kelley</h6>
-                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit,</p>
-                                </div>
-                            </div>
-                            <div class="classes__sidebar__comment">
-                                <div class="classes__sidebar__comment__pic">
-                                    <img src="./resources/img/classes-details/comment-2.png" alt="">
-                                    <div class="classes__sidebar__comment__rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                    </div>
-                                </div>
-                                <div class="classes__sidebar__comment__text">
-                                    <span>04 Mar 2018</span>
-                                    <h6>Christina Kelley</h6>
-                                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,</p>
-                                </div>
-                            </div>
+                        </form>
                         </div>
+                        
                     </div>
                 </div>
                 

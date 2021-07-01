@@ -1,5 +1,6 @@
 package kr.or.profit.web;
 
+import java.io.PrintWriter;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Locale;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpEntity;
@@ -26,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.mail.iap.Response;
 
 import kr.or.profit.cmmn.TestMailer;
 import kr.or.profit.service.MemberService;
@@ -176,11 +179,15 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "joinAjax.do", method = RequestMethod.POST)
-	public String joinMemberTable(@ModelAttribute MemberVO vo, HttpServletRequest request) throws Exception {
+	public void joinMemberTable(@ModelAttribute MemberVO vo, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding("utf-8");
 		memberService.insertMember(vo);
-
-		return "redirect:home.do";
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter(); 
+		out.println("<script>alert('회원가입이 완료되었습니다.'); location.href='home.do';</script>"); 
+		out.flush();
+		
 	}
 
 	@RequestMapping("idcheckAjax.do")
