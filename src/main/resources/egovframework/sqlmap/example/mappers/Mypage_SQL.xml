@@ -146,7 +146,7 @@
         member_gender = #{memberGender},
         member_weight = #{memberWeight},
         member_height = #{memberHeight},
-        file_seq = (select nvl(max(file_seq),0) from attach_file)
+        file_seq = (select NVL(max(to_number(file_seq)),0) from attach_file)
         where
         member_id = #{memberId}
 
