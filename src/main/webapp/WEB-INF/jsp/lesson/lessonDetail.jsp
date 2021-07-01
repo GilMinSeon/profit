@@ -203,28 +203,29 @@ function fn_delLesson(){
 						</div>
 						<div id="t2">
 							<!-- Classes Section Begin -->
-							<section class="classes spad">
+							<section class="classes spad" style="padding-top:10px;">
 								<div class="container">
-									<h3>필라테스</h3>
-									<br>
+									<span>Category &nbsp;|&nbsp; </span>
+									<span>${resultClassList[0].lessonCategoryName}</span>
+									<br/><br/>
 									<table class="table table-hover" style="text-align: center;">
 										<tbody>
-											<tr>
-												<th style="vertical-align: middle;" scope="row"><h6>1</h6></th>
-												<td style="vertical-align: middle;" colspan="3">
-													<a href="classDetail"><img alt="" src="./resources/img/classes/kingbam.gif" width="100px"></a>
+											<tr style="background-color:#5768AD;">
+												<th style="color:white;">번호</th>
+												<th style="color:white;">썸네일</th>
+												<th style="color:white;">상세 강의 명</th>
+												<th style="color:white;">재생시간</th>
+											</tr>
+										<c:forEach var="rclassList" items="${resultClassList}" varStatus="status">
+											<tr onclick="location.href='classDetail.do?lessonDetailSeq='+ ${rclassList.lessonDetailSeq}" style="cursor:pointer;">
+												<th style="vertical-align: middle;" scope="row">${status.index+1}</th>
+												<td style="vertical-align: middle;width:20%;">
+													<img alt="" src="http://192.168.41.6:9999/upload/profit/${rclassList.fileSaveName}" style="width:100px;height: 90px;object-fit:cover;">
 												</td>
-												<td style="vertical-align: middle;">1강 필라테스</td>
+												<td style="vertical-align: middle;">${rclassList.lessonDetailTitle}</td>
 												<td style="vertical-align: middle;">20:32</td>
 											</tr>
-											<tr>
-												<th style="vertical-align: middle;" scope="row"><h6>2</h6></th>
-												<td style="vertical-align: middle;" colspan="3">
-													<a href="classDetail"><img alt="" src="./resources/img/classes/kingbam.gif" width="100px" ></a>
-												</td>
-												<td style="vertical-align: middle;">2강 필라테스</td>
-												<td style="vertical-align: middle;">23:12</td>
-											</tr>
+										</c:forEach>
 										</tbody>
 									</table>
 								</div>
