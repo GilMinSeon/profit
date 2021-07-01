@@ -269,9 +269,16 @@ public class CommunityController {
 	}
 	
 	
+	/**
+    * 자유게시판 댓글 등록
+    * @author 정예진
+    * @param HttpServletRequest,HttpServletResponse
+    * @return String - msg
+    * @throws Exception
+    */
 	@RequestMapping(value = "replyAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-	public String blogDetails(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	public String replyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
 		
@@ -295,6 +302,45 @@ public class CommunityController {
 		if(insertResult > 0) {
 			msg = "ok";
 		}
+		return msg;
+	}
+	
+	
+	/**
+    * 자유게시판 답글 등록
+    * @author 정예진
+    * @param HttpServletRequest,HttpServletResponse
+    * @return String - msg
+    * @throws Exception
+    */
+	@RequestMapping(value = "rereplyAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String rereplyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		String communitySeq = request.getParameter("communitySeq");
+		String replyContent = request.getParameter("replyContent");
+		String replyParentSeq = request.getParameter("replyParentSeq");
+		
+		System.out.println("communitySeq : " + communitySeq);
+		System.out.println("replyContent : " + replyContent);
+		System.out.println("replyParentSeq : " + replyParentSeq);
+		
+//		ReplyVO replyvo = new ReplyVO();
+//		replyvo.setCommunitySeq(communitySeq);
+//		replyvo.setReplyContent(replyContent);
+//		replyvo.setInUserId(memberId);
+//		replyvo.setUpUserId(memberId);
+//		
+//		int insertResult = communityService.insertBoardReply(replyvo);
+//		
+
+	    String msg="ng";
+	    
+//		if(insertResult > 0) {
+//			msg = "ok";
+//		}
 		return msg;
 	}
 	
