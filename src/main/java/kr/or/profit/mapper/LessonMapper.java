@@ -5,6 +5,7 @@ import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 
 @Mapper("lessonMapper")
@@ -37,6 +38,22 @@ public interface LessonMapper {
 
 	//상세강의파일 등록
 	int insertClassFile(Map map) throws Exception;
+
+	//상세 강의 등록
+	int insertClass(LessonDetailVO vo) throws Exception;
+
+	//상세강의 목록 조회
+	List<?> selectClassList(String lessonSeq) throws Exception;
+
+	//상세 강의 디테일 조회
+	Map<String, Object> selectclassDetail(LessonDetailVO vo) throws Exception;
+
+	//상세 강의 삭제
+	int deleteClass(LessonDetailVO vo) throws Exception;
+
+	//카테고리 선택하면 리스트
+	List<?> selectCateLessonList(String sel_value) throws Exception;
+
 
 
 	
