@@ -1,9 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
+<script>
+
+// var obj = document.getElementById("videoplay");
+// obj.addEventListener('loadedmetadata', function() {
+//     console.log(obj.duration);
+// });
+// $(document).ready(function(){
+// 	var time = obj.duration;
+// 	alert(time);
+// })
+
+function fn_delClass(){
+	var params = location.search.substr(location.search.indexOf("?") + 1);
+    var lessonDetailSeq = params.substr(params.indexOf("=")+1); 
+    console.log(lessonDetailSeq);
+    var flag_ok = confirm("강의를 삭제하시겠습니까?");
+    if(flag_ok){
+   		var param = "";
+   		param += "dummy=" + Math.random();
+   		param += "&lessonDetailSeq=" + lessonDetailSeq
+   		console.log(param)
+
+   		$.ajax({
+   			url : "class_delAjax.do",
+   			data : param,
+   			dataType : "text",
+   			async:false,
+   			success : function(data) {
+   				if(data == "ok"){
+   					alert("삭제가 정상적으로 완료되었습니다.");	
+   					location.href="lessonDetail.do?lessonSeq="+$("input:hidden[name=lessonSeq]").val();
+   				} else{
+   					alert("삭제에 실패하였습니다. 다시 한 번 시도해주세요")
+   				}
+   				console.log(data)
+   			}
+   		});
+		
+		
+	}
+}
+
+</script>
 </head>
 <body>
 	<!-- Breadcrumb Begin -->
@@ -12,7 +59,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="breadcrumb__text">
-						<h2>필레테스</h2>
+						<h2>강의 보기</h2>
 					</div>
 				</div>
 			</div>
@@ -27,11 +74,12 @@
 					<div class="container">
 						<h3>📽 강의시청</h3>
 						<br>
+						<input type="hidden" name="lessonSeq" value="${classResult.lessonSeq}">
 						<table class="table table" style="text-align: center;">
 							<tbody>
 								<tr>
 									<th scope="row" style="background-color: #E6E6E6;">강의명</th>
-									<td>1강 필라테스 기초</td>
+									<td>${classResult.lessonDetailTitle}</td>
 								</tr>
 								<tr>
 									<th scope="row" style="background-color: #E6E6E6;">영상시간</th>
@@ -39,20 +87,21 @@
 								</tr>
 								<tr>
 									<th scope="row" style="background-color: #E6E6E6;">강의 상세 설명</th>
-									<td>필라테스</td>
+									<td>${classResult.lessonDetailContent}</td>
 								</tr>
 								<tr>
-									<th scope="row" colspan="2">동영상</th>
+									<th scope="row" colspan="2">강의 영상</th>
 								</tr>
 								<tr>
-									<th scope="row" colspan="2"><video controls  src="./resources/img/classes/endG.mp4" width="100%"></video></th>
+									<th scope="row" colspan="2">
+										<video id="videoplay" controls  src="http://192.168.41.6:9999/upload/profit/${classResult.fileSaveName}" width="100%" ></video>
+									</th>
 								</tr>
 							</tbody>
 						</table>
 						<div class="classes__item__text" style="text-align: right;">
-							<a href="lessionDetail" class="class-btn">목록</a>
-							<a href="classMod" class="class-btn">수정</a>
-							<a href="lessionDetail" class="class-btn">삭제</a>
+							<a href="javascript:history.back();" class="class-btn">목록</a>
+							<input type="button" onclick="fn_delClass()" class="class-btn" value="삭제">
 						</div>
 					</div>
 				</section>

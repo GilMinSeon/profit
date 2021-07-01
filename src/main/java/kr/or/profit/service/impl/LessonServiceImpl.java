@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.or.profit.mapper.LessonMapper;
 import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 
 @Service("lessonService")
@@ -72,6 +73,37 @@ public class LessonServiceImpl implements LessonService {
 	@Override
 	public int insertClassFile(Map map) throws Exception {
 		return lessonDAO.insertClassFile(map);
+	}
+
+	//상세 강의 등록
+	@Override
+	public int insertClass(LessonDetailVO vo) throws Exception {
+		return  lessonDAO.insertClass(vo);
+		
+	}
+
+	//상세강의 목록 조회
+	@Override
+	public List<?> selectClassList(String lessonSeq) throws Exception {
+		return lessonDAO.selectClassList(lessonSeq);
+	}
+
+	//상세강의 디테일 조회
+	@Override
+	public Map<String, Object> selectclassDetail(LessonDetailVO vo) throws Exception {
+		return lessonDAO.selectclassDetail(vo);
+	}
+
+	//상세강의 삭제
+	@Override
+	public int deleteClass(LessonDetailVO vo) throws Exception {
+		return lessonDAO.deleteClass(vo);
+	}
+
+	//카테고리 선택하면 리스트
+	@Override
+	public List<?> selectCateLessonList(String sel_value) throws Exception {
+		return lessonDAO.selectCateLessonList(sel_value);
 	}
 
 

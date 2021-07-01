@@ -5,6 +5,43 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<script type="text/javascript">
+
+function fn_selCate(){
+	var selCategory = document.getElementById("selCate");
+	var sel_value = selCategory.options[selCategory.selectedIndex].text;
+	console.log("sel_value "+sel_value);
+	var param = "";
+	param += "dummy=" + Math.random();
+	param += "&sel_value=" + sel_value;
+	console.log("param "+ param);
+	$.ajax({
+		type : 'get',
+		url : 'searchCateAjax.do',
+		data : param,
+		async:false,
+		dataType:"text",
+		success : function(data){
+		if(data=="ok"){
+			alert("등록이 정상적으로 완료되었습니다.");
+			location.href="lessonDetail.do?lessonSeq="+$("input:hidden[name=lessonSeq]").val();
+		}else if(data=="no"){
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
+		}
+	},
+		error : function(error){
+			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+	
+}
+
+
+</script>
 
 <body>
 
@@ -91,15 +128,19 @@
 			<div class="classes__filter">
 				<div class="row">
 					<div class="col-lg-12">
-						<form action="#">
+						<form method="get" action="#">
 							<div class="class__filter__select">
 								<p>Categories:</p>
-								<select>
-									<option>카테고리</option>
-									<option>헬스</option>
-									<option>필라테스</option>
-									<option>요가</option>
-									<option>맨몸운동</option>
+								<select name="selCate" id="selCate" onchange="fn_selCate();">
+									<option value="">카테고리</option>
+									<option value="gym" 
+										<c:if test="${selCate=='gym'}">selected</c:if>>헬스</option>
+									<option value="filates"
+										<c:if test="${selCate=='filates'}">selected</c:if>>필라테스</option>
+									<option value="yoga"
+										<c:if test="${selCate=='yoga'}">selected</c:if>>요가</option>
+									<option value="exercise"
+										<c:if test="${selCate=='exercise'}">selected</c:if>>맨몸운동</option>
 								</select>
 							</div>
 							<div class="class__filter__select">
@@ -144,7 +185,7 @@
 									<p style="margin:0;">${result.lessonHit }&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/reply.png" style="width: 17px; height: 17px; opacity: 0.5;">
+									<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.lessonReply}&nbsp;&nbsp;</p>

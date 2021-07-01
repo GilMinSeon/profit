@@ -39,7 +39,19 @@ public interface LessonService {
 	public int insertClassFile(Map map) throws Exception;
 
 	//상세 강의 등록
-//	public void insertClass(LessonDetailVO vo) throws Exception;
+	public int insertClass(LessonDetailVO vo) throws Exception;
+
+	//상세강의 목록조회
+	public List<?> selectClassList(String lessonSeq) throws Exception;
+
+	//상세강의 디테일조회
+	public Map<String, Object> selectclassDetail(LessonDetailVO lDetailVO) throws Exception;
+
+	//상세강의 삭제
+	public int deleteClass(LessonDetailVO vo) throws Exception;
+	
+	//카테고리 선택하면 리스트
+	public List<?> selectCateLessonList(String sel_value) throws Exception;
 
 
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+.<!DOCTYPE html>
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
@@ -51,11 +51,11 @@
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
-	$("#rereply_comment").hide();
+	$(".rereplyToggle").hide();
 });
 
-function fn_toggle(){
-	$("#rereply_comment").toggle("fast");
+function fn_toggle(cnt){
+	$("#rereply_div"+ cnt).toggle("fast");
 }
 
 function fn_replyAdd(){
@@ -186,79 +186,42 @@ function fn_replyAdd(){
                         
                         <div class="blog__sidebar__comment" style="overflow-x:hidden;height: 500px;padding:10px;">
                             <h4>댓글</h4>
-<!--                             <div class="classes__sidebar__comment"> -->
-<!--                                 <div class="classes__sidebar__comment__pic"> -->
-<!--                                     <img src="./resources/img/classes-details/comment-1.png" alt=""> -->
-<!--                                 </div> -->
-<!--                                 <div class="classes__sidebar__comment__text"> -->
-                                   
-<!--                                     <h6> -->
-<!--                                      	뽀미언니&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!--                                      	<a style="font-size: 0.8em;color: gray;" onclick="fn_toggle()">답글달기</a> -->
-<!--                                      	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">2021-07-01</span>    -->
-<!--                                     </h6>    -->
-<!--                                     <div style="margin-top: 20px;"> -->
-<!-- 	                                    <p>dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"></p> -->
-<!--                                 	</div> -->
-<!--                                 	<br> -->
-<!--                                 	<div class="row"> -->
-<!-- 		                                <div class="col-lg-12"> -->
-<!-- 		                                <div class="classes__sidebar__comment__pic"> -->
-<!-- 		                                    <img src="./resources/img/classes-details/comment-1.png" alt=""> -->
-<!-- 		                                </div> -->
-<!-- 		                                <div style="margin-top: 20px;"> -->
-<!-- 		                                    <p>dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"></p> -->
-<!-- 	                                	</div> -->
-<!-- 		                                </div> -->
-<!-- 		                                <div id="rereply_comment" class="col-lg-12" style="margin-top: 15px;"> -->
-<!-- 			                                <div class="classes__sidebar__comment__pic"> -->
-<!-- 			                                    <img src="./resources/img/classes-details/comment-1.png" alt=""> -->
-<!-- 			                                </div> -->
-<!-- 		                                    <textarea id="reply" placeholder="댓글을 입력해 주세요." style="width: 76.7%;float: left"></textarea> -->
-<!-- 		                                    <button type="submit" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: right;margin-top: 15px;">답글작성</button> -->
-<!-- 		                                </div> -->
-<!-- 		                            </div> -->
-                                	
-<!--                                 </div> -->
-<!--                             </div> -->
-                            
-<%--                             <c:forEach var="result" items="${boardTopList}" varStatus="status"> --%>
-	                            <div class="classes__sidebar__comment">
-	                                <div class="classes__sidebar__comment__pic">
+	                            <div class="classes__sidebar__comment" style="border-bottom: 0">
+	                                   <c:forEach var="result" items="${BoardDetail['replyList']}" varStatus="status">
+	                                
+	                                <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
+
+	                                <div class="classes__sidebar__comment__pic" style="<c:if test="${result.replyDepth == 2}">margin-left:100px;</c:if>">
 	                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
 	                                </div>
 	                                <div class="classes__sidebar__comment__text">
-	                                   
 	                                    <h6>
-	                                     	뽀미언니&nbsp;&nbsp;&nbsp;&nbsp;
-	                                     	<a style="font-size: 0.8em;color: gray;" onclick="fn_toggle()">답글달기</a>
+	                                     	${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
+	                                     	<c:if test="${result.replyDepth == 1}">
+	                                     	<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
+	                                     	</c:if>
 	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">2021-07-01</span>   
 	                                    </h6>   
 	                                    <div style="margin-top: 20px;">
-		                                    <p>dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"></p>
+		                                    <p>${result.replyContent}<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"></p>
 	                                	</div>
-	                                	<br>
-	                                	<div class="row">
-			                                <div class="col-lg-12">
-			                                <div class="classes__sidebar__comment__pic">
-			                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
-			                                </div>
-			                                <div style="margin-top: 20px;">
-			                                    <p>dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"></p>
-		                                	</div>
-			                                </div>
-			                                <div id="rereply_comment" class="col-lg-12" style="margin-top: 15px;">
+	                                	${result.replySeq}
+	                                	
+	                                </div><br>
+	                                <c:if test="${result.replyNextDepth == 1 || empty result.replyNextDepth}">
+	                                	<div class="row" >
+			                                <div id="rereply_div${cnt}" class="col-lg-12 rereplyToggle" style="margin-top: 15px;margin-left: 100px;">
 				                                <div class="classes__sidebar__comment__pic">
-				                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
+				                                    <img src="${BoardDetail['MyProfileImage']}" alt="">
 				                                </div>
-			                                    <textarea id="reply" placeholder="댓글을 입력해 주세요." style="width: 76.7%;float: left"></textarea>
-			                                    <button type="submit" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: right;margin-top: 15px;">답글작성</button>
+			                                    <textarea id="reply" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
+			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: left;margin-top: 15px;margin-left: 5px;">답글작성</button>
 			                                </div>
 			                            </div>
-	                                	
-	                                </div>
+	                                	<hr>
+	                                </c:if>
+	                                </c:forEach>
 	                            </div>
-<%--                             </c:forEach> --%>
                             <form id="replyfrm">
                             <input type="hidden" name="communitySeq" value="${BoardDetail['communitySeq']}">
                             <div class="row">

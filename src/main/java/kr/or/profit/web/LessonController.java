@@ -64,8 +64,8 @@ public class LessonController {
    public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
       List<?> lessonList = lessonService.selectLessonList();
       model.addAttribute("resultList", lessonList);
-//      List<?> lessonTopList = lessonService.selectTopLessonList();
-//      model.addAttribute("resultTopList", lessonTopList);
+      List<?> lessonTopList = lessonService.selectTopLessonList();
+      model.addAttribute("resultTopList", lessonTopList);
       System.out.println("dddddddddddd"+model);
       return "lesson/lessonList";
    }
@@ -81,8 +81,15 @@ public class LessonController {
    @RequestMapping(value = "lessonDetail.do",  method = {RequestMethod.GET, RequestMethod.POST})
    public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
       Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
+      String lessonSeq = (String) lessonDetailList.get("lessonSeq");
       model.addAttribute("resultList", lessonDetailList);
       System.out.println("제발찍혀라" + model);
+      
+      
+      List<?> classList = lessonService.selectClassList(lessonSeq);
+      
+      model.addAttribute("resultClassList", classList);
+      System.out.println("디테일로 갈 파일 상세 리트스" + model);
       return "lesson/lessonDetail";
    }
    
@@ -182,6 +189,7 @@ public class LessonController {
 	       List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
 	       
 	       Iterator<String> fileNames = multipartRequest.getFileNames();
+	       System.out.println("fileNames 뭐냐 " + fileNames);
 	       int cnt = 1;
 	       while(fileNames.hasNext()) {
 	           
@@ -219,6 +227,7 @@ public class LessonController {
 	            cnt++;
 	          }
 	        System.out.println("insert 할 것");
+	        System.out.println("처음fileVOList "+ fileVOList);
 	        return fileVOList;
 	    }
    
@@ -340,12 +349,7 @@ public class LessonController {
    }
    
 
-   
-   @RequestMapping(value = "classDetail.do", method = RequestMethod.GET)
-   public String classDetail(Locale locale, Model model) {
-      
-      return "lesson/classDetail";
-   }
+ 
    
    /**
     * 상세 강의 등록
@@ -354,8 +358,10 @@ public class LessonController {
     * @return
     */
    @RequestMapping(value = "classAdd.do", method = {RequestMethod.GET, RequestMethod.POST})
-   public String classAdd(Locale locale, Model model) {
-      
+   public String classAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
+	   Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
+	   model.addAttribute("resultList", lessonDetailList);
+	      System.out.println("디테일에서 seq가져오는" + model);
       return "lesson/classAdd";
    }
    
@@ -367,19 +373,20 @@ public class LessonController {
    
       //파일업로드
         List<AttachFileVO> fileVOList = fileLesson(multipartRequest, request);
+        System.out.println("fileVOList 는 뭐야?? "+fileVOList);
         
       //파일 DB 저장
         Map<String, Object> filemap = new HashMap<String, Object>();
         filemap.put("list", fileVOList);
-        System.out.println("filemap인데 파일이랑 영상이야  "+filemap.toString());
-        int insertResult = lessonService.insertClassFile(filemap);
-        
+        System.out.println("filemap인데 파일이랑 영상이야  "+filemap);
+        int cnt = lessonService.insertClassFile(filemap);
+        System.out.println("cnt" + cnt);
         
       //상세 강의 Table(LESSON_DETAIL)에 Insert
         String lessonSeq = multipartRequest.getParameter("lessonSeq");
         String lessonDetailTitle = multipartRequest.getParameter("lessonDetailTitle");
         String lessonDetailContent = multipartRequest.getParameter("lessonDetailContent");
-        
+
         LessonDetailVO vo = new LessonDetailVO();
         
         String loginMemberId = (String)session.getAttribute("memberId");
@@ -390,11 +397,17 @@ public class LessonController {
         vo.setLessonDetailContent(lessonDetailContent);
         vo.setInUserId(loginMemberId);
         vo.setUpUserId(loginMemberId);
-//        lessonService.insertClass(vo);
+        int cnt2 = lessonService.insertClass(vo);
+        
+        System.out.println("상세 파일 시퀀 " +fileSeq);
+        System.out.println("상세 레슨 시퀀 " +lessonSeq);
+        System.out.println("상세 타이틀 " +lessonDetailTitle);
+        System.out.println("상세 내용 " +lessonDetailContent);
+        
         
         String msg = "ng";
         
-        if(insertResult > 0) {
+        if(cnt > 0 && cnt2>0) {
            msg = "ok";
         }
          return msg;
@@ -402,7 +415,30 @@ public class LessonController {
    
    }	   
 	   
+   /**
+    * 상세 강의 디테일 
+    * @param locale
+    * @param model
+    * @return
+    */
+   @RequestMapping(value = "classDetail.do", method = RequestMethod.GET)
+   public String classDetail(@ModelAttribute("lDetailVO") LessonDetailVO lDetailVO, LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
+//	   Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
+//	   String lessonSeq = (String) lessonDetailList.get("lessonSeq");
+//	   String lessonDetailSeq = lDetailVO.getLessonDetailSeq();
+//	  
+//	   System.out.println("보고싶은1 " + lessonSeq);
+//	   System.out.println("보고싶은2 " + lessonDetailSeq);
+//	  
+//	   lDetailVO.setLessonSeq(lessonSeq);
+//	   lDetailVO.setLessonDetailSeq(lessonDetailSeq);
 	   
+	   Map<String, Object> classDetailList = lessonService.selectclassDetail(lDetailVO);
+	   model.addAttribute("classResult", classDetailList);
+	   System.out.println("뭐 들어있는지볼까 "+model);
+	   
+	   return "lesson/classDetail";
+   }
 	   
    
    @RequestMapping(value = "classMod.do", method = RequestMethod.GET)
@@ -417,4 +453,35 @@ public class LessonController {
       return "lesson/test";
    }
    
+   
+	   
+   /**
+    * 상세 강의 삭제
+    * @throws Exception 
+    */
+   @RequestMapping(value = "class_delAjax.do")
+   @ResponseBody
+   public String classDel(LessonDetailVO lDetailVO, LessonVO lessonVO, Locale locale, Model model) throws Exception {
+      String lessonDetailSeq = lDetailVO.getLessonDetailSeq();
+      System.out.println("lessonDetailSeq?= " + lessonDetailSeq);
+      lDetailVO.setLessonDetailSeq(lessonDetailSeq);
+	  int cnt = lessonService.deleteClass(lDetailVO);
+      String msg = "ng";
+      
+      if(cnt > 0) {
+         msg = "ok";
+      }
+      System.out.println(msg);
+       return msg;
+   }
+   
+//   @RequestMapping(value = "searchCateAjax.do")
+//   @ResponseBody
+//   public String selectCate(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
+//	   String sel_value = request.getParameter("sel_value");
+//	   System.out.println("sel_value선택된 "+sel_value);
+//	   List<?> selCateLessonList = lessonService.selectCateLessonList(sel_value);
+//	   
+//	   return null;
+//   }
 }

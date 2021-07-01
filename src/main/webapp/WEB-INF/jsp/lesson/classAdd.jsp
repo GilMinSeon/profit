@@ -41,6 +41,7 @@ function fn_submit(){
 
 function send_file(){
 	var formData = new FormData($('#frm')[0]);
+	formData.append("lessonSeq", $("input:hidden[name=lessonSeq]").val());
 	$.ajax({
 		type : 'post',
 		url : 'class_insAjax.do',
@@ -52,9 +53,9 @@ function send_file(){
 		success : function(data){
 		if(data=="ok"){
 			alert("등록이 정상적으로 완료되었습니다.");
-			location.href="lessonList.do";
+			location.href="lessonDetail.do?lessonSeq="+$("input:hidden[name=lessonSeq]").val();
 		}else if(data=="no"){
-			alert("신청이 실패하였습니다. 다시 시도해주세요");
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
 		}
 	},
 		error : function(error){
@@ -148,6 +149,7 @@ background: #ffffff;
 				
 			</div>
 			<form  id="frm" method="post"  style="text-align: center;"  enctype="multipart/form-data">
+			<input type="hidden" value="${resultList.lessonSeq}" name="lessonSeq"}>
 				<div class="write-title">
 					<p>
 						<div class="form-group">
@@ -160,10 +162,19 @@ background: #ffffff;
 					
 					<p>
 						<div class="form-group">
+							<h5 style="display: inline; float: left; color: black;">상세 강의내용</h5>
+						    &nbsp;
+						    <textarea class="form-control" rows="9" id="lessonDetailContent" name="lessonDetailContent" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."></textarea>
+						</div>
+					</p>
+					<br/>
+					
+					<p>
+						<div class="form-group">
 						  <h5 style="display: inline; float: left; color: black;">썸네일 이미지</h5>
 						  &nbsp;
 						  <div class="file_pre" style="text-align: left;margin-top: 30px;">  
-						    <input type="file" id="file" onchange="readURL(this);"> 
+						    <input type="file" id="file" name="file" onchange="readURL(this);"> 
 						  </div>
 						  <br/>
 						  <span class="blinking" style="float:left;"> 미리보기로 확인해보세요 →&nbsp;&nbsp;&nbsp;&nbsp; </span>
@@ -182,14 +193,14 @@ background: #ffffff;
 							<h5 style="display: inline; float: left; color: black;">강의 영상</h5>
 						    &nbsp;
 						    <div style="text-align: left;margin-top: 30px;">
-								<input type="file" id="file_dong">
+								<input type="file" id="file_dong" name="file_dong">
 							</div>
 							
 						</div>
 					</p>
 				
 				<div style="text-align: right;">
-                      <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_submit()">등록</button>
+                      <button type="button" id="hover_btn"  class="site-btn_s" onclick="fn_submit()">등록</button>
                  </div>
 				
 				</div>
