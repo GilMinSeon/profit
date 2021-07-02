@@ -27,62 +27,49 @@
     <section class="blog spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 order-lg-1 order-2">
-                    <div class="blog__sidebar">
-                        <div class="blog__sidebar__categories">
-                            <h4>카테고리</h4>
-                            <ul>
-                                <li><a href="myinfo">내정보</a></li>
-                                <li><a href="bookmark">북마크</a></li>
-                                <li><a href="trainerApply">트레이너신청(전)</a></li>
-                                <li><a href="trainerInfo">트레이너정보(후)</a></li>
-                                <li><a href="listenList">마이클래스(일반)</a></li>
-                                <li><a href="teachList">마이클래스(트레이너)</a></li>
-                                <li><a href="myChatList">상담내역</a></li>
-                                <li><a href="ticketPayList">이용권 구매내역</a></li>
-                            </ul>
+            
+				<!-- 사이드바 시작 -->
+				<div class="col-lg-4 order-lg-1 order-2">
+					<div class="blog__sidebar">
+						<div class="blog__sidebar__categories">
+							<h4>카테고리</h4>
+							<ul>
+								<li><a href="myinfo.do">내정보</a></li>
+								<li><a href="bookmark.do">북마크</a></li>
+								<li><a href="myLessonList.do">마이클래스</a></li>
+								<li><a href="myChatList.do">1:1채팅내역</a></li>
+							</ul>
+						</div>
+						
+						<br>
+						<div class="classes__sidebar">
+	                        <div class="classes__sidebar__item classes__sidebar__item--info">
+	                            <h4>채팅이용권</h4>
+	                            <ul class="classes__sidebar__item__widget">
+	                                <li>이용권 보유 개수 ▶ 3회 </li>
+	                                <li><a href="ticketBuyList.do">이용권 구매내역</a></li><br>
+	                                <li><a href="ticketUseList.do">이용권 사용내역</a></li>
+	                            </ul>
+	                            <br>
+	                            <a href="#" class="sidebar-btn">구매하기</a>
+	                        </div>
                         </div>
-                        <div class="blog__sidebar__recent">
-                            <h4>최신글</h4>
-                            <div class="blog__recent__item">
-                                <div class="blog__recent__item__pic">
-                                    <img src="./resources/img/blog/br-1.jpg" alt="">
-                                </div>
-                                <div class="blog__recent__item__text">
-                                    <h6>09 Kinds Of Vegetables Protect The Liver</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </div>
-                            <div class="blog__recent__item">
-                                <div class="blog__recent__item__pic">
-                                    <img src="./resources/img/blog/br-2.jpg" alt="">
-                                </div>
-                                <div class="blog__recent__item__text">
-                                    <h6>Tips You To Balance Nutrition Meal Day</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </div>
-                            <div class="blog__recent__item">
-                                <div class="blog__recent__item__pic">
-                                    <img src="./resources/img/blog/br-3.jpg" alt="">
-                                </div>
-                                <div class="blog__recent__item__text">
-                                    <h6>4 Principles Help You Lose Weight With Vegetables</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </div>
+                        
+                        <br>
+						<div class="classes__sidebar">
+	                        <div class="classes__sidebar__item classes__sidebar__item--info">
+	                            <h4>트레이너 신청</h4>
+	                            <ul class="classes__sidebar__item__widget">
+	                                <li><span class="icon_calendar"></span><a href="trainerApplyList.do">나의 신청내역</a> </li>
+	                                <li><span class="icon_id"></span><a href="trainerApply.do">신청하기</a></li>
+	                            </ul>
+	                        </div>
                         </div>
-                        <div class="blog__sidebar__tags">
-                            <h4>인기 검색어</h4>
-                            <a href="#">Weight</a>
-                            <a href="#">Beauty</a>
-                            <a href="#">Yoga Ball</a>
-                            <a href="#">Fruit</a>
-                            <a href="#">Healthy Food</a>
-                            <a href="#">Lifestyle</a>
-                        </div>
-                    </div>
-                </div>
+					</div>
+				</div>
+				<!-- 사이드바 끝 -->
+                
+                
                 <!-- 여기부터 달라짐 -->
                 <div class="col-lg-8 order-lg-2 order-1">
                     <div class="row" style="display: inline-block;width: 100%;" >

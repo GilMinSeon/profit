@@ -68,65 +68,44 @@
 					</div>
 				</div>
 				<!-- 사이드바 끝 -->
+                
+                
                 <!-- 여기부터 달라짐 -->
                 <div class="col-lg-8 order-lg-2 order-1">
                     <div class="row" style="display: inline-block;width: 100%;" >
                         	<!-- Appoinment Section Begin -->
 	<section class="appointment" style=" margin-bottom: 50px;">
 		<div class="container">
-			<div class="appointment__text" style="background-color: #9e9e9e0a">
+			<div class="appointment__text" style="background-color: #9e9e9e0a; padding: 60px 10px;">
 				<form action="#" class="appointment__form">
 					<div class="text-center">
-						<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">비밀번호 변경</h4>
+						<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">이용권 구매내역</h4>
 						<br/>
-						<p><span style="color:#5768AD;text-decoration: underline;font-family: DM Sans, sans-serif;font-size: 1.2em;">안전한 비밀번호로 내정보를 보호</span>하세요</p>
-						<p style="color:#FC7F65;">▶ 다른 아이디/사이트에서 사용한 적 없는 비밀번호</p>
-						<p style="color:#FC7F65;">▶ 이전에 사용한 적 없는 비밀번호<span style="color:gray;">가 안전합니다.</span></p>
+						<p style="font-family: DM Sans, sans-serif;font-size: 1.2em;color:#5768AD;">나의 결제상세 정보를 확인해 보세요.</p>
 						<br/><br/>
-						
-						<div class="col-lg-6 text-center mypage_myinfo"
-							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-							<input type="password" placeholder="현재비밀번호" style="background-color: #3f51b50d;color: black;" value="">
-						</div>
-						<br/>
-						<div class="col-lg-6 text-center mypage_myinfo"
-							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-							<input type="password" placeholder="새 비밀번호" style="background-color: #3f51b50d;color: black;" value="">
-						</div>
-						<div class="col-lg-6 text-center mypage_myinfo"
-							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-							<input type="password" placeholder="새 비밀번호 확인" style="background-color: #3f51b50d;color: black;" value="">
-						</div>
-						<br/>
-						
-						<div class="col-lg-6 text-center mypage_myinfo"
-							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-                             <button type="button" class="site-btn" style="font-size: 1em;color: white; background-color: #5768AD; opacity:0.85; width:100%; height: 48px;margin-right: 7px;">인증메일 발송</button>
-                        </div>
-                        <br/>
-                        <div class="col-lg-6 text-center mypage_myinfo"
-							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-							<input type="text" placeholder="인증번호" style="background-color: #3f51b50d;color: black;" value="">
-						</div>
-						<br/><br/>
-						
-						
-						<div class="col-lg-6 text-center mypage_myinfo"
-							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-                             <button type="submit" class="site-btn" style="font-size: 1em;color: white; background-color: #5768AD;width:100%; height: 48px;margin-right: 7px;">변경</button>
-                        </div>
-                        <br/>
-                        <div class="col-lg-6 text-center mypage_myinfo"
-							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-                             <button type="button" class="site-btn" style="font-size: 1em;color: #4B4949;border:1px solid  #5768AD; border-radius:3px; background-color: #ffffff;width:100%; height: 48px;margin-right: 7px;">취소</button>
-                        </div>
-                        
-                        
-                        
-                         
-						
-						
-
+							<table class="table table-hover">
+								<tr>
+									<th style="background: #E6E6E6;">결제번호</th>
+									<td>A294H90DWP</td>
+								</tr>
+								<tr>
+									<th style="background: #E6E6E6;">이용권 종류</th>
+									<td>3회</td>
+								</tr>
+								<tr>
+									<th style="background: #E6E6E6;">결제일시</th>
+									<td>2021/06/17</td>
+								</tr>
+								<tr>
+									<th style="background: #E6E6E6;">금액(원)</th>
+									<td>4,000</td>
+								</tr>
+							</table>
+							<br/><br/>
+							<div 
+								style=" max-width: 100%; width: 500px; margin-left: auto;text-align: right;">
+	                             <button type="button" class="site-btn" style="font-size: 1em;color: white; background-color: #5768AD;margin-right: 7px;" onClick="location.href='ticketPayList'">뒤로가기</button>
+                        	</div>
 					</div>
 				</form>
 			</div>

@@ -1662,10 +1662,10 @@ ol {
 .classes__sidebar__item ul.classes__sidebar__item__id {
 	margin-bottom: 30px;
 }
-
+/* 민선수정 */
 .classes__sidebar__item ul li {
 	list-style: none;
-	font-size: 18px;
+	font-size: 16px;
 	color: #6E7580;
 	line-height: 36px;
 }
