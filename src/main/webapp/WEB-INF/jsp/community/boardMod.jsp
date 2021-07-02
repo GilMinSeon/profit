@@ -26,6 +26,7 @@
 
 $(function(){
 	$('#loading').hide();
+	
 	$('.summernote').summernote({
 		height: 600,
 		fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
@@ -42,6 +43,7 @@ $(function(){
 
 	});
 
+	
 })
 
 function sendFile(file, el) {
@@ -70,7 +72,7 @@ var form_data = new FormData();
 }
 
 
-function fn_boardAdd(){
+function fn_boardMod(){
 	var category = $("input[name='cate_type']:checked").val();
 	var title = $("input[name='title']").val();
 	var editordata= $("textarea[name='editordata']").val();
@@ -94,7 +96,7 @@ function fn_boardAdd(){
 	var formData = new FormData($('#frm')[0]);
 	$.ajax({
 		type : 'post',
-		url : 'boardAddAjax.do',
+		url : 'boardModAjax.do',
 		data : formData,
 		processData : false,
 		contentType : false,
@@ -103,16 +105,16 @@ function fn_boardAdd(){
 		success : function(data){
 			var jsonInfo = JSON.parse(data);
 			if(jsonInfo.msg=="ok"){
-				alert("글이 정상적으로 등록되었습니다.");
+				alert("글이 정상적으로 수정되었습니다.");
 				location.href="boardDetail.do?communitySeq=" + jsonInfo.communitySeq;
 			}else if(data=="ng"){
-				alert("등록이 실패하였습니다. 다시 시도해주세요");
+				alert("수정이 실패하였습니다. 다시 시도해주세요");
 			}else{
-				alert("등록이 실패하였습니다. 다시 시도해주세요");
+				alert("수정이 실패하였습니다. 다시 시도해주세요");
 			}
 		},
 		error : function(error){
-			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
+			alert("수정이 실패하였습니다. 다시 시도해 주세요.");
 			console.log(error);
 			console.log(error.status);
 		}
@@ -169,6 +171,7 @@ function fn_boardAdd(){
 	<br/><br/>
 		<main role="main" class="container">
 			<form name="form" id="frm">
+			<input type="hidden" name="communitySeq" value="${BoardDetail['communitySeq']}">
 			<input type="hidden" id="hidden" name="tumnail_img" value="none"/>
 				<div class="write-title" style="margin-bottom: 5px;">
 					<label>
@@ -176,17 +179,17 @@ function fn_boardAdd(){
 					</label>
 					<div class="c_radio">
 						<div style="display: inline-block;">
-							<input type="radio" name="cate_type" id="exercise" value="1" autocomplete="off" style="opacity: 0;">
+							<input type="radio" name="cate_type" id="exercise" value="1" autocomplete="off" style="opacity: 0;" <c:if test="${BoardDetail['communityCategoryName'] eq '운동'}">checked</c:if>>
 							<label for="exercise">운동</label>
-							<input type="radio" name="cate_type" id="food" value="2" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="food" value="2" autocomplete="off" style="opacity: 0"<c:if test="${BoardDetail['communityCategoryName'] eq '식단'}">checked</c:if>>
 							<label for="food">식단</label>
 						</div>
 						<div style="display: inline-block;">
-							<input type="radio" name="cate_type" id="motive" value="3" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="motive" value="3" autocomplete="off" style="opacity: 0"<c:if test="${BoardDetail['communityCategoryName'] eq '동기부여'}">checked</c:if>>
 							<label for="motive">동기부여</label>
-							<input type="radio" name="cate_type" id="habit" value="4" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="habit" value="4" autocomplete="off" style="opacity: 0"<c:if test="${BoardDetail['communityCategoryName'] eq '생활습관'}">checked</c:if>>
 							<label for="habit">생활습관</label>
-							<input type="radio" name="cate_type" id="etc" value="5" autocomplete="off" style="opacity: 0">
+							<input type="radio" name="cate_type" id="etc" value="5" autocomplete="off" style="opacity: 0"<c:if test="${BoardDetail['communityCategoryName'] eq '기타'}">checked</c:if>>
 							<label for="etc">기타</label>
 						</div>
 					</div>
@@ -214,7 +217,7 @@ function fn_boardAdd(){
 				</div>
 				
 				<div class="class__filter__input" style="text-align: right;">
-					<button id="hover_btn" type="button" style="width: 150px;height:45px; padding: 5px;font-size:1.0em;" onclick="fn_boardAdd()">등록</button>
+					<button id="hover_btn" type="button" style="width: 150px;height:45px; padding: 5px;font-size:1.0em;" onclick="fn_boardMod()">수정</button>
 					<button id="hover_btn" type="button" style="width: 150px;height:45px; padding: 5px;font-size:1.0em;" onclick="location.href='boardList.do'">목록</button>
 				</div>
 				

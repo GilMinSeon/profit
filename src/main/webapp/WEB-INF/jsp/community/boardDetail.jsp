@@ -155,6 +155,35 @@ function fn_reply_del(seq){
 	}
 	
 }
+
+function fn_boardDel(seq){
+	var result = confirm("정말 글을 삭제하시겠습니까?");
+	if(result){
+		var params = "communitySeq="+ seq;
+		$.ajax({
+			type:"POST",
+			async:false,
+			url:"BoardDelAjax.do",
+			data:params,
+			success : function(data){
+				if(data=="ok"){
+					alert("글이 정상적으로 삭제되었습니다.");
+					location.href="boardList.do"
+				}else if(data=="ng"){
+					alert("글 삭제가 실패하였습니다. 다시 시도해주세요");
+				}else{
+					alert("글 삭제가 실패하였습니다. 다시 시도해주세요");
+				}
+			},
+			error : function(error){
+				alert("삭제가 실패하였습니다. 다시 시도해 주세요.");
+				console.log(error);
+				console.log(error.status);
+			}
+		});
+	
+	}
+}
 </script>
 <body>
 
@@ -218,7 +247,7 @@ function fn_reply_del(seq){
         			</div>
         			<hr style="color: #545454">
                     <div class="blog__details">
-                    	<div style="width: auto;min-height: 800px;" >
+                    	<div style="width: auto;min-height: 500px;" >
 						
 						
 						${BoardDetail['commonContent']}
@@ -230,7 +259,7 @@ function fn_reply_del(seq){
 		                        
 		                        <c:if test="${BoardDetail['inUserId'] eq memberId}">
 		                        <a href="boardMod.do?communitySeq=${BoardDetail['communitySeq']}" class="class-btn" style="text-align: center;">수정</a>
-		                        <a href="#" class="class-btn" style="text-align: center;">삭제</a>
+		                        <a class="class-btn" style="text-align: center;" onclick="fn_boardDel(${BoardDetail['communitySeq']})">삭제</a>
 								</c:if>
                         	
                         	

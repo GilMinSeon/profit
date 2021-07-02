@@ -91,6 +91,19 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDAO.increaseHit(communitySeq);
 	}
 	
+	//자유게시판 글 수정
+	@Override
+	public int updateBoard(CommunityVO vo) throws Exception{
+		return communityDAO.updateBoard(vo);
+	}
+
+
+	//자유게시판 글 삭제
+	@Override
+	public int deleteBoard(String communitySeq) throws Exception {
+		return communityDAO.deleteBoard(communitySeq);
+	}
+	
 
 
 

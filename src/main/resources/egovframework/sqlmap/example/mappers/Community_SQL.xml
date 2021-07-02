@@ -85,7 +85,7 @@
 		A.FILE_SEQ,
 		CASE
 		WHEN
-		LENGTH(A.COMMON_TITLE) > 20 THEN SUBSTR(A.COMMON_TITLE, 0, 20) ||
+		LENGTH(A.COMMON_TITLE) > 19 THEN SUBSTR(A.COMMON_TITLE, 0, 19) ||
 		'...'
 		ELSE A.COMMON_TITLE
 		END AS COMMON_TITLE,
@@ -168,7 +168,7 @@
 		A.COMMUNITY_CATEGORY_SEQ,
 		A.FILE_SEQ,
 		CASE
-		WHEN LENGTH(A.COMMON_TITLE) > 30 THEN SUBSTR(A.COMMON_TITLE, 0, 30) ||'...'
+		WHEN LENGTH(A.COMMON_TITLE) > 28 THEN SUBSTR(A.COMMON_TITLE, 0, 28) ||'...'
 		ELSE A.COMMON_TITLE
 		END AS COMMON_TITLE,
 		A.COMMON_CONTENT,
@@ -216,7 +216,7 @@
 		WHERE A.COMMON_SEQ = 5 AND A.COMMON_DEL_FLAG = 'N'
 		ORDER BY TO_NUMBER(A.COMMON_HIT) DESC
 		)
-		WHERE ROWNUM<=6
+		WHERE ROWNUM<=5
 		]]>
 	</select>
 
@@ -454,5 +454,27 @@
 		COMMON_HIT = COMMON_HIT+ 1
 		WHERE COMMUNITY_SEQ = #{communitySeq}
 
+	</update>
+	
+	<!-- 자유게시판 글 수정 -->
+	<update id="updateBoard">
+	    UPDATE COMMUNITY 
+	    SET 
+	    COMMON_TITLE = #{commonTitle}, 
+		COMMON_CONTENT = #{commonContent},
+		COMMUNITY_CATEGORY_SEQ = #{communityCategorySeq},
+		FILE_SEQ =#{fileSeq},
+		UP_USER_ID=#{upUserId},
+		UP_DATE = SYSDATE
+		WHERE COMMUNITY_SEQ=#{communitySeq}
+	    
+	</update>
+	
+	<!-- 자유게시판 글 삭제 -->
+	<update id="deleteBoard">
+	    UPDATE COMMUNITY 
+	    SET COMMON_DEL_FLAG='Y'
+		WHERE COMMUNITY_SEQ = #{communitySeq}
+	    
 	</update>
 </mapper>
