@@ -50,6 +50,32 @@ function fn_delClass(){
 	}
 }
 
+
+// const videoContainer = document.getElementById('videoplay')
+// function formatDate(seconds) {
+// 	const secondsNumber = parseInt(seconds, 10)
+// 	  let hours = Math.floor(secondsNumber / 3600)
+// 	  let minutes = Math.floor((secondsNumber - hours * 3600) / 60)
+// 	  let totalSeconds = secondsNumber - hours * 3600 - minutes * 60
+	  
+// 	  if (hours < 10) {
+// 		    hours = `0${hours}`
+// 		  }
+// 		  if (minutes < 10) {
+// 		    minutes = `0${minutes}`
+// 		  }
+// 		  if (totalSeconds < 10) {
+// 		    totalSeconds = `0${totalSeconds}`
+// 		  }
+// 		  return `${hours}:${minutes}:${totalSeconds}`
+// }
+// async function setTotalTime() {
+// 	  const duration = await getBlobDuration(videoPlayer.src)
+// 	  setInterval(getCurrentTime, 1000)
+// 	  totalTime.innerHTML = formatDate(duration)
+// 	}
+
+
 </script>
 </head>
 <body>
@@ -88,18 +114,20 @@ function fn_delClass(){
 								<tr>
 									<th scope="row" style="background-color: #E6E6E6;">강의 정보</th>
 									<td>
-										<span>재생시간</span><span>20:30</span> | 
+										<div style="display: inline-block;"><span style="color: #666">수강가능일</span>&nbsp;&nbsp;<span>바로수강가능</span></div>&nbsp;&nbsp; | &nbsp;&nbsp;
+										<div style="display: inline-block;"><span style="color: #666">재생시간</span>&nbsp;&nbsp;<span>20:30</span></div>&nbsp;&nbsp; | &nbsp;&nbsp;
+										<div style="display: inline-block;"><span style="color: #666">등록일</span>&nbsp;&nbsp;<span>${classResult.inDate}</span></div>
 									</td>
 									
-								</tr>
-								<tr>
-									<th scope="row" style="background-color: #E6E6E6;">재생시간</th>
-									<td>20:30</td>
-								</tr>
-								<tr>
-									<th scope="row" style="background-color: #E6E6E6;">등록일</th>
-									<td>${classResult.inDate}</td>
-								</tr>
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<th scope="row" style="background-color: #E6E6E6;">재생시간</th> -->
+<!-- 									<td>20:30</td> -->
+<!-- 								</tr> -->
+<!-- 								<tr> -->
+<!-- 									<th scope="row" style="background-color: #E6E6E6;">등록일</th> -->
+<%-- 									<td>${classResult.inDate}</td> --%>
+<!-- 								</tr> -->
 								
 								<tr>
 									<th scope="row" colspan="2">

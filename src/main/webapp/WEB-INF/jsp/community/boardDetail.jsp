@@ -4,6 +4,7 @@
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <script src="./resources/js/board.js"></script>
 <style>
@@ -45,6 +46,12 @@
     padding-top: 14px;
     margin-top: 15px;
     
+}
+
+.breadcrumb-option, .blog-hero {
+    padding-top: 215px;
+    padding-bottom: 170px;
+    margin-top: -75px;
 }
 
 </style>
@@ -117,16 +124,76 @@ function fn_rereply(cnt){
 		
 	})
 }
+
+function fn_reply_del(seq){
+	var result = confirm("정말 댓글을 삭제하시겠습니까?");
+	if(result){
+		var params = "replySeq="+ seq;
+		$.ajax({
+			type:"POST",
+			async:false,
+			url:"replyDelAjax.do",
+			data:params,
+			success : function(data){
+				if(data=="ok"){
+					alert("댓글이 정상적으로 삭제되었습니다.");
+					$("textarea[name=replyContent]").val('');
+					$(".replyarea").load(location.href + " .replyarea");
+				}else if(data=="ng"){
+					alert("댓글 삭제가 실패하였습니다. 다시 시도해주세요");
+				}else{
+					alert("댓글 삭제가 실패하였습니다. 다시 시도해주세요");
+				}
+			},
+			error : function(error){
+				alert("삭제가 실패하였습니다. 다시 시도해 주세요.");
+				console.log(error);
+				console.log(error.status);
+			}
+		});
+	
+	}
+	
+}
+
+function fn_boardDel(seq){
+	var result = confirm("정말 글을 삭제하시겠습니까?");
+	if(result){
+		var params = "communitySeq="+ seq;
+		$.ajax({
+			type:"POST",
+			async:false,
+			url:"BoardDelAjax.do",
+			data:params,
+			success : function(data){
+				if(data=="ok"){
+					alert("글이 정상적으로 삭제되었습니다.");
+					location.href="boardList.do"
+				}else if(data=="ng"){
+					alert("글 삭제가 실패하였습니다. 다시 시도해주세요");
+				}else{
+					alert("글 삭제가 실패하였습니다. 다시 시도해주세요");
+				}
+			},
+			error : function(error){
+				alert("삭제가 실패하였습니다. 다시 시도해 주세요.");
+				console.log(error);
+				console.log(error.status);
+			}
+		});
+	
+	}
+}
 </script>
 <body>
 
 
-    <!-- Blog Hero Begin -->
-    <section class="breadcrumb-option blog-hero set-bg" data-setbg="./resources/img/breadcrumb.jpg">
+    <!-- Breadcrumb Begin -->
+    <section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="blog__hero__text">
+                    <div class="breadcrumb__text">
                         <h2>자유 게시판</h2>
                     </div>
                 </div>
@@ -180,7 +247,7 @@ function fn_rereply(cnt){
         			</div>
         			<hr style="color: #545454">
                     <div class="blog__details">
-                    	<div style="width: auto;min-height: 800px;" >
+                    	<div style="width: auto;min-height: 500px;" >
 						
 						
 						${BoardDetail['commonContent']}
@@ -189,8 +256,13 @@ function fn_rereply(cnt){
 						<div style="text-align: right;">
                         	<div class="classes__item__text">
 	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
-		                        <a href="boardMod" class="class-btn" style="text-align: center;">수정</a>
-		                        <a href="#" class="class-btn" style="text-align: center;">삭제</a>
+		                        
+		                        <c:if test="${BoardDetail['inUserId'] eq memberId}">
+		                        <a href="boardMod.do?communitySeq=${BoardDetail['communitySeq']}" class="class-btn" style="text-align: center;">수정</a>
+		                        <a class="class-btn" style="text-align: center;" onclick="fn_boardDel(${BoardDetail['communitySeq']})">삭제</a>
+								</c:if>
+                        	
+                        	
                         	</div>
                         </div>
                     </div>
@@ -223,7 +295,7 @@ function fn_rereply(cnt){
 	                                <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
 									<input type="hidden" name="replyParentSeq" value="${cnt}">
 	                                <div class="classes__sidebar__comment__pic" style="<c:if test="${result.replyDepth == 2}">margin-left:100px;</c:if>">
-	                                    <img src="./resources/img/classes-details/comment-1.png" alt="">
+	                                    <img src="${result.filePath}" alt="">
 	                                </div>
 	                                <div class="classes__sidebar__comment__text">
 	                                    <h6>
@@ -231,17 +303,21 @@ function fn_rereply(cnt){
 	                                     	<c:if test="${result.replyDepth == 1}">
 	                                     	<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
 	                                     	</c:if>
-	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">2021-07-01</span>   
+	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">${fn:substring(result.inDate,0,10) }</span>   
 	                                    </h6>   
 	                                    <div style="margin-top: 20px;">
-		                                    <p>${result.replyContent}<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"></p>
+		                                    <p>${result.replyContent}
+		                                    <c:if test="${result.inUserId eq memberId}">
+		                                    <img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
+											</c:if>
+		                                    </p>
 	                                	</div>
 	                                </div><br>
 	                                <c:if test="${result.replyNextDepth == 1 || empty result.replyNextDepth}">
 	                                	<div class="row" >
 			                                <div id="rereply_div${cnt}" class="col-lg-12" style="margin-top: 15px;margin-left: 100px;display: none;">
 				                                <div class="classes__sidebar__comment__pic">
-				                                    <img src="${BoardDetail['MyProfileImage']}" alt="">
+				                                    <img src="${BoardDetail['MyProfileImage']}" alt="" >
 				                                </div>
 			                                    <textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
 			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
@@ -268,7 +344,6 @@ function fn_rereply(cnt){
                             </div>
                         </form>
                         </div>
-                        
                     </div>
                 </div>
                 

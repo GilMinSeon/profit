@@ -37,6 +37,8 @@ import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.MemberVO;
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -61,7 +63,20 @@ public class LessonController {
     * @return
     */
    @RequestMapping(value = "lessonList.do",  method = {RequestMethod.GET, RequestMethod.POST})
-   public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
+   public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  {
+//	  Map<String, Object> map = new HashMap<>();
+//	  String sel_cvalue = request.getParameter("sel_cvalue");
+//	  String sel_lvalue = request.getParameter("sel_lvalue");
+//	  String sel_tvalue = request.getParameter("sel_tvalue");
+//	  
+//	  System.out.println("sel_cvalue " +sel_cvalue );
+//	  System.out.println("sel_lvalue " +sel_lvalue );
+//	  System.out.println("sel_tvalue " +sel_tvalue );
+//	  
+//	  map.put("sel_cvalue", sel_cvalue);
+//	  map.put("sel_lvalue", sel_lvalue);
+//	  map.put("sel_tvalue", sel_tvalue);	  
+	  
       List<?> lessonList = lessonService.selectLessonList();
       model.addAttribute("resultList", lessonList);
       List<?> lessonTopList = lessonService.selectTopLessonList();
@@ -475,16 +490,48 @@ public class LessonController {
        return msg;
    }
    
-   @RequestMapping(value = "searchCateAjax.do")
-   @ResponseBody
-   public String selectCate(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
-	   String sel_value = request.getParameter("sel_value");
-	   System.out.println("sel_value선택된 "+sel_value);
-	   List<?> selCateLessonList = lessonService.selectCateLessonList(sel_value);
-
-	   String msg = "ok";
-	      
-	     
-	    return msg;
-   }
+   /**
+    * 카테고리 선택하면
+    * @param lessonVO
+    * @param fileVO
+    * @param model
+    * @param request
+    * @return
+    * @throws Exception
+    */
+   @RequestMapping(value = "searchCateAjax.do", produces = "application/text; charser=utf-8")
+	public @ResponseBody String selectCate(LessonDetailVO lDetailVO, LessonVO lessonVO,  AttachFileVO fileVO, HttpServletRequest request) throws Exception {
+	   
+	   String sel_cvalue = request.getParameter("sel_cvalue");
+	   String sel_lvalue = request.getParameter("sel_lvalue");
+	   String sel_tvalue = request.getParameter("sel_tvalue");
+	   
+	   System.out.println("sel_cvalue " +sel_cvalue );
+	   System.out.println("sel_lvalue " +sel_lvalue );
+	   System.out.println("sel_tvalue " +sel_tvalue );
+	   
+	   Map<String, Object> map = new HashMap();
+	   map.put("sel_cvalue", sel_cvalue);
+	   map.put("sel_cvalue", sel_cvalue);
+	   map.put("sel_cvalue", sel_cvalue);
+	   
+	   List<?> selCateLessonList = lessonService.selectCateLessonList(map);
+	   JSONObject jsonObject = new JSONObject();
+	   System.out.println("selCateLessonList "+selCateLessonList);
+//	   String msg = "";
+		if (selCateLessonList != null) {
+//			msg="ok";
+			jsonObject.put("msg", "ok");
+			jsonObject.put("selCateLessonList", selCateLessonList);
+		} else {
+			jsonObject.put("msg", "no");
+//			msg = "no";
+		}
+		String jsonInfo = jsonObject.toString();
+		System.out.println("jsonInfo "+jsonInfo);
+//		System.out.println("msg " + msg);
+		return jsonInfo;
+	}
+   
+   
 }

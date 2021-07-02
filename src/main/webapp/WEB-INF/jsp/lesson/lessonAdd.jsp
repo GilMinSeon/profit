@@ -265,7 +265,7 @@ background: #ffffff;
 			</div>
 			<br />
 			<main role="main" class="container">
-				<form  id="frm" method="post" action="lessonList.do" style="text-align: center;"  enctype="multipart/form-data">
+				<form  id="frm" method="post"  style="text-align: center;"  enctype="multipart/form-data">
 					<div class="write-title">
 						<label>
 							<p>
@@ -387,7 +387,7 @@ background: #ffffff;
 						
 					<br />
 					<div style="text-align: right;">
-                             <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_submit()">등록</button>
+                             <button type="button" id="hover_btn"  class="site-btn_s" onclick="fn_submit()">등록</button>
                     </div>
 					</form>
 					
