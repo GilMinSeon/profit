@@ -3,6 +3,8 @@ package kr.or.profit.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
+
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.CommunityVO;
@@ -49,4 +51,10 @@ public interface CommunityMapper {
 	
 	//자유게시판 글 삭제
 	int deleteBoard(String communitySeq) throws Exception;
+	
+	//최신글 TOP5 가져오기
+	List<Map<String,Object>> recentBoardList() throws Exception;
+	
+	//인기글 TOP5 가져오기
+	List<Map<String,Object>> bestBoardList() throws Exception;
 }

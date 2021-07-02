@@ -206,10 +206,42 @@ function fn_boardDel(seq){
     <section class="blog-details spad">
     	
         <div class="container">
-        
             <div class="row" style="justify-content: center">
-                
-                <div class="col-lg-8 order-lg-2 order-1" style="background-color: white;padding: 30px;border: 1px solid #ebecef;border-radius: 10px">
+                <div style="display: left;width: 30%">
+                <div class="blog__sidebar" >
+						<div class="blog__sidebar__recent">
+							<h4>최신글</h4>
+							<c:forEach var="result" items="${BoardDetail['recentBoardList']}" varStatus="status">
+							<div class="blog__recent__item">
+								<div class="blog__recent__item__pic">
+									<img src="${result.filePath}" alt="" style="width: 90px;height: 70px;">
+								</div>
+								<div class="blog__recent__item__text">
+									<h6>${result.commonTitle}</h6>
+									<span>${fn:substring(result.inDate,0,16)}</span>
+									
+								</div>
+							</div>
+							</c:forEach>
+						</div>
+						<div class="blog__sidebar__tags">
+							<h4>인기글</h4>
+							<c:forEach var="result" items="${BoardDetail['bestBoardList']}" varStatus="status">
+							<div class="blog__recent__item">
+								<div class="blog__recent__item__pic">
+									<img src="${result.filePath}" alt="" style="width: 90px;height: 70px;">
+								</div>
+								<div class="blog__recent__item__text">
+									<h6>${result.commonTitle}</h6>
+									<span>${fn:substring(result.inDate,0,16)}</span>
+									
+								</div>
+							</div>
+							</c:forEach>
+						</div>
+					</div>
+				</div>
+                <div class="col-lg-8 order-lg-2 order-1" style="background-color: white;padding: 30px;border: 1px solid #ebecef;border-radius: 10px;display: left;">
                 	<div style="margin-bottom: 30px;">
                 		<span style="font-size: 1.3em; font-weight: bold;color: #545454">${BoardDetail['commonTitle']}</span>
                 	</div>
@@ -247,19 +279,19 @@ function fn_boardDel(seq){
         			</div>
         			<hr style="color: #545454">
                     <div class="blog__details">
-                    	<div style="width: auto;min-height: 500px;" >
+                    	<div style="width: auto;min-height: 780px;" >
 						
 						
 						${BoardDetail['commonContent']}
 						
 						</div>
 						<div style="text-align: right;">
-                        	<div class="classes__item__text">
-	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
+                        	<div class="classes__item__text" style="text-align: center;">
 		                        
 		                        <c:if test="${BoardDetail['inUserId'] eq memberId}">
 		                        <a href="boardMod.do?communitySeq=${BoardDetail['communitySeq']}" class="class-btn" style="text-align: center;">수정</a>
 		                        <a class="class-btn" style="text-align: center;" onclick="fn_boardDel(${BoardDetail['communitySeq']})">삭제</a>
+	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
 								</c:if>
                         	
                         	
@@ -303,7 +335,7 @@ function fn_boardDel(seq){
 	                                     	<c:if test="${result.replyDepth == 1}">
 	                                     	<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
 	                                     	</c:if>
-	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">${fn:substring(result.inDate,0,10) }</span>   
+	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">${fn:substring(result.inDate,0,10)}</span>   
 	                                    </h6>   
 	                                    <div style="margin-top: 20px;">
 		                                    <p>${result.replyContent}

@@ -133,6 +133,17 @@ public class CommunityController {
 		//조회수 증가
 		communityService.increaseHit(communitySeq);
 		
+		//최신 글 TOP5 가져오기
+		List<Map<String,Object>> recentBoardList = communityService.recentBoardList();
+		System.out.println("최신글 : " + recentBoardList);
+		boardDetail.put("recentBoardList", recentBoardList);
+		
+		//인기 글 TOP5 가져오기
+		List<Map<String,Object>> bestBoardList = communityService.bestBoardList();
+		System.out.println("인기글 : " + bestBoardList);
+		boardDetail.put("bestBoardList", bestBoardList);
+		
+		
 		model.addAttribute("BoardDetail" , boardDetail);
 		System.out.println("모델 : " + model.toString());
 		

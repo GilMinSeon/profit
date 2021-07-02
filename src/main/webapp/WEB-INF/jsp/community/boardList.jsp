@@ -27,7 +27,10 @@
     -o-transition: all 0.4s;
     transition: all 0.4s;
 }
-
+.team__slider.owl-carousel .owl-stage-outer {
+    padding-top: 10px; 
+    padding-bottom: 40px;
+}
 
 </style>
 
@@ -51,20 +54,18 @@
     <section class="team spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title" style="margin-top: 50px;">
-                        <h2 style="font-weight: bold;">🏆인기글 TOP 6</h2>
-                        <br>
-                        <p style="color: #535353;font-size: 1.2em;">지금 가장 조회수가 많은 게시판글을 확인해 보세요!!</p>
+                <div class="col-lg-12" style="height:60px;">
+                    <div class="section-title" style="text-align: left">
+                        <h3 style="font-weight: bold;">🏆조회수 TOP 5</h3>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="team__slider owl-carousel">
+                <div class="team__slider owl-carousel" >
 	                <c:forEach var="result" items="${boardTopList}" varStatus="status">
                     <div class="col-lg-6">
-                        <div class="team__item" style="padding-top:10px;padding-bottom: 10px;">
-                        <div class="classes__item__pic set-bg" data-setbg="${result.filePath}">
+                        <div class="team__item" style="padding-top:0px;padding-bottom: 10px;">
+                        <div class="classes__item__pic set-bg" data-setbg="${result.filePath}" style="padding-top: 0px;">
                             <span>${result.inDate}</span>
                         </div>
                         <div class="classes__item__text" style="padding-top: 10px;padding-bottom: 10px; padding-left: 0;padding-right: 0;">

@@ -48,4 +48,10 @@ public interface CommunityService {
 	
 	//자유게시판 글 삭제
 	public int deleteBoard(String communitySeq) throws Exception;
+	
+	//최신글 TOP5 가져오기
+	public List<Map<String, Object>> recentBoardList() throws Exception;
+	
+	//인기글 TOP5 가져오기
+	public List<Map<String, Object>> bestBoardList() throws Exception;
 }

@@ -103,6 +103,20 @@ public class CommunityServiceImpl implements CommunityService {
 	public int deleteBoard(String communitySeq) throws Exception {
 		return communityDAO.deleteBoard(communitySeq);
 	}
+
+
+	//최신글 TOP5 가져오기
+	@Override
+	public List<Map<String, Object>> recentBoardList() throws Exception {
+		return communityDAO.recentBoardList();
+	}
+
+	
+	//인기글 TOP5 가져오기
+	@Override
+	public List<Map<String, Object>> bestBoardList() throws Exception {
+		return communityDAO.bestBoardList();
+	}
 	
 
 
