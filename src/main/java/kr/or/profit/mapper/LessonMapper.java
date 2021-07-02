@@ -52,7 +52,7 @@ public interface LessonMapper {
 	int deleteClass(LessonDetailVO vo) throws Exception;
 
 	//카테고리 선택하면 리스트
-	List<?> selectCateLessonList(String sel_value) throws Exception;
+	List<?> selectCateLessonList(Map map) throws Exception;
 
 
 

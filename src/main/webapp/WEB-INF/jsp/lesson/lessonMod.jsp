@@ -149,7 +149,7 @@ function fn_submitMod(){
 
 function send_updateLesson(){
 	var formData = new FormData($('#frm')[0]);
-	var lessonSeq = $("input:hidden[name=lessonSeq]").val()
+	var lessonSeq = $("input:hidden[name=lessonSeq]").val();
 	formData.append("lessonCategorySeq", $("input:radio[name=cate_type]:checked").val());
 	
 	$.ajax({
@@ -163,7 +163,7 @@ function send_updateLesson(){
 		success : function(data){
 		if(data=="ok"){
 			alert("수정이 정상적으로 완료되었습니다.");
-// 			location.href="lessonDetail.do?lessonSeq=" + lessonSeq;
+			location.href="lessonDetail.do?lessonSeq=" + $("input:hidden[name=lessonSeq]").val();
 		}else if(data=="no"){
 			alert("수정에 실패하였습니다. 다시 시도해주세요");
 		}
@@ -296,7 +296,7 @@ background: #ffffff;
 			<br />
 			<br />
 			<main role="main" class="container">
-				<form id="frm" action="lessonList.do" method="post" style="text-align: center;" enctype="multipart/form-data">
+				<form id="frm" method="post" style="text-align: center;" enctype="multipart/form-data">
 				<input type="hidden" name="lessonSeq" value="${resultList.lessonSeq}"/>
 				<input type="hidden" name="fileSeq" value="${resultList.fileSeq}"/>
 					<div class="write-title">
@@ -487,7 +487,7 @@ ${resultList.lessonIntro}
 						
 					<br />
 					<div style="text-align: right;">
-                             <button type="submit" id="hover_btn"  class="site-btn_s" onclick="fn_submitMod()">수정완료</button>
+                             <button type="button" id="hover_btn"  class="site-btn_s" onclick="fn_submitMod()">수정완료</button>
                     </div>
 					</form>
 					
