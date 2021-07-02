@@ -322,10 +322,49 @@
 	
 	<!-- 자유게시판 댓글 목록 조회-->
 	<select id="selectReplyList" resultType="egovMap">
-		SELECT REPLY_SEQ, REPLY_CONTENT, COMMUNITY_SEQ, REPLY_DEL_FLAG, REPLY_PARENT_SEQ, REPLY_DEPTH, LEAD(REPLY_DEPTH) OVER(ORDER BY RN) AS REPLY_NEXT_DEPTH ,IN_USER_ID, IN_DATE, MEMBER_NICKNAME
+		SELECT 
+		RN,
+		C.REPLY_SEQ, 
+		C.REPLY_CONTENT, 
+		C.COMMUNITY_SEQ, 
+		C.REPLY_DEL_FLAG, 
+		C.REPLY_PARENT_SEQ, 
+		C.REPLY_DEPTH, 
+		C.REPLY_NEXT_DEPTH ,
+		C.IN_USER_ID, 
+		C.IN_DATE, 
+		C.MEMBER_NICKNAME, 
+		C.FILE_SEQ, 
+		D.FILE_PATH
+        FROM
+        (
+        SELECT 
+        RN,
+        REPLY_SEQ, 
+        REPLY_CONTENT, 
+        COMMUNITY_SEQ, 
+        REPLY_DEL_FLAG, 
+        REPLY_PARENT_SEQ, 
+        REPLY_DEPTH, 
+        LEAD(REPLY_DEPTH) OVER(ORDER BY RN) AS REPLY_NEXT_DEPTH ,
+        IN_USER_ID, 
+        IN_DATE, 
+        MEMBER_NICKNAME, 
+        FILE_SEQ
 		FROM
 		(
-		SELECT ROWNUM AS RN, A.COMMUNITY_SEQ, A.REPLY_SEQ, A.REPLY_CONTENT, A.REPLY_DEL_FLAG, A.REPLY_PARENT_SEQ, A.REPLY_DEPTH,A.IN_USER_ID, A.IN_DATE, B.MEMBER_NICKNAME
+		SELECT 
+		ROWNUM AS RN, 
+		A.COMMUNITY_SEQ, 
+		A.REPLY_SEQ, 
+		A.REPLY_CONTENT, 
+		A.REPLY_DEL_FLAG, 
+		A.REPLY_PARENT_SEQ, 
+		A.REPLY_DEPTH,
+		A.IN_USER_ID, 
+		A.IN_DATE, 
+		B.MEMBER_NICKNAME, 
+		B.FILE_SEQ
 		FROM
 		(
 		SELECT *
@@ -339,7 +378,70 @@
 		MEMBER B ON
 		(A.IN_USER_ID=B.MEMBER_ID)
 		)
+		WHERE COMMUNITY_SEQ = #{communitySeq}
+        )
+        C
+        LEFT JOIN 
+        ATTACH_FILE D ON
+        (C.FILE_SEQ = D.FILE_SEQ)
+        ORDER BY RN ASC
 	</select>
 	
+	<!-- 자유게시판 답글 추가 -->
+	<insert id="insertBoardRereply">
+		<selectKey order="BEFORE" keyProperty="replySeq"
+			resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(REPLY_SEQ)),0)+1 FROM REPLY
+		</selectKey>
+		<![CDATA[
+		INSERT 
+			INTO 
+		reply
+		(
+		reply_seq, 
+		community_seq, 
+		reply_content, 
+		reply_del_flag, 
+		reply_parent_seq,
+		reply_depth, 
+		in_user_id,
+		in_date, 
+		up_user_id, 
+		up_date
+		)
+		VALUES 
+		(
+		#{replySeq},
+		#{communitySeq},
+		#{replyContent},
+		'N',
+		#{replyParentSeq},
+		'2',
+		#{inUserId},
+		sysdate, 
+		#{upUserId}, 
+		sysdate
+		)
+		
+		]]>
+	</insert>
+	
+	<!-- 자유게시판 댓글 삭제 -->
+	<update id="deleteBoardReply" parameterType="String">
+        UPDATE REPLY B
+		SET    B.REPLY_DEL_FLAG = 'Y'
+		WHERE  B.REPLY_SEQ IN(
+		    SELECT A.REPLY_SEQ
+		    FROM
+		    (
+		        SELECT *
+		        FROM REPLY
+		        START WITH REPLY_PARENT_SEQ IS NULL
+		        CONNECT BY PRIOR REPLY_SEQ = REPLY_PARENT_SEQ
+		        ORDER SIBLINGS BY REPLY_SEQ
+		    ) A
+		    WHERE (A.REPLY_SEQ = #{replySeq} OR REPLY_PARENT_SEQ = #{replySeq})
+		)
 
+	</update>
 </mapper>

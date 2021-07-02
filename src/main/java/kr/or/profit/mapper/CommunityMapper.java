@@ -32,7 +32,12 @@ public interface CommunityMapper {
 	//자유게시판 상세 댓글 추가
 	int insertBoardReply(ReplyVO vo) throws Exception;
 	
-	//댓글리스트 가져오기
-	List<Map<String, Object>> selectReplyList() throws Exception;
+	//자유게시판 댓글리스트 가져오기
+	List<Map<String, Object>> selectReplyList(String communitySeq) throws Exception;
 	
+	//자유게시판 답글 추가
+	int insertBoardRereply(ReplyVO vo) throws Exception;
+	
+	//자유게시판 댓글 삭제
+	int deleteBoardReply(String replySeq) throws Exception;
 }
