@@ -144,6 +144,7 @@ function fn_detail(communitySeq){
 					</tr>
 				</thead>
 				<tbody>
+
 					<c:forEach var="data" items="${data}" varStatus="status">
 						<tr>
 							<th scope="row">${status.count}</th>
@@ -153,12 +154,12 @@ function fn_detail(communitySeq){
 								</a>
 							</td>
 							<td>
-<%-- 								<c:set var="cnt" value="${data.cnt}" /> --%>
-<%-- 								<c:if test="${cnt == '0' }"> --%>
-<%-- 									<c:out value="X" /> --%>
-<%-- 								</c:if> <c:if test="${cnt > '0' }"> --%>
-<%-- 									<c:out value="O" /> --%>
-<%-- 								</c:if> --%>
+								<c:set var="cnt" value="${data.cnt}" />
+								<c:if test="${cnt == '0' }">
+									<c:out value="X" />
+								</c:if> <c:if test="${cnt > '0' }">
+									<c:out value="O" />
+								</c:if>
 							</td>
 							<td>${data.inDate}</td>
 						</tr>

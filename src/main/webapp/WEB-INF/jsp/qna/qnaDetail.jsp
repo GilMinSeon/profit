@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="zxx">
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
 
 <body>
-<c:set var="data" value="${data}" />
+	<c:set var="data" value="${data}" />
 	<!-- Blog Hero Begin -->
-	<section class="breadcrumb-option blog-hero set-bg"
-		data-setbg="./resources/img/breadcrumb.jpg">
+	<section class="breadcrumb-option blog-hero set-bg" data-setbg="./resources/img/breadcrumb.jpg">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -33,63 +31,86 @@
 
 
 					<div style="margin-bottom: 30px; text-align: center;">
-						<span style="font-size: 1.3em; font-weight: bold;"><c:out
-								value="${data.commonTitle}" /></span>
+						<span style="font-size: 1.3em; font-weight: bold;"><c:out value="${data.commonTitle}" /></span>
 					</div>
 					<div style="text-align: right; margin-bottom: 5px;">
-						<span style="margin-left: 30px;">
-							작성일&nbsp;&nbsp;&nbsp;<c:out value="${data.inDate}" />
+						<span style="margin-left: 30px;"> 작성일&nbsp;&nbsp;&nbsp;<c:out value="${data.inDate}" />
 						</span>
 					</div>
 					<div class="blog__details">
 						<div class="blog__details__large">
 
-							<img src="./resources/img/blog/details/blog-large.jpg" alt="">
-							<span>
-								<c:out value="${data.inUserId}" />
+							<img src="./resources/img/blog/details/blog-large.jpg" alt=""> <span> <c:out value="${data.inUserId}" />
 							</span>
 						</div>
-						<div class="blog__details__text">
-							<p id="text">썸머노트로 변경할부분</p>
-						</div>
+						<div class="blog__details__text">${data.commonContent}</div>
 						<div class="classes__item__text" style="text-align: center;">
-							<a href="qnaList.do" class="class-btn">목록 </a>
-							<a href="${path}qnaMod.do?communitySeq=${data.communitySeq}" class="class-btn">수정</a>
-							<a href="${path}qnaDelete.do?communitySeq=${data.communitySeq}" class="class-btn">삭제</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4 order-lg-1 order-2"
-				style="width: 100%; flex: 0 0 100%; max-width: 100%; padding-right: 0px; margin-left: 23px;">
-
-				<div class="blog__sidebar">
-
-					<div class="blog__sidebar__comment"
-						style="overflow: scroll; height: 500px;">
-						<h4>댓글</h4>
-						<div class="classes__sidebar__comment">
-							<div class="classes__sidebar__comment__pic">
-								<img src="./resources/img/classes-details/comment-1.png" alt="">
-								<div class="classes__sidebar__comment__rating">
-									<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-										class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-										class="fa fa-star-half-o"></i>
-								</div>
-							</div>
-							<div class="classes__sidebar__comment__text">
-								<span>04 Mar 2018</span>
-								<h6>Brandon Kelley</h6>
-								<p>Neque porro quisquam est, qui dolorem ipsum quia dolor
-									sit amet, consectetur, adipisci velit,</p>
-							</div>
+							<a href="qnaList.do" class="class-btn">목록 </a> <a href="${path}qnaMod.do?communitySeq=${data.communitySeq}" class="class-btn">수정</a> <a href="${path}qnaDelete.do?communitySeq=${data.communitySeq}" class="class-btn">삭제</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	<!-- Blog Details Section End -->
+
+	<!-- Leave Comment Begin -->
+	<div class="leave-comment spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="leave__comment__text">
+						<h2>관리자 답변</h2>
+					</div>
+				</div>
+
+				<div id="reply_area" class="col-lg-4 order-lg-1 order-2 replyarea" style="width: 100%; flex: 0 0 100%; max-width: 100%; padding-right: 0px; margin-left: 23px;">
+
+					<div class="blog__sidebar">
+
+						<div class="blog__sidebar__comment" style="overflow-x: hidden; height: 500px; padding: 10px;">
+							<div class="classes__sidebar__comment" style="border-bottom: 0">
+								<form id="frm">
+									<input type="hidden" name="communitySeq" value="${result.communitySeq}"> <input type="hidden" name="replyParentSeq" value="${cnt}">
+									<div class="classes__sidebar__comment__pic" style="<c:if test="${result.replyDepth == 2}">margin-left:100px;</c:if>">
+										<img src="./resources/img/classes-details/comment-1.png" alt="">
+									</div>
+									<div class="classes__sidebar__comment__text">
+										<h6>
+											관리자&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-size: 0.8em; color: gray; float: right; padding-right: 20px;">등록일입력</span>
+										</h6>
+										<div style="margin-top: 20px;">
+											<p>
+												답변 내 용ㅁㄴ ㅇㄻㄴasdacascasssssscasc ㄴ aaaaaaaaaaaaaaaaㅇㅎㄻㄶaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaㅁㄴㅇasdasdasdㄹ <img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;">
+											</p>
+										</div>
+									</div>
+									<br>
+									<div class="row">
+										<div id="rereply_div${cnt}" class="col-lg-12" style="margin-top: 15px; margin-left: 100px; display: none;">
+											<textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%; float: left;"></textarea>
+											<button type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: left; margin-top: 15px; margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
+										</div>
+									</div>
+									<hr>
+								</form>
+							</div>
+							<form id="replyfrm" >
+								<div class="row">
+									<div class="col-lg-12"></div>
+									<div class="col-lg-12">
+										<div class="classes__sidebar__comment__pic"></div>
+										<textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 100%; float: left;"></textarea>
+										<button type="submit" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: right; margin-top: 15px;" >댓글 작성</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Leave Comment End -->
 
 	<!-- Js Plugins -->
 	<script src="./resources/js/jquery-3.3.1.min.js"></script>

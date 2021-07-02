@@ -75,7 +75,7 @@
 				setTimeout(function() {
 					alert("파일첨부");
 					$(el).summernote('editor.insertImage', img_name);
-				}, 3000);
+				}, 5000);
 			}
 		});
 	}
@@ -102,7 +102,7 @@
 
 	<section class="classes spad">
 		<main role="main" class="container">
-		<h3>👨‍🎓 문의 해주세요</h3>
+		<h3>👨‍🎓 문의를 입력 해주세요</h3>
 		<br>
 		<form name="form" method="POST" action="/qnaAdd.do">
 			<div class="pt-1"></div>
