@@ -51,7 +51,7 @@ public interface LessonService {
 	public int deleteClass(LessonDetailVO vo) throws Exception;
 	
 	//카테고리 선택하면 리스트
-	public List<?> selectCateLessonList(String sel_value) throws Exception;
+	public List<?> selectCateLessonList(Map map) throws Exception;
 
 
 

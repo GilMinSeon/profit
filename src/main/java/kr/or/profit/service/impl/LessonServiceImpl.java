@@ -102,8 +102,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//카테고리 선택하면 리스트
 	@Override
-	public List<?> selectCateLessonList(String sel_value) throws Exception {
-		return lessonDAO.selectCateLessonList(sel_value);
+	public List<?> selectCateLessonList(Map map) throws Exception {
+		return lessonDAO.selectCateLessonList(map);
 	}
 
 
