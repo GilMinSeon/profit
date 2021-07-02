@@ -85,6 +85,11 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDAO.deleteBoardReply(replySeq);
 	}
 	
+	//자유게시판 조회수 증가
+	@Override
+	public int increaseHit(String communitySeq) throws Exception{
+		return communityDAO.increaseHit(communitySeq);
+	}
 	
 
 

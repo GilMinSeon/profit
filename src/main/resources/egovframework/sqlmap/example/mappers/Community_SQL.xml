@@ -229,6 +229,7 @@
 		<result property="boardReply" column="BOARD_REPLY" />
 		<result property="boardGood" column="BOARD_GOOD" />
 		<result property="boardBook" column="BOARD_BOOK" />
+		<result property="inUserId" column="IN_USER_ID" />
 		<result property="inDate" column="IN_DATE" />
 		<result property="communitySeq" column="COMMUNITY_SEQ" />
 		<result property="communityCategorySeq" column="COMMUNITY_CATEGORY_SEQ" />
@@ -442,6 +443,16 @@
 		    ) A
 		    WHERE (A.REPLY_SEQ = #{replySeq} OR REPLY_PARENT_SEQ = #{replySeq})
 		)
+
+	</update>
+	
+	<!-- 자유게시판 조회수 증가 -->
+	
+	<update id="increaseHit" parameterType="String">
+        UPDATE COMMUNITY 
+		SET 
+		COMMON_HIT = COMMON_HIT+ 1
+		WHERE COMMUNITY_SEQ = #{communitySeq}
 
 	</update>
 </mapper>

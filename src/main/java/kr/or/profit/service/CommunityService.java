@@ -39,4 +39,7 @@ public interface CommunityService {
 	
 	//자유게시판 댓글 삭제
 	public int deleteBoardReply(String replySeq) throws Exception;
+	
+	//자유게시판 조회수 증가
+	public int increaseHit(String communitySeq) throws Exception;
 }

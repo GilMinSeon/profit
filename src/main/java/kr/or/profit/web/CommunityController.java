@@ -105,6 +105,13 @@ public class CommunityController {
 		return "community/boardList";
 	}
 	
+	/**
+    * 자유게시판 상세 페이지 
+    * @author 정예진
+    * @param model
+    * @return String - community/boardAdd
+    * @throws Exception
+    */
 	@RequestMapping(value = "boardDetail.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String boardDetail(@ModelAttribute("communityVO") CommunityVO communityVO, Model model, HttpServletRequest request) throws Exception{
 		HttpSession session = request.getSession();
@@ -123,6 +130,9 @@ public class CommunityController {
 		List<Map<String, Object>> replyList = communityService.selectReplyList(communitySeq);
 		boardDetail.put("replyList", replyList);
 		
+		//조회수 증가
+		communityService.increaseHit(communitySeq);
+		
 		model.addAttribute("BoardDetail" , boardDetail);
 		System.out.println("모델 : " + model.toString());
 		
@@ -130,10 +140,22 @@ public class CommunityController {
 	}
 	
 	
-	
+	/**
+    * 자유게시판 글 수정
+    * @author 정예진
+    * @param 
+    * @return String - community/boardMod
+    * @throws Exception
+    */
 	@RequestMapping(value = "boardMod", method = RequestMethod.GET)
-	public String boardMod(Locale locale, Model model) {
+	public String boardMod(CommunityVO communityVO, Model model) throws Exception{
+		//게시글 상세정보
+		String communitySeq = communityVO.getCommunitySeq();
+		Map<String, Object> boardDetail = communityService.selectBoardDetail(communitySeq);
 		
+		model.addAttribute("BoardDetail" , boardDetail);
+		System.out.println("수정페이지");
+		System.out.println(model.toString());
 		return "community/boardMod";
 	}
 	
@@ -215,7 +237,7 @@ public class CommunityController {
 		
 		String fileSeq = null;
 		
-		if(!tumnail.isEmpty()) {
+		if(!tumnail.equals("./resources/img/common/loading.gif")) {
 			int index1= tumnail.indexOf("profit/") + 44; 
 			String fileRealName = tumnail.substring(index1);
 			

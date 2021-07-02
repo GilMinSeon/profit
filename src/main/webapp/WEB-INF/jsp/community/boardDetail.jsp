@@ -227,8 +227,13 @@ function fn_reply_del(seq){
 						<div style="text-align: right;">
                         	<div class="classes__item__text">
 	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
-		                        <a href="boardMod" class="class-btn" style="text-align: center;">수정</a>
+		                        
+		                        <c:if test="${BoardDetail['inUserId'] eq memberId}">
+		                        <a href="boardMod.do?communitySeq=${BoardDetail['communitySeq']}" class="class-btn" style="text-align: center;">수정</a>
 		                        <a href="#" class="class-btn" style="text-align: center;">삭제</a>
+								</c:if>
+                        	
+                        	
                         	</div>
                         </div>
                     </div>

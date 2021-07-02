@@ -40,4 +40,7 @@ public interface CommunityMapper {
 	
 	//자유게시판 댓글 삭제
 	int deleteBoardReply(String replySeq) throws Exception;
+	
+	//자유게시판 조회수 증가
+	int increaseHit(String communitySeq) throws Exception;
 }
