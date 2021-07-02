@@ -155,7 +155,7 @@ $(document).ready(function(){
 			<!-- 새로 검색 -->
 			<div class="classes__filter">
 			<table class="table table-bordered" style="text-align: center;">
-			<h5>◼ 뭐시기뭐시기</h5>
+			<h5>◼ 신청리스트</h5>
 			<br>
 				<tbody>
 					<tr>
@@ -189,7 +189,7 @@ $(document).ready(function(){
 			
 			
 			    <div class="classes__filter" style="margin-bottom: 0px;">
-			    <h5>◼ 검색</h5>
+			    <h5>◼ 신청내역</h5>
 				<br>
                 <div class="row">
                     <div class="col-lg-12">
@@ -212,12 +212,12 @@ $(document).ready(function(){
                                     <option>Option 3</option>
                                 </select>
                             </div>
-                            <div id="searchBtn" class="class__filter__input" style="margin-right: 20px;">
+                            <div id="searchDiv" class="class__filter__input" style="margin-right: 20px;">
 								<p>날짜:</p>
 								<input type="text" placeholder="검색" id="mydate" style="width: 100%;">
 							</div>
 							
-							<div id="searchBtn" class="class__filter__input">
+							<div id="searchDiv" class="class__filter__input">
 								<p>Search:</p>
 								<input type="text" placeholder="검색" style="width: 100%;">
 							</div>
