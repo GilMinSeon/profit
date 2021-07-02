@@ -17,6 +17,29 @@ public class ProcessVO {
 	private String upUserId;
 	private Date upDate;
 	
+	//민선 추가
+	private String memberName;
+	private String memberGender;
+	private String memberMobile;
+	
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+	public String getMemberGender() {
+		return memberGender;
+	}
+	public void setMemberGender(String memberGender) {
+		this.memberGender = memberGender;
+	}
+	public String getMemberMobile() {
+		return memberMobile;
+	}
+	public void setMemberMobile(String memberMobile) {
+		this.memberMobile = memberMobile;
+	}
 	public String getProcessSeq() {
 		return processSeq;
 	}

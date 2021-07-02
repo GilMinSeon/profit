@@ -56,6 +56,21 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 		return mypageDAO.updateOnlyInfo(vo);
 	}
 
+	@Override
+	public ProcessVO selectProcessInfo(String memberId) throws Exception {
+		return mypageDAO.selectProcessInfo(memberId);
+	}
+
+	@Override
+	public List<?> selectFileInfo(String fileSeq) throws Exception {
+		return mypageDAO.selectFileInfo(fileSeq);
+	}
+
+	@Override
+	public int checkApplyPage(String memberId) throws Exception {
+		return mypageDAO.checkApplyPage(memberId);
+	}
+
 	
 
 

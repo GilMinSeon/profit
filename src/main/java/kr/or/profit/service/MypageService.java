@@ -29,4 +29,11 @@ public interface MypageService {
 	
 	public int updateOnlyInfo(MemberVO vo) throws Exception;
 	
+	public ProcessVO selectProcessInfo(String memberId) throws Exception;
+	
+	
+	public List<?> selectFileInfo(String fileSeq) throws Exception;
+	
+	public int checkApplyPage(String memberId) throws Exception;
+	
 }

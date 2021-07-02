@@ -3,6 +3,7 @@ package kr.or.profit.web;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
@@ -53,12 +54,13 @@ public class MypageController {
 	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
 	private static final String CURR_IMAGE_REPO_PATH = "\\\\192.168.41.6\\upload\\profit";
 
-	// 민선 myinfo 리스트페이지
+	//1. 내정보
 	@RequestMapping(value = "myinfo.do", method = RequestMethod.GET)
 	public String myinfo(HttpSession session, Model model) throws Exception {
 
 		String memberId = (String) session.getAttribute("memberId");
 		MemberVO vo = mypageService.selectAllMemberInfo(memberId);
+		System.out.println("ddddd"+vo.getMemberGender());
 		model.addAttribute("myInfo", vo);
 		System.out.println(vo.getMemberMobile());
 		System.out.println(vo.getMemberWeight());
@@ -66,51 +68,7 @@ public class MypageController {
 		
 		return "mypage/myinfo";
 	}
-
-	@RequestMapping(value = "bookmark.do", method = RequestMethod.GET)
-	public String bookmark(Locale locale, Model model) {
-
-		return "mypage/bookmark";
-	}
-
-	@RequestMapping(value = "trainerApply.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String trainerApply(HttpServletRequest request, Model model) throws Exception {
-		HttpSession session = request.getSession();
-
-		String memberId = (String) session.getAttribute("memberId");
-		System.out.println("memberId : " + memberId);
-		List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
-		System.out.println(list.toString());
-		String memberName = list.get(0).get("memberName");
-		String memberGender = list.get(0).get("memberGender");
-		String memberMobile = list.get(0).get("memberMobile");
-
-		model.addAttribute("memberName", memberName);
-		model.addAttribute("memberGender", memberGender);
-		model.addAttribute("memberMobile", memberMobile);
-
-		return "mypage/trainerApply";
-
-	}
-
-	@RequestMapping(value = "trainerInfo.do", method = RequestMethod.GET)
-	public String trainerInfo(Locale locale, Model model) {
-
-		return "mypage/trainerInfo";
-	}
-
-	@RequestMapping(value = "listenList.do", method = RequestMethod.GET)
-	public String listenList(Locale locale, Model model) {
-
-		return "mypage/listenList";
-	}
-
-	@RequestMapping(value = "teachList.do", method = RequestMethod.GET)
-	public String teachList(Locale locale, Model model) {
-
-		return "mypage/teachList";
-	}
-
+	
 	@RequestMapping(value = "pwdMod.do", method = RequestMethod.GET)
 	public String pwdMod(Locale locale, Model model) {
 
@@ -122,41 +80,137 @@ public class MypageController {
 
 		return "mypage/mobileMod";
 	}
+	
+	
+	
+	//2. 북마크
+	@RequestMapping(value = "bookmark.do", method = RequestMethod.GET)
+	public String bookmark(Locale locale, Model model) {
 
-	@RequestMapping(value = "payDetail.do", method = RequestMethod.GET)
-	public String payDetail(Locale locale, Model model) {
-
-		return "mypage/payDetail";
+		return "mypage/bookmark";
 	}
 
-	@RequestMapping(value = "ticketPayList.do", method = RequestMethod.GET)
-	public String ticketPayList(Locale locale, Model model) {
+	//3.마이클래스
+	@RequestMapping(value = "myLessonList.do", method = RequestMethod.GET)
+	public String myLessonList(Locale locale, Model model) {
 
-		return "mypage/ticketPayList";
+		return "mypage/myLessonList";
 	}
+	
+	//3-1.마이클래스에서 상세결제내역
+	@RequestMapping(value = "myLessonPayDetail.do", method = RequestMethod.GET)
+	public String myLessonPayDetail(Locale locale, Model model) {
 
-	@RequestMapping(value = "ticketPayDetail.do", method = RequestMethod.GET)
-	public String ticketPayDetail(Locale locale, Model model) {
-
-		return "mypage/ticketPayDetail";
+		return "mypage/myLessonPayDetail";
 	}
-
+	
+	//4. 1:1상담내역
 	@RequestMapping(value = "myChatList.do", method = RequestMethod.GET)
 	public String myChatList(Locale locale, Model model) {
 
 		return "mypage/myChatList";
 	}
-
+	
+	//4-1. 1:1상담내역 디테일
 	@RequestMapping(value = "myChatDetail.do", method = RequestMethod.GET)
 	public String myChatDetail(Locale locale, Model model) {
 
 		return "mypage/myChatDetail";
 	}
+	
+	
+	
+	
+	///////////////////////////////////////
+	
+	//이용권 구매내역
+	@RequestMapping(value = "ticketBuyList.do", method = RequestMethod.GET)
+	public String ticketBuyList(Locale locale, Model model) {
 
-	@RequestMapping(value = "result.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String result() {
-		return "mypage/result";
+		return "mypage/ticketBuyList";
 	}
+
+	//이용권 사용내역
+	@RequestMapping(value = "ticketUseList.do", method = RequestMethod.GET)
+	public String ticketUseList(Locale locale, Model model) {
+
+		return "mypage/ticketUseList";
+	}
+	
+	
+	@RequestMapping(value = "ticketBuyDetail.do", method = RequestMethod.GET)
+	public String ticketBuyDetail(Locale locale, Model model) {
+
+		return "mypage/ticketBuyDetail";
+	}
+	
+	
+	
+	//////////////////////////////////////////
+	
+	//나의 신청내역
+	@RequestMapping(value = "trainerApplyList.do", method = RequestMethod.GET)
+	public String trainerApplyList(HttpServletRequest request, Model model) throws Exception {
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		ProcessVO vo = mypageService.selectProcessInfo(memberId);
+		
+		if(vo == null) {
+			model.addAttribute("msg", "no");
+		}else {
+			model.addAttribute("msg", "yes");
+			model.addAttribute("vo", vo);
+			String fileSeq = vo.getFileSeq();
+			List<?> fileVO = mypageService.selectFileInfo(fileSeq);
+			model.addAttribute("fileVO", fileVO);
+		}
+		return "mypage/trainerApplyList";
+	}
+	
+	
+	
+	//신청하기
+	@RequestMapping(value = "trainerApply.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String trainerApply(HttpServletRequest request, Model model, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		String page = "";
+		
+		request.setCharacterEncoding("utf-8");
+		
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter(); 
+		
+		//신청상태가 A거나 B거나 C거나 E면 페이지 못 들어가게 막기
+		int cnt = mypageService.checkApplyPage(memberId);
+		
+		if(cnt != 0) {
+			out.println("<script>alert('신청내역이 존재합니다. 신청내역을 확인해주세요'); location.href=' trainerApplyList.do';</script>"); 
+			out.flush();
+			
+		}else {
+			System.out.println("memberId : " + memberId);
+			List<Map<String, String>> list = mypageService.selectMemberInfo(memberId);
+			System.out.println(list.toString());
+			String memberName = list.get(0).get("memberName");
+			String memberGender = list.get(0).get("memberGender");
+			String memberMobile = list.get(0).get("memberMobile");
+
+			model.addAttribute("memberName", memberName);
+			model.addAttribute("memberGender", memberGender);
+			model.addAttribute("memberMobile", memberMobile);
+			
+			page = "mypage/trainerApply";
+		}
+
+		return page;
+
+	}
+
+	
+	
+	/////////////////////////////////////////////
 	
 	//민선 내정보 수정
 	@RequestMapping(value = "updateMyInfoAjax.do", method = RequestMethod.POST)
@@ -274,16 +328,7 @@ public class MypageController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
+	//예진 - 파일 업로드!
 	@RequestMapping(value = "uploadAjax.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String upload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response,
@@ -324,6 +369,7 @@ public class MypageController {
 
 	}
 
+	//uploadAjax 안에서 사용하는 메서드
 	private List<AttachFileVO> fileProcess(MultipartHttpServletRequest multipartRequest, HttpServletRequest request)
 			throws Exception {
 		HttpSession session = request.getSession();
@@ -331,8 +377,6 @@ public class MypageController {
 		List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
 //        List<String> fileList = new ArrayList<String>();
 		Iterator<String> fileNames = multipartRequest.getFileNames();
-		
-		
 		
 		int cnt = 1;
 		while (fileNames.hasNext()) {

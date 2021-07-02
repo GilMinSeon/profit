@@ -34,4 +34,13 @@ public interface MypageMapper {
 	public void updateMemberInfo(MemberVO vo);
 	
 	public int updateOnlyInfo(MemberVO vo);
+	
+	//
+	public ProcessVO selectProcessInfo(String memberId);
+	
+	public List<?> selectFileInfo(String fileSeq);
+	
+	public int checkApplyPage(String memberId);
+	
+	
 }
