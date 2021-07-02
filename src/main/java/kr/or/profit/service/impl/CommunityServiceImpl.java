@@ -67,11 +67,24 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	
-	//댓글 리스트 가져오기
+	//자유게시판 댓글 리스트 가져오기
 	@Override
 	public List<Map<String, Object>> selectReplyList(String communitySeq) throws Exception {
-		return communityDAO.selectReplyList();
+		return communityDAO.selectReplyList(communitySeq);
 	}
+	
+	//자유게시판 답글 추가
+	@Override
+	public int insertBoardRereply(ReplyVO vo) throws Exception{
+		return communityDAO.insertBoardRereply(vo);
+	}
+
+	//자유게시판 댓글 삭제
+	@Override
+	public int deleteBoardReply(String replySeq) throws Exception {
+		return communityDAO.deleteBoardReply(replySeq);
+	}
+	
 	
 
 

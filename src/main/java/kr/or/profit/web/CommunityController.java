@@ -80,7 +80,7 @@ public class CommunityController {
 	/**
     * 자유게시판 목록 페이지 
     * @author 정예진
-    * @param 
+    * @param model
     * @return String - community/boardAdd
     * @throws Exception
     */
@@ -124,7 +124,7 @@ public class CommunityController {
 		boardDetail.put("replyList", replyList);
 		
 		model.addAttribute("BoardDetail" , boardDetail);
-		System.out.println(model.toString());
+		System.out.println("모델 : " + model.toString());
 		
 		return "community/boardDetail";
 	}
@@ -327,20 +327,46 @@ public class CommunityController {
 		System.out.println("replyContent : " + replyContent);
 		System.out.println("replyParentSeq : " + replyParentSeq);
 		
-//		ReplyVO replyvo = new ReplyVO();
-//		replyvo.setCommunitySeq(communitySeq);
-//		replyvo.setReplyContent(replyContent);
-//		replyvo.setInUserId(memberId);
-//		replyvo.setUpUserId(memberId);
-//		
-//		int insertResult = communityService.insertBoardReply(replyvo);
-//		
+		
+		ReplyVO replyvo = new ReplyVO();
+		replyvo.setCommunitySeq(communitySeq);
+		replyvo.setReplyContent(replyContent);
+		replyvo.setReplyParentSeq(replyParentSeq);
+		replyvo.setInUserId(memberId);
+		replyvo.setUpUserId(memberId);
+
+		int insertResult = communityService.insertBoardRereply(replyvo);
 
 	    String msg="ng";
 	    
-//		if(insertResult > 0) {
-//			msg = "ok";
-//		}
+		if(insertResult > 0) {
+			msg = "ok";
+		}
+		return msg;
+	}
+	
+	/**
+    * 자유게시판 댓글 삭제
+    * @author 정예진
+    * @param HttpServletRequest,HttpServletResponse
+    * @return String - msg
+    * @throws Exception
+    */
+	@RequestMapping(value = "replyDelAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String replyDelAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		String replySeq = request.getParameter("replySeq");
+		System.out.println("replySeq : " + replySeq);
+		int deleteResult = communityService.deleteBoardReply(replySeq);
+
+		
+		
+	    String msg="ng";
+
+	    if(deleteResult  > 0) {
+			msg = "ok";
+		}
 		return msg;
 	}
 	
