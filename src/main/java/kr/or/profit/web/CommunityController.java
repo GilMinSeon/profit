@@ -86,18 +86,24 @@ public class CommunityController {
     */
 	
 	@RequestMapping(value = "boardList.do",  method = {RequestMethod.GET, RequestMethod.POST})
-	public String boardList(Model model) throws Exception{
+	public String boardList(Model model, HttpServletRequest request) throws Exception{
+		
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		System.out.println(memberId);
+		
+		if(memberId == null) {
+			memberId = "";
+		}
 		
 		//자유게시판 인기글 목록
-		List<Map<String, String>> boardTopList = communityService.selectBoardTopList();
+		List<Map<String, String>> boardTopList = communityService.selectBoardTopList(memberId);
 		System.out.println("boardTopList.size : " + boardTopList.size());
 		model.addAttribute("boardTopList", boardTopList);
 		System.out.println("출력 : " + boardTopList.get(0).get("filePath"));
 		
-		
-		
 		//자유게시판 목록
-		List<Map<String, String>> boardList = communityService.selectBoardList();
+		List<Map<String, String>> boardList = communityService.selectBoardList(memberId);
 		model.addAttribute("boardList", boardList);
 		System.out.println("---------------------------");
 		System.out.println(model.toString());
@@ -116,10 +122,14 @@ public class CommunityController {
 	public String boardDetail(@ModelAttribute("communityVO") CommunityVO communityVO, Model model, HttpServletRequest request) throws Exception{
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
+		String communitySeq = communityVO.getCommunitySeq();
+		
+		CommunityVO paramVO = new CommunityVO();
+		paramVO.setMemberId(memberId);
+		paramVO.setCommunitySeq(communitySeq);
 		
 		//게시글 상세정보
-		String communitySeq = communityVO.getCommunitySeq();
-		Map<String, Object> boardDetail = communityService.selectBoardDetail(communitySeq);
+		Map<String, Object> boardDetail = communityService.selectBoardDetail(paramVO);
 		
 		//댓글 내 프로필 사진 이미지 정보
 		String myprofile = communityService.selectMyProfile(memberId);
@@ -159,10 +169,17 @@ public class CommunityController {
     * @throws Exception
     */
 	@RequestMapping(value = "boardMod", method = RequestMethod.GET)
-	public String boardMod(CommunityVO communityVO, Model model) throws Exception{
-		//게시글 상세정보
+	public String boardMod(CommunityVO communityVO, Model model, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
 		String communitySeq = communityVO.getCommunitySeq();
-		Map<String, Object> boardDetail = communityService.selectBoardDetail(communitySeq);
+		
+		CommunityVO paramVO = new CommunityVO();
+		paramVO.setMemberId(memberId);
+		paramVO.setCommunitySeq(communitySeq);
+		
+		//게시글 상세정보
+		Map<String, Object> boardDetail = communityService.selectBoardDetail(paramVO);
 		
 		model.addAttribute("BoardDetail" , boardDetail);
 		System.out.println("수정페이지");
