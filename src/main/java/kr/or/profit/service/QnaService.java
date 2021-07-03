@@ -19,6 +19,6 @@ public interface QnaService {
 	List<?> qnaListAll() throws Exception;
 
 	//댓글등록
-	String qnaReplyInsert(Map<String, Object> map) throws Exception;
+	void qnaReplyInsert(Map<String, Object> map) throws Exception;
 
 }

@@ -248,23 +248,22 @@ public class QnaController {
 	//==================================================================================================================================
 	//댓글부분
 
-//
-//	/**
-//	 * 댓글 등록(qnaReplyInsert)
-//	 *
-//	 * @author 박상빈
-//	 * @param map
-//	 * replyContent 를 Qna_SQL.xml로 보낸다
-//	 * @return "qna/qnaList"
-//	 * @exception Exception
-//	 */
-//	@RequestMapping(value = "qnaReplyInsert.do", method = RequestMethod.GET)
-//	public String qnaReplyInsert(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
-//
-//		String qnaReplyInsert = qnaService.qnaReplyInsert(map);
-//		model.addAttribute("data", qnaReplyInsert);
-//		return "qna/qnaList";
-//	}
+
+	/**
+	 * 댓글 등록(qnaReplyInsert)
+	 *
+	 * @author 박상빈
+	 * @param map
+	 * replyContent 를 Qna_SQL.xml로 보낸다
+	 * @return "qna/qnaList"
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "qnaReplyInsert.do", method = RequestMethod.POST)
+	public String qnaReplyInsert(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
+		qnaService.qnaReplyInsert(map);
+
+		return "qna/qnaList";
+	}
 
 
 }
