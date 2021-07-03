@@ -3,6 +3,8 @@ package kr.or.profit.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface QnaService {
 
 	List<?> qnaList(Map<String, Object> map) throws Exception;
@@ -19,6 +21,12 @@ public interface QnaService {
 	List<?> qnaListAll() throws Exception;
 
 	//댓글등록
-	void qnaReplyInsert(Map<String, Object> map) throws Exception;
+	int qnaReplyInsert(Map<String, Object> map) throws Exception;
+
+	//댓글목록
+	List<?> qnaDetailReply(Map<String, Object> map) throws Exception;
+
+	//댓글삭제
+	int qnaReplyDelete(HttpServletRequest request) throws Exception;
 
 }
