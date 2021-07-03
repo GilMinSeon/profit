@@ -49,8 +49,7 @@ public class QnaServiceImpl implements QnaService{
 
 	//댓글 등록
 	@Override
-	public String qnaReplyInsert(Map<String, Object> map) throws Exception{
-		return mapper.qnaReplyInsert(map);
+	public void qnaReplyInsert(Map<String, Object> map) throws Exception{
 	}
 
 

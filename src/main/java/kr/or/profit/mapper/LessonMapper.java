@@ -18,7 +18,7 @@ public interface LessonMapper {
 	int updateLesson(LessonVO vo) throws Exception;
 	
 	//강의 목록 조회
-	List<?> selectLessonList() throws Exception;
+	List<?> selectLessonList(Map<String, Object> map) throws Exception;
 
 	//강의 상세조회
 	Map<String, Object> selectLessonDetail(LessonVO vo) throws Exception;
@@ -52,7 +52,9 @@ public interface LessonMapper {
 	int deleteClass(LessonDetailVO vo) throws Exception;
 
 	//카테고리 선택하면 리스트
-	List<?> selectCateLessonList(Map map) throws Exception;
+	List<?> selectCateLessonList(Map<String, Object> map) throws Exception;
+
+	List<?> selectLessonList() throws Exception;
 
 
 

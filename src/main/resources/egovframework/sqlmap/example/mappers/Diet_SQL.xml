@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.or.profit.mapper.DietMapper">
+
+	<!-- 선택한 이용권 정보 조회 -->
+	<select id="selectTicketCategory" resultType="egovMap">
+	    SELECT 
+	    TICKET_CATEGORY_SEQ, 
+	    TICKET_NAME, 
+	    TICKET_PRICE, 
+	    TICKET_CNT
+		FROM 
+		TICKET_CATEGORY 
+		WHERE 
+		TICKET_CATEGORY_SEQ = #{ticketCategorySeq}
+	</select>
+</mapper>

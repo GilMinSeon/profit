@@ -14,7 +14,7 @@ public interface LessonService {
 	public int insertLesson(LessonVO vo) throws Exception;
 
 	//강의 목록조회 ->나중에 페이징처리하기
-	public List<?> selectLessonList() throws Exception;
+	public List<?> selectLessonList(Map<String, Object> map) throws Exception;
 
 	//강의 상세조회
 	public Map<String, Object> selectLessonDetail(LessonVO lessonVO) throws Exception;
@@ -51,7 +51,9 @@ public interface LessonService {
 	public int deleteClass(LessonDetailVO vo) throws Exception;
 	
 	//카테고리 선택하면 리스트
-	public List<?> selectCateLessonList(Map map) throws Exception;
+	public List<?> selectCateLessonList(Map<String, Object> map) throws Exception;
+
+	public List<?> selectLessonList() throws Exception;
 
 
 

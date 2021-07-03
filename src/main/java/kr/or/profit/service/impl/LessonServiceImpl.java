@@ -34,8 +34,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//강의 목록조회
 	@Override
-	public List<?> selectLessonList() throws Exception {
-		return lessonDAO.selectLessonList();
+	public List<?> selectLessonList(Map<String, Object> map) throws Exception {
+		return lessonDAO.selectLessonList(map);
 	}
 
 	//강의 상세조회
@@ -102,8 +102,13 @@ public class LessonServiceImpl implements LessonService {
 
 	//카테고리 선택하면 리스트
 	@Override
-	public List<?> selectCateLessonList(Map map) throws Exception {
+	public List<?> selectCateLessonList(Map<String, Object> map) throws Exception {
 		return lessonDAO.selectCateLessonList(map);
+	}
+
+	@Override
+	public List<?> selectLessonList() throws Exception {
+		return lessonDAO.selectLessonList();
 	}
 
 
