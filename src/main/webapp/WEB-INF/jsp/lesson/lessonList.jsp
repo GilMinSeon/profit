@@ -7,70 +7,111 @@
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 
-function fn_seljogun(){
-	var selCategory = document.getElementById("selCate");
-	var selLev = document.getElementById("selLev");
-	var searchText = document.getElementById("searchText");
+// function fn_seljogun(){
+// 	var selCategory = document.getElementById("selCate");
+// 	var selLev = document.getElementById("selLev");
+// 	var searchText = document.getElementById("searchText");
 	
-	var sel_cvalue = $("select[name=selCate] option:selected").text();
-	var sel_lvalue = $("select[name=selLev] option:selected").text();
-	var sel_tvalue = $("input:[name=searchText]").val();
+// 	var sel_cvalue = $("select[name=selCate] option:selected").text();
+// 	var sel_lvalue = $("select[name=selLev] option:selected").text();
+// 	var sel_tvalue = $("input:[name=searchText]").val();
 	
-	console.log("sel_cvalue "+sel_cvalue);
-	console.log("sel_lvalue "+sel_lvalue);
-	console.log("sel_tvalue "+sel_tvalue);
+// 	console.log("sel_cvalue "+sel_cvalue);
+// 	console.log("sel_lvalue "+sel_lvalue);
+// 	console.log("sel_tvalue "+sel_tvalue);
 	
-	var param = "";
-	param += "dummy=" + Math.random();
-	param += "&sel_cvalue=" + sel_cvalue;
-	param += "&sel_lvalue=" + sel_lvalue;
-	param += "&sel_tvalue=" + sel_tvalue;
+// 	var param = "";
+// 	param += "dummy=" + Math.random();
+// 	param += "&sel_cvalue=" + sel_cvalue;
+// 	param += "&sel_lvalue=" + sel_lvalue;
+// 	param += "&sel_tvalue=" + sel_tvalue;
 	
-	console.log("param "+ param);
+// 	console.log("param "+ param);
 	
-	$.ajax({
-		type : 'get',
-		url : 'searchCateAjax.do',
-		data : param,
-		async:false,
-		dataType:"json",
-		success : function(data, textStatus){
-			if(data != null){
-// 				var jsonInfo = JSON.parse(data);
-				console.log(data)
-				if(data.msg == "ok"){
-					var txt = "";
+// 	$.ajax({
+// 		type : 'get',
+// 		url : 'searchCateAjax.do',
+// 		data : param,
+// 		async:false,
+// 		dataType:"json",
+// 		success : function(data, textStatus){
+// 			if(data != null){
+// // 				var jsonInfo = JSON.parse(data);
+// 				console.log(data)
+// 				if(data.msg == "ok"){
+// 					var txt = "";
 					
-				}
-			}else{
-				alert("뿡뿡이");
-			}
-	},
-		error : function(error){
-			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
-			console.log(error);
-			console.log(error.status);
-		}
+// 				}
+// 			}else{
+// 				alert("뿡뿡이");
+// 			}
+// 	},
+// 		error : function(error){
+// 			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+// 			console.log(error);
+// 			console.log(error.status);
+// 		}
 		
 		
-	})
+// 	})
 	
-}
+// }
 
+// submit방식
 // $(function(){
 // 	$("#frm").submit(function(){
 // 		var sel_cvalue = $("select[name=selCate] option:selected").text();
 // 	 	var sel_lvalue = $("select[name=selLev] option:selected").text();
-// 	 	var sel_tvalue = $("input:[name=searchText]").val();
+// 	 	var keyword = $("input[name=keyword]").text();
 	 	
 // 		console.log("sel_cvalue "+sel_cvalue);
 // 	 	console.log("sel_lvalue "+sel_lvalue);
-// 	 	console.log("sel_tvalue "+sel_tvalue);
+// 	 	console.log("keyword"+keyword);
+	 	
+// 	 	var offset = $('#row_sel').offset();
+// 	 	console.log(offset);
+// 	 	$('html').animate({scrollTop : offset.top}, 1672);
+
+	 	
+	 	
 	 	
 // 	})
+	
+	
+	
+	
+	
 // })
 
+
+
 </script>
+<style>
+
+.classes__item__text .class-btn:hover {
+    background: #ffffff;
+    border: 1px solid #5768AD;
+    color: #5768AD;
+}
+
+.classes__item__text .class-btn {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    background:#5768AD;
+    display: inline-block;
+    border: 1px solid rgba(155, 158, 163, 0.2);
+    padding: 10px 20px 7px;
+    border-radius: 2px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+
+</style>
 
 <body>
 
@@ -92,9 +133,10 @@ function fn_seljogun(){
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="section-title">
-                        <h3>인기 강의 TOP 3</h3>
-                        <p>지금 가장 인기있는 강의를 확인해 보세요!!</p>
+                    <div class="section-title" style="margin-top: 50px;">
+                        <h2 style="font-weight: bold;">🏆인기글 TOP 6</h2>
+                        <br>
+                        <p style="color: #535353;font-size: 1.2em;">지금 가장 조회수가 많은 강의를 확인해 보세요!!</p>
                     </div>
                 </div>
             </div>
@@ -112,32 +154,38 @@ function fn_seljogun(){
 	                            <div style="display: inline-block;vertical-align: middle;">
 	                            	<img src="./resources/img/common/hit.png" style="width:30px;height: 20px;opacity: 0.5;">
 	                            </div>
-	                            <div style="display: inline-block;">
-	                            	<p>${resultTop.lessonHit}</p>
-	                            </div> |&nbsp;
-	                            <div style="display: inline-block;vertical-align: middle;">
-	                            	<img src="./resources/img/common/reply.PNG" style="width:24px;height: 19px;opacity: 0.5;">
-	                            </div>
-	                            <div style="display: inline-block;">
-	                            	<p>${resultTop.lessonReply}</p>
-	                            </div> |&nbsp;
-	                            <div style="display: inline-block;vertical-align: middle;">
-	                            	<img src="./resources/img/common/good.PNG" style="width:22px;height: 20px;">
-	                            </div>
-	                            <div style="display: inline-block;">
-	                            	<p>${resultTop.lessonGood}</p>
-	                            </div> 
+	                            <div style="display: inline-block;vertical-align:sub;">
+									<p style="margin:0;">${result.lessonHit}&nbsp;&nbsp;</p>
+								</div>
+								<div style="display: inline-block; vertical-align: middle;">
+									<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
+								</div>
+								<div style="display: inline-block;vertical-align:sub;">
+									<p>${result.lessonReply}&nbsp;&nbsp;</p>
+								</div>
+								<div style="display: inline-block; vertical-align: middle;">
+									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+								</div>
+								<div style="display: inline-block;vertical-align:sub;">
+									<p>${result.lessonGood}&nbsp;&nbsp;</p>
+								</div>
+								<div style="display: inline-block; vertical-align: middle;">
+									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+								</div>
+								<div style="display: inline-block;vertical-align:sub;">
+									<p>${result.lessonBook}&nbsp;&nbsp;</p>
+								</div>  
                             </div>
-							<p>카테고리 | <span>${resultTop.lessonCategoryName}</span></p>
-                            <h4 style="margin-bottom: 30px;">
-								<a href="#" style="font-size: 0.8em;font-weight: bold;">${resultTop.lessonTitle}</a>
+							<p style="font-weight: bold; color: #8B94B5;">카테고리 | <span>${resultTop.lessonCategoryName}</span></p>
+                            <h4 style="margin-bottom: 10px;">
+								<a style="font-size: 0.8em;font-weight: bold;">${resultTop.lessonTitle}</a>
 							</h4>
                             <div>
                             	<div style="display: inline-block;vertical-align: middle;">
                             		<img src="./resources/img/common/writer.PNG" style="width:24px;height: 26px;opacity: 0.5;" />
                             	</div>&nbsp;
                             	<div style="display: inline-block;">
-                            		<h6 style="margin-bottom: 25px;">${resultTop.inUserId}</h6>
+                            		<h6 style="margin-bottom: 25px;color:#535353">${resultTop.inUserId}</h6>
                             	</div>
                             </div>
                             <a href="lessonDetail.do?lessonSeq=${resultTop.lessonSeq}" class="class-btn" style="width:100%; text-align: center;">상세보기</a>
@@ -157,7 +205,7 @@ function fn_seljogun(){
 			<div class="classes__filter">
 				<div class="row">
 					<div class="col-lg-12">
-						<form method="get" id="frm">
+						<form method="get" id="frm" action="lessonList.do#location123">
 							<div class="class__filter__select">
 								<p>Categories:</p>
 								<select name="selCate" id="selCate">
@@ -186,13 +234,14 @@ function fn_seljogun(){
 							</div>
 							<div class="class__filter__input"  >
 								<p>Search:</p>
-								<input type="text" placeholder="검색" name="searchText" id="searchText">
+								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${keyword}">
 							</div>
 							<div class="class__filter__btn">
-								<button style="cursor:pointer;" onclick="fn_seljogun()">
+								<button type="submit" style="cursor:pointer;">
 									<i class="fa fa-search"></i>
 								</button>
 							</div>
+							<span id="location123"></span>
 						</form>
 					</div>
 				</div>

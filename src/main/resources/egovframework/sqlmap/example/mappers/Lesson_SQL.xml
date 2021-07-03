@@ -131,7 +131,7 @@
     
 	   <!-- 강의 목록조회 --> 
 	    
-	    <select id="selectLessonList"  resultType="egovMap">	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
+	    <select id="selectLessonList"  resultType="egovMap" parameterType="hashmap">	 <!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
 
 			SELECT A.LESSON_SEQ ,
 				   A.FILE_SEQ, 
@@ -177,6 +177,119 @@
 				ON A.LESSON_SEQ = F.LESSON_SEQ
 
 			WHERE 1=1
+			<if test="selCate != null and selCate != ''">
+				AND E.LESSON_CATEGORY_NAME = #{selCate}
+			</if>
+			<if test="keyword != null and keyword != ''">
+			    AND LESSON_TITLE LIKE '%' || #{keyword} || '%'
+			    OR A.IN_USER_ID LIKE '%' || #{keyword} || '%'
+<!-- 		        <choose> -->
+<!-- 		            <when test="searchCondition == 0"> -->
+<!-- 						AND	ID LIKE '%' || #{keyword} || '%' -->
+<!-- 					</when> -->
+<!-- 		            <when test="searchCondition == 1"> -->
+<!-- 						AND	NAME LIKE '%' || #{searchKeyword} || '%' -->
+<!-- 					</when> -->
+<!-- 				</choose> -->
+			</if>
+			
+<!-- 			<if test="selCate == null and selCate == '' and selLev == null and selLev == '' and  keyword == null and keyword == '' "> -->
+<!-- 				ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC -->
+<!-- 			</if> -->
+			
+			
+			<trim prefix="ORDER BY" >
+			    <if test="selCate == null or selCate == '' or selLev == null or selLev == '' or  keyword == null or keyword == '' ">
+					TO_NUMBER(A.LESSON_SEQ) DESC
+				</if>
+			    <if test="selLev != null and selLev != ''">
+			        <choose>
+			            <when test="selLev == '조회순'">
+			             TO_NUMBER(LESSON_HIT) DESC
+				        </when>
+				        <when test="selLev == '좋아요순'">
+						 TO_NUMBER(LESSON_GOOD) DESC
+				        </when>
+				         <when test="selLev == '댓글순'">
+						 TO_NUMBER(LESSON_reply) DESC
+				        </when>
+			        </choose>
+<!-- 				        <otherwise> -->
+<!-- 				         TO_NUMBER(A.LESSON_SEQ) DESC -->
+<!-- 				        </otherwise> -->
+			    </if>
+			    
+			</trim>
+			
+<!-- 			ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC -->
+<!-- 			</if> -->
+<!-- 			<if test="selLev != null and selLev != ''"> -->
+<!-- 			    <choose> -->
+<!-- 			        <when test="selLev == '조회순'"> -->
+<!-- 					, LESSON_HIT DESC -->
+<!-- 			        </when> -->
+<!-- 			        <when test="selLev == '좋아요순'"> -->
+<!-- 					, LESSON_GOOD DESC -->
+<!-- 			        </when> -->
+<!-- 			         <when test="selLev == '댓글순'"> -->
+<!-- 					, LESSON_reply DESC -->
+<!-- 			        </when> -->
+<!-- 			    </choose> -->
+<!-- 			</if> -->
+<!-- 			LIMIT #{recordCountPerPage} OFFSET #{firstIndex} -->
+	</select>
+	    
+	    
+	    
+	    
+	     <!-- 강의 목록조회 --> 
+	    
+<!-- 	    <select id="selectLessonList"  resultType="egovMap">	 egovMap :  key 에 대하여 Camel Case 변환하여 super.put -->
+
+<!-- 			SELECT A.LESSON_SEQ , -->
+<!-- 				   A.FILE_SEQ,  -->
+<!-- 				   A.COMMON_SEQ,  -->
+<!-- 				   A.LESSON_CATEGORY_SEQ,  -->
+<!-- 					CASE -->
+<!-- 					    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...' -->
+<!-- 					    ELSE A.LESSON_TITLE -->
+<!-- 					    END AS LESSON_TITLE,  -->
+<!-- 				  	A.LESSON_TITLE_COMMENT,  -->
+<!-- 				  	A.LESSON_PRIVATE_FLAG,  -->
+<!-- 				  	A.LESSON_INTRO,  -->
+<!-- 				  	NVL(A.LESSON_HIT,0) AS LESSON_HIT,  -->
+<!-- 				  	A.IN_USER_ID,  -->
+<!-- 				  	D.FILE_PATH, -->
+<!-- 				  	D.FILE_SAVE_NAME,  -->
+<!-- 				  	E.LESSON_CATEGORY_NAME, -->
+<!-- 				  	NVL(B.LESSON_GOOD,0) as LESSON_good, -->
+<!--                     NVL(f.LESSON_BOOK,0) as LESSON_book, -->
+<!--                     NVL(C.LESSON_REPLY,0) as LESSON_reply -->
+         
+<!--                 FROM LESSON A -->
+<!-- 				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD -->
+<!-- 				                FROM BOOKGOOD -->
+<!-- 				                WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G' -->
+<!-- 				                GROUP BY LESSON_SEQ) B -->
+<!-- 				ON A.LESSON_SEQ = B.LESSON_SEQ -->
+<!-- 				    LEFT OUTER JOIN(SELECT LESSON_SEQ,COUNT(*) AS LESSON_REPLY -->
+<!--                                 FROM REPLY -->
+<!--                                 WHERE REPLY_DEL_FLAG='N' -->
+<!-- 				                GROUP BY LESSON_SEQ) C -->
+<!-- 				ON A.LESSON_SEQ = C.LESSON_SEQ -->
+<!-- 				    LEFT OUTER JOIN (SELECT FILE_SEQ,FILE_PATH,FILE_SAVE_NAME -->
+<!-- 				                FROM ATTACH_FILE ) D -->
+<!-- 				ON A.FILE_SEQ = D.FILE_SEQ -->
+<!-- 				    LEFT OUTER JOIN (SELECT LESSON_CATEGORY_SEQ, LESSON_CATEGORY_NAME -->
+<!-- 				                FROM LESSON_CATEGORY) E -->
+<!-- 				ON A.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ -->
+<!-- 					LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_BOOK -->
+<!-- 										FROM BOOKGOOD -->
+<!-- 										WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B' -->
+<!-- 										GROUP BY LESSON_SEQ) F -->
+<!-- 				ON A.LESSON_SEQ = F.LESSON_SEQ -->
+
+<!-- 			WHERE 1=1 -->
 <!-- 			<if test="selCate != null and selCate != ''"> -->
 <!-- 				AND E.LESSON_CATEGORY_NAME = #{selCate} -->
 <!-- 			</if> -->
@@ -190,22 +303,74 @@
 <!-- 					</when> -->
 <!-- 				</choose> -->
 <!-- 			</if> -->
-			ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC
+<!-- 			ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC -->
 <!-- 			<if test="selLev != null and selLev != ''"> -->
 <!-- 				, TO_NUMBER(A.LESSON_SEQ) DESC -->
 <!-- 			</if> -->
 <!-- 			LIMIT #{recordCountPerPage} OFFSET #{firstIndex} -->
-	</select>
+<!-- 	</select> -->
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    
    	
 	    
 	    <!-- 인기강의 조회 -->
 	    
 	  <select id="selectTopLessonList"  resultType="egovMap">	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
-	    SELECT T.LESSON_SEQ ,T.FILE_SEQ, T.COMMON_SEQ, T.LESSON_CATEGORY_SEQ, T.LESSON_TITLE
-				, T.LESSON_TITLE_COMMENT, T.LESSON_PRIVATE_FLAG, T.LESSON_INTRO, T.LESSON_HIT, T.LESSON_GOOD
-				, T.IN_DATE, T.LESSON_REPLY, T.FILE_PATH, T.FILE_SAVE_NAME
-				, T.LESSON_CATEGORY_NAME
+	    SELECT T.LESSON_SEQ ,
+	    	   T.FILE_SEQ, 
+	    	   T.COMMON_SEQ, 
+	    	   T.LESSON_CATEGORY_SEQ, 
+	    	   T.LESSON_TITLE, 
+	    	   T.LESSON_TITLE_COMMENT, 
+	    	   T.LESSON_PRIVATE_FLAG, 
+	    	   T.LESSON_INTRO, 
+	    	   T.LESSON_HIT, 
+	    	   T.LESSON_GOOD, 
+	    	   T.IN_USER_ID, 
+	    	   T.IN_DATE, 
+	    	   T.LESSON_REPLY, 
+	    	   T.FILE_PATH, 
+	    	   T.FILE_SAVE_NAME, 
+	    	   T.LESSON_CATEGORY_NAME
 				FROM
 				(
 				SELECT A.LESSON_SEQ ,A.FILE_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, 
@@ -213,7 +378,17 @@
 				    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'
 				    ELSE A.LESSON_TITLE
 				    END AS LESSON_TITLE, 
-				A.LESSON_TITLE_COMMENT, A.LESSON_PRIVATE_FLAG, A.LESSON_INTRO, TO_NUMBER(A.LESSON_HIT) LESSON_HIT, B.LESSON_GOOD, A.IN_USER_ID, TO_CHAR(A.IN_DATE, 'yyyy-mm-dd') IN_DATE, C.LESSON_REPLY, D.FILE_PATH,D.FILE_SAVE_NAME, E.LESSON_CATEGORY_NAME
+				A.LESSON_TITLE_COMMENT, 
+				A.LESSON_PRIVATE_FLAG, 
+				A.LESSON_INTRO, 
+				TO_NUMBER(A.LESSON_HIT) LESSON_HIT, 
+				B.LESSON_GOOD, 
+				A.IN_USER_ID, 
+				TO_CHAR(A.IN_DATE, 'yyyy-mm-dd') IN_DATE, 
+				C.LESSON_REPLY, 
+				D.FILE_PATH,
+				D.FILE_SAVE_NAME, 
+				E.LESSON_CATEGORY_NAME
 				        FROM LESSON A
 				            LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
 				                        FROM BOOKGOOD
@@ -234,7 +409,7 @@
 				        
 				        order by TO_NUMBER(A.LESSON_HIT) desc
 				) T
-				where rownum &lt; 4
+				where rownum &lt; 7
 		</select>
 	    
 	    
@@ -395,17 +570,28 @@
 
 	</delete>
 	
-	<select id="selectCateLessonList"  resultType="egovMap" parameterType="hashMap">
-	    SELECT A.LESSON_SEQ ,A.FILE_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, 
+	<select id="selectCateLessonList"  resultType="egovMap" parameterType="java.util.HashMap">
+	    
+	   SELECT A.LESSON_SEQ ,
+				   A.FILE_SEQ, 
+				   A.COMMON_SEQ, 
+				   A.LESSON_CATEGORY_SEQ, 
 					CASE
 					    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'
 					    ELSE A.LESSON_TITLE
 					    END AS LESSON_TITLE, 
-				  	A.LESSON_TITLE_COMMENT, A.LESSON_PRIVATE_FLAG, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, A.IN_USER_ID, D.FILE_PATH,D.FILE_SAVE_NAME, E.LESSON_CATEGORY_NAME
-				,NVL(B.LESSON_GOOD,0) as LESSON_good,
+				  	A.LESSON_TITLE_COMMENT, 
+				  	A.LESSON_PRIVATE_FLAG, 
+				  	A.LESSON_INTRO, 
+				  	NVL(A.LESSON_HIT,0) AS LESSON_HIT, 
+				  	A.IN_USER_ID, 
+				  	D.FILE_PATH,
+				  	D.FILE_SAVE_NAME, 
+				  	E.LESSON_CATEGORY_NAME,
+				  	NVL(B.LESSON_GOOD,0) as LESSON_good,
                     NVL(f.LESSON_BOOK,0) as LESSON_book,
                     NVL(C.LESSON_REPLY,0) as LESSON_reply
-                
+         
                 FROM LESSON A
 				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
 				                FROM BOOKGOOD
@@ -428,18 +614,14 @@
 										WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B'
 										GROUP BY LESSON_SEQ) F
 				ON A.LESSON_SEQ = F.LESSON_SEQ
-		<if test="selCate != null and selCate != ''"> 
-				AND E.LESSON_CATEGORY_NAME = #{selCate}
-		</if>
-			ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC
-			<if test="selLev != null and selLev != ''">
-				, LESSON_HIT DESC
-			</if>		
-				
-<!-- 		<if test='_parameter != null'> -->
-<!--             where e.lesson_category_name=#{_parameter} -->
-<!--         </if> -->
-	    
+				<if test="sel_cvalue != null and sel_cvalue != ''">
+		            where e.lesson_category_name = #{sel_cvalue}
+		        </if>
+					
+				ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC 
+<!-- 				<if test="selLev != null and selLev != ''"> -->
+<!-- 		            LESSON_HIT = #{_parameter} -->
+<!-- 		        </if> -->
 	    
 	    
 	</select>
