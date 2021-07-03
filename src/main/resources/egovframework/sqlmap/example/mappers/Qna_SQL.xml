@@ -18,24 +18,69 @@
 	</resultMap>
 
 	<!-- qna 목록 댓글 개수 -->
-	<select id="qnaList"  resultType="egovMap">
+	<select id="qnaList" parameterType="hashMap"  resultType="egovMap">
 		SELECT
-		    COMMUNITY_SEQ,
-		    COMMON_SEQ,
-		    COMMUNITY_CATEGORY_SEQ,
-		    FILE_SEQ,
-		    COMMON_TITLE,
-		    COMMON_CONTENT,
-		    COMMON_HIT,
-		    COMMON_DEL_FLAG,
-		    IN_USER_ID,
-		    TO_CHAR(IN_DATE, 'YYYY/MM/DD') IN_DATE,
-		    UP_USER_ID,
-		    TO_CHAR(UP_DATE, 'YYYY/MM/DD') IN_DATE
+		    (SELECT
+		            COUNT(*)
+		        FROM
+		            REPLY B
+		        WHERE
+		            A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+		        ) CNT,
+		    A.COMMUNITY_SEQ,
+		    A.COMMON_SEQ,
+		    A.COMMUNITY_CATEGORY_SEQ,
+		    A.FILE_SEQ,
+		    A.COMMON_TITLE,
+		    A.COMMON_HIT,
+		    A.COMMON_DEL_FLAG,
+		    A.IN_USER_ID,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
+		    A.UP_USER_ID,
+		    TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') IN_DATE,
+		    A.COMMON_CONTENT
+
 		FROM
-		    COMMUNITY
+		    COMMUNITY A
 		WHERE
-			COMMON_SEQ = '8'
+		    A.COMMON_SEQ = '8'
+		AND
+			A.IN_USER_ID = #{memberId}
+		AND
+			A.COMMON_DEL_FLAG = 'N'
+
+	</select>
+<!-- 	관리자 목록 -->
+	<select id="qnaListAll" resultType="egovMap">
+		SELECT
+		    (SELECT
+		            COUNT(*)
+		        FROM
+		            REPLY B
+		        WHERE
+		            A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+		        ) CNT,
+		    A.COMMUNITY_SEQ,
+		    A.COMMON_SEQ,
+		    A.COMMUNITY_CATEGORY_SEQ,
+		    A.FILE_SEQ,
+		    A.COMMON_TITLE,
+		    A.COMMON_HIT,
+		    A.COMMON_DEL_FLAG,
+		    A.IN_USER_ID,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
+		    A.UP_USER_ID,
+		    TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') IN_DATE,
+		    A.COMMON_CONTENT
+
+		FROM
+		    COMMUNITY A
+		WHERE
+		    A.COMMON_SEQ = '8'
+		AND
+			A.COMMON_DEL_FLAG = 'N'
+
+
 	</select>
 
 <!-- 	글등록 -->
@@ -44,11 +89,8 @@
 			(
 				COMMUNITY_SEQ,
                 COMMON_SEQ,
-                COMMUNITY_CATEGORY_SEQ,
-                FILE_SEQ,
                 COMMON_TITLE,
                 COMMON_CONTENT,
-                COMMON_HIT,
                 COMMON_DEL_FLAG,
                 IN_USER_ID,
                 IN_DATE,
@@ -61,11 +103,8 @@
                 FROM
                     COMMUNITY)+1,
 				'8',
-				null,
-				#{files},
 				#{title},
 				#{contents},
-				'0',
 				'N',
 				#{memberId},
 				SYSDATE,
@@ -73,17 +112,13 @@
 				SYSDATE
 						)
 	</insert>
-
 <!-- 	상세보기 -->
 	<select id="qnaDetail" resultType="egovMap">
 		SELECT
 		    COMMUNITY_SEQ,
 		    COMMON_SEQ,
-		    COMMUNITY_CATEGORY_SEQ,
-		    FILE_SEQ,
 		    COMMON_TITLE,
-		    COMMON_CONTENT,
-		    COMMON_HIT,
+		    TO_CHAR(COMMON_CONTENT) COMMON_CONTENT,
 		    COMMON_DEL_FLAG,
 		    IN_USER_ID,
 		    TO_CHAR(IN_DATE, 'YYYY/MM/DD') IN_DATE,
@@ -109,10 +144,43 @@
 	</update>
 
 <!-- 	글 삭제 -->
-	<delete id="qnaDelete" parameterType="hashMap" >
-		DELETE FROM
-		    community
+	<update id="qnaDelete" parameterType="hashMap" >
+		UPDATE
+		    COMMUNITY
+		SET
+		    COMMON_DEL_FLAG = 'Y'
 		WHERE
 		    COMMUNITY_SEQ = #{communitySeq}
-	</delete>
+	</update>
+
+	<!-- 	댓글 등록 -->
+	<insert id="qnaReplyInsert" parameterType="hashMap" >
+		INSERT INTO REPLY(
+			REPLY_SEQ,
+		    COMMUNITY_SEQ,
+		    REPLY_CONTENT,
+		    REPLY_DEL_FLAG,
+		    IN_USER_ID,
+		    IN_DATE,
+		    UP_USER_ID,
+		    UP_DATE
+
+		    )
+		VALUES (
+			(
+		    SELECT
+		        COUNT(*)
+		    FROM
+		        REPLY)+1,
+		    #{communitySeq},
+		    #{replyContent},
+		    'N',
+		    '1',
+		    SYSDATE,
+		    '1',
+		    SYSDATE
+		    )
+	</insert>
+
+
 </mapper>

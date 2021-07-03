@@ -11,7 +11,7 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 @Mapper("qnaMapper")
 public interface QnaMapper {
 
-	List<?> qnaList() throws Exception;
+	List<?> qnaList(Map<String, Object> map) throws Exception;
 
 	int qnaInsert(Map<String, Object>map) throws Exception;
 
@@ -20,6 +20,12 @@ public interface QnaMapper {
 	int qnaUpdate(Map<String, Object> map) throws Exception;
 
 	int qnaDelete(Map<String, Object> map) throws Exception;
+
+	List<?> qnaListAll() throws Exception;
+
+	//댓글 등록
+	void qnaReplyInsert(Map<String, Object> map) throws Exception;
+
 
 
 }

@@ -31,12 +31,12 @@ public class DietController {
 		return "diet/chatDetail";
 	}
 	
-	@RequestMapping(value = "buyTicket", method = RequestMethod.GET)
+	@RequestMapping(value = "buyTicket.do", method = RequestMethod.GET)
 	public String buyTicket(Locale locale, Model model) {
 		return "diet/buyTicket";
 	}
 	
-	@RequestMapping(value = "buyTicketDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "buyTicketDetail.do", method = RequestMethod.GET)
 	public String buyTicketDetail(Locale locale, Model model) {
 		return "diet/buyTicketDetail";
 	}

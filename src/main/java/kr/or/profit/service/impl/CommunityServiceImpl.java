@@ -91,6 +91,33 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDAO.increaseHit(communitySeq);
 	}
 	
+	//자유게시판 글 수정
+	@Override
+	public int updateBoard(CommunityVO vo) throws Exception{
+		return communityDAO.updateBoard(vo);
+	}
+
+
+	//자유게시판 글 삭제
+	@Override
+	public int deleteBoard(String communitySeq) throws Exception {
+		return communityDAO.deleteBoard(communitySeq);
+	}
+
+
+	//최신글 TOP5 가져오기
+	@Override
+	public List<Map<String, Object>> recentBoardList() throws Exception {
+		return communityDAO.recentBoardList();
+	}
+
+	
+	//인기글 TOP5 가져오기
+	@Override
+	public List<Map<String, Object>> bestBoardList() throws Exception {
+		return communityDAO.bestBoardList();
+	}
+	
 
 
 

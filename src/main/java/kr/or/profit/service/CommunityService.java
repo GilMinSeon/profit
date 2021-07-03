@@ -42,4 +42,16 @@ public interface CommunityService {
 	
 	//자유게시판 조회수 증가
 	public int increaseHit(String communitySeq) throws Exception;
+	
+	//자유게시판 글 수정
+	public int updateBoard(CommunityVO vo) throws Exception;
+	
+	//자유게시판 글 삭제
+	public int deleteBoard(String communitySeq) throws Exception;
+	
+	//최신글 TOP5 가져오기
+	public List<Map<String, Object>> recentBoardList() throws Exception;
+	
+	//인기글 TOP5 가져오기
+	public List<Map<String, Object>> bestBoardList() throws Exception;
 }

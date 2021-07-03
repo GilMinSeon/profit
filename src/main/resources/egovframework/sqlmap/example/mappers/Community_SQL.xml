@@ -85,7 +85,7 @@
 		A.FILE_SEQ,
 		CASE
 		WHEN
-		LENGTH(A.COMMON_TITLE) > 20 THEN SUBSTR(A.COMMON_TITLE, 0, 20) ||
+		LENGTH(A.COMMON_TITLE) > 15 THEN SUBSTR(A.COMMON_TITLE, 0, 15) ||
 		'...'
 		ELSE A.COMMON_TITLE
 		END AS COMMON_TITLE,
@@ -168,7 +168,7 @@
 		A.COMMUNITY_CATEGORY_SEQ,
 		A.FILE_SEQ,
 		CASE
-		WHEN LENGTH(A.COMMON_TITLE) > 30 THEN SUBSTR(A.COMMON_TITLE, 0, 30) ||'...'
+		WHEN LENGTH(A.COMMON_TITLE) > 22 THEN SUBSTR(A.COMMON_TITLE, 0, 22) ||'...'
 		ELSE A.COMMON_TITLE
 		END AS COMMON_TITLE,
 		A.COMMON_CONTENT,
@@ -216,7 +216,7 @@
 		WHERE A.COMMON_SEQ = 5 AND A.COMMON_DEL_FLAG = 'N'
 		ORDER BY TO_NUMBER(A.COMMON_HIT) DESC
 		)
-		WHERE ROWNUM<=6
+		WHERE ROWNUM<=5
 		]]>
 	</select>
 
@@ -455,4 +455,90 @@
 		WHERE COMMUNITY_SEQ = #{communitySeq}
 
 	</update>
+	
+	<!-- 자유게시판 글 수정 -->
+	<update id="updateBoard">
+	    UPDATE COMMUNITY 
+	    SET 
+	    COMMON_TITLE = #{commonTitle}, 
+		COMMON_CONTENT = #{commonContent},
+		COMMUNITY_CATEGORY_SEQ = #{communityCategorySeq},
+		FILE_SEQ =#{fileSeq},
+		UP_USER_ID=#{upUserId},
+		UP_DATE = SYSDATE
+		WHERE COMMUNITY_SEQ=#{communitySeq}
+	    
+	</update>
+	
+	<!-- 자유게시판 글 삭제 -->
+	<update id="deleteBoard">
+	    UPDATE COMMUNITY 
+	    SET COMMON_DEL_FLAG='Y'
+		WHERE COMMUNITY_SEQ = #{communitySeq}
+	    
+	</update>
+	
+	<!-- 자유게시판 최신글 TOP5 조회 -->
+	<select id="recentBoardList" resultType="egovMap">
+	    <![CDATA[
+	    SELECT A.RN, A.COMMUNITY_SEQ, A.FILE_SEQ,
+	    CASE 
+	    WHEN LENGTH(A.COMMON_TITLE) > 20 THEN SUBSTR(A.COMMON_TITLE, 0, 20) ||'...' 
+		ELSE A.COMMON_TITLE
+		END AS COMMON_TITLE, 
+	    B.FILE_PATH, A.IN_DATE
+		FROM
+		(
+		SELECT ROWNUM AS RN, COMMUNITY_SEQ, FILE_SEQ, COMMON_TITLE, IN_DATE
+		FROM
+		(
+		SELECT COMMUNITY_SEQ, FILE_SEQ, COMMON_TITLE, IN_DATE
+		FROM COMMUNITY
+		WHERE COMMON_SEQ = 5 AND COMMON_DEL_FLAG = 'N'
+		ORDER BY IN_DATE DESC
+		)
+		WHERE ROWNUM <= 5
+		) A
+		LEFT JOIN 
+		ATTACH_FILE B ON
+		(A.FILE_SEQ = B.FILE_SEQ)
+		ORDER BY RN ASC
+	    ]]>
+	</select>
+	
+	<!-- 자유게시판 인기글 TOP5 조회 -->
+	<select id="bestBoardList" resultType="egovMap">
+	    <![CDATA[
+	    SELECT D.RN, D.COMMUNITY_SEQ, D.CNT, 
+	    CASE 
+	    WHEN LENGTH(D.COMMON_TITLE) > 20 THEN SUBSTR(D.COMMON_TITLE, 0, 20) ||'...' 
+		ELSE D.COMMON_TITLE
+		END AS COMMON_TITLE,
+		D.IN_DATE, E.FILE_SEQ, E.FILE_PATH
+		FROM
+		(
+		SELECT B.RN, B.COMMUNITY_SEQ, B.CNT, C.COMMON_TITLE,  C.FILE_SEQ, C.IN_DATE
+		FROM
+		(
+		SELECT ROWNUM AS RN, A.COMMUNITY_SEQ, A.CNT
+		FROM
+		(
+		SELECT COMMUNITY_SEQ,COUNT(*) AS CNT
+		FROM BOOKGOOD
+		GROUP BY COMMUNITY_SEQ
+		ORDER BY CNT DESC
+		) A
+		WHERE ROWNUM <= 5
+		) B
+		LEFT JOIN 
+		COMMUNITY C ON
+		(B.COMMUNITY_SEQ = C.COMMUNITY_SEQ)
+		) D
+		LEFT JOIN 
+		ATTACH_FILE E ON
+		(D.FILE_SEQ = E.FILE_SEQ)
+		ORDER BY CNT DESC
+	    ]]>
+	</select>
+	
 </mapper>

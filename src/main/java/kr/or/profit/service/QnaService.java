@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface QnaService {
 
-	List<?> qnaList() throws Exception;
+	List<?> qnaList(Map<String, Object> map) throws Exception;
 
 	int qnaInsert(Map<String, Object> map) throws Exception;
 
@@ -14,5 +14,11 @@ public interface QnaService {
 	int qnaUpdate(Map<String, Object> map) throws Exception;
 
 	int qnaDelete(Map<String, Object> map) throws Exception;
+
+	//관리자전용
+	List<?> qnaListAll() throws Exception;
+
+	//댓글등록
+	void qnaReplyInsert(Map<String, Object> map) throws Exception;
 
 }

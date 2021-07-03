@@ -133,6 +133,17 @@ public class CommunityController {
 		//조회수 증가
 		communityService.increaseHit(communitySeq);
 		
+		//최신 글 TOP5 가져오기
+		List<Map<String,Object>> recentBoardList = communityService.recentBoardList();
+		System.out.println("최신글 : " + recentBoardList);
+		boardDetail.put("recentBoardList", recentBoardList);
+		
+		//인기 글 TOP5 가져오기
+		List<Map<String,Object>> bestBoardList = communityService.bestBoardList();
+		System.out.println("인기글 : " + bestBoardList);
+		boardDetail.put("bestBoardList", bestBoardList);
+		
+		
 		model.addAttribute("BoardDetail" , boardDetail);
 		System.out.println("모델 : " + model.toString());
 		
@@ -157,6 +168,82 @@ public class CommunityController {
 		System.out.println("수정페이지");
 		System.out.println(model.toString());
 		return "community/boardMod";
+	}
+	
+	/**
+    * 자유게시판 글 수정 Ajax
+    * @author 정예진
+    * @param 
+    * @return String - community/boardMod
+    * @throws Exception
+    */
+	@RequestMapping(value = "boardModAjax.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String boardModAjax(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		String communityCategorySeq = request.getParameter("cate_type");
+		String title = request.getParameter("title");
+		String editordata = request.getParameter("editordata");
+		String tumnail = request.getParameter("tumnail_img");
+		String communitySeq = request.getParameter("communitySeq");
+		System.out.println("cate_type : " + communityCategorySeq);
+		System.out.println("title : " + title);
+		System.out.println("editordata : " + editordata);
+		System.out.println("thumnail : " + tumnail);
+		
+		
+		String fileSeq = null;
+		
+		if(!tumnail.equals("./resources/img/common/loading.gif")) {
+			int index1= tumnail.indexOf("profit/") + 44; 
+			String fileRealName = tumnail.substring(index1);
+			
+			int index2= tumnail.indexOf("profit/") + 7; 
+			String fileSaveName = tumnail.substring(index2);
+			System.out.println("path : " + tumnail);
+			
+			AttachFileVO filevo = new AttachFileVO();
+			filevo.setFileRealName(fileRealName);
+			filevo.setFileSaveName(fileSaveName);
+			filevo.setFilePath(tumnail);
+			filevo.setInUserId(memberId);
+			filevo.setUpUserId(memberId);
+			communityService.insertBoardFile(filevo);
+			fileSeq = filevo.getFileSeq();
+			System.out.println("fileSeq : " + fileSeq);
+		}
+		
+		
+		CommunityVO vo = new CommunityVO();
+		vo.setCommunitySeq(communitySeq);
+		vo.setCommunityCategorySeq(communityCategorySeq);
+		vo.setCommonTitle(title);
+		vo.setCommonContent(editordata);
+		
+		if(fileSeq == null) {
+			vo.setFileSeq("0");
+		}else {
+			vo.setFileSeq(fileSeq);
+		}
+		vo.setUpUserId(memberId);
+		
+		
+		int updateResult = communityService.updateBoard(vo);
+		System.out.println("updateResult : " + updateResult);
+		
+		JSONObject jsonObject = new JSONObject();
+	       
+        if(updateResult > 0) {
+        	jsonObject.put("msg", "ok");
+        	jsonObject.put("communitySeq", vo.getCommunitySeq());
+        }else {
+        	jsonObject.put("msg", "ng");
+        }
+        String jsonInfo = jsonObject.toString();
+        return jsonInfo;
+		
 	}
 	
 	/**
@@ -383,6 +470,30 @@ public class CommunityController {
 		int deleteResult = communityService.deleteBoardReply(replySeq);
 
 		
+		
+	    String msg="ng";
+
+	    if(deleteResult  > 0) {
+			msg = "ok";
+		}
+		return msg;
+	}
+	
+	
+	/**
+    * 자유게시판 글 삭제
+    * @author 정예진
+    * @param HttpServletRequest,HttpServletResponse
+    * @return String - msg
+    * @throws Exception
+    */
+	@RequestMapping(value = "BoardDelAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String BoardDelAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		String communitySeq = request.getParameter("communitySeq");
+		System.out.println("CommunitySeq : " + communitySeq);
+		int deleteResult = communityService.deleteBoard(communitySeq);
 		
 	    String msg="ng";
 

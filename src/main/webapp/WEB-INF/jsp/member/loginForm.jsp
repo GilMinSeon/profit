@@ -41,7 +41,11 @@ function fn_login(){
       //전송 후 세팅
       success : function(result) {
          if (result == "ok") {
-            alert(memberId+"님 로그인 되었습니다")
+        	 if(memberId == '1'){
+        		 alert("관리자님 안녕하세요");
+        	 }else{
+	            alert(memberId+"님 로그인 되었습니다")
+        	 }
             location.href="home.do";
          } else {
             alert("로그인 정보를 다시 확인해주세요");

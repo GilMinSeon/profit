@@ -17,8 +17,8 @@ public class QnaServiceImpl implements QnaService{
 	private QnaMapper mapper;
 
 	@Override
-	public List<?> qnaList() throws Exception {
-		return mapper.qnaList();
+	public List<?> qnaList(Map<String, Object> map) throws Exception {
+		return mapper.qnaList(map);
 	}
 
 	@Override
@@ -38,8 +38,18 @@ public class QnaServiceImpl implements QnaService{
 
 	@Override
 	public int qnaDelete(Map<String, Object> map) throws Exception {
-		System.out.println("서비스옴 = " + map);
 		return mapper.qnaDelete(map);
+	}
+
+	//관리자 전용
+	@Override
+	public List<?> qnaListAll() throws Exception {
+		return mapper.qnaListAll();
+	}
+
+	//댓글 등록
+	@Override
+	public void qnaReplyInsert(Map<String, Object> map) throws Exception{
 	}
 
 
