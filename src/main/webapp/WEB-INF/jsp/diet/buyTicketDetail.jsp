@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8">
+<script language="javascript" type="text/javascript" src="https://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script>
 function go_time(){
 	 
@@ -21,6 +23,10 @@ function go_time(){
 	 
 	 setTimeout("go_time()", 1000);
 	 //1초마다 해당 펑션을 실행함.
+}
+
+function paybtn() {
+    INIStdPay.pay('SendPayForm_id');
 }
 </script>
 <body onload="go_time()">
@@ -82,31 +88,56 @@ function go_time(){
                         </div><!-- /.row -->
 
                         <!-- Table row -->
+                        <form id="SendPayForm_id" name="" method="POST" >
                         <div class="row">
                             <div class="col-xs-12 table-responsive">
                                 <table class="table table-striped">
                                     <thead>
+                                    <tr>
+                   <th>결제유형</th>
+                   <td><select class="formdata" name="mid">
+        	           <option value="INIpayTest">일반결제
+        	    	   <option value="iniescrow0">에스크로
+					   <!--option value="INIBillTst">빌키발급-->
+        	           </select></td>	   
+                </tr>
                                         <tr>
                                             <th>구매자</th>
                                             <th>상품명</th>
                                              <th>가격</th>
                                             <th>가격단위</th>
                                         </tr>
+                                        
                                     </thead>
                                     <tbody>
                                         
                                         
                                                                                 <tr>
                                             <td>${memberId}</td>
-                                            <td>${ticketCategory['ticketName']}</td>
-                                            <td>${ticketCategory['ticketPrice']}</td>
+<%--                                             <td>${ticketCategory['ticketName']}</td> --%>
+                                            <td><input class="formdata" name="goodname" value="${ticketCategory['ticketName']}" spellcheck="false"></td>
+<%--                                             <td>${ticketCategory['ticketPrice']}</td> --%>
+                                            <td><input class="formdata" name="price" value="1000" spellcheck="false" readonly></td>
                                             <td>원(&#8361;)</td>
                                         </tr>
                                                                             </tbody>
                                 </table>
+                                <input type="hidden" class="formdata" name="buyername" value="길동이" spellcheck="false">
+                                <input type="hidden" class="formdata" name="buyertel" value="010-1234-5678" spellcheck="false">
+                                <input type="hidden" class="formdata" name="buyeremail" placeholder="이메일을 입력하세요." spellcheck="false">
+                                <input type="hidden" class="formdata" name="acceptmethod" value="CARDPOINT:va_receipt:HPP(1):below1000" spellcheck="false">
+                                <input type="hidden"   name="version"      value="1.0" >
+					            <input type="hidden"   name="currency"     value="WON" >
+								<input type="hidden"   name="gopaymethod"  value="" >
+					            <input type="hidden"   name="oid"          value="TEST_1625298904368" >
+					            <input type="hidden"   name="timestamp"    value="1625298904368" >
+					            <input type="hidden"   name="signature"    value="100ad411051c7bd84e223473e4d2e35990e4a9051ba84e926195c5907350c0e6" >
+					            <input type="hidden"   name="mKey"         value="3a9503069192f207491d4b19bd743fc249a761ed94246c8c42fed06c3cd15a33" >
+					            <input type="hidden"   name="returnUrl"    value="http://localhost:9999/" >
+					            <input type="hidden"   name="closeUrl"     value="http://localhost:9999/" >
                             </div><!-- /.col -->
                         </div><!-- /.row -->
-
+						</form>
                         <div class="row">
                             <!-- accepted payments column -->
                             <div class="col-md-12">
@@ -117,13 +148,13 @@ function go_time(){
                                             
                                             
                                             <tr style="text-align: right;">
-                                                <td>총 합계 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: #FBEDB5;padding: 3px;">4000원(&#8361;)</span></td>
+                                                <td>총 합계 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: #FBEDB5;padding: 3px;">${ticketCategory['ticketPrice']}원(&#8361;)</span></td>
                                             </tr>
                                         </tbody>
                                         
                                     </table>
                                      <div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
-									         <a href="chatList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;결제하기&nbsp;&nbsp;</a>
+									         <a class="class-btn_w" style="font-size: 1.1em;" onclick="paybtn()">&nbsp;&nbsp;결제하기&nbsp;&nbsp;</a>
 									         <a href="chatList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
 								    </div>
                                 </div>
