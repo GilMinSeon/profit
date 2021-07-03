@@ -39,14 +39,15 @@
 
 	function fn_reply_del(replySeq) {
 
-		var result = confirm("정말 글을 삭제하시겠습니까?"+replySeq);
+		var result = confirm("정말 댓글을 삭제하시겠습니까?"+replySeq);
 		if(result){
 			var replySeq = "replySeq="+ replySeq;
+			
 			$.ajax({
 				type : 'POST',
 				async:false,
 				url : 'qnaReplyDelete.do',
-				data : formData,
+				data : replySeq,
 				success : function(data){
 					if(data == "ok"){
 						alert("댓글이 정상적으로 삭제되었습니다.");
