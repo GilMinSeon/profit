@@ -64,9 +64,7 @@
 				</div>
 
 				<div id="reply_area" class="col-lg-4 order-lg-1 order-2 replyarea" style="width: 100%; flex: 0 0 100%; max-width: 100%; padding-right: 0px; margin-left: 23px;">
-
 					<div class="blog__sidebar">
-
 						<div class="blog__sidebar__comment" style="overflow-x: hidden; height: 500px; padding: 10px;">
 							<div class="classes__sidebar__comment" style="border-bottom: 0">
 								<form id="frm">
@@ -85,22 +83,17 @@
 										</div>
 									</div>
 									<br>
-									<div class="row">
-										<div id="rereply_div${cnt}" class="col-lg-12" style="margin-top: 15px; margin-left: 100px; display: none;">
-											<textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%; float: left;"></textarea>
-											<button type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: left; margin-top: 15px; margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
-										</div>
-									</div>
 									<hr>
 								</form>
 							</div>
-							<form id="replyfrm" >
+							<form id="replyfrm" method="POST" action="qnaReplyInsert.do">
 								<div class="row">
 									<div class="col-lg-12"></div>
 									<div class="col-lg-12">
 										<div class="classes__sidebar__comment__pic"></div>
+										<input type="hidden" name="communitySeq" value="${data.communitySeq}">
 										<textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 100%; float: left;"></textarea>
-										<button type="submit" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: right; margin-top: 15px;" >댓글 작성</button>
+										<button type="submit" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: right; margin-top: 15px;">댓글 작성</button>
 									</div>
 								</div>
 							</form>
@@ -111,7 +104,62 @@
 		</div>
 	</div>
 	<!-- Leave Comment End -->
+	<script type="text/javascript">
 
+// 	function showReply(){
+
+// 			var b_seq = '{{notice.b_seq}}';
+// 			var param = "";
+// 			param += "dummy=" + Math.random();
+// 			param += "&b_seq=" + b_seq;
+
+// 			$.ajax({
+// 				url : "reply_list.ajax",
+// 				data : param,
+// 				dataType : "json",
+// 				type : "post",
+// 				async : false,
+// 				statusCode : {
+// 					404 : function() {
+// 						alert("네트워크가 불안정합니다. 다시 시도부탁드립니다.");
+// 					}
+// 				},
+// 				success : function(data) {
+// 					var user_id = '{{session.user_id}}';
+// 					var list = data.list;
+
+// 					var txt = "";
+
+// 					for(var i=0;i<list.length;i++){
+// 						txt += "<tr>"+"\n";
+// 						txt += "	<td colspan='2'>"+"\n";
+// 						txt += "		"+list[i].cmt+"\n";
+// 						txt += "	</td>"+"\n";
+// 						txt += "</tr>"+"\n";
+// 						txt += "<tr>"+"\n";
+// 						txt += "	<td>"+"\n";
+// 						txt += "		"+list[i].in_date+"\n";
+// 						txt += "	</td>"+"\n";
+// 						txt += "	<td>"+"\n";
+// 						if(user_id == list[i].in_user_id ){
+// 							txt += "		<input type='button' value='삭제' onclick='fn_reply_del(\""+list[i].r_seq+"\")' >"+"\n";
+// 						}
+// 						txt += "		"+list[i].in_user_name+"\n";
+// 						txt += "	<img src='image/good.png' onclick='fn_reply_good(\""+list[i].r_seq+"\")' /><span>"+list[i].good+"</span>"+"\n";
+// 						txt += "	<img src='image/bad.png'  onclick='fn_reply_bad(\""+list[i].r_seq+"\")' /><span>"+list[i].bad+"</span>"+"\n";
+// 						txt += "	</td>"+"\n";
+// 						txt += "</tr>"+"\n";
+// 					}
+
+// 					$("#tbody_reply").html(txt);
+
+// 				}
+// 			});
+
+
+// 		}
+
+	</script>
 	<!-- Js Plugins -->
 	<script src="./resources/js/jquery-3.3.1.min.js"></script>
 	<script src="./resources/js/bootstrap.min.js"></script>

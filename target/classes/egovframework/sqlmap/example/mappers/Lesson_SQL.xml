@@ -133,16 +133,26 @@
 	    
 	    <select id="selectLessonList"  resultType="egovMap">	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
 
-			SELECT A.LESSON_SEQ ,A.FILE_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, 
+			SELECT A.LESSON_SEQ ,
+				   A.FILE_SEQ, 
+				   A.COMMON_SEQ, 
+				   A.LESSON_CATEGORY_SEQ, 
 					CASE
 					    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'
 					    ELSE A.LESSON_TITLE
 					    END AS LESSON_TITLE, 
-				  	A.LESSON_TITLE_COMMENT, A.LESSON_PRIVATE_FLAG, A.LESSON_INTRO, NVL(A.LESSON_HIT,0) AS LESSON_HIT, A.IN_USER_ID, D.FILE_PATH,D.FILE_SAVE_NAME, E.LESSON_CATEGORY_NAME
-				,NVL(B.LESSON_GOOD,0) as LESSON_good,
+				  	A.LESSON_TITLE_COMMENT, 
+				  	A.LESSON_PRIVATE_FLAG, 
+				  	A.LESSON_INTRO, 
+				  	NVL(A.LESSON_HIT,0) AS LESSON_HIT, 
+				  	A.IN_USER_ID, 
+				  	D.FILE_PATH,
+				  	D.FILE_SAVE_NAME, 
+				  	E.LESSON_CATEGORY_NAME,
+				  	NVL(B.LESSON_GOOD,0) as LESSON_good,
                     NVL(f.LESSON_BOOK,0) as LESSON_book,
                     NVL(C.LESSON_REPLY,0) as LESSON_reply
-                
+         
                 FROM LESSON A
 				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
 				                FROM BOOKGOOD
@@ -166,7 +176,10 @@
 										GROUP BY LESSON_SEQ) F
 				ON A.LESSON_SEQ = F.LESSON_SEQ
 
-<!-- 			WHERE 1=1 -->
+			WHERE 1=1
+<!-- 			<if test="selCate != null and selCate != ''"> -->
+<!-- 				AND E.LESSON_CATEGORY_NAME = #{selCate} -->
+<!-- 			</if> -->
 <!-- 			<if test="searchKeyword != null and searchKeyword != ''"> -->
 <!-- 		        <choose> -->
 <!-- 		            <when test="searchCondition == 0"> -->
@@ -178,6 +191,9 @@
 <!-- 				</choose> -->
 <!-- 			</if> -->
 			ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC
+<!-- 			<if test="selLev != null and selLev != ''"> -->
+<!-- 				, TO_NUMBER(A.LESSON_SEQ) DESC -->
+<!-- 			</if> -->
 <!-- 			LIMIT #{recordCountPerPage} OFFSET #{firstIndex} -->
 	</select>
 	    
@@ -379,7 +395,7 @@
 
 	</delete>
 	
-	<select id="selectCateLessonList"  resultType="egovMap" parameterType="String">
+	<select id="selectCateLessonList"  resultType="egovMap" parameterType="hashMap">
 	    SELECT A.LESSON_SEQ ,A.FILE_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, 
 					CASE
 					    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'
@@ -412,7 +428,17 @@
 										WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B'
 										GROUP BY LESSON_SEQ) F
 				ON A.LESSON_SEQ = F.LESSON_SEQ
-            where e.lesson_category_name=#{sel_value}
+		<if test="selCate != null and selCate != ''"> 
+				AND E.LESSON_CATEGORY_NAME = #{selCate}
+		</if>
+			ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC
+			<if test="selLev != null and selLev != ''">
+				, LESSON_HIT DESC
+			</if>		
+				
+<!-- 		<if test='_parameter != null'> -->
+<!--             where e.lesson_category_name=#{_parameter} -->
+<!--         </if> -->
 	    
 	    
 	    

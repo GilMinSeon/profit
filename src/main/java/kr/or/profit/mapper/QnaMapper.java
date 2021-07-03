@@ -24,7 +24,7 @@ public interface QnaMapper {
 	List<?> qnaListAll() throws Exception;
 
 	//댓글 등록
-	String qnaReplyInsert(Map<String, Object> map) throws Exception;
+	void qnaReplyInsert(Map<String, Object> map) throws Exception;
 
 
 

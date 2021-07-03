@@ -50,6 +50,7 @@
 			A.COMMON_DEL_FLAG = 'N'
 
 	</select>
+<!-- 	관리자 목록 -->
 	<select id="qnaListAll" resultType="egovMap">
 		SELECT
 		    (SELECT
@@ -154,32 +155,31 @@
 
 	<!-- 	댓글 등록 -->
 	<insert id="qnaReplyInsert" parameterType="hashMap" >
-		INSERT INTO COMMUNITY
+		INSERT INTO REPLY(
+			REPLY_SEQ,
+		    COMMUNITY_SEQ,
+		    REPLY_CONTENT,
+		    REPLY_DEL_FLAG,
+		    IN_USER_ID,
+		    IN_DATE,
+		    UP_USER_ID,
+		    UP_DATE
+
+		    )
+		VALUES (
 			(
-				COMMUNITY_SEQ,
-                COMMON_SEQ,
-                COMMON_TITLE,
-                COMMON_CONTENT,
-                COMMON_DEL_FLAG,
-                IN_USER_ID,
-                IN_DATE,
-                UP_USER_ID,
-                UP_DATE	)
-		VALUES
-			(
-				(SELECT
-                    COUNT(*)
-                FROM
-                    COMMUNITY)+1,
-				'8',
-				#{title},
-				#{contents},
-				'N',
-				#{memberId},
-				SYSDATE,
-				#{memberId},
-				SYSDATE
-						)
+		    SELECT
+		        COUNT(*)
+		    FROM
+		        REPLY)+1,
+		    #{communitySeq},
+		    #{replyContent},
+		    'N',
+		    '1',
+		    SYSDATE,
+		    '1',
+		    SYSDATE
+		    )
 	</insert>
 
 
