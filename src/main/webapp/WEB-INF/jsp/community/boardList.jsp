@@ -174,7 +174,7 @@
 						<div class="classes__item__text" style="padding-left: 10px; padding-right: 10px;">
 							<div style="text-align: right;">
 								
-								<div style="display: inline-block;vertical-align:sub;margin-right: 70px;">
+								<div style="display: inline-block;vertical-align:sub;float: left">
 									<p style="margin:0;">${fn:substring(result.inDate,0,10)}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
