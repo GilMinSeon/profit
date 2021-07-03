@@ -1,273 +1,29 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<style>
-/* -------------------------------------
-    GLOBAL
-    A very basic CSS reset
-------------------------------------- */
-* {
-    margin: 0;
-    padding: 0;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-    box-sizing: border-box;
-    font-size: 14px;
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+function go_time(){
+	 
+	 var now = new Date();
+	 
+	 var year = now.getFullYear(); //년
+	 var month = now.getMonth(); //월
+	 var day = now.getDay();  //일
+	 var hour = now.getHours();  //시
+	 var min = now.getMinutes();  //분
+	 var sec = now.getSeconds();  //초
+	 
+	 document.getElementById("clock").innerHTML 
+	 = year+"년 "+ month+"월 "+day+"일 "+hour+":"+min+":"+sec
+	 //id가 clock인 html에 현재시각을 넣음
+	 
+	 setTimeout("go_time()", 1000);
+	 //1초마다 해당 펑션을 실행함.
 }
-
-img {
-    max-width: 100%;
-}
-
-/* body { */
-/*     -webkit-font-smoothing: antialiased; */
-/*     -webkit-text-size-adjust: none; */
-/*     width: 100% !important; */
-/*     height: 100%; */
-/*     line-height: 1.6; */
-/* } */
-
-/* Let's make sure all tables have defaults */
-table td {
-    vertical-align: top;
-}
-
-/* -------------------------------------
-    BODY & CONTAINER
-------------------------------------- */
-/* body { */
-/*     background-color: #f6f6f6; */
-/* } */
-
- .body-wrap { 
-     background-color: #ffffff; 
-     width: 40%; 
- } 
-
-/* .container { */
-/*     display: block !important; */
-/*     max-width: 800px !important; */
-/*     margin: 0 auto !important; */
-/*     /* makes it centered */ */
-/*     clear: both !important; */
-/* } */
-
-/* .content { */
-/*     max-width: 800px; */
-/*     margin: 0 auto; */
-/*     display: block; */
-/*     padding: 20px; */
-/* } */
-
-/* -------------------------------------
-    HEADER, FOOTER, MAIN
-------------------------------------- */
-/* .main { */
-/*     background: #fff; */
-/*     border: 1px solid #e9e9e9; */
-/*     border-radius: 3px; */
-/* } */
-
-/* .content-wrap { */
-/*     padding: 20px; */
-/* } */
-
-/* .content-block { */
-/*     padding: 0 0 20px; */
-/* } */
-
-/* .header { */
-/*     width: 100%; */
-/*     margin-bottom: 20px; */
-/* } */
-
-/* .footer { */
-/*     width: 100%; */
-/*     clear: both; */
-/*     color: #999; */
-/*     padding: 20px; */
-/* } */
-/* .footer a { */
-/*     color: #999; */
-/* } */
-/* .footer p, .footer a, .footer unsubscribe, .footer td { */
-/*     font-size: 12px; */
-/* } */
-
-/* -------------------------------------
-    TYPOGRAPHY
-------------------------------------- */
-h1, h2, h3 {
-    font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    color: #000;
-    margin: 40px 0 0;
-    line-height: 1.2;
-    font-weight: 400;
-}
-
-h1 {
-    font-size: 32px;
-    font-weight: 500;
-}
-
-h2 {
-    font-size: 24px;
-}
-
-h3 {
-    font-size: 18px;
-}
-
-h4 {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-p, ul, ol {
-    margin-bottom: 10px;
-    font-weight: normal;
-}
-p li, ul li, ol li {
-    margin-left: 5px;
-    list-style-position: inside;
-}
-
-/* -------------------------------------
-    LINKS & BUTTONS
-------------------------------------- */
-a {
-    color: #1ab394;
-    text-decoration: underline;
-}
-
-.btn-primary {
-    text-decoration: none;
-    color: #FFF;
-    background-color: #1ab394;
-    border: solid #1ab394;
-    border-width: 5px 10px;
-    line-height: 2;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-    display: inline-block;
-    border-radius: 5px;
-    text-transform: capitalize;
-}
-
-/* -------------------------------------
-    OTHER STYLES THAT MIGHT BE USEFUL
-------------------------------------- */
-.last {
-    margin-bottom: 0;
-}
-
-.first {
-    margin-top: 0;
-}
-
-.aligncenter {
-    text-align: center;
-}
-
-.alignright {
-    text-align: right;
-}
-
-.alignleft {
-    text-align: left;
-}
-
-.clear {
-    clear: both;
-}
-
-/* -------------------------------------
-    ALERTS
-    Change the class depending on warning email, good email or bad email
-------------------------------------- */
-.alert {
-    font-size: 16px;
-    color: #fff;
-    font-weight: 500;
-    padding: 20px;
-    text-align: center;
-    border-radius: 3px 3px 0 0;
-}
-.alert a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 16px;
-}
-.alert.alert-warning {
-    background: #f8ac59;
-}
-.alert.alert-bad {
-    background: #ed5565;
-}
-.alert.alert-good {
-    background: #1ab394;
-}
-
-/* -------------------------------------
-    INVOICE
-    Styles for the billing table
-------------------------------------- */
-.invoice {
-    margin: 40px auto;
-    text-align: left;
-    width: 80%;
-}
-.invoice td {
-    padding: 5px 0;
-}
-.invoice .invoice-items {
-    width: 100%;
-}
-.invoice .invoice-items td {
-    border-top: #eee 1px solid;
-}
-.invoice .invoice-items .total td {
-    border-top: 2px solid #333;
-    border-bottom: 2px solid #333;
-    font-weight: 700;
-}
-
-/* -------------------------------------
-    RESPONSIVE AND MOBILE FRIENDLY STYLES
-------------------------------------- */
-@media only screen and (max-width: 640px) {
-    h1, h2, h3, h4 {
-        font-weight: 600 !important;
-        margin: 20px 0 5px !important;
-    }
-
-    h1 {
-        font-size: 22px !important;
-    }
-
-    h2 {
-        font-size: 18px !important;
-    }
-
-    h3 {
-        font-size: 16px !important;
-    }
-
-    .container {
-        width: 100% !important;
-    }
-
-    .content, .content-wrap {
-        padding: 10px !important;
-    }
-
-    .invoice {
-        width: 100% !important;
-    }
-}
-</style>
-<body>
+</script>
+<body onload="go_time()">
 
 
     <!-- Breadcrumb Begin -->
@@ -290,111 +46,101 @@ a {
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                    	<div style="background-color: #F6F6F9;padding: 30px;padding-bottom: 0px;height: 180px;">
+                    	<div style="background-color: #F6F6F9;padding: 60px;">
                         <h2 style="color:#404041; font-weight: bold;">구매 하기</h2>
 	                        <br>
-	                        <span style="color: gray;font-size: 0.9em;font-weight: bold;background-color: #FBEDB5;padding:3px;">※ 본 상품은 고객의 단순 변심으로 환불이 불가한 상품입니다.</span>
+	                        <span style="color: gray;font-size: 1em;font-weight: bold;">※ 본 상품은 고객의 단순 변심으로 환불이 불가한 상품입니다.</span>
 	                        <br>
 	                        <br>
-<!-- 	                        <div> -->
-<!-- 	                        	<br> -->
-<!-- 	                        	<span style="float: left;padding-left: 60px;font-weight: bold;">구매 상품</span> -->
-<!-- 	                        	<span style="float: right;padding-right: 60px;font-weight: bold;">1회권</span> -->
-<!-- 	                        	<br><br> -->
-<!-- 	                        	<span style="float: left;padding-left: 60px;font-weight: bold;">이름</span> -->
-<!-- 	                        	<span style="float: right;padding-right: 60px;font-weight: bold;">송하나</span> -->
-<!-- 								<br><br> -->
-<!-- 	                        	<span style="float: left;padding-left: 60px;font-weight: bold;">전화번호</span> -->
-<!-- 	                        	<span style="float: right;padding-right: 60px;font-weight: bold;">010-1111-2222</span> -->
-<!-- 								<br><br> -->
-<!-- 	                        	<span style="float: left;padding-left: 60px;font-weight: bold;">결제금액</span> -->
-<!-- 	                        	<span style="float: right;padding-right: 60px;font-weight: bold;">4,000원</span>	                         -->
-<!-- 								<br><br><br><br> -->
-<!-- 								<div class="classes__item__text"  style="text-align: center;padding-top: 0px;"> -->
-<!-- 							         <a href="#" class="class-btn_w" style="font-size: 1.1em;">이용권 구매</a> -->
-<!-- 							         <a href="buyTicket" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;구매 취소&nbsp;&nbsp;</a> -->
-<!-- 							    </div> -->
-<!-- 	                        </div> -->
-
+	                        <hr style="color: gray;width: 80%;">
+	                        <br>
+	                        <section class="content content_content" style="width: 70%; margin: auto;">
+                    <section class="invoice">
+                        <!-- title row -->
+                        <div class="row">
                         </div>
-                        
+                        <!-- info row -->
+                        <div class="row invoice-info">
+                            <div class="col-sm-4 invoice-col">
+                                <address>
+                                    <strong>
+                                                                            </strong>
+                                </address>
+                            </div><!-- /.col -->
+                            <div class="col-sm-4 invoice-col">
+                                <address>
+                                    <strong>
+                                        #구매정보                                   </strong>
+                                    <br>
+                                      결제사이트 : PROFIT                                  <br>
+					   대표자 : JAYPARK<br>
+					                                      <br>
+                                                                  </address>
+                            </div><!-- /.col -->
+                            <div class="col-sm-4 invoice-col">
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                        <!-- Table row -->
+                        <div class="row">
+                            <div class="col-xs-12 table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>구매자</th>
+                                            <th>상품명</th>
+                                             <th>가격</th>
+                                            <th>가격단위</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        
+                                                                                <tr>
+                                            <td>${memberId}</td>
+                                            <td>${ticketCategory['ticketName']}</td>
+                                            <td>${ticketCategory['ticketPrice']}</td>
+                                            <td>원(&#8361;)</td>
+                                        </tr>
+                                                                            </tbody>
+                                </table>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                        <div class="row">
+                            <!-- accepted payments column -->
+                            <div class="col-md-12">
+                                <p class="lead" style="font-size: 1.1em">🛒구매일시<div id="clock"></div></p>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            
+                                            
+                                            <tr style="text-align: right;">
+                                                <td>총 합계 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: #FBEDB5;padding: 3px;">4000원(&#8361;)</span></td>
+                                            </tr>
+                                        </tbody>
+                                        
+                                    </table>
+                                     <div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
+									         <a href="chatList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;결제하기&nbsp;&nbsp;</a>
+									         <a href="chatList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
+								    </div>
+                                </div>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                    </section>
+                </section>
+                        </div>
                     </div>
                 </div>
             
             </div>
         </div>
-        <table class="body-wrap" style="margin-left: auto;margin-right: auto;">
-    <tbody><tr>
-        <td></td>
-        <td class="container" width="600" style="padding:0">
-            <div class="content">
-                <table class="main" width="100%" cellpadding="0" cellspacing="0">
-                    <tbody><tr>
-                        <td class="content-wrap aligncenter">
-                            <table width="100%" cellpadding="0" cellspacing="0">
-                                <tbody><tr>
-                                    <td class="content-block">
-                                    
-                                        <h2 style="font-weight:bold;"><br>결제 정보<br></h2>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="content-block">
-                                        <table class="invoice">
-                                            <tbody><tr>
-                                                <td style="font-size: 1.2em; ">결제 사이트 : PROFIT<br>대표자 : 임시완<br>구매일시 : 2021-07-03 12시 38분</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <table class="invoice-items" cellpadding="0" cellspacing="0">
-                                                        <tbody><tr>
-                                                            <td>Service 1</td>
-                                                            <td class="alignright">$ 20.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Service 2</td>
-                                                            <td class="alignright">$ 10.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Service 3</td>
-                                                            <td class="alignright">$ 6.00</td>
-                                                        </tr>
-                                                        <tr class="total">
-                                                            <td class="alignright" width="80%">Total</td>
-                                                            <td class="alignright">$ 36.00</td>
-                                                        </tr>
-                                                    </tbody></table>
-                                                </td>
-                                            </tr>
-                                        </tbody></table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="content-block">
-                                        <a href="#">View in browser</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="content-block">
-                                        Company Inc. 123 Van Ness, San Francisco 94102
-                                    </td>
-                                </tr>
-                            </tbody></table>
-                        </td>
-                    </tr>
-                </tbody></table>
-                <div class="footer">
-                    <table width="100%">
-                        <tbody><tr>
-                            <td class="aligncenter content-block">Questions? Email <a href="mailto:">support@company.inc</a></td>
-                        </tr>
-                    </tbody></table>
-                </div></div>
-        </td>
-        <td></td>
-    </tr>
-</tbody></table>
+        
     </section>
+    
     <!-- Pricing Section End -->
 
     

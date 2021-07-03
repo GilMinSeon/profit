@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <body>
 
 
@@ -43,7 +45,7 @@
                             <li>나의 식단이 맞는 지 확인하고 싶으신 분</li>
                             <li>부담없는 가격</li>
                         </ul>
-                        <a href="buyTicketDetail" class="primary-btn" style="font-size: 1.1em;">구매하기</a>
+                        <a href="buyTicketDetail.do?ticketCategorySeq=1" class="primary-btn" style="font-size: 1.1em;">구매하기</a>
                     </div>
                 </div>
                 <div class="col-lg-4 p-0 col-md-6">
@@ -61,7 +63,7 @@
                             <li>1회권이 부족하다고 생각하시는 분</li>
                             <li>원가보다 1000원 할인된 가격</li>
                         </ul>
-                        <a href="buyTicketDetail" class="primary-btn" style="font-size: 1.1em;">구매하기</a>
+                        <a href="buyTicketDetail.do?ticketCategorySeq=2" class="primary-btn" style="font-size: 1.1em;">구매하기</a>
                     </div>
                 </div>
                 <div class="col-lg-4 p-0 col-md-6">
@@ -77,7 +79,7 @@
                             <li>원가보다 2500원 할인된 가격</li>
                             
                         </ul>
-                        <a href="buyTicketDetail.do" class="primary-btn" style="font-size: 1.1em;">구매하기</a>
+                        <a href="buyTicketDetail.do?ticketCategorySeq=3" class="primary-btn" style="font-size: 1.1em;">구매하기</a>
                     </div>
                 </div>
 	                <div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
