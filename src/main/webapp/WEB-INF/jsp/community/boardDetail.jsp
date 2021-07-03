@@ -259,7 +259,7 @@ function fn_boardDel(seq){
 							<p style="margin:0;">${BoardDetail['commonHit']}&nbsp;&nbsp;</p>
 						</div>
 						<div style="display: inline-block; vertical-align: middle;">
-							<img src="./resources/img/common/reply.png" style="width: 17px; height: 17px; opacity: 0.5;">
+							<img src="./resources/img/common/newreply.png" style="width: 17px; height: 17px; opacity: 0.5;">
 						</div>
 						<div style="display: inline-block;vertical-align:sub;">
 							<p>${BoardDetail['boardReply']}&nbsp;&nbsp;</p>
