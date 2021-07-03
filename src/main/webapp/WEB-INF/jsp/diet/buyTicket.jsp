@@ -36,7 +36,7 @@
                         <h4>1회권</h4>
                         <div class="pricing__item__price">
                             <h2>4,000원</h2>
-                            <span>/month</span>
+                            <span>/1회</span>
                         </div>
                         <ul>
                             <li>1:1 상담을 처음으로 체험하고 싶으신 분</li>
@@ -77,11 +77,11 @@
                             <li>원가보다 2500원 할인된 가격</li>
                             
                         </ul>
-                        <a href="buyTicketDetail" class="primary-btn" style="font-size: 1.1em;">구매하기</a>
+                        <a href="buyTicketDetail.do" class="primary-btn" style="font-size: 1.1em;">구매하기</a>
                     </div>
                 </div>
 	                <div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
-				         <a href="chatList" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
+				         <a href="chatList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
 			    </div>
             </div>
         </div>

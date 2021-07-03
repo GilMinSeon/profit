@@ -26,7 +26,7 @@
         <div class="container">
         <div class="classes__item__text"  style="text-align: center;padding-top: 0;">
 	 		 <span class="blinking">이용권을 구매하여 전문가와 식단상담을 시작하세요 → </span>&nbsp;
-	         <a href="buyTicket" class="class-btn_w" style="font-size: 1.1em;">이용권 구매</a>
+	         <a href="buyTicket.do" class="class-btn_w" style="font-size: 1.1em;">이용권 구매</a>
 	    </div>
             <div class="row">
 	            	
