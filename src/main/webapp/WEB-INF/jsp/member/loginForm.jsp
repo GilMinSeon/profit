@@ -36,20 +36,25 @@ function fn_login(){
       type : "POST",
       data : "memberId=" + memberId +"&memberPwd=" + memberPwd, //json
       url : "loginSubmitAjax.do",
-      dataType : "text", //리턴타입
+//       dataType : "json", //리턴타입
 
       //전송 후 세팅
       success : function(result) {
-         if (result == "ok") {
+    	  var jsonInfo = JSON.parse(result);
+    	  alert(jsonInfo);
+    	  alert(JSON.stringify(jsonInfo));
+    	  alert(jsonInfo.sts);
+         if (jsonInfo.sts == "OK") {
         	 if(memberId == '1'){
         		 alert("관리자님 안녕하세요");
         	 }else{
 	            alert(memberId+"님 로그인 되었습니다")
         	 }
-            location.href="home.do";
+            location.href= jsonInfo.returnUrl;
          } else {
             alert("로그인 정보를 다시 확인해주세요");
          }
+
       },
       error : function() {
          alert("오류발생");

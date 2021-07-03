@@ -20,13 +20,13 @@ public interface CommunityMapper {
 	int insertBoardFile(AttachFileVO vo) throws Exception;
 	
 	//자유게시판 목록 조회
-	List<Map<String, String>> selectBoardList() throws Exception;
+	List<Map<String, String>> selectBoardList(String memberId) throws Exception;
 	
 	//자유게시판 인기글 목록 조회
-	List<Map<String, String>> selectBoardTopList() throws Exception;
+	List<Map<String, String>> selectBoardTopList(String memberId) throws Exception;
 	
 	//자유게시판 상세글 조회
-	Map<String, Object> selectBoardDetail(String communitySeq) throws Exception;
+	Map<String, Object> selectBoardDetail(CommunityVO paramVO) throws Exception;
 	
 	//자유게시판 상세 댓글 나의 프로필 사진 조회
 	String selectMyProfile(String memberId) throws Exception;

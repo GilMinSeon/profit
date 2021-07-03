@@ -16,7 +16,29 @@ public class CommunityVO {
 	private Date inDate;
 	private String upUserId;
 	private Date upDate;
+	
+	private String goodFlag;
+	private String bookFlag;
+	private String memberId;
 
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getGoodFlag() {
+		return goodFlag;
+	}
+	public void setGoodFlag(String goodFlag) {
+		this.goodFlag = goodFlag;
+	}
+	public String getBookFlag() {
+		return bookFlag;
+	}
+	public void setBookFlag(String bookFlag) {
+		this.bookFlag = bookFlag;
+	}
 	public String getCommunitySeq() {
 		return communitySeq;
 	}

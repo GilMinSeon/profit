@@ -3,6 +3,7 @@ package kr.or.profit.web;
 import java.io.PrintWriter;
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -226,8 +227,7 @@ public class MemberController {
 	}
 
 	@RequestMapping("loginSubmitAjax.do")
-	@ResponseBody
-	public String loginProcessing(MemberVO vo, HttpSession session) throws Exception {
+	public @ResponseBody String loginProcessing(MemberVO vo, HttpSession session) throws Exception {
 		String msg = "";
 		MemberVO membervo = memberService.selectMemberCount(vo);
 		if (membervo != null) {
@@ -241,7 +241,19 @@ public class MemberController {
 			msg = "no";
 		}
 
-		return msg;
+		msg = (String) session.getAttribute("returnUrl");
+		System.out.println(msg);
+		System.out.println(msg);
+		System.out.println(msg);
+		System.out.println(msg);
+		System.out.println(msg);
+		System.out.println(msg);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("sts", "OK");
+		jsonObject.put("returnUrl", session.getAttribute("returnUrl"));
+		
+		return jsonObject.toString();
 	}
 
 	@RequestMapping(value = "logout.do", method = RequestMethod.GET)

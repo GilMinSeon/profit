@@ -264,15 +264,35 @@ function fn_boardDel(seq){
 						<div style="display: inline-block;vertical-align:sub;">
 							<p>${BoardDetail['boardReply']}&nbsp;&nbsp;</p>
 						</div>
+						
+						<!-- 좋아요 이미지 찍히는 곳 -->
 						<div style="display: inline-block; vertical-align: middle;">
+							<c:set var="goodFlag" value="${BoardDetail['goodFlag']}"/>
+                  			<c:if test="${goodFlag == '1' }">
+							<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+							</c:if>
+							<c:if test="${goodFlag == '0' }">
 							<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+							</c:if>
 						</div>
+						
+						<!-- 좋아요수 -->
 						<div style="display: inline-block;vertical-align:sub;">
 							<p>${BoardDetail['boardGood']}&nbsp;&nbsp;</p>
 						</div>
+						
+						<!-- 북마크 이미지 찍히는 곳 -->
 						<div style="display: inline-block; vertical-align: middle;">
+							<c:set var="bookFlag" value="${BoardDetail['bookFlag']}"/>
+                  			<c:if test="${bookFlag == '1' }">
+							<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+							</c:if>
+							<c:if test="${bookFlag == '0' }">
 							<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+							</c:if>
 						</div>
+						
+						<!-- 북마크수 -->
 						<div style="display: inline-block;vertical-align:sub;">
 							<p>${BoardDetail['boardBook']}&nbsp;&nbsp;</p>
 						</div> 

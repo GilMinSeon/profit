@@ -84,13 +84,29 @@
 									<p>${result.boardReply}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+								
+									<c:set var="goodFlag" value="${result.goodFlag}"/>
+                    				<c:if test="${goodFlag == '1' }">
+									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									<c:if test="${goodFlag == '0' }">
 									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.boardGood}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+								
+									<c:set var="bookFlag" value="${result.bookFlag}"/>
+                    				<c:if test="${bookFlag == '1' }">
+									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									<c:if test="${bookFlag == '0' }">
 									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.boardBook}&nbsp;&nbsp;</p>
@@ -190,13 +206,25 @@
 									<p>${result.boardReply}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+									<c:set var="goodFlag" value="${result.goodFlag}"/>
+                    				<c:if test="${goodFlag == '1' }">
+									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									<c:if test="${goodFlag == '0' }">
 									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+									</c:if>
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.boardGood}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+									<c:set var="bookFlag" value="${result.bookFlag}"/>
+                    				<c:if test="${bookFlag == '1' }">
+									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									<c:if test="${bookFlag == '0' }">
 									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.boardBook}&nbsp;&nbsp;</p>

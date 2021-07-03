@@ -37,21 +37,21 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	//자유게시판 목록 조회
 	@Override
-	public List<Map<String, String>> selectBoardList() throws Exception {
-		return communityDAO.selectBoardList();
+	public List<Map<String, String>> selectBoardList(String memberId) throws Exception {
+		return communityDAO.selectBoardList(memberId);
 	}
 
 	
 	//자유게시판 인기글 조회
 	@Override
-	public List<Map<String, String>> selectBoardTopList() throws Exception {
-		return communityDAO.selectBoardTopList();
+	public List<Map<String, String>> selectBoardTopList(String memberId) throws Exception {
+		return communityDAO.selectBoardTopList(memberId);
 	}
 
 	//자유게시판 상세글 조회
 	@Override
-	public Map<String, Object> selectBoardDetail(String communitySeq) throws Exception {
-		return communityDAO.selectBoardDetail(communitySeq);
+	public Map<String, Object> selectBoardDetail(CommunityVO paramVO) throws Exception {
+		return communityDAO.selectBoardDetail(paramVO);
 	}
 
 	//자유게시판 상세 댓글 나의 프로필 사진 조회

@@ -70,10 +70,12 @@ function fn_delLesson(){
 	</section>
 	<!-- Blog Hero End -->
 	<!-- 	main html 시작 -->
+	
 	<section class="about spad">
 		<div class="container">
 		<c:set var="resultList" value="${resultList}"/>
-			<div class="row">
+			<div class="row"  style="background-color: white;padding: 30px;border: 1px solid #ebecef;border-radius: 10px">
+			
 				<div class="col-lg-7 p-0" style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
 					<div class="about__pic" style="">
 						<img src="http://192.168.41.6:9999/upload/profit/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;">
