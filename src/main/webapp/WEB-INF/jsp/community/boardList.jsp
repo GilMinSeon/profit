@@ -4,6 +4,7 @@
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
 
 .classes__item__text .class-btn:hover {
@@ -172,6 +173,10 @@
                         </div>
 						<div class="classes__item__text" style="padding-left: 10px; padding-right: 10px;">
 							<div style="text-align: right;">
+								
+								<div style="display: inline-block;vertical-align:sub;margin-right: 70px;">
+									<p style="margin:0;">${fn:substring(result.inDate,0,10)}&nbsp;&nbsp;</p>
+								</div>
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 								</div>
