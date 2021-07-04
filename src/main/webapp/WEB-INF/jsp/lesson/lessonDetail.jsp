@@ -52,6 +52,27 @@ function fn_delLesson(){
 #t1, #t2, #t3, #t4 {
 	display: none;
 }
+.classes__item__text .class-btn:hover {
+    background: #ffffff;
+    border: 1px solid #5768AD;
+    color: #5768AD;
+}
+
+.classes__item__text .class-btn {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    background:#5768AD;
+    display: inline-block;
+    border: 1px solid rgba(155, 158, 163, 0.2);
+    padding: 10px 20px 7px;
+    border-radius: 2px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
 
 </style>
 </head>
@@ -72,21 +93,56 @@ function fn_delLesson(){
 	<!-- 	main html 시작 -->
 	
 	<section class="about spad">
-		<div class="container">
+		<div class="container" style="background-color: white;padding-top: 40px;border: 1px solid #ebecef;border-radius: 10px">
 		<c:set var="resultList" value="${resultList}"/>
-			<div class="row"  style="background-color: white;padding: 30px;border: 1px solid #ebecef;border-radius: 10px">
-			
+			<div class="row">
+<!-- 				<div style="position: absolute; top:70px; padding-left:30px;"> -->
+<!-- 					<div style="float: left;margin-left: 5px; display: inline-block;"> -->
+<%-- 	                  	<p style="font-weight: bold; color: #8B94B5;padding-right: 30px;">카테고리 | <span>${BoardDetail['communityCategoryName']}</span></p> --%>
+<!-- 	                </div> -->
+<!--                     <div style="float:right; width:90%;display: inline-block;"> -->
+<!-- 		                <div style="display: inline-block;vertical-align: middle;"> -->
+<!-- 		                       <img src="./resources/img/common/hit.png" style="width:30px;height: 20px;opacity: 0.5;"> -->
+<!-- 	                    </div> -->
+<!-- 	                    <div style="display: inline-block;vertical-align:sub;"> -->
+<%-- 							<p style="margin:0;">${result.lessonHit}&nbsp;&nbsp;</p> --%>
+<!-- 						</div> -->
+<!-- 						<div style="display: inline-block; vertical-align: middle;"> -->
+<!-- 							<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;"> -->
+<!-- 						</div> -->
+<!-- 						<div style="display: inline-block;vertical-align:sub;"> -->
+<%-- 							<p>${result.lessonReply}&nbsp;&nbsp;</p> --%>
+<!-- 						</div> -->
+<!-- 						<div style="display: inline-block; vertical-align: middle;"> -->
+<!-- 							<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;"> -->
+<!-- 						</div> -->
+<!-- 						<div style="display: inline-block;vertical-align:sub;"> -->
+<%-- 							<p>${result.lessonGood}&nbsp;&nbsp;</p> --%>
+<!-- 						</div> -->
+<!-- 						<div style="display: inline-block; vertical-align: middle;"> -->
+<!-- 							<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;"> -->
+<!-- 						</div> -->
+<!-- 						<div style="display: inline-block;vertical-align:sub;"> -->
+<%-- 							<p>${result.lessonBook}&nbsp;&nbsp;</p> --%>
+<!-- 						</div>   -->
+<!-- 					</div> -->
+<!--                 </div> -->
+                <br/><br/>
 				<div class="col-lg-7 p-0" style="overflow: hidden; display: flex; align-items: center; justify-content: center;">
-					<div class="about__pic" style="">
-						<img src="http://192.168.41.6:9999/upload/profit/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;">
+					<div class="about__pic" style="object-fit: cover;">
+						<img src="http://192.168.41.6:9999/upload/profit/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;object-fit: cover;">
 					</div>
 				</div>
 				<div class="col-lg-5 p-0">
 					<div class="about__text">
 						<div class="section-title">
 							<h3>${resultList.lessonTitle}</h3>
+							<div style="float: left;margin-left: 5px;">
+			                  	<p style="font-weight: bold; color: #8B94B5;">카테고리 | <span>${resultList.lessonCategoryName}</span></p>
+			                </div>
+			                <br/>
 							<div>
-								<div style="display: inline-block;"><p>※ 한줄 소개 : </p></div>&nbsp;
+								<div style="display: inline-block; float:left;"><p>※ 한줄 소개 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>
 							</div>
 							<br/>
@@ -127,6 +183,7 @@ function fn_delLesson(){
 						</div>
 					</div>
 				</div>
+				
 			</div>
 		</div>
 	</section>
@@ -185,16 +242,16 @@ function fn_delLesson(){
 				<div class="d-flex justify-content-between align-items-center has-border">
 					<ul id="titeul" class="nav sub-nav sub-nav--has-border">
 						<li class="nav-item" id="li1">
-							<a id="tite1" class="nav-link sub-nav-link">클래스 소개</a>
+							<a id="tite1" class="nav-link sub-nav-link" style="font-size:17px;">클래스 소개</a>
 						</li>
 						<li class="nav-item" id="li2">
-							<a id="tite2" class="nav-link sub-nav-link">커리큘럼</a>
+							<a id="tite2" class="nav-link sub-nav-link" style="font-size:17px;">커리큘럼</a>
 						</li>
 						<li class="nav-item" id="li3">
-							<a id="tite3" class="nav-link sub-nav-link">리뷰</a>
+							<a id="tite3" class="nav-link sub-nav-link" style="font-size:17px;">리뷰</a>
 						</li>
 						<li class="nav-item" id="li4">
-							<a id="tite4" class="nav-link sub-nav-link ">문의하기</a>
+							<a id="tite4" class="nav-link sub-nav-link" style="font-size:17px;">문의하기</a>
 						</li>
 					</ul>
 				</div>
@@ -207,27 +264,27 @@ function fn_delLesson(){
 							<!-- Classes Section Begin -->
 							<section class="classes spad" style="padding-top:10px;">
 								<div class="container">
-									<span>Category &nbsp;|&nbsp; </span>
-									<span>${resultClassList[0].lessonCategoryName}</span>
+									<span style="font-weight: bold; color: #8B94B5; font-size:17px;">Category &nbsp;|&nbsp; </span>
+									<span style="font-weight: bold; color: #8B94B5; font-size:17px;">${resultClassList[0].lessonCategoryName}</span>
 									<br/><br/>
 									<table class="table table-hover" style="text-align: center;">
 										<tbody>
 											<tr style="background-color:#5768AD;">
-												<th style="color:white;">번호</th>
-												<th style="color:white;">썸네일</th>
-												<th style="color:white;">상세 강의 명</th>
-												<th style="color:white;">재생시간</th>
-												<th style="color:white;">등록일</th>
+												<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">번호</th>
+												<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">썸네일</th>
+												<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">상세 강의 명</th>
+												<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">재생시간</th>
+												<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">등록일</th>
 											</tr>
 										<c:forEach var="rclassList" items="${resultClassList}" varStatus="status">
 											<tr onclick="location.href='classDetail.do?lessonDetailSeq='+ ${rclassList.lessonDetailSeq}" style="cursor:pointer;">
-												<th style="vertical-align: middle;" scope="row">${status.index+1}</th>
+												<th style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;" scope="row">${status.index+1}</th>
 												<td style="vertical-align: middle;width:20%;">
 													<img alt="" src="http://192.168.41.6:9999/upload/profit/${rclassList.fileSaveName}" style="width:100px;height: 90px;object-fit:cover;">
 												</td>
-												<td style="vertical-align: middle;">${rclassList.lessonDetailTitle}</td>
-												<td style="vertical-align: middle;">20:32</td>
-												<td style="vertical-align: middle;">${rclassList.inDate}</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.lessonDetailTitle}</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">20:32</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.inDate}</td>
 											</tr>
 										</c:forEach>
 										</tbody>
