@@ -13,5 +13,6 @@
 		<typeAlias alias="fileVO" type="kr.or.profit.vo.AttachFileVO"/>
 		<typeAlias alias="processVO" type="kr.or.profit.vo.ProcessVO"/>
 		<typeAlias alias="qnaVO" type="kr.or.profit.vo.QnaVO"/>
+		<typeAlias alias="CommunityVO" type="kr.or.profit.vo.CommunityVO"/>
     </typeAliases>
 </configuration>

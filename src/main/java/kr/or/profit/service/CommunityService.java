@@ -17,13 +17,13 @@ public interface CommunityService {
 	public int insertBoardFile(AttachFileVO vo) throws Exception;
 	
 	//자유게시판 목록 조회
-	public List<Map<String, String>> selectBoardList() throws Exception;
+	public List<Map<String, String>> selectBoardList(String memberId) throws Exception;
 	
 	//자유게시판 인기글 목록 조회
-	public List<Map<String, String>> selectBoardTopList() throws Exception;
+	public List<Map<String, String>> selectBoardTopList(String memberId) throws Exception;
 	
 	//자유게시판 상세 글 조회
-	public Map<String, Object> selectBoardDetail(String communitySeq) throws Exception;
+	public Map<String, Object> selectBoardDetail(CommunityVO paramVO) throws Exception;
 	
 	//자유게시판 상세 댓글 나의 프로필 사진 조회
 	public String selectMyProfile(String memberId) throws Exception;

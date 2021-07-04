@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequestWrapper;
+import org.apache.commons.beanutils.DynaBeanMapDecorator;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -124,7 +125,7 @@ public class QnaController {
 	}
 
 	/**
-	 * 문의하기 상세보기(qnaDetail)
+	 * 문의하기 상세보기/문의하기 답변(qnaDetail)
 	 *
 	 * @author 박상빈
 	 * @param map
@@ -137,7 +138,11 @@ public class QnaController {
 	@RequestMapping(value = "qnaDetail.do", method = RequestMethod.GET)
 	public String qnaDetail(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
 		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
+		List<?> qnaDetailReply = qnaService.qnaDetailReply(map);
+
+		model.addAttribute("qnaReply", qnaDetailReply);
 		model.addAttribute("data", qnaDetail);
+
 		return "qna/qnaDetail";
 	}
 
@@ -254,15 +259,46 @@ public class QnaController {
 	 *
 	 * @author 박상빈
 	 * @param map
-	 * replyContent 를 Qna_SQL.xml로 보낸다
-	 * @return "qna/qnaList"
+	 * qnaReplyInsert 를 Qna_SQL.xml로 보낸다
+	 * @return "msg"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "qnaReplyInsert.do", method = RequestMethod.POST)
+	@ResponseBody
 	public String qnaReplyInsert(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
-		qnaService.qnaReplyInsert(map);
+		int qnaReplyInsert = qnaService.qnaReplyInsert(map);
 
-		return "qna/qnaList";
+	    String msg="ng";
+
+		if(qnaReplyInsert > 0) {
+			msg = "ok";
+		}
+		System.out.println("돌아간다 = " + msg);
+		return msg;
+	}
+
+
+
+	/**
+	 * 댓글 삭제(qnaReplyDelete)
+	 *
+	 * @author 박상빈
+	 * @param map
+	 * qnaReplyInsert 를 Qna_SQL.xml로 보낸다
+	 * @return "msg"
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "qnaReplyDelete.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String qnaReplyDelete(@RequestParam Map<String, Object> map, ModelMap model, HttpServletRequest request) throws Exception {
+		System.out.println("왔다");
+		int qnaReplyDelete = qnaService.qnaReplyDelete(request);
+	    String msg="ng";
+		if(qnaReplyDelete > 0) {
+			msg = "ok";
+		}
+		System.out.println("지워짐 = " + msg);
+		return msg;
 	}
 
 

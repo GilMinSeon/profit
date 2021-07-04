@@ -182,5 +182,34 @@
 		    )
 	</insert>
 
+	<!-- 	댓글 목록 -->
+	<select id="qnaDetailReply" resultType="egovMap">
+		SELECT
+		   REPLY_SEQ,
+		   COMMUNITY_SEQ,
+		   LESSON_SEQ,
+		   CHAT_PROFILE_SEQ,
+		   REPLY_CONTENT,
+		   REPLY_DEL_FLAG,
+		   REPLY_PARENT_SEQ,
+		   REPLY_DEPTH,
+		   IN_USER_ID,
+		   TO_CHAR(IN_DATE, 'YYYY/MM/DD') IN_DATE,
+		   UP_USER_ID,
+		   TO_CHAR(UP_DATE, 'YYYY/MM/DD') UP_DATE
+		FROM
+		    REPLY
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+	</select>
+	<!-- 	댓글 삭제 -->
+	<update id="qnaReplyDelete" parameterType="hashMap" >
+		UPDATE
+		    REPLY
+		SET
+		    REPLY_DEL_FLAG = 'Y'
+		WHERE
+		    REPLY_SEQ = #{replySeq}
+	</update>
 
 </mapper>

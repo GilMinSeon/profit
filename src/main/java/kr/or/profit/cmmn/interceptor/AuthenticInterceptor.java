@@ -1,5 +1,7 @@
 package kr.or.profit.cmmn.interceptor;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -9,49 +11,66 @@ import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class AuthenticInterceptor extends HandlerInterceptorAdapter {
-	
+
 	/**
-	 * 세션에 계정정보(Account)가 있는지 여부로 인증 여부를 체크한다.
-	 * 계정정보(Account)가 없다면, 로그인 페이지로 이동한다.
+	 * 세션에 계정정보(Account)가 있는지 여부로 인증 여부를 체크한다. 계정정보(Account)가 없다면, 로그인 페이지로 이동한다.
 	 */
 	@Override
-	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {		
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
 
-		  //로그인 세션이 없다면 login 페이지로 이동 
-		  String id = (String)request.getSession().getAttribute("memberId"); 
-		  String requestUrl = request.getRequestURL().toString(); 
-		  String contextPath = request.getContextPath();
-		  //로그인 경로 제외 
-		  if(requestUrl.contains(contextPath+"/login.do")){ 
-		      return true;
-		  }
+		// 로그인 세션이 없다면 login 페이지로 이동
+		String id = (String) request.getSession().getAttribute("memberId");
+		String requestUrl = request.getRequestURL().toString();
+		String contextPath = request.getContextPath();
 
-		  //리소스 경로 제외 
-		  if(requestUrl.contains(contextPath+"/resources")){ 
-		      return true;
-		  } 
+//		System.out.println(request.getRequestURL());
+//		System.out.println(request.getRequestURL());
+//		System.out.println(request.getRequestURL());
+//		System.out.println(request.getRequestURL());
+//		System.out.println(request.getRequestURL());
+//		System.out.println(request.getRequestURL());
+//		System.out.println(request.getQueryString());
 
-		  if(id==null){ 
-		      response.sendRedirect(contextPath+"/login.do");
-		      return false; 
-		  } 
+		Enumeration<String> params = request.getParameterNames();
+		StringBuilder url = new StringBuilder();
+		
+		url.append(request.getContextPath());
+		url.append(request.getServletPath());
+		url.append("?");
+		url.append(request.getQueryString());
+		
+//		while (params.hasMoreElements()) {
+//			String key = (String) params.nextElement();
+//
+//			String urlParam = String.format("%s=%s", key, request.getParameter(key));
+//			url.append(urlParam);
+//
+//			System.out.println(url.toString());
+//
+//		}
+		System.out.println(url.toString());
+		
+		request.getSession().setAttribute("returnUrl", url.toString());
 
-		  return true; 
-		} 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		// 로그인 경로 제외
+		if (requestUrl.contains(contextPath + "/login.do")) {
+			return true;
+		}
+
+		// 리소스 경로 제외
+		if (requestUrl.contains(contextPath + "/resources")) {
+			return true;
+		}
+
+		if (id == null) {
+			response.sendRedirect(contextPath + "/login.do");
+			return false;
+		}
+
+		return true;
+	}
+
 //		HttpSession session=request.getSession(true);
 //		if(session.getAttribute("memberId")==null){
 //            response.sendRedirect("login");
@@ -69,13 +88,12 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 //        
 //        super.afterCompletion(request, response, handler, ex);
 //    }
-		
+
 //		if(request.getSession().getAttribute("memberId")!=null){
 //			return true;
 //		}else{
 //			ModelAndView modelAndView = new ModelAndView("redirect:/login");			
 //			throw new ModelAndViewDefiningException(modelAndView);
 //		}
-	
 
 }
