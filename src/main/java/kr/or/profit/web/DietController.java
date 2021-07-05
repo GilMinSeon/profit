@@ -19,9 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartRequest;
 
 import kr.or.profit.service.CommunityService;
 import kr.or.profit.service.DietService;
+import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BuyTicketVO;
+//import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.ReplyVO;
 
 /**
@@ -38,12 +43,28 @@ public class DietController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "chatList", method = RequestMethod.GET)
-	public String chatList(Locale locale, Model model) {
+	@RequestMapping(value = "chatList.do", method = RequestMethod.GET)
+	public String chatList(HttpServletRequest request , Model model) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		//이용권이 존재하면 구매 못하도록 막기
+		int ticketFlag = dietService.selectAvailableTicket(memberId);
+		if(ticketFlag > 0) {
+			model.addAttribute("msg", "ng");
+		}else {
+			model.addAttribute("msg", "ok");
+		}
+	
 		return "diet/chatList";
 	}
+	
+	@RequestMapping(value = "chatProfileAdd.do", method = RequestMethod.GET)
+	public String chatProfileAdd(Locale locale, Model model) {
+		return "diet/chatProfileAdd";
+	}
 
-	@RequestMapping(value = "chatDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "chatDetail.do", method = RequestMethod.GET)
 	public String chatDetail(Locale locale, Model model) {
 		return "diet/chatDetail";
 	}
@@ -56,7 +77,9 @@ public class DietController {
     * @throws Exception
     */
 	@RequestMapping(value = "buyTicket.do", method = {RequestMethod.GET,RequestMethod.POST})
-	public String buyTicket(Model model) throws Exception{
+	public String buyTicket(Model model, HttpServletRequest request) throws Exception{
+		
+		
 		return "diet/buyTicket";
 	}
 	
@@ -65,10 +88,79 @@ public class DietController {
 		
 		Map<String, Object> ticketCategory = dietService.selectTicketCategory(ticketCategorySeq);
 		model.addAttribute("ticketCategory" , ticketCategory);
+		System.out.println(model.toString());
 		
 		return "diet/buyTicketDetail";
 	}
 	
+	@RequestMapping(value = "ticketAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String ticketAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		String ticketCategorySeq = request.getParameter("ticketCategorySeq");
+		String ticketName = request.getParameter("ticketName");
+		String ticketPrice = request.getParameter("ticketPrice");
+		String ticketCnt = request.getParameter("ticketCnt");
+		
+		System.out.println("ticketCategorySeq : " + ticketCategorySeq);
+		System.out.println("ticketName : " + ticketName );
+		System.out.println("ticketPrice : " + ticketPrice );
+		System.out.println("ticketCnt : " + ticketCnt );
+		
+		BuyTicketVO buyTicketvo = new BuyTicketVO();
+		buyTicketvo.setTicketCategorySeq(ticketCategorySeq);
+		buyTicketvo.setTicketRemain(ticketCnt);
+		buyTicketvo.setInUserId(memberId);
+		buyTicketvo.setUpUserId(memberId);
+		
+		int insertResult = dietService.insertBuyTicket(buyTicketvo);
+
+	    String msg="ng";
+	    
+		if(insertResult > 0) {
+			msg = "ok";
+		}
+		
+		return msg;
+	}
+	
+	
+		
+//	@RequestMapping(value = "chatProfileAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+//	@ResponseBody
+//	public String chatProfileAddAjax(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multipartRequest) throws Exception{
+//		HttpSession session = request.getSession();
+//		String memberId = (String) session.getAttribute("memberId");
+//		MypageController mc = new MypageController();
+//		List<AttachFileVO> fileVOList = mc.fileProcess(multipartRequest, request);
+//		String simpleIntro = request.getParameter("simpleIntro");
+//		String profileMemo = request.getParameter("profileMemo");
+//		
+//		ChatProfileVO chatProfileVo = new ChatProfileVO();
+//		chatProfileVo.setFileSeq(fileVOList.get(0).getFileSeq());
+//		chatProfileVo.setChatProfileId(memberId);
+//		chatProfileVo.setChatProfileIntro(simpleIntro);
+//		chatProfileVo.setChatProfileMemo(profileMemo);
+//		chatProfileVo.setInUserId(memberId);
+//		chatProfileVo.setUpUserId(memberId);
+//		
+//		System.out.println("============================");
+//		System.out.println(chatProfileVo.getFileSeq());
+//		System.out.println(chatProfileVo.getChatProfileIntro());
+//		System.out.println(chatProfileVo.getChatProfileMemo());
+//		int insertResult = dietService.insertChatProfile(chatProfileVo);
+//		
+//	    String msg="ng";
+//	    
+//		if(insertResult > 0) {
+//			msg = "ok";
+//		}
+//		
+//		return msg;
+//	}
+		
 	@RequestMapping(value = "chatting", method = RequestMethod.GET)
 	public String chatting(Locale locale, Model model) {
 		return "diet/chatting";

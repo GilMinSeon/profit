@@ -110,7 +110,10 @@
     transition: all 0.4s;
 }
 
-
+.team__slider.owl-carousel .owl-stage-outer {
+    padding-top: 10px; 
+    padding-bottom: 40px;
+}
 </style>
 
 <body>
@@ -132,11 +135,9 @@
 	<section class="team spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title" style="margin-top: 50px;">
-                        <h2 style="font-weight: bold;">🏆인기글 TOP 6</h2>
-                        <br>
-                        <p style="color: #535353;font-size: 1.2em;">지금 가장 조회수가 많은 강의를 확인해 보세요!!</p>
+                <div class="col-lg-12" style="height:60px;">
+                    <div class="section-title" style="text-align: left">
+                        <h3 style="font-weight: bold;">🏆조회수 TOP 5</h3>
                     </div>
                 </div>
             </div>
@@ -145,35 +146,51 @@
 				<c:forEach var="resultTop" items="${resultTopList}" varStatus="status">
 				<c:if test="${resultTop.lessonPrivateFlag eq 'n'}">
                     <div class="col-lg-6">
-                        <div class="team__item" style="padding-top:10px;padding-bottom: 10px;">
-                        <div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${resultTop.fileSaveName}">
+                        <div class="team__item" style="padding-top:0px;padding-bottom: 10px;">
+                        <div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${resultTop.fileSaveName}" style="padding-top: 0px;">
                             <span>${resultTop.inDate}</span>
                         </div>
                         <div class="classes__item__text" style="padding-top: 10px;padding-bottom: 10px; padding-left: 0;padding-right: 0;">
                             <div style="text-align: right;">
-	                            <div style="display: inline-block;vertical-align: middle;">
-	                            	<img src="./resources/img/common/hit.png" style="width:30px;height: 20px;opacity: 0.5;">
-	                            </div>
-	                            <div style="display: inline-block;vertical-align:sub;">
-									<p style="margin:0;">${result.lessonHit}&nbsp;&nbsp;</p>
+	                            <div style="display: inline-block; vertical-align: middle;">
+									<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
+								</div>
+								<div style="display: inline-block;vertical-align:sub;">
+									<p style="margin:0;">${resultTop.lessonHit }&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
-									<p>${result.lessonReply}&nbsp;&nbsp;</p>
+									<p>${resultTop.lessonReply}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+								
+									<c:set var="goodFlag" value="${resultTop.goodFlag}"/>
+                    				<c:if test="${goodFlag == '1' }">
+									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									<c:if test="${goodFlag == '0' }">
 									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
-									<p>${result.lessonGood}&nbsp;&nbsp;</p>
+									<p>${resultTop.lessonGood}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+								
+									<c:set var="bookFlag" value="${resultTop.bookFlag}"/>
+                    				<c:if test="${bookFlag == '1' }">
+									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									<c:if test="${bookFlag == '0' }">
 									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
-									<p>${result.lessonBook}&nbsp;&nbsp;</p>
+									<p>${resultTop.lessonBook}&nbsp;&nbsp;</p>
 								</div>  
                             </div>
 							<p style="font-weight: bold; color: #8B94B5;">카테고리 | <span>${resultTop.lessonCategoryName}</span></p>
@@ -211,13 +228,13 @@
 								<select name="selCate" id="selCate">
 									<option value="">카테고리</option>
 									<option value="헬스" 
-										<c:if test="${selCate == '헬스'}">selected</c:if>>헬스</option>
+										<c:if test="${option.selCate == '헬스'}">selected</c:if>>헬스</option>
 									<option value="필라테스"
-										<c:if test="${selCate == '필라테스'}">selected</c:if>>필라테스</option>
+										<c:if test="${option.selCate == '필라테스'}">selected</c:if>>필라테스</option>
 									<option value="요가"
-										<c:if test="${selCate == '요가'}">selected</c:if>>요가</option>
+										<c:if test="${option.selCate == '요가'}">selected</c:if>>요가</option>
 									<option value="맨몸운동"
-										<c:if test="${selCate == '맨몸운동'}">selected</c:if>>맨몸운동</option>
+										<c:if test="${option.selCate == '맨몸운동'}">selected</c:if>>맨몸운동</option>
 								</select>
 							</div>
 							<div class="class__filter__select">
@@ -225,16 +242,16 @@
 								<select name="selLev" id="selLev"> 
 									<option value="">전체</option>
 									<option value="조회순"
-										<c:if test="${selLev == '조회순'}">selected</c:if>>조회순</option>
+										<c:if test="${option.selLev == '조회순'}">selected</c:if>>조회순</option>
 									<option value="좋아요순"
-										<c:if test="${selLev == '좋아요순'}">selected</c:if>>좋아요순</option>
+										<c:if test="${option.selLev == '좋아요순'}">selected</c:if>>좋아요순</option>
 									<option value="댓글순"
-										<c:if test="${selLev == '댓글순'}">selected</c:if>>댓글순</option>
+										<c:if test="${option.selLev == '댓글순'}">selected</c:if>>댓글순</option>
 								</select>
 							</div>
-							<div class="class__filter__input"  >
+							<div class="class__filter__input">
 								<p>Search:</p>
-								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${keyword}">
+								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${option.keyword}">
 							</div>
 							<div class="class__filter__btn">
 								<button type="submit" style="cursor:pointer;">
@@ -259,6 +276,9 @@
 						<div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${result.fileSaveName}"></div>
 						<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
 							<div style="text-align: right;">
+								<div style="display: inline-block;vertical-align:sub;float: left">
+									<p style="margin:0;">${result.inDate}&nbsp;&nbsp;</p>
+								</div>
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 								</div>
@@ -272,13 +292,25 @@
 									<p>${result.lessonReply}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+									<c:set var="goodFlag" value="${result.goodFlag}"/>
+                    				<c:if test="${goodFlag == '1' }">
+									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									<c:if test="${goodFlag == '0' }">
 									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+									</c:if>
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.lessonGood}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+									<c:set var="bookFlag" value="${result.bookFlag}"/>
+                    				<c:if test="${bookFlag == '1' }">
+									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									<c:if test="${bookFlag == '0' }">
 									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.lessonBook}&nbsp;&nbsp;</p>

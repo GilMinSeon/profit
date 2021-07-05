@@ -1,10 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+function fn_availFlag(){
+	if('${msg}' == 'ng'){
+		alert("보유하신 이용권을 모두 사용하신 뒤 구매해주세요");
+		location.href="chatList.do";
+	}else{
+		location.href="buyTicket.do";
+	}
+}
+</script>
+<style type="text/css">
+.classes__item__text .class-btn {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #5768AD;
+    display: inline-block;
+    border: 1px solid rgba(155, 158, 163, 0.2);
+    padding: 10px 20px 7px;
+    border-radius: 2px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+.classes__item__text .class-btn:hover {
+    background: #ffffff;
+    border: 1px solid #5768AD;
+    color: #5768AD;
+}
+</style>
 </head>
 <body>
 <!-- Breadcrumb Begin -->
@@ -26,7 +62,7 @@
         <div class="container">
         <div class="classes__item__text"  style="text-align: center;padding-top: 0;">
 	 		 <span class="blinking">이용권을 구매하여 전문가와 식단상담을 시작하세요 → </span>&nbsp;
-	         <a href="buyTicket.do" class="class-btn_w" style="font-size: 1.1em;">이용권 구매</a>
+	         <a class="class-btn_w" style="font-size: 1.1em;" onclick="fn_availFlag()">이용권 구매</a>
 	    </div>
             <div class="row">
 	            	
@@ -45,7 +81,7 @@
                         <img src="./resources/img/common/trainer-1.jpg" alt="">
                         <div class="trainer-text">
                             <h5>곽두팔</h5>
-                            <span>Health Trainer</span>
+                            <span>헬스트레이너</span>
                             <p>땡땡 소속 전문 헬스트레이너 곽두팔 입니다.
                             식단이 중요한 만큼 고객에 맞는 상담을 해드립니다.
                             연락...주십쇼..</p>
@@ -64,7 +100,7 @@
                         <img src="./resources/img/common/trainer-1.jpg" alt="">
                         <div class="trainer-text">
                             <h5>곽두팔</h5>
-                            <span>Health Trainer</span>
+                            <span>헬스트레이너</span>
                             <p>땡땡 소속 전문 헬스트레이너 곽두팔 입니다.
                             식단이 중요한 만큼 고객에 맞는 상담을 해드립니다.
                             연락...주십쇼..</p>
@@ -82,7 +118,7 @@
                         <img src="./resources/img/common/trainer-2.jpg" alt="">
                         <div class="trainer-text">
                             <h5>곽두팔</h5>
-                            <span>Health Trainer</span>
+                            <span>헬스트레이너</span>
                             <p>땡땡 소속 전문 헬스트레이너 곽두팔 입니다.
                             식단이 중요한 만큼 고객에 맞는 상담을 해드립니다.
                             연락...주십쇼..</p>
@@ -99,7 +135,7 @@
                         <img src="./resources/img/common/trainer-2.jpg" alt="">
                         <div class="trainer-text">
                             <h5>곽두팔</h5>
-                            <span>Health Trainer</span>
+                            <span>헬스트레이너</span>
                             <p>땡땡 소속 전문 헬스트레이너 곽두팔 입니다.
                             식단이 중요한 만큼 고객에 맞는 상담을 해드립니다.
                             연락...주십쇼..</p>
@@ -116,7 +152,7 @@
                         <img src="./resources/img/common/trainer-3.jpg" alt="">
                         <div class="trainer-text">
                             <h5>곽두팔</h5>
-                            <span>Health Trainer</span>
+                            <span>헬스트레이너</span>
                             <p>땡땡 소속 전문 헬스트레이너 곽두팔 입니다.
                             식단이 중요한 만큼 고객에 맞는 상담을 해드립니다.
                             연락...주십쇼..</p>
@@ -133,7 +169,7 @@
                         <img src="./resources/img/common/trainer-3.jpg" alt="">
                         <div class="trainer-text">
                             <h5>곽두팔</h5>
-                            <span>Health Trainer</span>
+                            <span>헬스트레이너</span>
                             <p>땡땡 소속 전문 헬스트레이너 곽두팔 입니다.
                             식단이 중요한 만큼 고객에 맞는 상담을 해드립니다.
                             연락...주십쇼..</p>
@@ -143,9 +179,12 @@
                         </div>
                     </div>
                 </div>
-                
-                
             </div>
+             <c:if test="${memberGubun eq 'T'}">
+                <div class="classes__item__text"  style="text-align: right;padding-top: 0;">
+			         <a href="chatProfileAdd.do" class="class-btn_w" style="font-size: 1.1em;">프로필 등록</a>
+			    </div>
+                </c:if>
         </div>
     </section>
     <!-- Trainer Section End -->
