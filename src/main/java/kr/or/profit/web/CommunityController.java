@@ -1,8 +1,6 @@
 package kr.or.profit.web;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Locale;
@@ -11,11 +9,9 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,19 +19,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.JsonObject;
 
 import kr.or.profit.service.CommunityService;
-import kr.or.profit.service.impl.AttachFileServiceImpl;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
-import kr.or.profit.vo.LessonVO;
-import kr.or.profit.vo.MemberVO;
+import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.PageMaker;
 import kr.or.profit.vo.ReplyVO;
 import net.sf.json.JSONObject;
 
@@ -138,7 +131,7 @@ public class CommunityController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "boardList.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String boardList(Model model, HttpServletRequest request) throws Exception {
+	public String boardList(Model model, HttpServletRequest request, Criteria cri) throws Exception {
 
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
@@ -147,18 +140,28 @@ public class CommunityController {
 		if (memberId == null) {
 			memberId = "";
 		}
-
+		
+		cri.setMemberId(memberId);
+		
 		// 자유게시판 인기글 목록
 		List<Map<String, String>> boardTopList = communityService.selectBoardTopList(memberId);
-		System.out.println("boardTopList.size : " + boardTopList.size());
+		//System.out.println("boardTopList.size : " + boardTopList.size());
 		model.addAttribute("boardTopList", boardTopList);
-		System.out.println("출력 : " + boardTopList.get(0).get("filePath"));
+		//System.out.println("출력 : " + boardTopList.get(0).get("filePath"));
 
 		// 자유게시판 목록
-		List<Map<String, String>> boardList = communityService.selectBoardList(memberId);
+		List<Map<String, String>> boardList = communityService.selectBoardList(cri);
+		
 		model.addAttribute("boardList", boardList);
-		System.out.println("---------------------------");
-		System.out.println(model.toString());
+		
+		//System.out.println(model.toString());
+		
+		//페이징처리
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(communityService.selectBoardCnt()); //전체 글 개수 세팅
+		
+		model.addAttribute("pageMaker", pageMaker);
 
 		return "community/boardList";
 	}

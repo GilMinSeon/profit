@@ -9,6 +9,7 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ReplyVO;
 
 @Mapper("communityMapper")
@@ -21,7 +22,10 @@ public interface CommunityMapper {
 	int insertBoardFile(AttachFileVO vo) throws Exception;
 	
 	//자유게시판 목록 조회
-	List<Map<String, String>> selectBoardList(String memberId) throws Exception;
+	List<Map<String, String>> selectBoardList(Criteria cri) throws Exception;
+	
+	//페이징-자유게시판 전체 글 개수
+	int selectBoardCnt() throws Exception;
 	
 	//자유게시판 인기글 목록 조회
 	List<Map<String, String>> selectBoardTopList(String memberId) throws Exception;

@@ -12,6 +12,7 @@ import kr.or.profit.service.CommunityService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
 
@@ -35,8 +36,8 @@ public class CommunityServiceImpl implements CommunityService {
 
 	// 자유게시판 목록 조회
 	@Override
-	public List<Map<String, String>> selectBoardList(String memberId) throws Exception {
-		return communityDAO.selectBoardList(memberId);
+	public List<Map<String, String>> selectBoardList(Criteria cri) throws Exception {
+		return communityDAO.selectBoardList(cri);
 	}
 
 	// 자유게시판 인기글 조회
@@ -127,6 +128,12 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int selectBookgoodCnt(BookgoodVO vo) throws Exception {
 		return communityDAO.selectBookgoodCnt(vo);
+	}
+	
+	//페이징 - 자유게시판 전체 글 개수
+	@Override
+	public int selectBoardCnt() throws Exception {
+		return communityDAO.selectBoardCnt();
 	}
 
 }
