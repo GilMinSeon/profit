@@ -261,6 +261,7 @@ public class MemberController {
 		session.removeAttribute("memberId");
 		session.removeAttribute("memberNickname");
 		session.removeAttribute("memberGubun");
+		session.removeAttribute("returnUrl");
 		return "redirect:home.do";
 
 	}
