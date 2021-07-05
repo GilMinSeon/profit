@@ -26,7 +26,7 @@ $(document).ready(function(){
 		var num = parseInt(stat,10);
 		num +=5;
 	
-		if(num>=100){
+		if(num>100){
 		alert('더이상 늘릴수 없습니다.');
 		num=100;
 		}
@@ -50,7 +50,7 @@ $(document).ready(function(){
 		var num = parseInt(stat,10);
 		num +=5;
 
-		if(num>=100){
+		if(num>100){
 		alert('더이상 늘릴수 없습니다.');
 		num=100;
 		}
@@ -74,7 +74,7 @@ $(document).ready(function(){
 		var num = parseInt(stat,10);
 		num +=5;
 
-		if(num>=100){
+		if(num>100){
 		alert('더이상 늘릴수 없습니다.');
 		num=100;
 		}
@@ -98,7 +98,7 @@ $(document).ready(function(){
 		var num = parseInt(stat,10);
 		num +=5;
 
-		if(num>=100){
+		if(num>100){
 		alert('더이상 늘릴수 없습니다.');
 		num=100;
 		}
@@ -145,6 +145,7 @@ function send_file(){
 		if(data=="ok"){
 			alert("등록이 정상적으로 완료되었습니다.");
 			location.href="lessonList.do";
+			window.loacation.reload();
 		}else if(data=="no"){
 			alert("등록이 실패하였습니다. 다시 시도해주세요");
 		}else{

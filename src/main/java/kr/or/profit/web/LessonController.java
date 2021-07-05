@@ -38,6 +38,7 @@ import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.MemberVO;
+import kr.or.profit.vo.ReplyVO;
 import net.sf.json.JSONObject;
 
 /**
@@ -79,6 +80,7 @@ public class LessonController {
 	  
       List<?> lessonList = lessonService.selectLessonList(map);
       model.addAttribute("resultList", lessonList);
+      model.addAttribute("option", map);
       List<?> lessonTopList = lessonService.selectTopLessonList();
       model.addAttribute("resultTopList", lessonTopList);
       System.out.println("dddddddddddd"+model);
@@ -112,22 +114,136 @@ public class LessonController {
     * @throws Exception
     */
    @RequestMapping(value = "lessonDetail.do",  method = {RequestMethod.GET, RequestMethod.POST})
-   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
+   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
+      HttpSession session = request.getSession();
+      String memberId = (String) session.getAttribute("memberId");
+      
       Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
       String lessonSeq = (String) lessonDetailList.get("lessonSeq");
-      model.addAttribute("resultList", lessonDetailList);
+      lessonDetailList.put("lessonSeq", lessonSeq);
+      System.out.println("레슨시퀀은 뭐냐ㅕ "+lessonSeq);
       System.out.println("제발찍혀라" + model);
       
-      
       List<?> classList = lessonService.selectClassList(lessonSeq);
-      
       model.addAttribute("resultClassList", classList);
       System.out.println("디테일로 갈 파일 상세 리트스" + model);
+      
+    //조회수 증가
+      lessonService.increaseLessonHit(lessonSeq);
+      
+	// 댓글 목록 가져오기
+      List<Map<String, Object>> replyList = lessonService.selectReplyList(lessonSeq);
+      System.out.println("replyList : "+replyList);
+      lessonDetailList.put("replyList", replyList);
+      model.addAttribute("resultList", lessonDetailList);
+      
+    //댓글 내 프로필 사진 이미지 정보
+      String myprofile = lessonService.selectMyProfile(memberId);
+      System.out.println("기본이미지 : " + myprofile);
+      model.addAttribute("MyProfileImage", myprofile);
       return "lesson/lessonDetail";
    }
    
-   
-   
+	/**
+    * 자유게시판 댓글 등록
+    * @author 
+    * @param HttpServletRequest,HttpServletResponse
+    * @return String - msg
+    * @throws Exception
+    */
+	@RequestMapping(value = "replyLessonAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String replyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		System.out.println("오니?");
+		String lessonSeq = request.getParameter("lessonSeq");
+		System.out.println("lessonSeq여기서찍어라 " + lessonSeq);
+		String replyContent = request.getParameter("replyContent");
+		
+		System.out.println("lessonSeq : " + lessonSeq);
+		System.out.println("replyContent : " + replyContent);
+		
+		ReplyVO replyvo = new ReplyVO();
+		replyvo.setLessonSeq(lessonSeq);
+		replyvo.setReplyContent(replyContent);
+		replyvo.setInUserId(memberId);
+		replyvo.setUpUserId(memberId);
+		
+		int insertResult = lessonService.insertLessonRereply(replyvo);
+		
+
+	    String msg="ng";
+	    
+		if(insertResult > 0) {
+			msg = "ok";
+		}
+		return msg;
+	}
+
+	/**
+	    * 자유게시판 답글 등록
+	    * @author 
+	    * @param HttpServletRequest,HttpServletResponse
+	    * @return String - msg
+	    * @throws Exception
+	    */
+		@RequestMapping(value = "rereplyLessonAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+		@ResponseBody
+		public String rereplyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+			HttpSession session = request.getSession();
+			String memberId = (String) session.getAttribute("memberId");
+			
+			String lessonSeq = request.getParameter("lessonSeq");
+			String replyContent = request.getParameter("replyContent");
+			String replyParentSeq = request.getParameter("replyParentSeq");
+			
+			System.out.println("lessonSeq : " + lessonSeq);
+			System.out.println("replyContent : " + replyContent);
+			System.out.println("replyParentSeq : " + replyParentSeq);
+			
+			
+			ReplyVO replyvo = new ReplyVO();
+			replyvo.setLessonSeq(lessonSeq);
+			replyvo.setReplyContent(replyContent);
+			replyvo.setReplyParentSeq(replyParentSeq);
+			replyvo.setInUserId(memberId);
+			replyvo.setUpUserId(memberId);
+
+			int insertResult = lessonService.insertLessonRereply(replyvo);
+
+		    String msg="ng";
+		    
+			if(insertResult > 0) {
+				msg = "ok";
+			}
+			return msg;
+		}
+		
+		/**
+		    * 자유게시판 댓글 삭제
+		    * @author 
+		    * @param HttpServletRequest,HttpServletResponse
+		    * @return String - msg
+		    * @throws Exception
+		    */
+			@RequestMapping(value = "replyLessonDelAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+			@ResponseBody
+			public String replyDelAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+				
+				String replySeq = request.getParameter("replySeq");
+				System.out.println("replySeq : " + replySeq);
+				int deleteResult = lessonService.deleteLessonReply(replySeq);
+
+				
+				
+			    String msg="ng";
+
+			    if(deleteResult  > 0) {
+					msg = "ok";
+				}
+				return msg;
+			}
    
    /**
     * 강의 등록

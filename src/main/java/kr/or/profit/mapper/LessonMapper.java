@@ -7,6 +7,7 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.ReplyVO;
 
 @Mapper("lessonMapper")
 public interface LessonMapper {
@@ -55,6 +56,22 @@ public interface LessonMapper {
 	List<?> selectCateLessonList(Map<String, Object> map) throws Exception;
 
 	List<?> selectLessonList() throws Exception;
+
+	//자유게시판 상세 댓글 나의 프로필 사진 조회
+	String selectMyProfile(String memberId)  throws Exception;
+
+	//강의 댓글리스트 가져오기
+	List<Map<String, Object>> selectReplyList(String lessonSeq) throws Exception;
+
+	//강의 상세 댓글 추가
+	int insertLessonRereply(ReplyVO replyvo) throws Exception;
+
+	//강의 댓글 삭제
+	int deleteLessonReply(String replySeq) throws Exception;
+
+	//조회수 증가
+	int increaseLessonHit(String lessonSeq) throws Exception;
+
 
 
 
