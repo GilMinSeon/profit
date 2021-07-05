@@ -5,6 +5,7 @@ import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -71,6 +72,15 @@ public interface LessonMapper {
 
 	//조회수 증가
 	int increaseLessonHit(String lessonSeq) throws Exception;
+
+	//좋아요북마크 추가
+	int insertLessonBookgood(BookgoodVO vo)  throws Exception;
+
+	//좋아요북마크 개수 가져오기
+	int selectLessonBookgoodCnt(BookgoodVO vo) throws Exception;
+
+	//좋아요북마크 제거
+	int deleteLessonBookgood(BookgoodVO vo) throws Exception;
 
 
 

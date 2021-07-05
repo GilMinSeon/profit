@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.or.profit.service.AttachFileService;
 import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.MemberVO;
@@ -69,6 +70,12 @@ public class LessonController {
 	  selCate = request.getParameter("selCate");
 	  selLev = request.getParameter("selLev");
 	  keyword = request.getParameter("keyword");
+	  HttpSession session = request.getSession();
+	  String memberId = (String) session.getAttribute("memberId");
+	  System.out.println("memberId나와랏 " + memberId);
+	  if (memberId == null) {
+			memberId = "";
+		}
 	  
 	  System.out.println("selCate " +selCate );
 	  System.out.println("selLev " +selLev );
@@ -76,7 +83,9 @@ public class LessonController {
 	  
 	  map.put("selCate", selCate);
 	  map.put("selLev", selLev);
-	  map.put("keyword", keyword);	  
+	  map.put("keyword", keyword);	
+	  map.put("memberId", memberId);
+	 
 	  
       List<?> lessonList = lessonService.selectLessonList(map);
       model.addAttribute("resultList", lessonList);
@@ -117,7 +126,9 @@ public class LessonController {
    public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
       HttpSession session = request.getSession();
       String memberId = (String) session.getAttribute("memberId");
+      System.out.println("민정이 "+memberId);
       
+      lessonVO.setMemberId(memberId);
       Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
       String lessonSeq = (String) lessonDetailList.get("lessonSeq");
       lessonDetailList.put("lessonSeq", lessonSeq);
@@ -136,6 +147,7 @@ public class LessonController {
       System.out.println("replyList : "+replyList);
       lessonDetailList.put("replyList", replyList);
       model.addAttribute("resultList", lessonDetailList);
+      System.out.println("resultList " + model.toString());
       
     //댓글 내 프로필 사진 이미지 정보
       String myprofile = lessonService.selectMyProfile(memberId);
@@ -146,7 +158,7 @@ public class LessonController {
    
 	/**
     * 자유게시판 댓글 등록
-    * @author 
+    * @author 정예진
     * @param HttpServletRequest,HttpServletResponse
     * @return String - msg
     * @throws Exception
@@ -183,7 +195,7 @@ public class LessonController {
 
 	/**
 	    * 자유게시판 답글 등록
-	    * @author 
+	    * @author 정예진
 	    * @param HttpServletRequest,HttpServletResponse
 	    * @return String - msg
 	    * @throws Exception
@@ -221,30 +233,84 @@ public class LessonController {
 		}
 		
 		/**
-		    * 자유게시판 댓글 삭제
-		    * @author 
-		    * @param HttpServletRequest,HttpServletResponse
-		    * @return String - msg
-		    * @throws Exception
-		    */
-			@RequestMapping(value = "replyLessonDelAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
-			@ResponseBody
-			public String replyDelAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
-				
-				String replySeq = request.getParameter("replySeq");
-				System.out.println("replySeq : " + replySeq);
-				int deleteResult = lessonService.deleteLessonReply(replySeq);
+	    * 자유게시판 댓글 삭제
+	    * @author 정예진
+	    * @param HttpServletRequest,HttpServletResponse
+	    * @return String - msg
+	    * @throws Exception
+	    */
+		@RequestMapping(value = "replyLessonDelAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+		@ResponseBody
+		public String replyDelAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+			
+			String replySeq = request.getParameter("replySeq");
+			System.out.println("replySeq : " + replySeq);
+			int deleteResult = lessonService.deleteLessonReply(replySeq);
 
-				
-				
-			    String msg="ng";
+			
+			
+		    String msg="ng";
 
-			    if(deleteResult  > 0) {
-					msg = "ok";
-				}
-				return msg;
+		    if(deleteResult  > 0) {
+				msg = "ok";
 			}
+			return msg;
+		}
    
+	/**
+	 * 자유게시판 좋아요/북마크 제거
+	 * 
+	 * @author 길민선
+	 * @param BookgoodVO
+	 * @return String - community/boardAdd
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "removeLessonBookgoodAjax.do", produces = "application/text; charser=utf-8")
+	public @ResponseBody String removeBookgood(BookgoodVO vo) throws Exception {
+
+		int delCnt = lessonService.deleteLessonBookgood(vo);
+		int cnt = lessonService.selectLessonBookgoodCnt(vo);
+		String str_cnt = Integer.toString(cnt);
+
+		String msg = "";
+
+		if (delCnt > 0) {
+			msg = str_cnt;
+		} else {
+			msg = "no";
+		}
+
+		return msg;
+	}
+
+	/**
+	 * 자유게시판 좋아요/북마크 추가
+	 * 
+	 * @author 길민선
+	 * @param BookgoodVO
+	 * @return String - community/boardAdd
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "addLessonBookgoodAjax.do", produces = "application/text; charser=utf-8")
+	public @ResponseBody String addBookgood(BookgoodVO vo) throws Exception {
+
+		int insCnt = lessonService.insertLessonBookgood(vo);
+		int cnt = lessonService.selectLessonBookgoodCnt(vo);
+		String str_cnt = Integer.toString(cnt);
+
+		String msg = "";
+
+		if (insCnt > 0) {
+			msg = str_cnt;
+		} else {
+			msg = "no";
+		}
+
+		return msg;
+	}
+	
+		
+		
    /**
     * 강의 등록
     * @param lessonVO - 등록할 정보가 담긴 VO

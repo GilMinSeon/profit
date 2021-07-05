@@ -19,7 +19,29 @@ public class LessonVO {
 	private String inDate;
 	private String upUserId;
 	private String upDate;
+	private String memberId;
+	private String goodFlag;
+	private String bookFlag;
 	
+	
+	public String getGoodFlag() {
+		return goodFlag;
+	}
+	public void setGoodFlag(String goodFlag) {
+		this.goodFlag = goodFlag;
+	}
+	public String getBookFlag() {
+		return bookFlag;
+	}
+	public void setBookFlag(String bookFlag) {
+		this.bookFlag = bookFlag;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 	public String getLessonSeq() {
 		return lessonSeq;
 	}

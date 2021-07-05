@@ -132,11 +132,16 @@
 	   <!-- 강의 목록조회 --> 
 	    
 	    <select id="selectLessonList"  resultType="egovMap" parameterType="hashmap">	 <!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
-
+			
 			SELECT A.LESSON_SEQ ,
 				   A.FILE_SEQ, 
 				   A.COMMON_SEQ, 
 				   A.LESSON_CATEGORY_SEQ, 
+				   (select count(*) from bookgood bk where bookgood_gubun = 'G' and bk.lesson_seq = a.lesson_seq) as lesson_good,
+				   (select count(*) from bookgood bk where bookgood_gubun = 'B' and bk.lesson_seq = a.lesson_seq) as lesson_book,
+				   (select count(*) from bookgood bk where member_id=#{memberId, jdbcType=VARCHAR} and bookgood_gubun = 'G' and bk.lesson_seq = a.lesson_seq) as good_flag,
+				   (select count(*) from bookgood bk where member_id=#{memberId, jdbcType=VARCHAR} and bookgood_gubun = 'B' and bk.lesson_seq = a.lesson_seq) as book_flag,
+				   
 					CASE
 					    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'
 					    ELSE A.LESSON_TITLE
@@ -151,6 +156,7 @@
 				  	D.FILE_PATH,
 				  	D.FILE_SAVE_NAME, 
 				  	E.LESSON_CATEGORY_NAME,
+<!-- 				  	NVL(G.LESSON_REPLY,0) AS LESSON_REPLY, -->
 				  	NVL(B.LESSON_GOOD,0) as LESSON_good,
                     NVL(f.LESSON_BOOK,0) as LESSON_book,
                     NVL(C.LESSON_REPLY,0) as LESSON_reply
@@ -177,6 +183,11 @@
 										WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B'
 										GROUP BY LESSON_SEQ) F
 				ON A.LESSON_SEQ = F.LESSON_SEQ
+<!-- 					LEFT OUTER JOIN(SELECT LESSON_SEQ, COUNT(*) AS LESSON_REPLY -->
+<!-- 									FROM REPLY -->
+<!-- 									WHERE REPLY_DEL_FLAG='N' -->
+<!-- 									GROUP BY LESSON_SEQ) G -->
+<!-- 				ON A.LESSON_SEQ = G.LESSON_SEQ -->
 
 			WHERE 1=1
 			<if test="selCate != null and selCate != ''">
@@ -185,19 +196,7 @@
 			<if test="keyword != null and keyword != ''">
 			    AND LESSON_TITLE LIKE '%' || #{keyword} || '%'
 			    OR A.IN_USER_ID LIKE '%' || #{keyword} || '%'
-<!-- 		        <choose> -->
-<!-- 		            <when test="searchCondition == 0"> -->
-<!-- 						AND	ID LIKE '%' || #{keyword} || '%' -->
-<!-- 					</when> -->
-<!-- 		            <when test="searchCondition == 1"> -->
-<!-- 						AND	NAME LIKE '%' || #{searchKeyword} || '%' -->
-<!-- 					</when> -->
-<!-- 				</choose> -->
 			</if>
-			
-<!-- 			<if test="selCate == null and selCate == '' and selLev == null and selLev == '' and  keyword == null and keyword == '' "> -->
-<!-- 				ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC -->
-<!-- 			</if> -->
 			
 			
 			<trim prefix="ORDER BY" prefixOverrides="," >
@@ -218,29 +217,10 @@
 					        </when>
 				        </choose>
 				      </otherwise>
-<!-- 				        <otherwise> -->
-<!-- 				         TO_NUMBER(A.LESSON_SEQ) DESC -->
-<!-- 				        </otherwise> -->
 			    </choose>
 			    
 			</trim>
 			
-<!-- 			ORDER BY TO_NUMBER(A.LESSON_SEQ) DESC -->
-<!-- 			</if> -->
-<!-- 			<if test="selLev != null and selLev != ''"> -->
-<!-- 			    <choose> -->
-<!-- 			        <when test="selLev == '조회순'"> -->
-<!-- 					, LESSON_HIT DESC -->
-<!-- 			        </when> -->
-<!-- 			        <when test="selLev == '좋아요순'"> -->
-<!-- 					, LESSON_GOOD DESC -->
-<!-- 			        </when> -->
-<!-- 			         <when test="selLev == '댓글순'"> -->
-<!-- 					, LESSON_reply DESC -->
-<!-- 			        </when> -->
-<!-- 			    </choose> -->
-<!-- 			</if> -->
-<!-- 			LIMIT #{recordCountPerPage} OFFSET #{firstIndex} -->
 	</select>
 	    
 	    
@@ -262,33 +242,40 @@
 	    	   T.LESSON_REPLY, 
 	    	   T.FILE_PATH, 
 	    	   T.FILE_SAVE_NAME, 
-	    	   T.LESSON_CATEGORY_NAME
+	    	   T.LESSON_CATEGORY_NAME,
+	    	   T.GOOD_FLAG,
+	    	   T.BOOK_FLAG,
+	    	   T.LESSON_BOOK
 				FROM
 				(
-				SELECT A.LESSON_SEQ ,A.FILE_SEQ, A.COMMON_SEQ, A.LESSON_CATEGORY_SEQ, 
-				CASE
-				    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'
-				    ELSE A.LESSON_TITLE
-				    END AS LESSON_TITLE, 
-				A.LESSON_TITLE_COMMENT, 
-				A.LESSON_PRIVATE_FLAG, 
-				A.LESSON_INTRO, 
-				TO_NUMBER(A.LESSON_HIT) LESSON_HIT, 
-				B.LESSON_GOOD, 
-				A.IN_USER_ID, 
-				TO_CHAR(A.IN_DATE, 'yyyy-mm-dd') IN_DATE, 
-				C.LESSON_REPLY, 
-				D.FILE_PATH,
-				D.FILE_SAVE_NAME, 
-				E.LESSON_CATEGORY_NAME
+				SELECT A.LESSON_SEQ ,
+					   A.FILE_SEQ, 
+					   A.COMMON_SEQ, 
+					   A.LESSON_CATEGORY_SEQ,
+					   (select count(*) from bookgood bk where bookgood_gubun = 'G' and bk.lesson_seq = a.lesson_seq) as lesson_good,
+						(select count(*) from bookgood bk where bookgood_gubun = 'B' and bk.lesson_seq = a.lesson_seq) as lesson_book,
+						(select count(*) from bookgood bk where member_id=#{memberId, jdbcType=VARCHAR} and bookgood_gubun = 'G' and bk.lesson_seq = a.lesson_seq) as good_flag,
+						(select count(*) from bookgood bk where member_id=#{memberId, jdbcType=VARCHAR} and bookgood_gubun = 'B' and bk.lesson_seq = a.lesson_seq) as book_flag,
+					  
+				 
+					CASE
+					    WHEN LENGTH(A.LESSON_TITLE) > 20 THEN SUBSTR(A.LESSON_TITLE, 0, 20) || '...'
+					    ELSE A.LESSON_TITLE
+					    END AS LESSON_TITLE, 
+					A.LESSON_TITLE_COMMENT, 
+					A.LESSON_PRIVATE_FLAG, 
+					A.LESSON_INTRO, 
+					TO_NUMBER(A.LESSON_HIT) LESSON_HIT, 
+					A.IN_USER_ID, 
+					TO_CHAR(A.IN_DATE, 'yyyy-mm-dd') IN_DATE, 
+					NVL(C.LESSON_REPLY,0) AS LESSON_REPLY, 
+					D.FILE_PATH,
+					D.FILE_SAVE_NAME, 
+					E.LESSON_CATEGORY_NAME
 				        FROM LESSON A
-				            LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
-				                        FROM BOOKGOOD
-				                        WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G'
-				                        GROUP BY LESSON_SEQ) B
-				        ON A.LESSON_SEQ = B.LESSON_SEQ
 				            LEFT OUTER JOIN(SELECT LESSON_SEQ,COUNT(*) AS LESSON_REPLY
 				                        FROM REPLY
+				                        WHERE REPLY_DEL_FLAG='N'
 				                        GROUP BY LESSON_SEQ) C
 				        ON A.LESSON_SEQ = C.LESSON_SEQ
 				            LEFT OUTER JOIN (SELECT FILE_SEQ,FILE_PATH,FILE_SAVE_NAME
@@ -308,16 +295,57 @@
 	    
 	    <!-- 강의 상세보기 -->
     <select id="selectLessonDetail" resultType="egovMap">
-
-		SELECT A.LESSON_SEQ, A.FILE_SEQ, A.LESSON_CATEGORY_SEQ, A.LESSON_TITLE, A.LESSON_TITLE_COMMENT, A.LESSON_BALANCE, A.LESSON_FLEX, A.LESSON_STRONG,
-        A.LESSON_CORE, A.LESSON_INTRO, A.LESSON_PRICE, A.LESSON_MONTH, A.IN_USER_ID, A.IN_DATE, A.UP_USER_ID, A.UP_DATE, B.FILE_SAVE_NAME, B.FILE_REAL_NAME
+		<![CDATA[
+		SELECT A.LESSON_SEQ, 
+	        (select count(*) from bookgood bk where member_id=#{memberId, jdbcType=VARCHAR} and bookgood_gubun = 'G' and bk.LESSON_seq = a.LESSON_seq) as good_flag,
+	        (select count(*) from bookgood bk where member_id=#{memberId, jdbcType=VARCHAR} and bookgood_gubun = 'B' and bk.LESSON_seq = a.LESSON_seq) as book_flag,
+	        
+	       A.FILE_SEQ, 
+	       A.LESSON_CATEGORY_SEQ, 
+	       A.LESSON_TITLE, 
+	       A.LESSON_TITLE_COMMENT, 
+	       A.LESSON_BALANCE, 
+	       A.LESSON_FLEX, 
+	       A.LESSON_STRONG,
+	       A.LESSON_CORE, 
+	       A.LESSON_INTRO, 
+	       A.LESSON_PRICE, 
+	       A.LESSON_MONTH, 
+	       A.IN_USER_ID, 
+	       TO_CHAR(A.IN_DATE,'YYYY-MM-DD') IN_DATE, 
+	       A.UP_USER_ID, 
+	       A.UP_DATE, 
+	       B.FILE_SAVE_NAME, 
+	       B.FILE_REAL_NAME,
+	       C.LESSON_CATEGORY_NAME,
+	       NVL(D.LESSON_REPLY,0) AS LESSON_REPLY ,
+	       NVL(E.LESSON_BOOK,0) AS LESSON_BOOK,
+	       NVL(F.LESSON_GOOD,0) AS LESSON_GOOD,
+	       A.LESSON_HIT
 			FROM LESSON A
-			    LEFT OUTER JOIN (SELECT FILE_SEQ, FILE_SAVE_NAME , FILE_REAL_NAME
+            LEFT OUTER JOIN (SELECT FILE_SEQ, FILE_SAVE_NAME , FILE_REAL_NAME
 			                FROM ATTACH_FILE ) B
 			ON A.FILE_SEQ = B.FILE_SEQ
-			
+			LEFT OUTER JOIN (SELECT LESSON_CATEGORY_SEQ, LESSON_CATEGORY_NAME
+                            FROM LESSON_CATEGORY ) C
+            ON A.LESSON_CATEGORY_SEQ = C.LESSON_CATEGORY_SEQ
+            LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_REPLY
+                            FROM REPLY
+                            WHERE REPLY_DEL_FLAG='N'
+                            GROUP BY LESSON_SEQ) D
+            ON A.LESSON_SEQ = D.LESSON_SEQ
+            LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_BOOK
+                            FROM BOOKGOOD
+                            WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B'
+                            GROUP BY LESSON_SEQ) E
+            ON A.LESSON_SEQ = E.LESSON_SEQ
+            LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
+                            FROM BOOKGOOD
+                            WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G'
+                            GROUP BY LESSON_SEQ) F
+            ON A.LESSON_SEQ = F.LESSON_SEQ
 			WHERE A.LESSON_SEQ= #{lessonSeq, jdbcType=VARCHAR}
-
+			]]>
 	</select>
 	
     <!-- 자유게시판 상세 댓글 나의 프로필 사진 조회 -->
@@ -462,6 +490,33 @@
 		WHERE LESSON_SEQ = #{lessonSeq}
 
 	</update>
+	
+	<!-- 좋아요/북마크 추가 -->
+	<insert id="insertLessonBookgood" parameterType="BookgoodVo">
+	    <selectKey order="BEFORE" keyProperty="bookgoodSeq"
+			resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(bookgood_seq)),0)+1 FROM
+			bookgood
+		</selectKey>
+		insert into bookgood
+		(bookgood_seq, member_id, lesson_seq, bookgood_gubun, bookgood_flag, in_user_id, in_date, up_user_id, up_date)
+		values
+		(#{bookgoodSeq}, #{memberId}, #{lessonSeq}, #{bookgoodGubun}, 'Y', #{memberId}, sysdate, #{memberId}, sysdate)
+	</insert>
+	
+	<!-- 좋아요/북마크 개수 count -->
+    <select id="selectLessonBookgoodCnt" parameterType="BookgoodVO" resultType="int">
+        select count(*)
+		from bookgood
+		where lesson_seq = #{lessonSeq} and bookgood_gubun = #{bookgoodGubun}
+    </select>
+	
+      <!-- 좋아요/북마크 삭제 -->
+	<delete id="deleteLessonBookgood" parameterType="BookgoodVO">
+	    delete bookgood
+		where member_id = #{memberId} and lesson_seq = #{lessonSeq} 
+		and bookgood_gubun = #{bookgoodGubun}
+	</delete> 
 	
 	
 	<!-- 강의 비활성화 -->
