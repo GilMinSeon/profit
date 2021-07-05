@@ -10,6 +10,91 @@
 <title>Insert title here</title>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
+$(function(){
+	
+	//좋아요북마크 취소
+	$(document).on("click",".remove",function(){
+		var memberId = $("#sessionId").val(); 
+		var lessonSeq = $("#lessonSeq").val(); 
+		var bookgoodGubun = $(this).attr('alt');
+		
+		$.ajax({
+			type : "get",
+			data : {memberId:memberId, bookgoodGubun:bookgoodGubun, lessonSeq:lessonSeq},
+			url : "removeLessonBookgoodAjax.do",
+			success : function(result) {
+				if (result == "no") {
+					alert("문제가 발생하였습니다. 잠시후 다시 시도해주세요")
+				} else {
+					if(bookgoodGubun == 'G'){
+						var txt = "";
+						txt += "<img src='./resources/img/common/like.png' style='width: 17px; height: 15px;' class='full' alt='G' />"
+						$("#div_good_img").html(txt);
+						var txt2 = "";
+						txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+						$("#div_good_cnt").html(txt2);
+					}else{
+						var txt = "";
+						txt += "<img src='./resources/img/common/bookmark.png' style='width: 12px; height: 16px;' class='full' alt='B' />"
+						$("#div_book_img").html(txt);
+						var txt2 = "";
+						txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+						$("#div_book_cnt").html(txt2);
+					}
+				}
+			},
+			error : function() {
+				alert("오류발생");
+			}
+		});
+	}); //.remove 클릭 이벤트 끝
+	
+	
+	//좋아요북마크 추가
+	$(document).on("click",".full",function(){
+		var memberId = $("#sessionId").val(); 
+		console.log("memberId"+memberId);
+		var lessonSeq = $("#lessonSeq").val(); 
+		var bookgoodGubun = $(this).attr('alt');
+		
+		$.ajax({
+			type : "get",
+			data : {memberId:memberId, bookgoodGubun:bookgoodGubun, lessonSeq:lessonSeq},
+			url : "addLessonBookgoodAjax.do",
+			success : function(result) {
+				if (result == "no") {
+					alert("문제가 발생하였습니다. 잠시후 다시 시도해주세요")
+				} else {
+					if(bookgoodGubun == 'G'){
+						var txt = "";
+						txt += "<img src='./resources/img/common/red_like.png' style='width: 17px; height: 15px;' class='remove' alt='G' />"
+						$("#div_good_img").html(txt);
+						var txt2 = "";
+						txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+						$("#div_good_cnt").html(txt2);
+					}else{
+						var txt = "";
+						txt += "<img src='./resources/img/common/yellow_bookmark.png' style='width: 12px; height: 16px;' class='remove' alt='B' />"
+						$("#div_book_img").html(txt);
+						var txt2 = "";
+						txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+						$("#div_book_cnt").html(txt2);
+					}
+				}
+			},
+			error : function() {
+				alert("오류발생");
+			}
+		});
+	}); //.full 이벤트 끝
+	
+	
+});
+
+
+
+
+
 function fn_delLesson(){
 	var params = location.search.substr(location.search.indexOf("?") + 1);
     var lessonSeq = params.substr(params.indexOf("=")+1); 
@@ -210,22 +295,74 @@ function fn_reply_del(seq){
 	<section class="about spad">
 		<div class="container">
 		<c:set var="resultList" value="${resultList}"/>
-			<div class="row">
-
-                <br/><br/>
-				<div class="col-lg-7 p-0" style="display: inline-block;">
-					<div class="about__pic" style="object-fit: cover;">
+		<div style="background-color: white;border: 1px solid #ebecef;border-radius: 10px;">
+			<div class="row" style="padding-top: 30px;padding-bottom: 30px;">
+				<div class="col-lg-6 p-0">
+					<div style="float: left;margin-left: 40px;">
+	                  	<p style="font-weight: bold; color: #8B94B5;">카테고리&nbsp;&nbsp;|&nbsp; <span>${resultList.lessonCategoryName}</span></p>
+	                </div><br/>
+	                <div  style="float: right;margin-bottom: 7px;margin-right: 40px;margin-left: 40px;">
+                        <div style="display: inline-block;vertical-align:sub;">
+							<p style="margin:0;">${resultList.inDate}&nbsp;&nbsp;</p>
+						</div>
+                        <div style="display: inline-block; vertical-align: middle;">
+							<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
+						</div>
+						<div style="display: inline-block;vertical-align:sub;">
+							<p style="margin:0;">${resultList.lessonHit}&nbsp;&nbsp;</p>
+						</div>
+						<div style="display: inline-block; vertical-align: middle;">
+							<img src="./resources/img/common/newreply.png" style="width: 17px; height: 17px; opacity: 0.5;">
+						</div>
+						<div style="display: inline-block;vertical-align:sub;">
+							<p>${resultList.lessonReply}&nbsp;&nbsp;</p>
+						</div>
+						
+						<input type="hidden" value="${sessionScope.memberId }" id="sessionId">
+						<input type="hidden" value="${resultList.lessonSeq}" id="lessonSeq">
+						
+						<!-- 좋아요 이미지 찍히는 곳 -->
+						<div style="display: inline-block; vertical-align: middle;" id="div_good_img">
+							<c:set var="goodFlag" value="${resultList.goodFlag}"/>
+                  			<c:if test="${goodFlag == '1' }">
+								<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;" class="remove" alt="G">
+							</c:if>
+							<c:if test="${goodFlag == '0' }">
+								<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;" class="full" alt="G">
+							</c:if>
+						</div>
+						
+						<!-- 좋아요수 -->
+						<div style="display: inline-block;vertical-align:sub;" id="div_good_cnt">
+							<p>${resultList.lessonGood}&nbsp;&nbsp;</p>
+						</div>
+						
+						<!-- 북마크 이미지 찍히는 곳 -->
+						<div style="display: inline-block; vertical-align: middle;" id="div_book_img">
+							<c:set var="bookFlag" value="${resultList.bookFlag}"/>
+                  			<c:if test="${bookFlag == '1' }">
+								<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;" class="remove" alt="B">
+							</c:if>
+							<c:if test="${bookFlag == '0' }">
+								<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;" class="full" alt="B">
+							</c:if>
+						</div>
+						
+						<!-- 북마크수 -->
+						<div style="display: inline-block;vertical-align:sub;" id="div_book_cnt">
+							<p>${resultList.lessonBook}&nbsp;&nbsp;</p>
+						</div> 
+        			</div>
+        			
+        			
+					<div style="text-align: center;">
 						<img src="http://192.168.41.6:9999/upload/profit/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;object-fit: cover;">
 					</div>
 				</div>
-				<div class="col-lg-5 p-0" style="display: inline-block;">
-					<div class="about__text">
+				<div class="col-lg-5 p-0">
+					<div class="about__text" style="padding-left:20px;">
 						<div class="section-title">
-							<h3>${resultList.lessonTitle}</h3>
-							<div style="float: left;margin-left: 5px;">
-			                  	<p style="font-weight: bold; color: #8B94B5;">카테고리 | <span>${resultList.lessonCategoryName}</span></p>
-			                </div>
-			                <br/>
+							<span style="font-size: 1.4em; font-weight: bold;color: #545454">◾ ${resultList.lessonTitle}</span><br/><br/>
 							<div>
 								<div style="display: inline-block; float:left;"><p>※ 한줄 소개 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>
@@ -270,6 +407,7 @@ function fn_reply_del(seq){
 				</div>
 				
 			</div>
+			</div>
 		</div>
 	</section>
 	<!-- 	main html 시작 -->
@@ -313,7 +451,7 @@ function fn_reply_del(seq){
 			})
 		});
 	</script>
-	<section class="about spad">
+	<section class="about spad" style="padding-top:20px;">
 	<div class="container">
 		<main id="main" class="site-main" role="main">
 			<div class="classes__item__text" style="text-align: right;">

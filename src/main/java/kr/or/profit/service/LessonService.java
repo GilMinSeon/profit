@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -70,6 +71,15 @@ public interface LessonService {
 
 	//조회수 증가
 	public int increaseLessonHit(String lessonSeq) throws Exception;
+
+	//좋아요북마크 추가
+	public int insertLessonBookgood(BookgoodVO vo) throws Exception;
+
+	//좋아요북마크 개수 가져오기
+	public int selectLessonBookgoodCnt(BookgoodVO vo) throws Exception;
+
+	//좋아요북마크 제거
+	public int deleteLessonBookgood(BookgoodVO vo) throws Exception;
 
 
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.or.profit.mapper.LessonMapper;
 import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -141,6 +142,24 @@ public class LessonServiceImpl implements LessonService {
 	@Override
 	public int increaseLessonHit(String lessonSeq) throws Exception {
 		return lessonDAO.increaseLessonHit(lessonSeq);
+	}
+
+	// 좋아요북마크 추가
+	@Override
+	public int insertLessonBookgood(BookgoodVO vo) throws Exception {
+		return lessonDAO.insertLessonBookgood(vo);
+	}
+
+	//좋아요북마크 개수 가져오기
+	@Override
+	public int selectLessonBookgoodCnt(BookgoodVO vo) throws Exception {
+		return lessonDAO.selectLessonBookgoodCnt(vo);
+	}
+
+	//좋아요북마크 제거
+	@Override
+	public int deleteLessonBookgood(BookgoodVO vo) throws Exception {
+		return lessonDAO.deleteLessonBookgood(vo);
 	}
 
 

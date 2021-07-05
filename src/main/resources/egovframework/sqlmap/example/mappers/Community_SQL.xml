@@ -102,53 +102,60 @@
 			)
 		]]>
 	</insert>
-
+	
+	
+	<!-- 자유게시판 페이징 처리 -->
+	<select id="selectBoardCnt" resultType="int">
+	    select count(community_seq) from community
+		where common_del_flag = 'N' and common_seq = '5'
+	</select>	
+	
 	<!-- 자유게시판 목록 조회 -->
-	<select id="selectBoardList" parameterType="String" resultType="egovMap">	<!-- egovMap : key 에 대하여 Camel Case 변환하여 super.put -->
+	<select id="selectBoardList" parameterType="Criteria" resultType="egovMap">	<!-- egovMap : key 에 대하여 Camel Case 변환하여 super.put -->
 	    
-		SELECT A.COMMUNITY_SEQ,A.COMMUNITY_CATEGORY_SEQ,A.FILE_SEQ,
-	
-		(select count(*) from bookgood bk where bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as board_good,
-		(select count(*) from bookgood bk where bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as board_book,
-		(select count(*) from bookgood bk where member_id=#{memberId} and bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as good_flag,
-		(select count(*) from bookgood bk where member_id=#{memberId} and bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as book_flag,
-	
-		CASE
-		WHEN
-		LENGTH(A.COMMON_TITLE) > 15 THEN SUBSTR(A.COMMON_TITLE, 0, 15) ||
-		'...'
-		ELSE A.COMMON_TITLE
-		END AS COMMON_TITLE,
-		A.COMMON_CONTENT,
-		A.COMMON_HIT,
-		A.IN_USER_ID,
-		A.IN_DATE,
-		B.FILE_PATH,
-		NVL(D.BOARD_REPLY,0) AS
-		BOARD_REPLY,
-		E.COMMUNITY_CATEGORY_NAME
-		FROM
-		COMMUNITY A
-		LEFT JOIN
-		ATTACH_FILE B ON
-		(A.FILE_SEQ = B.FILE_SEQ)
-		LEFT JOIN
-		(
-		SELECT COMMUNITY_SEQ,
-		COUNT(*) AS BOARD_REPLY
-		FROM REPLY
-		WHERE REPLY_DEL_FLAG='N'
-		GROUP BY
-		COMMUNITY_SEQ
-		) D ON
-		(A.COMMUNITY_SEQ = D.COMMUNITY_SEQ)
-		LEFT JOIN
-		COMMUNITY_CATEGORY E ON
-		(A.COMMUNITY_CATEGORY_SEQ =
-		E.COMMUNITY_CATEGORY_SEQ)
-		WHERE
-		A.COMMON_SEQ = 5 AND A.COMMON_DEL_FLAG = 'N'
-		ORDER BY A.IN_DATE DESC
+		select COMMUNITY_SEQ , COMMUNITY_CATEGORY_SEQ , FILE_SEQ, board_good, board_book, good_flag, book_flag, COMMON_TITLE, COMMON_CONTENT, COMMON_HIT, IN_USER_ID, IN_DATE, FILE_PATH, BOARD_REPLY, COMMUNITY_CATEGORY_NAME
+		from ( 
+		    SELECT A.COMMUNITY_SEQ,A.COMMUNITY_CATEGORY_SEQ,A.FILE_SEQ,
+		            (select count(*) from bookgood bk where bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as board_good,
+		            (select count(*) from bookgood bk where bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as board_book,
+		            (select count(*) from bookgood bk where member_id='S00001' and bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as good_flag,
+		            (select count(*) from bookgood bk where member_id='S00001' and bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as book_flag,
+		          CASE WHEN LENGTH(A.COMMON_TITLE) > 15 THEN SUBSTR(A.COMMON_TITLE, 0, 15) || '...'
+		          ELSE A.COMMON_TITLE END AS COMMON_TITLE,
+		          A.COMMON_CONTENT,
+		          A.COMMON_HIT,
+		          A.IN_USER_ID,
+		          A.IN_DATE,
+		          B.FILE_PATH,
+		          NVL(D.BOARD_REPLY,0) AS BOARD_REPLY,
+		          E.COMMUNITY_CATEGORY_NAME,
+		          row_number() over(ORDER BY to_number(A.community_seq) DESC) as rNum 
+		    FROM
+		          COMMUNITY A
+		          LEFT JOIN
+		          ATTACH_FILE B ON
+		          (A.FILE_SEQ = B.FILE_SEQ)
+		          LEFT JOIN
+		          (
+		          SELECT COMMUNITY_SEQ,
+		          COUNT(*) AS BOARD_REPLY
+		          FROM REPLY
+		          WHERE REPLY_DEL_FLAG='N'
+		          GROUP BY
+		          COMMUNITY_SEQ
+		          ) D ON
+		          (A.COMMUNITY_SEQ = D.COMMUNITY_SEQ)
+		          LEFT JOIN
+		          COMMUNITY_CATEGORY E ON
+		          (A.COMMUNITY_CATEGORY_SEQ =
+		          E.COMMUNITY_CATEGORY_SEQ)
+		    WHERE
+		          A.COMMON_SEQ = 5 AND A.COMMON_DEL_FLAG = 'N'
+		          
+		)
+		where rNum between #{rowStart} and #{rowEnd}
+		order by to_number(community_seq) DESC
+		
 	</select>
 
 	
@@ -216,7 +223,7 @@
 			E.COMMUNITY_CATEGORY_SEQ)
 			WHERE
 			A.COMMON_SEQ = 5 AND A.COMMON_DEL_FLAG = 'N'
-			ORDER BY A.IN_DATE DESC
+			ORDER BY to_number(A.common_hit) desc
 			)
 			
 		WHERE ROWNUM<=5

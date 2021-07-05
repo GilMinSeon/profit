@@ -165,13 +165,29 @@
 									<p>${resultTop.lessonReply}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+								
+									<c:set var="goodFlag" value="${resultTop.goodFlag}"/>
+                    				<c:if test="${goodFlag == '1' }">
+									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									<c:if test="${goodFlag == '0' }">
 									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${resultTop.lessonGood}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+								
+									<c:set var="bookFlag" value="${resultTop.bookFlag}"/>
+                    				<c:if test="${bookFlag == '1' }">
+									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									<c:if test="${bookFlag == '0' }">
 									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${resultTop.lessonBook}&nbsp;&nbsp;</p>
@@ -276,13 +292,25 @@
 									<p>${result.lessonReply}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+									<c:set var="goodFlag" value="${result.goodFlag}"/>
+                    				<c:if test="${goodFlag == '1' }">
+									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									<c:if test="${goodFlag == '0' }">
 									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+									</c:if>
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.lessonGood}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
+									<c:set var="bookFlag" value="${result.bookFlag}"/>
+                    				<c:if test="${bookFlag == '1' }">
+									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									<c:if test="${bookFlag == '0' }">
 									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${result.lessonBook}&nbsp;&nbsp;</p>
