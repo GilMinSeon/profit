@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.ReplyVO;
 
@@ -54,4 +55,18 @@ public interface CommunityService {
 	
 	//인기글 TOP5 가져오기
 	public List<Map<String, Object>> bestBoardList() throws Exception;
+	
+	//좋아요북마크 삭제
+	public int deleteBookgood(BookgoodVO vo) throws Exception;
+	
+	//좋아요북마크 추가
+	public int insertBookgood(BookgoodVO vo) throws Exception;
+	
+	//좋아요북마크 개수 가져오기
+	public int selectBookgoodCnt(BookgoodVO vo) throws Exception;
+	
+	
+	
+	
+	
 }

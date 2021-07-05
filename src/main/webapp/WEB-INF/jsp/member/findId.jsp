@@ -34,7 +34,7 @@ input:-webkit-autofill {
 		}
 		$.ajax({
 			type : "get",
-			async : true,
+			async : false,
 			data : {memberName:memberName, memberEmail:memberEmail}, 
 			url : "findIdAjax.do",
 			//전송 후 세팅

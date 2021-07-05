@@ -7,6 +7,7 @@ import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.ReplyVO;
 
@@ -57,4 +58,15 @@ public interface CommunityMapper {
 	
 	//인기글 TOP5 가져오기
 	List<Map<String,Object>> bestBoardList() throws Exception;
+	
+	//좋아요북마크 제거
+	int deleteBookgood(BookgoodVO vo) throws Exception;
+	
+	//좋아요북마크 추가
+	int insertBookgood(BookgoodVO vo) throws Exception;
+	
+	//좋아요북마크 개수 가져오기
+	int selectBookgoodCnt(BookgoodVO vo) throws Exception;
+	
+	
 }
