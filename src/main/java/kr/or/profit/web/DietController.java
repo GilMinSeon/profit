@@ -2,6 +2,7 @@ package kr.or.profit.web;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -26,6 +27,7 @@ import kr.or.profit.service.CommunityService;
 import kr.or.profit.service.DietService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
+import kr.or.profit.vo.ChatProfileVO;
 //import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.ReplyVO;
 
@@ -38,6 +40,8 @@ public class DietController {
 	@Resource(name = "dietService")
 	private DietService dietService;
 	
+	MypageController mc = new MypageController();
+	
 	private static final Logger logger = LoggerFactory.getLogger(DietController.class);
 	
 	/**
@@ -47,7 +51,9 @@ public class DietController {
 	public String chatList(HttpServletRequest request , Model model) throws Exception{
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
-		
+		if(memberId == null) {
+			return "member/loginForm";
+		}
 		//이용권이 존재하면 구매 못하도록 막기
 		int ticketFlag = dietService.selectAvailableTicket(memberId);
 		if(ticketFlag > 0) {
@@ -55,7 +61,23 @@ public class DietController {
 		}else {
 			model.addAttribute("msg", "ok");
 		}
-	
+		
+		//트레이너가 프로필 등록이 되어있으면 등록을 못하도록 막기
+		int profileFlag = dietService.selectRegisterProfile(memberId);
+		
+		if(profileFlag > 0) {
+			model.addAttribute("profileFlag", "ng");
+		}else {
+			model.addAttribute("profileFlag", "ok");
+		}
+		
+		//상담 프로필 목록 가져오기
+		List<Map<String, Object>> chatList = dietService.selectChatProflieList();
+		
+		model.addAttribute("chatList", chatList);
+		
+		System.out.println(model.toString());
+		
 		return "diet/chatList";
 	}
 	
@@ -93,6 +115,7 @@ public class DietController {
 		return "diet/buyTicketDetail";
 	}
 	
+	
 	@RequestMapping(value = "ticketAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public String ticketAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -128,38 +151,54 @@ public class DietController {
 	
 	
 		
-//	@RequestMapping(value = "chatProfileAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
-//	@ResponseBody
-//	public String chatProfileAddAjax(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multipartRequest) throws Exception{
-//		HttpSession session = request.getSession();
-//		String memberId = (String) session.getAttribute("memberId");
-//		MypageController mc = new MypageController();
-//		List<AttachFileVO> fileVOList = mc.fileProcess(multipartRequest, request);
-//		String simpleIntro = request.getParameter("simpleIntro");
-//		String profileMemo = request.getParameter("profileMemo");
-//		
-//		ChatProfileVO chatProfileVo = new ChatProfileVO();
-//		chatProfileVo.setFileSeq(fileVOList.get(0).getFileSeq());
-//		chatProfileVo.setChatProfileId(memberId);
-//		chatProfileVo.setChatProfileIntro(simpleIntro);
-//		chatProfileVo.setChatProfileMemo(profileMemo);
-//		chatProfileVo.setInUserId(memberId);
-//		chatProfileVo.setUpUserId(memberId);
-//		
-//		System.out.println("============================");
-//		System.out.println(chatProfileVo.getFileSeq());
-//		System.out.println(chatProfileVo.getChatProfileIntro());
-//		System.out.println(chatProfileVo.getChatProfileMemo());
-//		int insertResult = dietService.insertChatProfile(chatProfileVo);
-//		
-//	    String msg="ng";
-//	    
-//		if(insertResult > 0) {
-//			msg = "ok";
-//		}
-//		
-//		return msg;
-//	}
+	@RequestMapping(value = "chatProfileAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String chatProfileAddAjax(HttpServletRequest request, HttpServletResponse response, MultipartHttpServletRequest multipartRequest) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		//파일업로드
+		List<AttachFileVO> fileVOList = mc.fileProcess(multipartRequest, request);
+		
+		
+		// 파일 DB 저장
+		Map<String, Object> filemap = new HashMap<String, Object>();
+		filemap.put("list", fileVOList);
+		System.out.println("왜안돼");
+		System.out.println(fileVOList.get(0).getFileDetailSeq());
+		System.out.println(fileVOList.get(0).getFilePath());
+		System.out.println(fileVOList.get(0).getFileRealName());
+		System.out.println(fileVOList.get(0).getFileSaveName());
+		System.out.println(fileVOList.get(0).getInUserId());
+		int insertFileResult = dietService.insertProcessFile(filemap);
+		System.out.println("insertFileResult : " + insertFileResult);
+		
+		
+		String simpleIntro = request.getParameter("simpleIntro");
+		String profileMemo = request.getParameter("profileMemo");
+		
+		ChatProfileVO chatProfileVo = new ChatProfileVO();
+		chatProfileVo.setFileSeq(fileVOList.get(0).getFileSeq());
+		chatProfileVo.setChatProfileId(memberId);
+		chatProfileVo.setChatProfileIntro(simpleIntro);
+		chatProfileVo.setChatProfileMemo(profileMemo);
+		chatProfileVo.setInUserId(memberId);
+		chatProfileVo.setUpUserId(memberId);
+		
+		System.out.println("============================");
+		System.out.println(chatProfileVo.getFileSeq());
+		System.out.println(chatProfileVo.getChatProfileIntro());
+		System.out.println(chatProfileVo.getChatProfileMemo());
+		int insertResult = dietService.insertChatProfile(chatProfileVo);
+		
+	    String msg="ng";
+	    
+		if(insertResult > 0) {
+			msg = "ok";
+		}
+		
+		return msg;
+	}
 		
 	@RequestMapping(value = "chatting", method = RequestMethod.GET)
 	public String chatting(Locale locale, Model model) {
