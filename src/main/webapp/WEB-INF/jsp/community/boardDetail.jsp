@@ -392,8 +392,8 @@ function fn_boardDel(seq){
 		                        <c:if test="${BoardDetail['inUserId'] eq memberId}">
 		                        <a href="boardMod.do?communitySeq=${BoardDetail['communitySeq']}" class="class-btn" style="text-align: center;">수정</a>
 		                        <a class="class-btn" style="text-align: center;" onclick="fn_boardDel(${BoardDetail['communitySeq']})">삭제</a>
-	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
 								</c:if>
+	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
                         	
                         	
                         	</div>

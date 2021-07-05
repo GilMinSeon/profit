@@ -248,6 +248,30 @@
 				</div>
             	
             	</c:forEach>
+            	
+            	
+            	<!-- 페이징처리 -->
+            	<div class="col-lg-12">
+					<div class="classes__pagination">
+					<c:if test="${pageMaker.prev}">
+						<a href="boardList.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
+						</a>
+					</c:if> 
+					
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="boardList.do${pageMaker.makeQuery(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
+					
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="boardList.do${pageMaker.makeQuery(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
+					</div>
+				</div>
+            	
+            	
             </div>
         </div>
     </section>
