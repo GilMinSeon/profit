@@ -2,9 +2,10 @@
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8">
-<script language="javascript" type="text/javascript" src="https://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
 function go_time(){
 	 
@@ -26,8 +27,98 @@ function go_time(){
 }
 
 function paybtn() {
-    INIStdPay.pay('SendPayForm_id');
+	INIStdPay.pay('SendPayForm_id');
 }
+
+
+function fn_pay(ticketName, ticketPrice, ticketCategorySeq, ticketCnt) {
+	var IMP = window.IMP; // 생략가능
+	IMP.init('imp68072883');
+	// 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+	// i'mport 관리자 페이지 -> 내정보 -> 가맹점식별코드
+	IMP.request_pay({
+	pg: 'html5_inicis', // version 1.1.0부터 지원.
+	/*
+	'kakao':카카오페이,
+	html5_inicis':이니시스(웹표준결제)
+	'nice':나이스페이
+	'jtnet':제이티넷
+	'uplus':LG유플러스
+	'danal':다날
+	'payco':페이코
+	'syrup':시럽페이
+	'paypal':페이팔
+	*/
+	pay_method: 'card',
+	/*
+	'samsung':삼성페이,
+	'card':신용카드,
+	'trans':실시간계좌이체,
+	'vbank':가상계좌,
+	'phone':휴대폰소액결제
+	*/
+	merchant_uid: 'merchant_' + new Date().getTime(),
+	/*
+	merchant_uid에 경우
+	https://docs.iamport.kr/implementation/payment
+	위에 url에 따라가시면 넣을 수 있는 방법이 있습니다.
+	참고하세요.
+	나중에 포스팅 해볼게요.
+	*/
+	name: 'Profit : ' + ticketName,
+	//결제창에서 보여질 이름
+// 	amount: ticketPrice,
+	amount: 100,
+	//가격
+	buyer_email: 'iamport@siot.do',
+	buyer_name: '구매자이름',
+	buyer_tel: '010-1234-5678',
+	buyer_addr: '대전광역시 서구 대흥동 대덕인재개발원',
+	buyer_postcode: '123-456',
+	m_redirect_url: 'https://www.yourdomain.com/payments/complete'
+	/*
+	모바일 결제시,
+	결제가 끝나고 랜딩되는 URL을 지정
+	(카카오페이, 페이코, 다날의 경우는 필요없음. PC와 마찬가지로 callback함수로 결과가 떨어짐)
+	*/
+	}, function (rsp) {
+	console.log(rsp);
+	if (rsp.success) {
+		alert("결제가 완료되었습니다.");
+		ticketAddAjax(ticketName, ticketPrice, ticketCategorySeq, ticketCnt);
+		location.href="chatList.do";
+	} else {
+		alert('결제를 취소하였습니다.');
+	}
+	
+	});
+	
+	
+	
+	
+}
+
+function ticketAddAjax(ticketName, ticketPrice, ticketCategorySeq, ticketCnt){
+	var params = "ticketCategorySeq="+ ticketCategorySeq;
+	params += "&ticketName=" + ticketName;
+	params += "&ticketPrice=" + ticketPrice;
+	params += "&ticketCnt=" + ticketCnt;
+	
+	$.ajax({
+		type:"POST",
+		async:false,
+		url:"ticketAddAjax.do",
+		data:params,
+		success : function(data){
+		},
+		error : function(error){
+			alert("구매가 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+	});
+}
+
 </script>
 <body onload="go_time()">
 
@@ -88,18 +179,12 @@ function paybtn() {
                         </div><!-- /.row -->
 
                         <!-- Table row -->
-                        <form id="SendPayForm_id" name="" method="POST" >
+<!--                        <form id="payForm" method="POST" accept-charset="UTF-8"> -->
                         <div class="row">
                             <div class="col-xs-12 table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                   <th>결제유형</th>
-                   <td><select class="formdata" name="mid">
-        	           <option value="INIpayTest">일반결제
-        	    	   <option value="iniescrow0">에스크로
-					   <!--option value="INIBillTst">빌키발급-->
-        	           </select></td>	   
                 </tr>
                                         <tr>
                                             <th>구매자</th>
@@ -114,30 +199,15 @@ function paybtn() {
                                         
                                                                                 <tr>
                                             <td>${memberId}</td>
-<%--                                             <td>${ticketCategory['ticketName']}</td> --%>
-                                            <td><input class="formdata" name="goodname" value="${ticketCategory['ticketName']}" spellcheck="false"></td>
-<%--                                             <td>${ticketCategory['ticketPrice']}</td> --%>
-                                            <td><input class="formdata" name="price" value="1000" spellcheck="false" readonly></td>
+                                            <td>${ticketCategory['ticketName']}</td>
+                                            <td>${ticketCategory['ticketPrice']}</td>
                                             <td>원(&#8361;)</td>
                                         </tr>
                                                                             </tbody>
                                 </table>
-                                <input type="hidden" class="formdata" name="buyername" value="길동이" spellcheck="false">
-                                <input type="hidden" class="formdata" name="buyertel" value="010-1234-5678" spellcheck="false">
-                                <input type="hidden" class="formdata" name="buyeremail" placeholder="이메일을 입력하세요." spellcheck="false">
-                                <input type="hidden" class="formdata" name="acceptmethod" value="CARDPOINT:va_receipt:HPP(1):below1000" spellcheck="false">
-                                <input type="hidden"   name="version"      value="1.0" >
-					            <input type="hidden"   name="currency"     value="WON" >
-								<input type="hidden"   name="gopaymethod"  value="" >
-					            <input type="hidden"   name="oid"          value="TEST_1625298904368" >
-					            <input type="hidden"   name="timestamp"    value="1625298904368" >
-					            <input type="hidden"   name="signature"    value="100ad411051c7bd84e223473e4d2e35990e4a9051ba84e926195c5907350c0e6" >
-					            <input type="hidden"   name="mKey"         value="3a9503069192f207491d4b19bd743fc249a761ed94246c8c42fed06c3cd15a33" >
-					            <input type="hidden"   name="returnUrl"    value="http://localhost:9999/" >
-					            <input type="hidden"   name="closeUrl"     value="http://localhost:9999/" >
                             </div><!-- /.col -->
                         </div><!-- /.row -->
-						</form>
+<!-- 						</form> -->
                         <div class="row">
                             <!-- accepted payments column -->
                             <div class="col-md-12">
@@ -154,8 +224,9 @@ function paybtn() {
                                         
                                     </table>
                                      <div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
-									         <a class="class-btn_w" style="font-size: 1.1em;" onclick="paybtn()">&nbsp;&nbsp;결제하기&nbsp;&nbsp;</a>
+									         <a class="class-btn_w" style="font-size: 1.1em;" onclick="fn_pay('${ticketCategory['ticketName']}',${ticketCategory['ticketPrice']}, '${ticketCategory['ticketCategorySeq']}', '${ticketCategory['ticketCnt']}')">&nbsp;&nbsp;결제하기&nbsp;&nbsp;</a>
 									         <a href="chatList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
+
 								    </div>
                                 </div>
                             </div><!-- /.col -->
