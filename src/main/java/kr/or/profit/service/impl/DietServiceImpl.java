@@ -12,6 +12,7 @@ import kr.or.profit.mapper.DietMapper;
 import kr.or.profit.service.CommunityService;
 import kr.or.profit.service.DietService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -29,5 +30,23 @@ public class DietServiceImpl implements DietService {
 		return dietDAO.selectTicketCategory(ticketCategorySeq);
 	}
 
+	
+	//구매한 이용권 정보 추가
+	@Override
+	public int insertBuyTicket(BuyTicketVO vo) throws Exception {
+		return dietDAO.insertBuyTicket(vo);
+	}
+	
+	//사용가능한 이용권 존재여부 확인
+	@Override
+	public int selectAvailableTicket(String memberId) throws Exception {
+		return dietDAO.selectAvailableTicket(memberId);
+	}
+
+	//채팅 프로필 등록
+//	@Override
+//	public int insertChatProfile(ChatProfileVO vo) throws Exception {
+//		return dietDAO.insertChatProfile(vo);
+//	}
 
 }

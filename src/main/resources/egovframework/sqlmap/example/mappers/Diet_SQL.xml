@@ -15,4 +15,46 @@
 		WHERE 
 		TICKET_CATEGORY_SEQ = #{ticketCategorySeq}
 	</select>
+	
+	<!-- 이용권 구매내역 추가 -->
+	<insert id="insertBuyTicket">
+		<selectKey order="BEFORE" keyProperty="buyTicketSeq"
+			resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(BUY_TICKET_SEQ)),0)+1 FROM
+			BUY_TICKET
+		</selectKey>
+		<![CDATA[
+			INSERT INTO 
+			BUY_TICKET
+			(
+			BUY_TICKET_SEQ,
+			TICKET_CATEGORY_SEQ, 
+			TICKET_REMAIN, 
+			TICKET_REFUND_FLAG, 
+			IN_USER_ID, IN_DATE, 
+			UP_USER_ID, 
+			UP_DATE
+			) 	 
+			VALUES 
+			(
+			#{buyTicketSeq}, 
+			#{ticketCategorySeq}, 
+			#{ticketRemain}, 
+			'N', 
+			#{inUserId}, 
+			SYSDATE, 
+			#{upUserId}, 
+			SYSDATE
+			)
+		]]>
+	</insert>
+	
+	<!-- 사용가능한 이용권 존재여부 확인 -->
+	<select id="selectAvailableTicket" resultType="int">
+	    SELECT COUNT(*)
+		FROM BUY_TICKET
+		WHERE IN_USER_ID = #{memberId}
+		AND TICKET_AVAIL_FLAG = 'Y'
+	</select>
+
 </mapper>
