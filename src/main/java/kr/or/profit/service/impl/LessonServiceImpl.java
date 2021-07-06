@@ -11,6 +11,7 @@ import kr.or.profit.mapper.LessonMapper;
 import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -160,6 +161,12 @@ public class LessonServiceImpl implements LessonService {
 	@Override
 	public int deleteLessonBookgood(BookgoodVO vo) throws Exception {
 		return lessonDAO.deleteLessonBookgood(vo);
+	}
+
+	//강의 구매 추가
+	@Override
+	public int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception {
+		return lessonDAO.insertBuyLesson(buyLessonVO);
 	}
 
 

@@ -2,6 +2,7 @@ package kr.or.profit.web;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +37,8 @@ import kr.or.profit.service.AttachFileService;
 import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonVO;
+import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.MemberVO;
@@ -563,8 +566,70 @@ public class LessonController {
        return msg;
    }
    
+	/**
+	 * 강의 결제
+	 * @param locale
+	 * @param model
+	 * @return
+	 */
+   @RequestMapping(value = "buyLesson.do", method = RequestMethod.GET)
+   public String buyLesson(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
+	  HttpSession session = request.getSession();
+	  String memberId = (String) session.getAttribute("memberId");
+	  lessonVO.setMemberId(memberId); 
 
+	  Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
+	  model.addAttribute("result", lessonDetailList);
+	  System.out.println("강의구매리스트 "+lessonDetailList);
+      
+	  
+	  return "lesson/buyLesson";
+   }
  
+   
+   @RequestMapping(value = "buyLessonAddAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String buyLessonAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		String lessonTitle = request.getParameter("lessonTitle");
+		String lessonPrice = request.getParameter("lessonPrice");
+		String lessonSeq = request.getParameter("lessonSeq");
+		String lessonMonth = request.getParameter("lessonMonth");
+		
+		//오늘 날짜를 기준으루..
+		Calendar cal = Calendar.getInstance ( );
+		System.out.println(cal);
+		//2개월 전....
+		cal.add ( cal.MONTH, +2 );
+		System.out.println ( cal.get ( cal.YEAR ) );
+		System.out.println ( cal.get ( cal.MONTH ) + 1 );
+		System.out.println ( cal.get ( cal.DATE ) );
+
+
+		출처: https://jang8584.tistory.com/232 [개발자의 길]
+		
+		System.out.println("lessonTitle : " + lessonTitle);
+		System.out.println("lessonPrice : " + lessonPrice );
+		System.out.println("lessonSeq : " + lessonSeq );
+		System.out.println("lessonMonth : " + lessonMonth );
+		
+		BuyLessonVO buyLessonVO = new BuyLessonVO();
+		buyLessonVO.setLessonSeq(lessonSeq);
+		buyLessonVO.setInUserId(memberId);
+		buyLessonVO.setUpUserId(memberId);
+		
+		int insertResult = lessonService.insertBuyLesson(buyLessonVO);
+
+	    String msg="ng";
+	    
+		if(insertResult > 0) {
+			msg = "ok";
+		}
+		
+		return msg;
+	}
    
    /**
     * 상세 강의 등록
