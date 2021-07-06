@@ -33,5 +33,30 @@ public interface DietMapper {
 	//상담 프로필 목록 가져오기
 	List<Map<String, Object>> selectChatProflieList() throws Exception;
 	
+	//상담 프로필 사진 추가
 	int insertProcessFile(Map<String, Object> filemap) throws Exception;
+	
+	//상담 프로필 상세 조회
+	Map<String, Object> selectChatProfileDetail(String chatProfileSeq) throws Exception;
+	
+	//문의 목록 조회
+	List<Map<String, Object>> selectReplyList(String chatProfileSeq) throws Exception;
+	
+	//문의 댓글 추가
+	int insertChatReply(ReplyVO vo) throws Exception;
+	
+	//문의 댓글 내 프로필 사진
+	String selectMyProfile(String memberId) throws Exception;
+	
+	//문의 답글 추가
+	int insertChatRereply(ReplyVO vo) throws Exception;
+	
+	//상담 프로필 수정
+	int updateChatProfile(ChatProfileVO vo) throws Exception;
+	
+	//상담 프로필 비활성화
+	int updatePrivate(String chatProfileSeq) throws Exception;
+	
+	//상담 프로필 활성화
+	int updatePublic(String chatProfileSeq) throws Exception;
 }
