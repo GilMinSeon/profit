@@ -717,42 +717,43 @@
 	    
 	</select>
 	
-<!-- 	dddd -->
  	<!-- 강의 구매내역 추가 --> 
-<!-- 	<insert id="insertBuyLesson"> -->
-<!-- 		<selectKey order="BEFORE" keyProperty="buyLessonSeq" -->
-<!-- 			resultType="String"> -->
-<!-- 			SELECT NVL(MAX(TO_NUMBER(BUY_LESSON_SEQ)),0)+1 FROM -->
-<!-- 			BUY_LESSON -->
-<!-- 		</selectKey> -->
-<!-- 		<![CDATA[ -->
-<!-- 			INSERT INTO  -->
-<!-- 			BUY_LESSON -->
-<!-- 			( -->
-<!-- 			BUY_LESSON_SEQ -->
-<!-- 			LESSON_SEQ -->
-<!-- 			LESSON_FINISH_DATE -->
-<!-- 			LESSON_REFUND_FLAG -->
-<!-- 			LESSON_CLICK_FLAG -->
-<!-- 			LESSON_CLICK_DATE -->
-<!-- 			IN_USER_ID -->
-<!-- 			IN_DATE -->
-<!-- 			UP_USER_ID -->
-<!-- 			UP_DATE -->
-<!-- 			) 	  -->
-<!-- 			VALUES  -->
-<!-- 			( -->
-<!-- 			#{buyTicketSeq},  -->
-<!-- 			#{ticketCategorySeq},  -->
-<!-- 			#{ticketRemain},  -->
-<!-- 			'N',  -->
-<!-- 			#{inUserId},  -->
-<!-- 			SYSDATE,  -->
-<!-- 			#{upUserId},  -->
-<!-- 			SYSDATE -->
-<!-- 			) -->
-<!-- 		]]> -->
-<!-- 	</insert> -->
+	<insert id="insertBuyLesson">
+		<selectKey order="BEFORE" keyProperty="buyLessonSeq"
+			resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(BUY_LESSON_SEQ)),0)+1 FROM
+			BUY_LESSON
+		</selectKey>
+		<![CDATA[
+ 			INSERT INTO  
+				BUY_LESSON 
+	 			( 
+	 			BUY_LESSON_SEQ,
+	 			LESSON_SEQ,
+	 			LESSON_FINISH_DATE, 
+	 			LESSON_REFUND_FLAG,
+	 			LESSON_CLICK_FLAG,
+	 			LESSON_CLICK_DATE,
+	 			IN_USER_ID,
+	 			IN_DATE,
+	 			UP_USER_ID, 
+	 			UP_DATE 
+	 			) 	  
+	 			VALUES  
+	 			( 
+	 			#{buyLessonSeq},  
+	 			#{lessonSeq},  
+	 			#{lessonFinishDate}, 
+	 			'N',  
+	 			'N',
+	 			#{lessonClickDate, jdbcType=VARCHAR}, 
+	 			#{inUserId}, 
+				SYSDATE,  
+				#{upUserId}, 
+ 				SYSDATE 
+			) 
+ 		]]> 
+	</insert>
 	
 	
 </mapper>

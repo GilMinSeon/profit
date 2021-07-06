@@ -459,7 +459,7 @@ function fn_reply_del(seq){
 	<div class="container">
 		<main id="main" class="site-main" role="main">
 			<div class="classes__item__text" style="text-align: right;">
-				<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의 결제</a>
+				<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
 				<a href="lessonList.do" class="class-btn">목록</a>
 				<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
 				<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
@@ -558,7 +558,7 @@ function fn_reply_del(seq){
 	                                    <div style="margin-top: 20px;">
 		                                    <p>${result.replyContent}
 		                                    <c:if test="${result.inUserId eq memberId}">
-		                                    <img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
+		                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
 											</c:if>
 		                                    </p>
 	                                	</div>
@@ -570,7 +570,7 @@ function fn_reply_del(seq){
 				                                    <img src="${MyProfileImage}" alt="" >
 				                                </div>
 			                                    <textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
-			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
+			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float:left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
 			                                </div>
 			                            </div>
 	                                	<hr>

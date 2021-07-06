@@ -16,5 +16,6 @@
 		<typeAlias alias="CommunityVO" type="kr.or.profit.vo.CommunityVO"/>
 		<typeAlias alias="BookgoodVO" type="kr.or.profit.vo.BookgoodVO"/>
 		<typeAlias alias="Criteria" type="kr.or.profit.vo.Criteria"/>
+		<typeAlias alias="buyLessonVO" type="kr.or.profit.vo.BuyLessonVO"/>
     </typeAliases>
 </configuration>
