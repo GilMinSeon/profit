@@ -15,6 +15,7 @@
 		<typeAlias alias="qnaVO" type="kr.or.profit.vo.QnaVO"/>
 		<typeAlias alias="CommunityVO" type="kr.or.profit.vo.CommunityVO"/>
 		<typeAlias alias="BookgoodVO" type="kr.or.profit.vo.BookgoodVO"/>
+		<typeAlias alias="chatProfileVO" type="kr.or.profit.vo.ChatProfileVO"/>
 		<typeAlias alias="Criteria" type="kr.or.profit.vo.Criteria"/>
     </typeAliases>
 </configuration>

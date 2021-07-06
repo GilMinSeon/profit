@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
+import kr.or.profit.vo.ReplyVO;
 
 public interface DietService {
 
@@ -29,4 +30,27 @@ public interface DietService {
 	//상담 프로필 사진 추가
 	public int insertProcessFile(Map<String, Object> filemap) throws Exception;
 	
+	//상담 프로필 상세 조회
+	public Map<String, Object> selectChatProfileDetail(String chatProfileSeq) throws Exception;
+	
+	//문의 댓글 목록 조회
+	public List<Map<String, Object>> selectReplyList(String chatProfileSeq) throws Exception;
+	
+	//문의 댓글 추가
+	public int insertChatReply(ReplyVO vo) throws Exception;
+	
+	//문의 댓글 내 프로필 이미지
+	public String selectMyProfile(String memberId) throws Exception;
+	
+	//문의 답글 추가
+	public int insertChatRereply(ReplyVO vo) throws Exception;
+	
+	//상담 프로필 수정
+	public int updateChatProfile(ChatProfileVO vo) throws Exception;
+	
+	//상담 프로필 비활성화
+	public int updatePrivate(String chatProfileSeq) throws Exception;
+	
+	//상담 프로필 활성화
+	public int updatePublic(String chatProfileSeq) throws Exception;
 }

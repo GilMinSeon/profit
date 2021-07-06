@@ -63,10 +63,63 @@ public class DietServiceImpl implements DietService {
 		return dietDAO.selectChatProflieList();
 	}
 
-
+	//상담 프로필 사진 추가
 	@Override
 	public int insertProcessFile(Map<String, Object> filemap) throws Exception {
 		return dietDAO.insertProcessFile(filemap);
+	}
+
+	//상담 프로필 상세 조회
+	@Override
+	public Map<String, Object> selectChatProfileDetail(String chatProfileSeq) throws Exception {
+		return dietDAO.selectChatProfileDetail(chatProfileSeq);
+	}
+
+	
+	//문의 목록 조회
+	@Override
+	public List<Map<String, Object>> selectReplyList(String chatProfileSeq) throws Exception {
+		return dietDAO.selectReplyList(chatProfileSeq);
+	}
+	
+	//문의 댓글 추가
+	public int insertChatReply(ReplyVO vo) throws Exception{
+		return dietDAO.insertChatReply(vo);
+	}
+
+	
+	//문의 댓글 내 프로필 이미지
+	@Override
+	public String selectMyProfile(String memberId) throws Exception {
+		return dietDAO.selectMyProfile(memberId);
+	}
+
+	
+	//문의 답글 추가
+	@Override
+	public int insertChatRereply(ReplyVO vo) throws Exception {
+		return dietDAO.insertChatRereply(vo);
+	}
+
+	
+	//상담 프로필 수정
+	@Override
+	public int updateChatProfile(ChatProfileVO vo) throws Exception {
+		return dietDAO.updateChatProfile(vo);
+	}
+
+	
+	//상담 프로필 비활성화
+	@Override
+	public int updatePrivate(String chatProfileSeq) throws Exception {
+		return dietDAO.updatePrivate(chatProfileSeq);
+	}
+	
+	
+	//상담 프로필 활성화
+	@Override
+	public int updatePublic(String chatProfileSeq) throws Exception {
+		return dietDAO.updatePublic(chatProfileSeq);
 	}
 	
 

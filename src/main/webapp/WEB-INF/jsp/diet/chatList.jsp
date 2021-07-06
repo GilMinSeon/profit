@@ -76,7 +76,7 @@
                     	<div style="position: absolute;left: 10px;top: 10px;">
                         	<img src="./resources/img/common/chat1.png" style="width: 35px; height: 35px;">
                         </div>
-                        <img src="${result.filePath}" alt="">
+                        <img src="${result.filePath}" style="width: 360px;height: 360px" alt="">
                         <div class="trainer-text">
                             <h5>${result.memberName}</h5>
                             <span>헬스트레이너</span>
@@ -84,7 +84,7 @@
                             <p>${result.chatProfileIntro}</p>
                             </div>
                             <div class="classes__item__text" style="padding-left: 5px;padding-right: 5px;padding-top: 0">
-                           		<a href="chatDetail" class="class-btn" style="width:100%; text-align: center;">상세보기</a>
+                           		<a href="chatDetail.do?chatProfileSeq=${result.chatProfileSeq}" class="class-btn" style="width:100%; text-align: center;">상세보기</a>
                             </div>
                         </div>
                     </div>
