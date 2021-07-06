@@ -143,34 +143,47 @@
             <div class="classes__filter">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form action="#">
+                    	<!-- form 시작 -->
+                        <form method="get" id="frm" action="boardList.do#location123">
                             <div class="class__filter__select">
-                                <p>Categories:</p>
-                                <select>
-                                    <option>카테고리</option>
-                                    <option>운동</option>
-                                    <option>식단</option>
-                                    <option>동기부여</option>
-                                    <option>생활습관</option>
+                                <p>Categories: </p>
+                                <select name="selCate" id="selCate">
+                                <option value="">카테고리</option>
+									<option value="운동" 
+										<c:if test="${selCate eq '운동'}">selected</c:if>>운동</option>
+									<option value="식단"
+										<c:if test="${selCate eq '식단'}">selected</c:if>>식단</option>
+									<option value="동기부여"
+										<c:if test="${selCate eq '동기부여'}">selected</c:if>>동기부여</option>
+									<option value="생활습관"
+										<c:if test="${selCate eq '생활습관'}">selected</c:if>>생활습관</option>
                                 </select>
                             </div>
                             <div class="class__filter__select">
                                 <p>Level:</p>
-                                <select>
-                                    <option>전체</option>
-                                    <option>조회순</option>
-                                    <option>좋아요순</option>
-                                    <option>댓글순</option>
-                                </select>
+                                
+                                <select name="selLev" id="selLev"> 
+									<option value="">전체</option>
+									<option value="조회순"
+										<c:if test="${selLev eq '조회순'}">selected</c:if>>조회순</option>
+									<option value="좋아요순"
+										<c:if test="${selLev eq '좋아요순'}">selected</c:if>>좋아요순</option>
+									<option value="댓글순"
+										<c:if test="${selLev eq '댓글순'}">selected</c:if>>댓글순</option>
+								</select>
+								
                             </div>
                             <div class="class__filter__input">
                                 <p>Search:</p>
-                                	<input type="text" placeholder="검색" >
+                                	<input type="text" placeholder="검색" id="keyword" name="keyword" value="${keyword}">
                             </div>
                             <div class="class__filter__btn">
                                 <button><i class="fa fa-search"></i></button>
                             </div>
+                            <span id="location123"></span>
                         </form>
+                        <!-- form 끝 -->
+                        
                     </div>
                 </div>
             </div>

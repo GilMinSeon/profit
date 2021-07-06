@@ -12,10 +12,14 @@
 		<typeAlias alias="lessonVO" type="kr.or.profit.vo.LessonVO"/>
 		<typeAlias alias="fileVO" type="kr.or.profit.vo.AttachFileVO"/>
 		<typeAlias alias="processVO" type="kr.or.profit.vo.ProcessVO"/>
-		<typeAlias alias="qnaVO" type="kr.or.profit.vo.QnaVO"/>
 		<typeAlias alias="CommunityVO" type="kr.or.profit.vo.CommunityVO"/>
+<<<<<<< HEAD
+		<typeAlias alias="qnaVO" type="kr.or.profit.vo.QnaVO"/>
+=======
 		<typeAlias alias="BookgoodVO" type="kr.or.profit.vo.BookgoodVO"/>
+		<typeAlias alias="chatProfileVO" type="kr.or.profit.vo.ChatProfileVO"/>
 		<typeAlias alias="Criteria" type="kr.or.profit.vo.Criteria"/>
 		<typeAlias alias="buyLessonVO" type="kr.or.profit.vo.BuyLessonVO"/>
+>>>>>>> 32310058c0f768a8b065a068cb44fc3c6c572a19
     </typeAliases>
 </configuration>

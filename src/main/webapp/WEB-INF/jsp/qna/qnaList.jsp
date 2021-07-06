@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -56,19 +55,15 @@
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-
-function fn_detail(communitySeq){
-// 	alert("wjdtkd")
-	location.href="qnaDetail.do?communitySeq="+communitySeq;
-}
-
+	function fn_detail(communitySeq) {
+		// 	alert("wjdtkd")
+		location.href = "qnaDetail.do?communitySeq=" + communitySeq;
+	}
 </script>
 </head>
 <body>
 	<!-- Breadcrumb Begi -->
-	<section class="breadcrumb-option set-bg"
-		data-setbg="./resources/img/breadcrumb.jpg"
-		style="background-image: url(&quot;./resources/img/breadcrumb.jpg&quot;);">
+	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg" style="background-image: url(&quot;./resources/img/breadcrumb.jpg&quot;);">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -148,19 +143,12 @@ function fn_detail(communitySeq){
 					<c:forEach var="data" items="${data}" varStatus="status">
 						<tr>
 							<th scope="row">${status.count}</th>
-							<td colspan="3">
-								<a href="${path}qnaDetail.do?communitySeq=${data.communitySeq}" style="text-decoration: none; color: blue;">
-									${data.commonTitle}
-								</a>
-							</td>
-							<td>
-								<c:set var="cnt" value="${data.cnt}" />
-								<c:if test="${cnt == '0' }">
+							<td colspan="3"><a href="${path}qnaDetail.do?communitySeq=${data.communitySeq}" style="text-decoration: none; color: blue;"> ${data.commonTitle} </a></td>
+							<td><c:set var="cnt" value="${data.cnt}" /> <c:if test="${cnt == '0' }">
 									<c:out value="X" />
 								</c:if> <c:if test="${cnt > '0' }">
 									<c:out value="O" />
-								</c:if>
-							</td>
+								</c:if></td>
 							<td>${data.inDate}</td>
 						</tr>
 					</c:forEach>

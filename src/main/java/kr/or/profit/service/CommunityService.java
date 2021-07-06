@@ -19,7 +19,7 @@ public interface CommunityService {
 	public int insertBoardFile(AttachFileVO vo) throws Exception;
 	
 	//페이징 - 자유게시판 전체 글 개수
-	public int selectBoardCnt() throws Exception;
+	public int selectBoardCnt(Criteria cri) throws Exception;
 	
 	//자유게시판 목록 조회
 	public List<Map<String, String>> selectBoardList(Criteria cri) throws Exception;
