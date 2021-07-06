@@ -157,16 +157,16 @@
 				  	D.FILE_SAVE_NAME, 
 				  	E.LESSON_CATEGORY_NAME,
 <!-- 				  	NVL(G.LESSON_REPLY,0) AS LESSON_REPLY, -->
-				  	NVL(B.LESSON_GOOD,0) as LESSON_good,
-                    NVL(f.LESSON_BOOK,0) as LESSON_book,
+<!-- 				  	NVL(B.LESSON_GOOD,0) as LESSON_good, -->
+<!--                     NVL(f.LESSON_BOOK,0) as LESSON_book, -->
                     NVL(C.LESSON_REPLY,0) as LESSON_reply
          
                 FROM LESSON A
-				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD
-				                FROM BOOKGOOD
-				                WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G'
-				                GROUP BY LESSON_SEQ) B
-				ON A.LESSON_SEQ = B.LESSON_SEQ
+<!-- 				    LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_GOOD -->
+<!-- 				                FROM BOOKGOOD -->
+<!-- 				                WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G' -->
+<!-- 				                GROUP BY LESSON_SEQ) B -->
+<!-- 				ON A.LESSON_SEQ = B.LESSON_SEQ -->
 				    LEFT OUTER JOIN(SELECT LESSON_SEQ,COUNT(*) AS LESSON_REPLY
                                 FROM REPLY
                                 WHERE REPLY_DEL_FLAG='N'
@@ -178,11 +178,11 @@
 				    LEFT OUTER JOIN (SELECT LESSON_CATEGORY_SEQ, LESSON_CATEGORY_NAME
 				                FROM LESSON_CATEGORY) E
 				ON A.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ
-					LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_BOOK
-										FROM BOOKGOOD
-										WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B'
-										GROUP BY LESSON_SEQ) F
-				ON A.LESSON_SEQ = F.LESSON_SEQ
+<!-- 					LEFT OUTER JOIN (SELECT LESSON_SEQ, COUNT(*) AS LESSON_BOOK -->
+<!-- 										FROM BOOKGOOD -->
+<!-- 										WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='B' -->
+<!-- 										GROUP BY LESSON_SEQ) F -->
+<!-- 				ON A.LESSON_SEQ = F.LESSON_SEQ -->
 <!-- 					LEFT OUTER JOIN(SELECT LESSON_SEQ, COUNT(*) AS LESSON_REPLY -->
 <!-- 									FROM REPLY -->
 <!-- 									WHERE REPLY_DEL_FLAG='N' -->
@@ -210,7 +210,7 @@
 				             , TO_NUMBER(LESSON_HIT) DESC, UP_DATE DESC
 					        </when>
 					        <when test="selLev == '좋아요순'">
-							 , TO_NUMBER(LESSON_GOOD) DESC,UP_DATE DESC
+							 , TO_NUMBER(LESSON_GOOD) DESC, UP_DATE DESC
 					        </when>
 					         <when test="selLev == '댓글순'">
 							 , TO_NUMBER(LESSON_reply) DESC,UP_DATE DESC
@@ -716,5 +716,44 @@
 	    
 	    
 	</select>
+	
+ 	<!-- 강의 구매내역 추가 --> 
+	<insert id="insertBuyLesson">
+		<selectKey order="BEFORE" keyProperty="buyLessonSeq"
+			resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(BUY_LESSON_SEQ)),0)+1 FROM
+			BUY_LESSON
+		</selectKey>
+		<![CDATA[
+ 			INSERT INTO  
+				BUY_LESSON 
+	 			( 
+	 			BUY_LESSON_SEQ,
+	 			LESSON_SEQ,
+	 			LESSON_FINISH_DATE, 
+	 			LESSON_REFUND_FLAG,
+	 			LESSON_CLICK_FLAG,
+	 			LESSON_CLICK_DATE,
+	 			IN_USER_ID,
+	 			IN_DATE,
+	 			UP_USER_ID, 
+	 			UP_DATE 
+	 			) 	  
+	 			VALUES  
+	 			( 
+	 			#{buyLessonSeq},  
+	 			#{lessonSeq},  
+	 			#{lessonFinishDate}, 
+	 			'N',  
+	 			'N',
+	 			#{lessonClickDate, jdbcType=VARCHAR}, 
+	 			#{inUserId}, 
+				SYSDATE,  
+				#{upUserId}, 
+ 				SYSDATE 
+			) 
+ 		]]> 
+	</insert>
+	
 	
 </mapper>

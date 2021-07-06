@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -80,6 +81,9 @@ public interface LessonService {
 
 	//좋아요북마크 제거
 	public int deleteLessonBookgood(BookgoodVO vo) throws Exception;
+
+	//강의 구매추가
+	public int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception;
 
 
 

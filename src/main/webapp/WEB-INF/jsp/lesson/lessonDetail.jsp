@@ -295,6 +295,7 @@ function fn_reply_del(seq){
 	<section class="about spad">
 		<div class="container">
 		<c:set var="resultList" value="${resultList}"/>
+		<input type="hidden" name="lessonSeq" value="${resultList.lessonSeq}">
 		<div style="background-color: white;border: 1px solid #ebecef;border-radius: 10px;">
 			<div class="row" style="padding-top: 30px;padding-bottom: 30px;">
 				<div class="col-lg-6 p-0">
@@ -364,13 +365,16 @@ function fn_reply_del(seq){
 						<div class="section-title">
 							<span style="font-size: 1.4em; font-weight: bold;color: #545454">◾ ${resultList.lessonTitle}</span><br/><br/>
 							<div>
-								<div style="display: inline-block; float:left;"><p>※ 한줄 소개 : </p></div>&nbsp;
+								<div style="display: inline-block; float:left;"><p># 한줄 소개 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>
 							</div>
-							<br/>
 							<div>
-								<div style="display: inline-block;"><p>※ 강의 가격 : </p></div>&nbsp;
+								<div style="display: inline-block;"><p># 강의 가격 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonPrice} 원</p></div>
+							</div>
+							<div>
+								<div style="display: inline-block;"><p># 강의 기간 : </p></div>&nbsp;
+								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonMonth} 개월</p></div>
 							</div>
 						</div>
 						<div class="about__bar">
@@ -455,7 +459,7 @@ function fn_reply_del(seq){
 	<div class="container">
 		<main id="main" class="site-main" role="main">
 			<div class="classes__item__text" style="text-align: right;">
-				<a href="#" class="class-btn">강의 결제</a>
+				<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
 				<a href="lessonList.do" class="class-btn">목록</a>
 				<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
 				<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
@@ -554,7 +558,7 @@ function fn_reply_del(seq){
 	                                    <div style="margin-top: 20px;">
 		                                    <p>${result.replyContent}
 		                                    <c:if test="${result.inUserId eq memberId}">
-		                                    <img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
+		                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
 											</c:if>
 		                                    </p>
 	                                	</div>
@@ -566,7 +570,7 @@ function fn_reply_del(seq){
 				                                    <img src="${MyProfileImage}" alt="" >
 				                                </div>
 			                                    <textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
-			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
+			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float:left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
 			                                </div>
 			                            </div>
 	                                	<hr>

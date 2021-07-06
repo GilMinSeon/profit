@@ -159,7 +159,7 @@
 									<p style="margin:0;">${resultTop.lessonHit }&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
+									<img src="./resources/img/common/newreply.png" style="width: 17px; height: 17px; opacity: 0.5;">
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
 									<p>${resultTop.lessonReply}&nbsp;&nbsp;</p>
