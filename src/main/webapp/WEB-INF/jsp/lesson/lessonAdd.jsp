@@ -110,6 +110,68 @@ $(document).ready(function(){
 
 
 function fn_submit(){
+	var chk_radio = document.getElementsByName('cate_type');
+	var sel_type = null;
+	for(var i=0;i<chk_radio.length;i++){
+		if(chk_radio[i].checked == true){ 
+			sel_type = chk_radio[i].value;
+		}
+	}
+	if(sel_type == null){
+		alert("카테고리를 선택하세요."); 
+	return;
+	}
+	
+	var lessonTitle = $("#lessonTitle").val();
+	if(lessonTitle==""){
+		alert("제목을 입력해주세요.");
+		$("#lessonTitle").focus();
+		return;
+	}
+	
+	var lessonTitleComment = $("#lessonTitleComment").val();
+	if(lessonTitleComment==""){
+		alert("강의코멘트를 입력해주세요.");
+		$("#lessonTitleComment").focus();
+		return;
+	}
+	
+	var lessonMonth = $("#lessonMonth").val();
+	if(lessonMonth==""){
+		alert("강의일수를 입력해주세요.");
+		$("#lessonMonth").focus();
+		return;
+	}
+	
+	var lessonIntro = $("#lessonIntro").val();
+	if(lessonIntro==""){
+		alert("강의소개를 입력해주세요.");
+		$("#lessonIntro").focus();
+		return;
+	}	
+
+	var lessonPrice = $("#lessonPrice").val();
+	if(lessonPrice==""){
+		alert("강의 가격을 입력해주세요.");
+		$("#lessonPrice").focus();
+		return;
+	}
+	
+	var month_reg = /^{2}(0[1-9]|1[0-2])$/;
+	if (!month_reg.test(lessonMonth)) {
+		alert("수강기간은 01월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
+		$("#lessonMonth").focus();
+		return false;
+	}
+	
+	var price_reg = /^[0-9]*$/;
+	if (!price_reg.test(lessonPrice)) {
+		alert("가격은 (특수기호없이)숫자만 입력해주세요. \n ex) 300000");
+		$("#lessonPrice").focus();
+		return false;
+	}
+	
+	
 	var msg = "ok";
 	
 	
@@ -164,10 +226,7 @@ function send_file(){
 	
 }
 
-// if(sel_type == null){
-//  	alert("카테고리를 선택하세요."); 
-// 	return;
-// }
+
 
 
 // if(lessonTitle==""){
@@ -304,7 +363,7 @@ background: #ffffff;
 					<p>	
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">강의기간 </label>
-						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)01">
+						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)1,2,3,4...">
 						</div>
 					</p>
 					

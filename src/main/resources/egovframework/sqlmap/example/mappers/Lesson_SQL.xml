@@ -372,6 +372,7 @@
 		C.REPLY_NEXT_DEPTH ,
 		C.IN_USER_ID, 
 		C.IN_DATE, 
+		C.REPLY_SECRET_FLAG,
 		C.MEMBER_NICKNAME, 
 		C.FILE_SEQ, 
 		D.FILE_PATH
@@ -388,6 +389,7 @@
         LEAD(REPLY_DEPTH) OVER(ORDER BY RN) AS REPLY_NEXT_DEPTH ,
         IN_USER_ID, 
         IN_DATE, 
+        REPLY_SECRET_FLAG,
         MEMBER_NICKNAME, 
         FILE_SEQ
 		FROM
@@ -402,6 +404,7 @@
 		A.REPLY_DEPTH,
 		A.IN_USER_ID, 
 		A.IN_DATE, 
+		A.REPLY_SECRET_FLAG,
 		B.MEMBER_NICKNAME, 
 		B.FILE_SEQ
 		FROM
@@ -427,6 +430,45 @@
 	</select>
 	
 	<!-- 자유게시판 상세 댓글 추가 -->
+	<insert id="insertLessonReply">
+		<selectKey order="BEFORE" keyProperty="replySeq"
+			resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(REPLY_SEQ)),0)+1 FROM REPLY
+		</selectKey>
+		<![CDATA[
+		INSERT 
+			INTO 
+		reply
+		(
+		reply_seq, 
+		lesson_seq, 
+		reply_content, 
+		reply_del_flag, 
+		reply_depth,
+		in_user_id,
+		in_date, 
+		up_user_id, 
+		up_date,
+		reply_secret_flag
+		)
+		VALUES 
+		(
+		#{replySeq},
+		#{lessonSeq},
+		#{replyContent},
+		'N',
+		'1',
+		#{inUserId},
+		sysdate, 
+		#{upUserId}, 
+		sysdate,
+		#{replySecretFlag}
+		)
+		]]>
+	</insert>
+	
+	
+	<!-- 강의 답글 추가 -->
 	<insert id="insertLessonRereply">
 		<selectKey order="BEFORE" keyProperty="replySeq"
 			resultType="String">
@@ -441,11 +483,13 @@
 		lesson_seq, 
 		reply_content, 
 		reply_del_flag, 
+		reply_parent_seq,
 		reply_depth, 
 		in_user_id,
 		in_date, 
 		up_user_id, 
-		up_date
+		up_date,
+		reply_secret_flag
 		)
 		VALUES 
 		(
@@ -453,16 +497,19 @@
 		#{lessonSeq},
 		#{replyContent},
 		'N',
-		'1',
+		#{replyParentSeq},
+		'2',
 		#{inUserId},
 		sysdate, 
 		#{upUserId}, 
-		sysdate
+		sysdate,
+		#{replySecretFlag}
 		)
+		
 		]]>
 	</insert>
 	
-	<!-- 자유게시판 댓글 삭제 -->
+	<!-- 강의 댓글 삭제 -->
 	<update id="deleteLessonReply" parameterType="String">
         UPDATE REPLY B
 		SET    B.REPLY_DEL_FLAG = 'Y'
@@ -481,7 +528,7 @@
 
 	</update>
 	
-	<!-- 자유게시판 조회수 증가 -->
+	<!-- 강의 조회수 증가 -->
 	
 	<update id="increaseLessonHit" parameterType="String">
         UPDATE LESSON 
@@ -755,5 +802,20 @@
  		]]> 
 	</insert>
 	
+	<!-- 사용가능한 이용권 존재여부 확인 -->
+	<select id="selectBuyLesson" resultType="int">
+	    SELECT COUNT(*)
+		FROM BUY_LESSON
+		WHERE IN_USER_ID = #{memberId}
+		AND LESSON_REFUND_FLAG = 'N'
+	</select>
+	
+	<!-- 강의등록 전 트레이너인지 확인 -->
+	<select id="checkTrainer" resultType="int">
+	    SELECT COUNT(*)
+		    FROM MEMBER
+		WHERE MEMBER_GUBUN='T'
+		AND MEMBER_ID = #{memberId}
+	</select>
 	
 </mapper>

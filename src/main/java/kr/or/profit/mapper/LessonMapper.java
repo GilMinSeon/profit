@@ -65,7 +65,10 @@ public interface LessonMapper {
 	//강의 댓글리스트 가져오기
 	List<Map<String, Object>> selectReplyList(String lessonSeq) throws Exception;
 
-	//강의 상세 댓글 추가
+	//강의 댓글 추가
+	int insertLessonReply(ReplyVO replyvo);
+
+	//강의 상세 답글 추가
 	int insertLessonRereply(ReplyVO replyvo) throws Exception;
 
 	//강의 댓글 삭제
@@ -85,6 +88,13 @@ public interface LessonMapper {
 
 	//강의 구매 추가
 	int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception;
+
+	//강의 구매한 사람이 있는지 확인
+	int selectBuyLesson(String memberId) throws Exception;
+
+	//트레인지 확인
+	int checkTrainer(String memberId) throws Exception;
+
 
 
 

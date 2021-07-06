@@ -263,10 +263,19 @@
 					</div>
 				</div>
 			</div>
-			<div class="classes__item__text" style="text-align: right;padding-top: 0;">
-                 <span class="blinking">내 강의 등록하러 가기 → </span>&nbsp;
-                 <a href="lessonAdd.do" class="class-btn_w">강의등록</a>
-   		 	</div>
+			<c:choose>
+				<c:when test="${rightTrainer eq '1'}">
+					<div class="classes__item__text" style="text-align: right;padding-top: 0;">
+		                 <span class="blinking">내 강의 등록하러 가기 → </span>&nbsp;
+		                 <a href="lessonAdd.do" class="class-btn_w">강의등록</a>
+	   		 		</div>
+				</c:when>
+				<c:when test="${rightTrainer eq '0'}">
+					<br/>
+					<br/>			
+				</c:when>
+			</c:choose>
+			
 			<div class="row">
 			<c:forEach var="result" items="${resultList}" varStatus="status">
 			<c:if test="${result.lessonPrivateFlag eq 'n'}">

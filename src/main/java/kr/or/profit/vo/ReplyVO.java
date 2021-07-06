@@ -16,7 +16,14 @@ public class ReplyVO {
 	private Date inDate;
 	private String upUserId;
 	private Date upDate;
+	private String replySecretFlag;
 	
+	public String getReplySecretFlag() {
+		return replySecretFlag;
+	}
+	public void setReplySecretFlag(String replySecretFlag) {
+		this.replySecretFlag = replySecretFlag;
+	}
 	public String getReplySeq() {
 		return replySeq;
 	}
