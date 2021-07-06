@@ -118,8 +118,8 @@
 		    SELECT A.COMMUNITY_SEQ,A.COMMUNITY_CATEGORY_SEQ,A.FILE_SEQ,
 		            (select count(*) from bookgood bk where bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as board_good,
 		            (select count(*) from bookgood bk where bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as board_book,
-		            (select count(*) from bookgood bk where member_id='S00001' and bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as good_flag,
-		            (select count(*) from bookgood bk where member_id='S00001' and bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as book_flag,
+		            (select count(*) from bookgood bk where member_id=#{memberId} and bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as good_flag,
+		            (select count(*) from bookgood bk where member_id=#{memberId} and bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as book_flag,
 		          CASE WHEN LENGTH(A.COMMON_TITLE) > 15 THEN SUBSTR(A.COMMON_TITLE, 0, 15) || '...'
 		          ELSE A.COMMON_TITLE END AS COMMON_TITLE,
 		          A.COMMON_CONTENT,

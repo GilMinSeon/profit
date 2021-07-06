@@ -143,6 +143,8 @@ public class CommunityController {
 		
 		cri.setMemberId(memberId);
 		
+		System.out.println(cri.getMemberId() + "아이디 찍는거");
+		
 		// 자유게시판 인기글 목록
 		List<Map<String, String>> boardTopList = communityService.selectBoardTopList(memberId);
 		//System.out.println("boardTopList.size : " + boardTopList.size());
@@ -154,7 +156,7 @@ public class CommunityController {
 		
 		model.addAttribute("boardList", boardList);
 		
-		//System.out.println(model.toString());
+		System.out.println(model.toString());
 		
 		//페이징처리
 		PageMaker pageMaker = new PageMaker();
