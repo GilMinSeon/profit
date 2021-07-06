@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
@@ -62,8 +61,9 @@ public class QnaServiceImpl implements QnaService{
 
 	//댓글삭제
 	@Override
-	public int qnaReplyDelete(HttpServletRequest request) throws Exception {
-		return mapper.qnaReplyDelete(request);
+	public int qnaReplyDelete(Map<String, Object> map) throws Exception {
+		System.out.println("서비스옴 = " + map);
+		return mapper.qnaReplyDelete(map);
 	}
 
 

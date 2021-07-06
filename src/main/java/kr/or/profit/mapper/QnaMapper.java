@@ -32,7 +32,7 @@ public interface QnaMapper {
 	List<?> qnaDetailReply(Map<String, Object> map) throws Exception;
 
 	//댓글 삭제
-	int qnaReplyDelete(HttpServletRequest request) throws Exception;
+	int qnaReplyDelete(Map<String, Object> map) throws Exception;
 
 
 }

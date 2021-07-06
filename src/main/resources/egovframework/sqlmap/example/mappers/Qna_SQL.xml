@@ -121,9 +121,9 @@
 		    TO_CHAR(COMMON_CONTENT) COMMON_CONTENT,
 		    COMMON_DEL_FLAG,
 		    IN_USER_ID,
-		    TO_CHAR(IN_DATE, 'YYYY/MM/DD') IN_DATE,
+		    TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
 		    UP_USER_ID,
-		    TO_CHAR(UP_DATE, 'YYYY/MM/DD') UP_DATE
+		    TO_CHAR(UP_DATE, 'YYYY-MM-DD') UP_DATE
 		FROM
 		    COMMUNITY
 		WHERE
@@ -135,7 +135,6 @@
 		UPDATE
 		    COMMUNITY
 		SET
-		    FILE_SEQ        = #{files},
 		    COMMON_TITLE    = #{title},
 		    COMMON_CONTENT  = #{contents},
 		    UP_DATE         = SYSDATE
@@ -194,13 +193,16 @@
 		   REPLY_PARENT_SEQ,
 		   REPLY_DEPTH,
 		   IN_USER_ID,
-		   TO_CHAR(IN_DATE, 'YYYY/MM/DD') IN_DATE,
+		   TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
 		   UP_USER_ID,
-		   TO_CHAR(UP_DATE, 'YYYY/MM/DD') UP_DATE
+		   TO_CHAR(UP_DATE, 'YYYY-MM-DD') UP_DATE
 		FROM
 		    REPLY
 		WHERE
 		    COMMUNITY_SEQ = #{communitySeq}
+		AND
+			REPLY_DEL_FLAG = 'N'
+
 	</select>
 	<!-- 	댓글 삭제 -->
 	<update id="qnaReplyDelete" parameterType="hashMap" >
