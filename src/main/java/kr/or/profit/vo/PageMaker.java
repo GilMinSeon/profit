@@ -2,7 +2,7 @@ package kr.or.profit.vo;
 
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-
+//페이징처리에 필요한 클래스 2번
 public class PageMaker {
 
 	private int totalCount; // 게시물의 총개수
@@ -52,7 +52,8 @@ public class PageMaker {
 	public Criteria getCri() {
 		return cri;
 	}
-
+	
+	//계산하는 메서드
 	private void calcData() {
 		endPage = (int) (Math.ceil(cri.getPage() / (double) displayPageNum) * displayPageNum);
 		startPage = (endPage - displayPageNum) + 1;
@@ -64,12 +65,16 @@ public class PageMaker {
 		prev = startPage == 1 ? false : true;
 		next = endPage * cri.getPerPageNum() >= totalCount ? false : true;
 	}
-
+	
+	//url 만드는 메서드
 	public String makeQuery(int page) {
 		UriComponents uriComponents = 
 				UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
-				.queryParam("perPageNum", cri.getPerPageNum())
+				.queryParam("selCate", cri.getSelCate())
+				.queryParam("selLev", cri.getSelLev())
+				.queryParam("keyword", cri.getKeyword())
+				.query("#location123")
 				.build();
 
 		return uriComponents.toUriString();

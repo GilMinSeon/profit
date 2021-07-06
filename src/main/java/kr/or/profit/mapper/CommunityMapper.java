@@ -25,7 +25,7 @@ public interface CommunityMapper {
 	List<Map<String, String>> selectBoardList(Criteria cri) throws Exception;
 	
 	//페이징-자유게시판 전체 글 개수
-	int selectBoardCnt() throws Exception;
+	int selectBoardCnt(Criteria cri) throws Exception;
 	
 	//자유게시판 인기글 목록 조회
 	List<Map<String, String>> selectBoardTopList(String memberId) throws Exception;

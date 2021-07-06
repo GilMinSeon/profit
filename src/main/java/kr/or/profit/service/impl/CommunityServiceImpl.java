@@ -132,8 +132,8 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	//페이징 - 자유게시판 전체 글 개수
 	@Override
-	public int selectBoardCnt() throws Exception {
-		return communityDAO.selectBoardCnt();
+	public int selectBoardCnt(Criteria cri) throws Exception {
+		return communityDAO.selectBoardCnt(cri);
 	}
 
 }
