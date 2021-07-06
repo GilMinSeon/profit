@@ -5,8 +5,11 @@ import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.ReplyVO;
 
 @Mapper("lessonMapper")
 public interface LessonMapper {
@@ -55,6 +58,34 @@ public interface LessonMapper {
 	List<?> selectCateLessonList(Map<String, Object> map) throws Exception;
 
 	List<?> selectLessonList() throws Exception;
+
+	//자유게시판 상세 댓글 나의 프로필 사진 조회
+	String selectMyProfile(String memberId)  throws Exception;
+
+	//강의 댓글리스트 가져오기
+	List<Map<String, Object>> selectReplyList(String lessonSeq) throws Exception;
+
+	//강의 상세 댓글 추가
+	int insertLessonRereply(ReplyVO replyvo) throws Exception;
+
+	//강의 댓글 삭제
+	int deleteLessonReply(String replySeq) throws Exception;
+
+	//조회수 증가
+	int increaseLessonHit(String lessonSeq) throws Exception;
+
+	//좋아요북마크 추가
+	int insertLessonBookgood(BookgoodVO vo)  throws Exception;
+
+	//좋아요북마크 개수 가져오기
+	int selectLessonBookgoodCnt(BookgoodVO vo) throws Exception;
+
+	//좋아요북마크 제거
+	int deleteLessonBookgood(BookgoodVO vo) throws Exception;
+
+	//강의 구매 추가
+	int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception;
+
 
 
 

@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ReplyVO;
 
 public interface CommunityService {
@@ -16,8 +18,11 @@ public interface CommunityService {
 	//자유게시판 사진파일 추가
 	public int insertBoardFile(AttachFileVO vo) throws Exception;
 	
+	//페이징 - 자유게시판 전체 글 개수
+	public int selectBoardCnt(Criteria cri) throws Exception;
+	
 	//자유게시판 목록 조회
-	public List<Map<String, String>> selectBoardList(String memberId) throws Exception;
+	public List<Map<String, String>> selectBoardList(Criteria cri) throws Exception;
 	
 	//자유게시판 인기글 목록 조회
 	public List<Map<String, String>> selectBoardTopList(String memberId) throws Exception;
@@ -54,4 +59,18 @@ public interface CommunityService {
 	
 	//인기글 TOP5 가져오기
 	public List<Map<String, Object>> bestBoardList() throws Exception;
+	
+	//좋아요북마크 삭제
+	public int deleteBookgood(BookgoodVO vo) throws Exception;
+	
+	//좋아요북마크 추가
+	public int insertBookgood(BookgoodVO vo) throws Exception;
+	
+	//좋아요북마크 개수 가져오기
+	public int selectBookgoodCnt(BookgoodVO vo) throws Exception;
+	
+	
+	
+	
+	
 }

@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.ReplyVO;
 
 public interface LessonService {
 
@@ -19,6 +22,9 @@ public interface LessonService {
 	//강의 상세조회
 	public Map<String, Object> selectLessonDetail(LessonVO lessonVO) throws Exception;
 
+	//강의 상세 댓글 나의 프로필 사진 조회
+	public String selectMyProfile(String memberId) throws Exception;
+	
 	//강의수정
 	public int updateLesson(LessonVO lessonVO) throws Exception;
 
@@ -54,6 +60,31 @@ public interface LessonService {
 	public List<?> selectCateLessonList(Map<String, Object> map) throws Exception;
 
 	public List<?> selectLessonList() throws Exception;
+	
+	//강의 댓글 리스트 가져오기
+	public List<Map<String, Object>> selectReplyList(String lessonSeq) throws Exception;
+
+	//강의 상세 댓글 추가
+	public int insertLessonRereply(ReplyVO replyvo) throws Exception;
+
+	//강의 상세 댓글 삭제
+	public int deleteLessonReply(String replySeq) throws Exception;
+
+	//조회수 증가
+	public int increaseLessonHit(String lessonSeq) throws Exception;
+
+	//좋아요북마크 추가
+	public int insertLessonBookgood(BookgoodVO vo) throws Exception;
+
+	//좋아요북마크 개수 가져오기
+	public int selectLessonBookgoodCnt(BookgoodVO vo) throws Exception;
+
+	//좋아요북마크 제거
+	public int deleteLessonBookgood(BookgoodVO vo) throws Exception;
+
+	//강의 구매추가
+	public int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception;
+
 
 
 

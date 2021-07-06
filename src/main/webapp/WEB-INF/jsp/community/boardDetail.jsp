@@ -57,6 +57,86 @@
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+$(function(){
+	
+	//좋아요북마크 취소
+	$(document).on("click",".remove",function(){
+		var memberId = $("#sessionId").val(); 
+		var communitySeq = $("#communitySeq").val(); 
+		var bookgoodGubun = $(this).attr('alt');
+		
+		$.ajax({
+			type : "get",
+			data : {memberId:memberId, bookgoodGubun:bookgoodGubun, communitySeq:communitySeq},
+			url : "removeBookgoodAjax.do",
+			success : function(result) {
+				if (result == "no") {
+					alert("문제가 발생하였습니다. 잠시후 다시 시도해주세요")
+				} else {
+					if(bookgoodGubun == 'G'){
+						var txt = "";
+						txt += "<img src='./resources/img/common/like.png' style='width: 17px; height: 15px;' class='full' alt='G' />"
+						$("#div_good_img").html(txt);
+						var txt2 = "";
+						txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+						$("#div_good_cnt").html(txt2);
+					}else{
+						var txt = "";
+						txt += "<img src='./resources/img/common/bookmark.png' style='width: 12px; height: 16px;' class='full' alt='B' />"
+						$("#div_book_img").html(txt);
+						var txt2 = "";
+						txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+						$("#div_book_cnt").html(txt2);
+					}
+				}
+			},
+			error : function() {
+				alert("오류발생");
+			}
+		});
+	}); //.remove 클릭 이벤트 끝
+	
+	
+	//좋아요북마크 추가
+	$(document).on("click",".full",function(){
+		var memberId = $("#sessionId").val(); 
+		var communitySeq = $("#communitySeq").val(); 
+		var bookgoodGubun = $(this).attr('alt');
+		
+		$.ajax({
+			type : "get",
+			data : {memberId:memberId, bookgoodGubun:bookgoodGubun, communitySeq:communitySeq},
+			url : "addBookgoodAjax.do",
+			success : function(result) {
+				if (result == "no") {
+					alert("문제가 발생하였습니다. 잠시후 다시 시도해주세요")
+				} else {
+					if(bookgoodGubun == 'G'){
+						var txt = "";
+						txt += "<img src='./resources/img/common/red_like.png' style='width: 17px; height: 15px;' class='remove' alt='G' />"
+						$("#div_good_img").html(txt);
+						var txt2 = "";
+						txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+						$("#div_good_cnt").html(txt2);
+					}else{
+						var txt = "";
+						txt += "<img src='./resources/img/common/yellow_bookmark.png' style='width: 12px; height: 16px;' class='remove' alt='B' />"
+						$("#div_book_img").html(txt);
+						var txt2 = "";
+						txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+						$("#div_book_cnt").html(txt2);
+					}
+				}
+			},
+			error : function() {
+				alert("오류발생");
+			}
+		});
+	}); //.full 이벤트 끝
+	
+	
+});
+
 
 function fn_toggle(cnt){
 	$("#rereply_div"+ cnt).toggle("fast");
@@ -88,8 +168,6 @@ function fn_replyAdd(){
 			console.log(error);
 			console.log(error.status);
 		}
-		
-		
 	})
 }
 
@@ -265,35 +343,38 @@ function fn_boardDel(seq){
 							<p>${BoardDetail['boardReply']}&nbsp;&nbsp;</p>
 						</div>
 						
+						<input type="hidden" value="${sessionScope.memberId }" id="sessionId">
+						<input type="hidden" value="${BoardDetail['communitySeq']}" id="communitySeq">
+						
 						<!-- 좋아요 이미지 찍히는 곳 -->
-						<div style="display: inline-block; vertical-align: middle;">
+						<div style="display: inline-block; vertical-align: middle;" id="div_good_img">
 							<c:set var="goodFlag" value="${BoardDetail['goodFlag']}"/>
                   			<c:if test="${goodFlag == '1' }">
-							<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+								<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;" class="remove" alt="G">
 							</c:if>
 							<c:if test="${goodFlag == '0' }">
-							<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+								<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;" class="full" alt="G">
 							</c:if>
 						</div>
 						
 						<!-- 좋아요수 -->
-						<div style="display: inline-block;vertical-align:sub;">
+						<div style="display: inline-block;vertical-align:sub;" id="div_good_cnt">
 							<p>${BoardDetail['boardGood']}&nbsp;&nbsp;</p>
 						</div>
 						
 						<!-- 북마크 이미지 찍히는 곳 -->
-						<div style="display: inline-block; vertical-align: middle;">
+						<div style="display: inline-block; vertical-align: middle;" id="div_book_img">
 							<c:set var="bookFlag" value="${BoardDetail['bookFlag']}"/>
                   			<c:if test="${bookFlag == '1' }">
-							<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+								<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;" class="remove" alt="B">
 							</c:if>
 							<c:if test="${bookFlag == '0' }">
-							<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+								<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;" class="full" alt="B">
 							</c:if>
 						</div>
 						
 						<!-- 북마크수 -->
-						<div style="display: inline-block;vertical-align:sub;">
+						<div style="display: inline-block;vertical-align:sub;" id="div_book_cnt">
 							<p>${BoardDetail['boardBook']}&nbsp;&nbsp;</p>
 						</div> 
         			</div>
@@ -311,8 +392,8 @@ function fn_boardDel(seq){
 		                        <c:if test="${BoardDetail['inUserId'] eq memberId}">
 		                        <a href="boardMod.do?communitySeq=${BoardDetail['communitySeq']}" class="class-btn" style="text-align: center;">수정</a>
 		                        <a class="class-btn" style="text-align: center;" onclick="fn_boardDel(${BoardDetail['communitySeq']})">삭제</a>
-	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
 								</c:if>
+	                            <a href="boardList.do" class="class-btn" style="text-align: center;">목록</a>
                         	
                         	
                         	</div>
@@ -353,7 +434,7 @@ function fn_boardDel(seq){
 	                                    <h6>
 	                                     	${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
 	                                     	<c:if test="${result.replyDepth == 1}">
-	                                     	<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
+	                                     	<a style="font-size:0.8em;color:gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
 	                                     	</c:if>
 	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">${fn:substring(result.inDate,0,10)}</span>   
 	                                    </h6>   
@@ -415,6 +496,21 @@ function fn_boardDel(seq){
     <script src="./resources/js/jquery.slicknav.js"></script>
     <script src="./resources/js/owl.carousel.min.js"></script>
     <script src="./resources/js/main.js"></script>
+<script type="text/javascript">
+
+$(function(){
+///////////////
+	
+// 	$(".full").click(function(){
+		
+// 		alert("dddddd");
+
+	
+// 	});
+	
+	
+});
+</script>
 </body>
 
 </html>

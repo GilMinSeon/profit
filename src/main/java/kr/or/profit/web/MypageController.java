@@ -370,7 +370,7 @@ public class MypageController {
 	}
 
 	//uploadAjax 안에서 사용하는 메서드
-	private List<AttachFileVO> fileProcess(MultipartHttpServletRequest multipartRequest, HttpServletRequest request)
+	public List<AttachFileVO> fileProcess(MultipartHttpServletRequest multipartRequest, HttpServletRequest request)
 			throws Exception {
 		HttpSession session = request.getSession();
 

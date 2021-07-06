@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import kr.or.profit.mapper.LessonMapper;
 import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.ReplyVO;
 
 @Service("lessonService")
 public class LessonServiceImpl implements LessonService {
@@ -35,6 +38,7 @@ public class LessonServiceImpl implements LessonService {
 	//강의 목록조회
 	@Override
 	public List<?> selectLessonList(Map<String, Object> map) throws Exception {
+		System.out.println("map : " + map);
 		return lessonDAO.selectLessonList(map);
 	}
 
@@ -110,6 +114,61 @@ public class LessonServiceImpl implements LessonService {
 	public List<?> selectLessonList() throws Exception {
 		return lessonDAO.selectLessonList();
 	}
+
+	//자유게시판 상세 댓글 나의 프로필 사진 조회
+	@Override
+	public String selectMyProfile(String memberId) throws Exception {
+		return lessonDAO.selectMyProfile(memberId);
+	}
+
+	//강의 댓글 리스트 가져오기
+	@Override
+	public List<Map<String, Object>> selectReplyList(String lessonSeq) throws Exception {
+		return lessonDAO.selectReplyList(lessonSeq);
+	}
+
+	//강의 상세 댓글 추가
+	@Override
+	public int insertLessonRereply(ReplyVO replyvo) throws Exception {
+		return lessonDAO.insertLessonRereply(replyvo);
+	}
+
+	//강의 댓글 삭제
+	@Override
+	public int deleteLessonReply(String replySeq) throws Exception {
+		return lessonDAO.deleteLessonReply(replySeq);
+	}
+
+	//조회수 증가
+	@Override
+	public int increaseLessonHit(String lessonSeq) throws Exception {
+		return lessonDAO.increaseLessonHit(lessonSeq);
+	}
+
+	// 좋아요북마크 추가
+	@Override
+	public int insertLessonBookgood(BookgoodVO vo) throws Exception {
+		return lessonDAO.insertLessonBookgood(vo);
+	}
+
+	//좋아요북마크 개수 가져오기
+	@Override
+	public int selectLessonBookgoodCnt(BookgoodVO vo) throws Exception {
+		return lessonDAO.selectLessonBookgoodCnt(vo);
+	}
+
+	//좋아요북마크 제거
+	@Override
+	public int deleteLessonBookgood(BookgoodVO vo) throws Exception {
+		return lessonDAO.deleteLessonBookgood(vo);
+	}
+
+	//강의 구매 추가
+	@Override
+	public int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception {
+		return lessonDAO.insertBuyLesson(buyLessonVO);
+	}
+
 
 
 

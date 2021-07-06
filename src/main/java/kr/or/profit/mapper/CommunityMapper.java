@@ -7,7 +7,9 @@ import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ReplyVO;
 
 @Mapper("communityMapper")
@@ -20,7 +22,10 @@ public interface CommunityMapper {
 	int insertBoardFile(AttachFileVO vo) throws Exception;
 	
 	//자유게시판 목록 조회
-	List<Map<String, String>> selectBoardList(String memberId) throws Exception;
+	List<Map<String, String>> selectBoardList(Criteria cri) throws Exception;
+	
+	//페이징-자유게시판 전체 글 개수
+	int selectBoardCnt(Criteria cri) throws Exception;
 	
 	//자유게시판 인기글 목록 조회
 	List<Map<String, String>> selectBoardTopList(String memberId) throws Exception;
@@ -57,4 +62,15 @@ public interface CommunityMapper {
 	
 	//인기글 TOP5 가져오기
 	List<Map<String,Object>> bestBoardList() throws Exception;
+	
+	//좋아요북마크 제거
+	int deleteBookgood(BookgoodVO vo) throws Exception;
+	
+	//좋아요북마크 추가
+	int insertBookgood(BookgoodVO vo) throws Exception;
+	
+	//좋아요북마크 개수 가져오기
+	int selectBookgoodCnt(BookgoodVO vo) throws Exception;
+	
+	
 }
