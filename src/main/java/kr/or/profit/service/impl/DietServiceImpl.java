@@ -13,6 +13,7 @@ import kr.or.profit.service.CommunityService;
 import kr.or.profit.service.DietService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
+import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -43,10 +44,31 @@ public class DietServiceImpl implements DietService {
 		return dietDAO.selectAvailableTicket(memberId);
 	}
 
+
 	//채팅 프로필 등록
-//	@Override
-//	public int insertChatProfile(ChatProfileVO vo) throws Exception {
-//		return dietDAO.insertChatProfile(vo);
-//	}
+	@Override
+	public int insertChatProfile(ChatProfileVO vo) throws Exception {
+		return dietDAO.insertChatProfile(vo);
+	}
+
+	//상담 프로필 등록 여부
+	@Override
+	public int selectRegisterProfile(String memberId) throws Exception {
+		return dietDAO.selectRegisterProfile(memberId);
+	}
+
+	//상담 프로필 목록 가져오기
+	@Override
+	public List<Map<String, Object>> selectChatProflieList() throws Exception {
+		return dietDAO.selectChatProflieList();
+	}
+
+
+	@Override
+	public int insertProcessFile(Map<String, Object> filemap) throws Exception {
+		return dietDAO.insertProcessFile(filemap);
+	}
+	
+
 
 }
