@@ -295,12 +295,13 @@ function fn_reply_del(seq){
 	<section class="about spad">
 		<div class="container">
 		<c:set var="resultList" value="${resultList}"/>
-			<div class="row">
-				<div class="col-lg-7 p-0" style="display: inline-block;">
-					<div style="float: left;margin-left: 5px;">
+		<div style="background-color: white;border: 1px solid #ebecef;border-radius: 10px;">
+			<div class="row" style="padding-top: 30px;padding-bottom: 30px;">
+				<div class="col-lg-6 p-0">
+					<div style="float: left;margin-left: 40px;">
 	                  	<p style="font-weight: bold; color: #8B94B5;">카테고리&nbsp;&nbsp;|&nbsp; <span>${resultList.lessonCategoryName}</span></p>
-	                </div>
-	                <div  style="text-align: right;margin-bottom: 5px;padding-right: 8px;">
+	                </div><br/>
+	                <div  style="float: right;margin-bottom: 7px;margin-right: 40px;margin-left: 40px;">
                         <div style="display: inline-block;vertical-align:sub;">
 							<p style="margin:0;">${resultList.inDate}&nbsp;&nbsp;</p>
 						</div>
@@ -354,15 +355,14 @@ function fn_reply_del(seq){
         			</div>
         			
         			
-					<div class="about__pic" style="object-fit: cover;">
+					<div style="text-align: center;">
 						<img src="http://192.168.41.6:9999/upload/profit/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;object-fit: cover;">
 					</div>
 				</div>
-				<div class="col-lg-5 p-0" style="display: inline-block;">
-					<div class="about__text">
+				<div class="col-lg-5 p-0">
+					<div class="about__text" style="padding-left:20px;">
 						<div class="section-title">
-							<h3>${resultList.lessonTitle}</h3>
-			                <br/>
+							<span style="font-size: 1.4em; font-weight: bold;color: #545454">◾ ${resultList.lessonTitle}</span><br/><br/>
 							<div>
 								<div style="display: inline-block; float:left;"><p>※ 한줄 소개 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>
@@ -407,6 +407,7 @@ function fn_reply_del(seq){
 				</div>
 				
 			</div>
+			</div>
 		</div>
 	</section>
 	<!-- 	main html 시작 -->
@@ -450,7 +451,7 @@ function fn_reply_del(seq){
 			})
 		});
 	</script>
-	<section class="about spad">
+	<section class="about spad" style="padding-top:20px;">
 	<div class="container">
 		<main id="main" class="site-main" role="main">
 			<div class="classes__item__text" style="text-align: right;">

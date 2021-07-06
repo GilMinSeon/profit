@@ -8,6 +8,7 @@ import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
+import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.ReplyVO;
 
@@ -24,5 +25,13 @@ public interface DietMapper {
 	int selectAvailableTicket(String memberId) throws Exception;
 	
 	//채팅 프로필 등록
-//	int insertChatProfile(ChatProfileVO vo) throws Exception;
+	int insertChatProfile(ChatProfileVO vo) throws Exception;
+	
+	//상담 프로필 등록 여부
+	int selectRegisterProfile(String memberId) throws Exception;
+	
+	//상담 프로필 목록 가져오기
+	List<Map<String, Object>> selectChatProflieList() throws Exception;
+	
+	int insertProcessFile(Map<String, Object> filemap) throws Exception;
 }
