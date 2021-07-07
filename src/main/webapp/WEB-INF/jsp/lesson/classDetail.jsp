@@ -77,6 +77,7 @@ function fn_delClass(){
 
 
 </script>
+
 </head>
 <body>
 	<!-- Breadcrumb Begin -->
@@ -138,7 +139,7 @@ function fn_delClass(){
 						</table>
 						<div class="classes__item__text" style="text-align: right;">
 							<a href="javascript:history.back();" class="class-btn">목록</a>
-							<input type="button" onclick="fn_delClass()" class="class-btn" value="삭제">
+							<input type="button" onclick="fn_delClass()" class="class-btn" style="cursor:pointer;" value="삭제">
 						</div>
 					</div>
 				</section>

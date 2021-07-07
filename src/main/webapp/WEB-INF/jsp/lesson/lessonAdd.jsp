@@ -157,7 +157,13 @@ function fn_submit(){
 		return;
 	}
 	
-	var month_reg = /^{2}(0[1-9]|1[0-2])$/;
+	var fileCheck = document.getElementById("file").value;
+	if(!fileCheck){
+	 alert("파일을 첨부해 주세요");
+	 return false;
+	}
+	
+	var month_reg = /^(0[0-9]|1[0-2])$/;
 	if (!month_reg.test(lessonMonth)) {
 		alert("수강기간은 01월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
 		$("#lessonMonth").focus();
@@ -227,59 +233,6 @@ function send_file(){
 }
 
 
-
-
-// if(lessonTitle==""){
-// 	alert("제목을 입력해주세요.");
-// 	$("#lessonTitle").focus();
-// 	return;
-// }
-
-// if(lessonTitleComment==""){
-// 	alert("강의소개를 입력해주세요.");
-// 	$("#lessonTitleComment").focus();
-// 	return;
-// }
-
-// if(lessonMonth==""){
-// 	alert("강의일수를 입력해주세요.");
-// 	$("#lessonMonth").focus();
-// 	return;
-// }
-
-
-// if(lessonIntro==""){
-// 	alert("강의소개를 입력해주세요.");
-// 	$("#lessonIntro").focus();
-// 	return;
-// }	
-
-
-// if(lessonPrice==""){
-// 	alert("강의 가격을 입력해주세요.");
-// 	$("#lessonPrice").focus();
-// 	return;
-// }
-
-// var price_reg = /^[0-9]*$/;
-// if (!price_reg.test(lessonPrice)) {
-// 	alert("가격은 (특수기호없이)숫자만 입력해주세요. \n ex) 300000");
-// 	$("#lessonPrice").focus();
-// 	return false;
-// }
-
-// var month_reg = /^(0[1-9]|1[012])$/;
-// if (!month_reg.test(lessonMonth)) {
-// 	alert("수강기간은 1월부터 12월까지의 숫자만 가능합니다. \n ex) 01, 02, 03 ... 12");
-// 	$("#lessonMonth").focus();
-// 	return false;
-// }
-
-// var fileCheck = document.getElementById("file").value;
-// if(!fileCheck){
-//  alert("파일을 첨부해 주세요");
-//  return false;
-// }
 </script>
 <style>
 .site-btn_s{

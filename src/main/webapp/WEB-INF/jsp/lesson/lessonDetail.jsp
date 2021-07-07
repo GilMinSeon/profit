@@ -426,25 +426,25 @@ function fn_reply_del(seq){
 		// 	style="border-bottom: 3px solid #7952B3;"
 		$(function() {
 			$('#tite1').click(function() {
-				$('#li1').css('border-bottom', '3px solid #7952B3');
-				$('#li2').css('border-bottom', '3px solid #ffffff');
-				$('#li3').css('border-bottom', '3px solid #ffffff');
+				$('#li1').css({'border-bottom':'3px solid #7952B3', 'text-shadow' :'3px 3px 10px #7952B3', 'font-weight' : 'bold'});
+				$('#li2').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
+				$('#li3').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
 				$('#t1').show().siblings('div').hide();
 			})
 		});
 		$(function() {
 			$('#tite2').click(function() {
-				$('#li1').css('border-bottom', '3px solid #ffffff');
-				$('#li2').css('border-bottom', '3px solid #7952B3');
-				$('#li3').css('border-bottom', '3px solid #ffffff');
+				$('#li1').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
+				$('#li2').css({'border-bottom': '3px solid #7952B3', 'text-shadow' :'3px 3px 10px #7952B3', 'font-weight' : 'bold'});
+				$('#li3').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
 				$('#t2').show().siblings('div').hide();
 			})
 		});
 		$(function() {
 			$('#tite3').click(function() {
-				$('#li1').css('border-bottom', '3px solid #ffffff');
-				$('#li2').css('border-bottom', '3px solid #ffffff');
-				$('#li3').css('border-bottom', '3px solid #7952B3');
+				$('#li1').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
+				$('#li2').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
+				$('#li3').css({'border-bottom': '3px solid #7952B3', 'text-shadow' :'3px 3px 10px #7952B3', 'font-weight' : 'bold'});
 				$('#t3').show().siblings('div').hide();
 			})
 		});
@@ -456,7 +456,7 @@ function fn_reply_del(seq){
 			<div class="classes__item__text" style="text-align: right;">
 			<c:choose>
 				<c:when test="${buyer eq '1'}">
-					<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
+					<a href="javascript:alert('이미 강의를 구매하셨습니다. \n하단의 커리큘럼에서 강의 영상을 봐주시거나 마이페이지에서 확인해주세요');" class="class-btn">강의구매</a>
 				</c:when>
 				<c:when test="${buyer eq '0'}">
                 	<span class="blinking" style="color:#ED2348;">강의를 구매하시면 커리큘럼 내에서 영상을 볼 수 있어요! → </span>&nbsp;
@@ -501,12 +501,12 @@ function fn_reply_del(seq){
 							<br/><br/>
 							<table class="table table-hover" style="text-align: center;">
 								<tbody>
-									<tr style="background-color:#5768AD;">
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">번호</th>
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">썸네일</th>
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">상세 강의 명</th>
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">재생시간</th>
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">등록일</th>
+									<tr style="background-color:rgb(211,197,245,0.5);">
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">번호</th>
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">썸네일</th>
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">상세 강의 명</th>
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">재생시간</th>
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">등록일</th>
 									</tr>
 								<c:forEach var="rclassList" items="${resultClassList}" varStatus="status">
 									<c:choose>
@@ -597,7 +597,7 @@ function fn_reply_del(seq){
 	                                    		<c:when test="${result.replySecretFlag == 'N'}">
 				                                    <p>${result.replyContent}
 				                                    <c:if test="${result.inUserId eq memberId}">
-				                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
+				                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left : 20px;"onclick="fn_reply_del(${result.replySeq})">
 													</c:if>
 				                                    </p>
 			                                    </c:when>

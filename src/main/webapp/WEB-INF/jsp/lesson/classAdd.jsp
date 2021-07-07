@@ -27,6 +27,35 @@ $("#exe_btn").show();
 
 
 function fn_submit(){
+	
+	var lessonDetailTitle = $("#lessonDetailTitle").val();
+	if(lessonDetailTitle==""){
+		alert("상세강의 제목을 입력해주세요.");
+		$("#lessonDetailTitle").focus();
+		return;
+	}
+	
+	var lessonDetailContent = $("#lessonDetailContent").val();
+	if(lessonDetailContent==""){
+		alert("상세강의 내용을 입력해주세요.");
+		$("#lessonDetailContent").focus();
+		return;
+	}
+	
+	
+	var fileCheck = document.getElementById("file").value;
+	if(!fileCheck){
+	 alert("썸네일 파일을 첨부해 주세요");
+	 return false;
+	}
+
+	var fileCheck2 = document.getElementById("file_dong").value;
+	if(!fileCheck2){
+	 alert("강의 동영상을 첨부해 주세요");
+	 return false;
+	}
+	
+	
 	var msg = "ok";
 	if(msg=="ok"){
 		var apply = confirm("상세강의를 등록하시겠습니까?");

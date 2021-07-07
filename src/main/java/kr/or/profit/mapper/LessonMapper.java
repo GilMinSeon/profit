@@ -7,6 +7,7 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.BuyLessonVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -21,7 +22,7 @@ public interface LessonMapper {
 	int updateLesson(LessonVO vo) throws Exception;
 	
 	//강의 목록 조회
-	List<?> selectLessonList(Map<String, Object> map) throws Exception;
+	List<?> selectLessonList(Criteria cri) throws Exception;
 
 	//강의 상세조회
 	Map<String, Object> selectLessonDetail(LessonVO vo) throws Exception;
@@ -94,6 +95,9 @@ public interface LessonMapper {
 
 	//트레인지 확인
 	int checkTrainer(String memberId) throws Exception;
+
+	//페이징 - 온라인클래스 전체 글 개수 
+	int selectLessonCnt(Criteria cri) throws Exception;
 
 
 
