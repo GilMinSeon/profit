@@ -13,6 +13,17 @@ public class Criteria {
 	private String selCate;
 	private String selLev;
 	private String keyword;
+	
+	//북마크
+	private String commonSeq;
+
+	public String getCommonSeq() {
+		return commonSeq;
+	}
+
+	public void setCommonSeq(String commonSeq) {
+		this.commonSeq = commonSeq;
+	}
 
 	public String getSelCate() {
 		return selCate;

@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
 
@@ -35,12 +37,16 @@ public interface MypageMapper {
 	
 	public int updateOnlyInfo(MemberVO vo);
 	
-	//
 	public ProcessVO selectProcessInfo(String memberId);
 	
 	public List<?> selectFileInfo(String fileSeq);
 	
 	public int checkApplyPage(String memberId);
+	
+	//북마크 리스트
+	public List<Map<String, String>> selectBookmarkList(Criteria cri);
+	
+	public int selectBookmarkCnt(Criteria cri);
 	
 	
 }

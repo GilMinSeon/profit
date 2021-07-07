@@ -66,7 +66,9 @@ public class PageMaker {
 		next = endPage * cri.getPerPageNum() >= totalCount ? false : true;
 	}
 	
-	//url 만드는 메서드
+	//url 만드는 메서드--각자 조건에 맞춰 이 부분이 달라져야 합니다!!
+	//얘는 selCate, selLev, keyword 3개가 있을 때 사용하는 url maker
+	//자유게시판용, 큰 온라인클래스용
 	public String makeQuery(int page) {
 		UriComponents uriComponents = 
 				UriComponentsBuilder.newInstance()
@@ -79,5 +81,30 @@ public class PageMaker {
 
 		return uriComponents.toUriString();
 	}
+	
+	//북마크용 메서드
+	public String makeQuerySimple(int page) {
+		UriComponents uriComponents = 
+				UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("commonSeq", cri.getCommonSeq())
+				.build();
+		
+		return uriComponents.toUriString();
+	}
+	
+	//언니꺼
+	public String makeQueryLesson(int page) {
+		UriComponents uriComponents = 
+				UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.build();
+		
+		return uriComponents.toUriString();
+	}
+	
+	
+	
+	
 
 }
