@@ -91,7 +91,7 @@ public interface LessonMapper {
 	int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception;
 
 	//강의 구매한 사람이 있는지 확인
-	int selectBuyLesson(String memberId) throws Exception;
+	int selectBuyLesson(String memberId, String lessonSeq) throws Exception;
 
 	//트레인지 확인
 	int checkTrainer(String memberId) throws Exception;
