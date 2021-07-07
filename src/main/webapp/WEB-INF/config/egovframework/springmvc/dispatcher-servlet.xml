@@ -32,6 +32,8 @@
 			<mvc:exclude-mapping path="/recipeList.do"/>
 			<mvc:exclude-mapping path="/boardList.do"/>
 			<mvc:exclude-mapping path="/noticeList.do"/>
+			<mvc:exclude-mapping path="/noticeDetail.do"/>
+			
 			<mvc:exclude-mapping path="/qnaList.do"/>
 			<mvc:exclude-mapping path="/lessonList.do"/>
 			<mvc:exclude-mapping path="/classDetail.do"/>
