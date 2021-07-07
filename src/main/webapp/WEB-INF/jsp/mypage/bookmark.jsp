@@ -72,110 +72,135 @@
                 
                 
                 <!-- 여기부터 달라짐 -->
-                <div class="col-lg-8 order-lg-2 order-1">
+                <div class="col-lg-8 order-lg-2 order-1" style="background-color: #9e9e9e0a;">
+                	
+                	<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;padding-top: 60px; text-align: center;">북마크</h4>
+                	<br>
+	                <div class="write-title" style="margin-bottom: 5px;">
+						<div class="c_radio">
+							<div style="display: inline-block;margin-left: 70px;">
+								<input type="radio" name="cate_type" id="exercise" value="1" autocomplete="off" style="opacity: 0;" checked>
+								<label for="exercise" style="width: 120px;border: 1px solid; padding: 11px;" >전체</label>
+								<input type="radio" name="cate_type" id="food" value="2" autocomplete="off" style="opacity: 0">
+								<label for="food" style="width: 120px;border: 1px solid;padding: 11px;">온라인클래스</label>
+							</div>
+							<div style="display: inline-block;">
+								<input type="radio" name="cate_type" id="motive" value="3" autocomplete="off" style="opacity: 0">
+								<label for="motive" style="width: 120px;border: 1px solid;padding: 11px;">레시피</label>
+								<input type="radio" name="cate_type" id="habit" value="4" autocomplete="off" style="opacity: 0">
+								<label for="habit" style="width: 120px;border: 1px solid;padding: 11px;">자유게시판</label>
+							</div>
+						</div>
+					</div>
+                	<br>
+                	
+                
+                
+                
+                
+                
+                
+                
                     <div class="row">
                         <div class="col-lg-6 col-sm-6">
                             <div class="blog__item">
-                                <div class="blog__item__pic">
-                                    <img src="./resources/img/blog/blog-1.jpg" alt="">
-                                </div>
-                                <div class="blog__item__text">
-                                    <ul>
-                                        <li><i class="fa fa-calendar-o"></i> May 4, 2019</li>
-                                        <li><i class="fa fa-comment-o"></i> 5</li>
-                                    </ul>
-                                    <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-                                    <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam
-                                        quaerat </p>
-                                    <a href="#" class="blog_read_more">READ MORE <span class="arrow_right"></span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="blog__item">
-                                <div class="blog__item__pic">
+                                <div class="blog__item__pic" style="margin-bottom: 15px;">
                                     <img src="./resources/img/blog/blog-2.jpg" alt="">
                                 </div>
                                 <div class="blog__item__text">
-                                    <ul>
-                                        <li><i class="fa fa-calendar-o"></i> May 4, 2019</li>
-                                        <li><i class="fa fa-comment-o"></i> 5</li>
+                                    <ul style="margin-bottom: 10px;">
+                                        <li>&nbsp;<i class="fa fa-calendar-o"></i> May 4, 2019</li>
                                     </ul>
+                                    <p style="font-weight: bold; color: #8B94B5; margin-bottom: 10px;">
+                                		카테고리 | <span>온라인클래스</span>&nbsp;
+                                	</p>
                                     <h5><a href="#">You can keep fit at university</a></h5>
-                                    <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam
-                                        quaerat </p>
-                                    <a href="#" class="blog_read_more">READ MORE <span class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6">
                             <div class="blog__item">
-                                <div class="blog__item__pic">
-                                    <img src="./resources/img/blog/blog-3.jpg" alt="">
+                                <div class="blog__item__pic" style="margin-bottom: 15px;">
+                                    <img src="./resources/img/blog/blog-2.jpg" alt="">
                                 </div>
                                 <div class="blog__item__text">
-                                    <ul>
-                                        <li><i class="fa fa-calendar-o"></i> May 4, 2019</li>
-                                        <li><i class="fa fa-comment-o"></i> 5</li>
+                                    <ul style="margin-bottom: 10px;">
+                                        <li>&nbsp;<i class="fa fa-calendar-o"></i> May 4, 2019</li>
                                     </ul>
-                                    <h5><a href="#">6 reasons to get rebounding</a></h5>
-                                    <p>Rebounding is fast becoming the low impact, high-intensity workout of choice for
-                                        those looking</p>
-                                    <a href="#" class="blog_read_more">READ MORE <span class="arrow_right"></span></a>
+                                    <p style="font-weight: bold; color: #8B94B5; margin-bottom: 10px;">
+                                		카테고리 | <span>온라인클래스</span>&nbsp;
+                                	</p>
+                                    <h5><a href="#">You can keep fit at university</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                                                <div class="col-lg-6 col-sm-6">
+                            <div class="blog__item">
+                                <div class="blog__item__pic" style="margin-bottom: 15px;">
+                                    <img src="./resources/img/blog/blog-2.jpg" alt="">
+                                </div>
+                                <div class="blog__item__text">
+                                    <ul style="margin-bottom: 10px;">
+                                        <li>&nbsp;<i class="fa fa-calendar-o"></i> May 4, 2019</li>
+                                    </ul>
+                                    <p style="font-weight: bold; color: #8B94B5; margin-bottom: 10px;">
+                                		카테고리 | <span>온라인클래스</span>&nbsp;
+                                	</p>
+                                    <h5><a href="#">You can keep fit at university</a></h5>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6">
                             <div class="blog__item">
-                                <div class="blog__item__pic">
-                                    <img src="./resources/img/blog/blog-4.jpg" alt="">
+                                <div class="blog__item__pic" style="margin-bottom: 15px;">
+                                    <img src="./resources/img/blog/blog-2.jpg" alt="">
                                 </div>
                                 <div class="blog__item__text">
-                                    <ul>
-                                        <li><i class="fa fa-calendar-o"></i> May 4, 2019</li>
-                                        <li><i class="fa fa-comment-o"></i> 5</li>
+                                    <ul style="margin-bottom: 10px;">
+                                        <li>&nbsp;<i class="fa fa-calendar-o"></i> May 4, 2019</li>
                                     </ul>
-                                    <h5><a href="#">Cooking tips make cooking simple</a></h5>
-                                    <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam
-                                        quaerat </p>
-                                    <a href="#" class="blog_read_more">READ MORE <span class="arrow_right"></span></a>
+                                    <p style="font-weight: bold; color: #8B94B5; margin-bottom: 10px;">
+                                		카테고리 | <span>온라인클래스</span>&nbsp;
+                                	</p>
+                                    <h5><a href="#">You can keep fit at university</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                        
+                                                <div class="col-lg-6 col-sm-6">
+                            <div class="blog__item">
+                                <div class="blog__item__pic" style="margin-bottom: 15px;">
+                                    <img src="./resources/img/blog/blog-2.jpg" alt="">
+                                </div>
+                                <div class="blog__item__text">
+                                    <ul style="margin-bottom: 10px;">
+                                        <li>&nbsp;<i class="fa fa-calendar-o"></i> May 4, 2019</li>
+                                    </ul>
+                                    <p style="font-weight: bold; color: #8B94B5; margin-bottom: 10px;">
+                                		카테고리 | <span>온라인클래스</span>&nbsp;
+                                	</p>
+                                    <h5><a href="#">You can keep fit at university</a></h5>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6">
                             <div class="blog__item">
-                                <div class="blog__item__pic">
-                                    <img src="./resources/img/blog/blog-5.jpg" alt="">
+                                <div class="blog__item__pic" style="margin-bottom: 15px;">
+                                    <img src="./resources/img/blog/blog-2.jpg" alt="">
                                 </div>
                                 <div class="blog__item__text">
-                                    <ul>
-                                        <li><i class="fa fa-calendar-o"></i> May 4, 2019</li>
-                                        <li><i class="fa fa-comment-o"></i> 5</li>
+                                    <ul style="margin-bottom: 10px;">
+                                        <li>&nbsp;<i class="fa fa-calendar-o"></i>2021-07-07</li>
                                     </ul>
-                                    <h5><a href="#">optimise your muscle gains</a></h5>
-                                    <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam
-                                        quaerat </p>
-                                    <a href="#" class="blog_read_more">READ MORE <span class="arrow_right"></span></a>
+                                    <p style="font-weight: bold; color: #8B94B5; margin-bottom: 10px;">
+                                		카테고리 | <span>온라인클래스</span>&nbsp;
+                                	</p>
+                                    <h5><a href="#">You can keep fit at university</a></h5>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-sm-6">
-                            <div class="blog__item">
-                                <div class="blog__item__pic">
-                                    <img src="./resources/img/blog/blog-6.jpg" alt="">
-                                </div>
-                                <div class="blog__item__text">
-                                    <ul>
-                                        <li><i class="fa fa-calendar-o"></i> May 4, 2019</li>
-                                        <li><i class="fa fa-comment-o"></i> 5</li>
-                                    </ul>
-                                    <h5><a href="#">Cooking tips make cooking simple</a></h5>
-                                    <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam
-                                        quaerat </p>
-                                    <a href="#" class="blog_read_more">READ MORE <span class="arrow_right"></span></a>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="col-lg-12">
                             <div class="classes__pagination blog__pagination">
                                 <a href="#">1</a>
