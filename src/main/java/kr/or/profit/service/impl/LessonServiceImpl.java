@@ -177,8 +177,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//강의 구매한 사람이 있는지 확인
 	@Override
-	public int selectBuyLesson(String memberId) throws Exception {
-		return lessonDAO.selectBuyLesson(memberId);
+	public int selectBuyLesson(String memberId, String lessonSeq) throws Exception {
+		return lessonDAO.selectBuyLesson(memberId,lessonSeq);
 	}
 
 	//트레이너인지 확인

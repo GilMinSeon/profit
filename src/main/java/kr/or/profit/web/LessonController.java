@@ -169,7 +169,7 @@ public class LessonController {
       System.out.println("디테일로 갈 파일 상세 리트스" + model);
       
       //강의 구매한 사람있는지 확인
-      int buyLessonFlag = lessonService.selectBuyLesson(memberId);
+      int buyLessonFlag = lessonService.selectBuyLesson(memberId,lessonSeq);
       if(buyLessonFlag > 0) {
     	  model.addAttribute("buyer", "1");
       }else {
@@ -496,7 +496,7 @@ public class LessonController {
 	            attachvo.setFileDetailSeq(Integer.toString(cnt));
 	            attachvo.setFileRealName(originalFileName);
 	            attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
-	            attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
+	            attachvo.setFilePath("http://192.168.41.6:9999/upload/profit/" + uuid.toString()  + "_" + originalFileName);
 	            attachvo.setInUserId(memberId);
 	            attachvo.setUpUserId(memberId);
 	            fileVOList.add(attachvo);
