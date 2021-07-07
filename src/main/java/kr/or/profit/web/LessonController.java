@@ -152,7 +152,7 @@ public class LessonController {
     * @throws Exception
     */
    @RequestMapping(value = "lessonDetail.do",  method = {RequestMethod.GET, RequestMethod.POST})
-   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request,Criteria cri) throws Exception  { 
+   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
       HttpSession session = request.getSession();
       String memberId = (String) session.getAttribute("memberId");
       System.out.println("민정이 "+memberId);
@@ -164,10 +164,7 @@ public class LessonController {
       System.out.println("레슨시퀀은 뭐냐ㅕ "+lessonSeq);
       System.out.println("제발찍혀라" + model);
       
-      Map<String, Object> map = new HashMap<>();
-      map.put("lessonSeq", lessonSeq);
-      map.put("cri", cri);
-      List<?> classList = lessonService.selectClassList(map);
+      List<?> classList = lessonService.selectClassList(lessonSeq);
       model.addAttribute("resultClassList", classList);
       System.out.println("디테일로 갈 파일 상세 리트스" + model);
       
@@ -779,17 +776,23 @@ public class LessonController {
     * @return
     */
    @RequestMapping(value = "classDetail.do", method = RequestMethod.GET)
-   public String classDetail(@ModelAttribute("lDetailVO") LessonDetailVO lDetailVO, LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
-//	   Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
-//	   String lessonSeq = (String) lessonDetailList.get("lessonSeq");
-//	   String lessonDetailSeq = lDetailVO.getLessonDetailSeq();
-//	  
-//	   System.out.println("보고싶은1 " + lessonSeq);
-//	   System.out.println("보고싶은2 " + lessonDetailSeq);
-//	  
-//	   lDetailVO.setLessonSeq(lessonSeq);
-//	   lDetailVO.setLessonDetailSeq(lessonDetailSeq);
+   public String classDetail(@ModelAttribute("lDetailVO") LessonDetailVO lDetailVO, LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  {
+
+	   HttpSession session = request.getSession();
+	   String memberId = (String) session.getAttribute("memberId");
+	   System.out.println("상세강의로갈memberId " + memberId);
+	   if (memberId == null) {
+		   memberId = "";
+	   }
 	   
+	   //트레이너인지 아닌지 여부
+	      int trainerFlag = lessonService.checkTrainer(memberId);
+	      if(trainerFlag > 0) {
+	    	  model.addAttribute("rightTrainer", "1");
+	      }else {
+	    	  model.addAttribute("rightTrainer", "0");
+	      }
+	   //상세강의 상세보기
 	   Map<String, Object> classDetailList = lessonService.selectclassDetail(lDetailVO);
 	   model.addAttribute("classResult", classDetailList);
 	   System.out.println("뭐 들어있는지볼까 "+model);
@@ -832,48 +835,38 @@ public class LessonController {
        return msg;
    }
    
+	   
    /**
-    * 카테고리 선택하면
-    * @param lessonVO
-    * @param fileVO
-    * @param model
-    * @param request
-    * @return
-    * @throws Exception
+    * 강의 수강선택하면 구매테이블update
+    * @throws Exception 
     */
-//   @RequestMapping(value = "searchCateAjax.do", produces = "application/text; charser=utf-8")
-//	public @ResponseBody String selectCate(LessonDetailVO lDetailVO, LessonVO lessonVO,  AttachFileVO fileVO, HttpServletRequest request) throws Exception {
-//	   System.out.println("들어와?");
-//	   String sel_cvalue = request.getParameter("sel_cvalue");
-//	   String sel_lvalue = request.getParameter("sel_lvalue");
-//	   String keyword = request.getParameter("keyword");
-//	   
-//	   System.out.println("sel_cvalue " +sel_cvalue );
-//	   System.out.println("sel_lvalue " +sel_lvalue );
-//	   System.out.println("keyword " +keyword );
-//	   
-//	   Map<String, Object> map = new HashMap();
-//	   map.put("sel_cvalue", sel_cvalue);
-//	   map.put("sel_lvalue", sel_lvalue);
-//	   map.put("keyword", keyword);
-//	   
-//	   List<?> selCateLessonList = lessonService.selectCateLessonList(map);
-//	   JSONObject jsonObject = new JSONObject();
-//	   System.out.println("selCateLessonList "+selCateLessonList);
-////	   String msg = "";
-//		if (selCateLessonList != null) {
-////			msg="ok";
-//			jsonObject.put("msg", "ok");
-//			jsonObject.put("selCateLessonList", selCateLessonList);
-//		} else {
-//			jsonObject.put("msg", "no");
-////			msg = "no";
-//		}
-//		String jsonInfo = jsonObject.toString();
-//		System.out.println("jsonInfo "+jsonInfo);
-////		System.out.println("msg " + msg);
-//		return jsonInfo;
-//	}
-//   
+   @RequestMapping(value = "updBuyLessonAjax.do")
+   @ResponseBody
+   public String updBuyLesson(HttpServletRequest request, Model model) throws Exception {
+	   HttpSession session = request.getSession();
+	   String memberId = (String) session.getAttribute("memberId");
+	   System.out.println("memberId업데이트하게나와랏 " + memberId);
+	   if (memberId == null) {
+		   memberId = "";
+	   }
+	   
+      String lessonSeq = request.getParameter("lessonSeq");
+      System.out.println("lessonSeq가져오삼= " + lessonSeq);
+      
+      BuyLessonVO vo = new BuyLessonVO();
+      vo.setMemberId(memberId);
+      vo.setLessonSeq(lessonSeq);
+      System.out.println("여기1");
+      
+	  int cnt = lessonService.updBuyLesson(vo);
+	  System.out.println("여기2");
+      String msg = "ng";
+      
+      if(cnt > 0) {
+         msg = "ok";
+      }
+      System.out.println("얌마"+msg);
+       return msg;
+   }
    
 }

@@ -239,6 +239,12 @@
 			    OR a.IN_USER_ID LIKE '%' || #{keyword} || '%'
 			</if>
 		</select>	
+		
+	<!-- 강의상세 페이징 처리 -->
+		<select id="selectLessonClassCnt" parameterType="Criteria" resultType="int">
+		     select count(*) 
+		    	from lesson_detail 
+		</select>	
 	    
 		
 	  <!-- 인기강의 조회 -->
@@ -668,7 +674,7 @@
 	
 	
 	<!-- 상세강의 목록조회 -->
-	<select id="selectClassList"  resultType="egovMap">	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
+	<select id="selectClassList"  resultType="egovMap" parameterType="String" >	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
 
 			SELECT A.LESSON_DETAIL_SEQ,
 			        A.LESSON_SEQ,
@@ -833,5 +839,17 @@
 		WHERE MEMBER_GUBUN='T'
 		AND MEMBER_ID = #{memberId}
 	</select>
+	
+	
+	<!-- 강의시작하면 구매테이블 update -->
+    <update id="updBuyLesson" parameterType="BuyLessonVO" >
+			UPDATE BUY_LESSON
+			SET LESSON_CLICK_FLAG = 'Y',
+				LESSON_CLICK_DATE = SYSDATE
+            WHERE LESSON_SEQ = #{lessonSeq}
+            AND IN_USER_ID = #{memberId}
+            AND LESSON_REFUND_FLAG = 'N'
+	</update>
+
 	
 </mapper>

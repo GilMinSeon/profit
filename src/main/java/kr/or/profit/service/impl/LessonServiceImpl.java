@@ -193,6 +193,18 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.selectLessonCnt(cri);
 	}
 
+	//페이징 - 온라인클래스 강의 상세 전체 글 개수
+	@Override
+	public int selectLessonClassCnt(Criteria cri) throws Exception {
+		return lessonDAO.selectLessonClassCnt(cri);
+	}
+
+	//수강시작 시 업데이트
+	@Override
+	public int updBuyLesson(BuyLessonVO vo) throws Exception {
+		return lessonDAO.updBuyLesson(vo);
+	}
+
 	
 
 
