@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.profit.mapper.RecipeMapper">
+
+	<resultMap id="qnaVO" type="kr.or.profit.vo.QnaVO">
+		<result property="communitySeq" column="COMMUNITY_SEQ"/>
+		<result property="commonSeq" column="COMMON_SEQ"/>
+		<result property="communityCategorySeq" column="COMMUNITY_CATEGORY_SEQ"/>
+		<result property="fileSeq" column="FILE_SEQ"/>
+		<result property="commonTitle" column="COMMON_TITLE"/>
+		<result property="commonContent" column="COMMON_CONTENT"/>
+		<result property="commonHit" column="COMMON_HIT"/>
+		<result property="commonDelFlag" column="COMMON_DEL_FLAG"/>
+		<result property="inUserId" column="IN_USER_ID"/>
+		<result property="inDate" column="IN_DATE"/>
+		<result property="upUserId" column="UP_USER_ID"/>
+		<result property="upDate" column="UP_DATE"/>
+	</resultMap>
+
+<!-- 	글목록 -->
+	<select id="recipeList" resultType="egovMap">
+		SELECT
+		    COMMUNITY_SEQ,
+			COMMON_SEQ,
+			COMMUNITY_CATEGORY_SEQ,
+			FILE_SEQ,
+			COMMON_TITLE,
+			TO_CHAR(COMMON_CONTENT) COMMON_CONTENT,
+			COMMON_HIT,
+			COMMON_DEL_FLAG,
+			IN_USER_ID,
+			TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
+			UP_USER_ID,
+			TO_CHAR(UP_DATE, 'YYYY-MM-DD') IN_DATE
+		FROM
+		    COMMUNITY
+		WHERE
+		    COMMON_SEQ = '6'
+		AND
+			COMMON_DEL_FLAG = 'N'
+	</select>
+
+<!-- 	글상세보기 -->
+	<select id="recipeDetail" resultType="egovMap">
+		SELECT
+		    COMMUNITY_SEQ,
+			COMMON_SEQ,
+			COMMUNITY_CATEGORY_SEQ,
+			FILE_SEQ,
+			COMMON_TITLE,
+			TO_CHAR(COMMON_CONTENT) COMMON_CONTENT,
+			COMMON_HIT,
+			COMMON_DEL_FLAG,
+			IN_USER_ID,
+			TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
+			UP_USER_ID,
+			TO_CHAR(UP_DATE, 'YYYY-MM-DD') IN_DATE
+		FROM
+		    COMMUNITY
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+	</select>
+
+<!-- 	글등록 -->
+	<insert id="recipeAddInsert" parameterType="hashMap">
+		INSERT INTO COMMUNITY
+			(
+				COMMUNITY_SEQ,
+                COMMON_SEQ,
+                FILE_SEQ,
+                COMMON_TITLE,
+                COMMON_CONTENT,
+                COMMON_HIT,
+                COMMON_DEL_FLAG,
+                IN_USER_ID,
+                IN_DATE,
+                UP_USER_ID,
+                UP_DATE	)
+		VALUES
+			(
+				(SELECT
+                    COUNT(*)
+                FROM
+                    COMMUNITY)+1,
+				'6',
+				#{fileSeq},
+				#{commonTitle},
+				#{commonContent},
+				'0',
+				'N',
+				#{memberId},
+				SYSDATE,
+				#{memberId},
+				SYSDATE
+						)
+	</insert>
+
+<!-- 	글수정 -->
+	<update id="recipeModUpdate" parameterType="hashMap" >
+		UPDATE
+		    COMMUNITY
+		SET
+		    COMMON_TITLE    = #{commonTitle},
+		    COMMON_CONTENT  = #{commonContent},
+		    UP_DATE         = SYSDATE
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+	</update>
+
+<!-- 	글 삭제 -->
+	<update id="recipeDelete" parameterType="hashMap" >
+		UPDATE
+		    COMMUNITY
+		SET
+		    COMMON_DEL_FLAG = 'Y'
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+	</update>
+
+<!-- 	조회수 증가 -->
+	<update id="recipeCommonHit" parameterType="hashMap" >
+		UPDATE
+		    COMMUNITY
+		SET
+		    COMMON_HIT = COMMON_HIT+1
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+	</update>
+
+
+
+	<!-- 	댓글등록 -->
+	<insert id="recipeReply" parameterType="hashMap">
+		INSERT INTO reply
+			(
+				REPLY_SEQ,
+				COMMUNITY_SEQ,
+				REPLY_CONTENT,
+				REPLY_DEL_FLAG,
+				REPLY_PARENT_SEQ,
+				IN_USER_ID,
+				IN_DATE,
+				UP_USER_ID,
+				UP_DATE	)
+		VALUES
+			(
+				(SELECT
+		            NVL(MAX(TO_NUMBER(REPLY_SEQ)),0) AS REPLY_SEQ
+		        FROM
+		            REPLY)+1,
+				#{communitySeq},
+				#{replyContent},
+				'N',
+				'0',
+				#{memberId},
+				SYSDATE,
+				#{memberId},
+				SYSDATE
+						)
+	</insert>
+</mapper>

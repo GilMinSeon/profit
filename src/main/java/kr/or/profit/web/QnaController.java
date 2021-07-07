@@ -9,17 +9,9 @@ import java.io.PrintWriter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.ServletException;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequestWrapper;
-import org.apache.commons.beanutils.DynaBeanMapDecorator;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,11 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.JsonObject;
-import com.ibatis.sqlmap.engine.scope.SessionScope;
 
 import kr.or.profit.service.QnaService;
-import kr.or.profit.vo.QnaVO;
 
 @Controller
 public class QnaController {
@@ -136,7 +125,7 @@ public class QnaController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "qnaDetail.do", method = RequestMethod.GET)
-	public String qnaDetail(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
+	public String qnaDetail(@RequestParam Map<String, Object> map, ModelMap model, HttpSession ssion) throws Exception {
 		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
 		List<?> qnaDetailReply = qnaService.qnaDetailReply(map);
 
@@ -180,8 +169,6 @@ public class QnaController {
 	public void qnaUpdate(@RequestParam Map<String, Object> map, ModelMap model, HttpServletResponse response) throws Exception {
 
 		int qnaUpdate = qnaService.qnaUpdate(map);
-		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
-		model.addAttribute("data", qnaDetail);
 
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
@@ -273,7 +260,6 @@ public class QnaController {
 		if(qnaReplyInsert > 0) {
 			msg = "ok";
 		}
-		System.out.println("돌아간다 = " + msg);
 		return msg;
 	}
 
@@ -291,13 +277,13 @@ public class QnaController {
 	@RequestMapping(value = "qnaReplyDelete.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String qnaReplyDelete(@RequestParam Map<String, Object> map, ModelMap model, HttpServletRequest request) throws Exception {
-		System.out.println("왔다");
-		int qnaReplyDelete = qnaService.qnaReplyDelete(request);
+
+		int qnaReplyDelete = qnaService.qnaReplyDelete(map);
+
 	    String msg="ng";
 		if(qnaReplyDelete > 0) {
 			msg = "ok";
 		}
-		System.out.println("지워짐 = " + msg);
 		return msg;
 	}
 

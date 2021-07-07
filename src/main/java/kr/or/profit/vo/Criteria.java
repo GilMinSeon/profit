@@ -8,6 +8,43 @@ public class Criteria {
 	private int rowStart;
 	private int rowEnd;
 	private String memberId; //북마크좋아요 때문에 추가
+	
+	//검색
+	private String selCate;
+	private String selLev;
+	private String keyword;
+
+	public String getSelCate() {
+		return selCate;
+	}
+
+	public void setSelCate(String selCate) {
+		this.selCate = selCate;
+	}
+
+	public String getSelLev() {
+		return selLev;
+	}
+
+	public void setSelLev(String selLev) {
+		this.selLev = selLev;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public void setRowStart(int rowStart) {
+		this.rowStart = rowStart;
+	}
+
+	public void setRowEnd(int rowEnd) {
+		this.rowEnd = rowEnd;
+	}
 
 	public String getMemberId() {
 		return memberId;

@@ -19,9 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import kr.or.profit.service.CommunityService;
 import kr.or.profit.vo.AttachFileVO;
@@ -131,39 +131,54 @@ public class CommunityController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "boardList.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String boardList(Model model, HttpServletRequest request, Criteria cri) throws Exception {
+	public String boardList(Model model, HttpServletRequest request, Criteria cri,
+			@RequestParam(value = "selCate", required = false) String selCate,
+			@RequestParam(value = "selLev", required = false) String selLev,
+			@RequestParam(value = "keyword", required = false) String keyword) throws Exception {
 
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
-		System.out.println(memberId);
-
 		if (memberId == null) {
 			memberId = "";
 		}
-		
+
+		selCate = request.getParameter("selCate");
+		selLev = request.getParameter("selLev");
+		keyword = request.getParameter("keyword");
+
 		cri.setMemberId(memberId);
-		
-		System.out.println(cri.getMemberId() + "아이디 찍는거");
-		
+		cri.setSelCate(selCate);
+		cri.setSelLev(selLev);
+		cri.setKeyword(keyword);
+
 		// 자유게시판 인기글 목록
 		List<Map<String, String>> boardTopList = communityService.selectBoardTopList(memberId);
-		//System.out.println("boardTopList.size : " + boardTopList.size());
+		// System.out.println("boardTopList.size : " + boardTopList.size());
 		model.addAttribute("boardTopList", boardTopList);
-		//System.out.println("출력 : " + boardTopList.get(0).get("filePath"));
+		// System.out.println("출력 : " + boardTopList.get(0).get("filePath"));
 
 		// 자유게시판 목록
 		List<Map<String, String>> boardList = communityService.selectBoardList(cri);
-		
+
 		model.addAttribute("boardList", boardList);
-		
+
 		System.out.println(model.toString());
-		
-		//페이징처리
+
+		// 페이징처리
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(communityService.selectBoardCnt()); //전체 글 개수 세팅
 		
+		// 전체 글 개수 세팅 - 검색결과과 무관하게 페이징 생성 => 수정필요
+		pageMaker.setTotalCount(communityService.selectBoardCnt(cri)); 
+		
+		System.out.println(communityService.selectBoardCnt(cri) + "가져오는 개수!!!!!!!!!!!!");
+
 		model.addAttribute("pageMaker", pageMaker);
+		
+		//입력한 검색어 유지시키기
+		model.addAttribute("selCate", selCate);
+		model.addAttribute("selLev", selLev);
+		model.addAttribute("keyword", keyword);
 
 		return "community/boardList";
 	}
@@ -213,6 +228,7 @@ public class CommunityController {
 		boardDetail.put("bestBoardList", bestBoardList);
 
 		model.addAttribute("BoardDetail", boardDetail);
+		System.out.println("dddddddddddddddddddd");
 		System.out.println("모델 : " + model.toString());
 
 		return "community/boardDetail";

@@ -131,8 +131,12 @@ function fn_toggle(cnt){
 	$("#rereply_div"+ cnt).toggle("fast");
 }
 
+
+
 function fn_replyAdd(){
 	var formData = new FormData($('#replyfrm')[0]);
+	formData.append("secret", $('input:checkbox[name="secret"]:checked').val());
+	
 	$.ajax({
 		type : 'post',
 		url : 'replyLessonAddAjax.do',
@@ -162,8 +166,10 @@ function fn_replyAdd(){
 	})
 }
 
+
 function fn_rereply(cnt){
 	var formData = new FormData($('#frm'+ cnt)[0]);
+	formData.append("reSecret", $('input:checkbox[name="reSecret"]:checked').val());
 	
 	$.ajax({
 		type : 'post',
@@ -423,7 +429,6 @@ function fn_reply_del(seq){
 				$('#li1').css('border-bottom', '3px solid #7952B3');
 				$('#li2').css('border-bottom', '3px solid #ffffff');
 				$('#li3').css('border-bottom', '3px solid #ffffff');
-				$('#li4').css('border-bottom', '3px solid #ffffff');
 				$('#t1').show().siblings('div').hide();
 			})
 		});
@@ -432,7 +437,6 @@ function fn_reply_del(seq){
 				$('#li1').css('border-bottom', '3px solid #ffffff');
 				$('#li2').css('border-bottom', '3px solid #7952B3');
 				$('#li3').css('border-bottom', '3px solid #ffffff');
-				$('#li4').css('border-bottom', '3px solid #ffffff');
 				$('#t2').show().siblings('div').hide();
 			})
 		});
@@ -441,29 +445,30 @@ function fn_reply_del(seq){
 				$('#li1').css('border-bottom', '3px solid #ffffff');
 				$('#li2').css('border-bottom', '3px solid #ffffff');
 				$('#li3').css('border-bottom', '3px solid #7952B3');
-				$('#li4').css('border-bottom', '3px solid #ffffff');
 				$('#t3').show().siblings('div').hide();
 			})
 		});
-		$(function() {
-			$('#tite4').click(function() {
-				$('#li1').css('border-bottom', '3px solid #ffffff');
-				$('#li2').css('border-bottom', '3px solid #ffffff');
-				$('#li3').css('border-bottom', '3px solid #ffffff');
-				$('#li4').css('border-bottom', '3px solid #7952B3');
-				$('#t4').show().siblings('div').hide();
-			})
-		});
+		
 	</script>
 	<section class="about spad" style="padding-top:20px;">
 	<div class="container">
 		<main id="main" class="site-main" role="main">
 			<div class="classes__item__text" style="text-align: right;">
-				<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
+			<c:choose>
+				<c:when test="${buyer eq '1'}">
+					<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
+				</c:when>
+				<c:when test="${buyer eq '0'}">
+                	<span class="blinking" style="color:#ED2348;">강의를 구매하시면 커리큘럼 내에서 영상을 볼 수 있어요! → </span>&nbsp;
+					<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
+				</c:when>
+			</c:choose>
 				<a href="lessonList.do" class="class-btn">목록</a>
-				<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
-				<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
-				<a href="classAdd.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의추가</a>
+				<c:if test="${resultList.inUserId eq memberId}">
+					<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
+					<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
+					<a href="classAdd.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의추가</a>
+				</c:if>
 			</div>
 			
 			<div class="d-flex justify-content-between align-items-center has-border">
@@ -476,9 +481,6 @@ function fn_reply_del(seq){
 					</li>
 					<li class="nav-item" id="li3">
 						<a id="tite3" class="nav-link sub-nav-link" style="font-size:17px;">댓글</a>
-					</li>
-					<li class="nav-item" id="li4">
-						<a id="tite4" class="nav-link sub-nav-link" style="font-size:17px;">문의하기</a>
 					</li>
 				</ul>
 			</div>
@@ -507,15 +509,31 @@ function fn_reply_del(seq){
 										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">등록일</th>
 									</tr>
 								<c:forEach var="rclassList" items="${resultClassList}" varStatus="status">
-									<tr onclick="location.href='classDetail.do?lessonDetailSeq='+ ${rclassList.lessonDetailSeq}" style="cursor:pointer;">
-										<th style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;" scope="row">${status.index+1}</th>
-										<td style="vertical-align: middle;width:20%;">
-											<img alt="" src="http://192.168.41.6:9999/upload/profit/${rclassList.fileSaveName}" style="width:100px;height: 90px;object-fit:cover;">
-										</td>
-										<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.lessonDetailTitle}</td>
-										<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">20:32</td>
-										<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.inDate}</td>
-									</tr>
+									<c:choose>
+										<c:when test="${rclassList.inUserId eq memberId || buyer eq '1'}">
+											<tr onclick="location.href='classDetail.do?lessonDetailSeq='+ ${rclassList.lessonDetailSeq}" style="cursor:pointer;">
+												<th style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;" scope="row">${status.index+1}</th>
+												<td style="vertical-align: middle;width:20%;">
+													<img alt="" src="http://192.168.41.6:9999/upload/profit/${rclassList.fileSaveName}" style="width:100px;height: 90px;object-fit:cover;">
+												</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.lessonDetailTitle}</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">20:32</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.inDate}</td>
+											</tr>
+										</c:when>
+										<c:when test="${buyer eq '0'}">
+											<tr>
+												<th style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;" scope="row">${status.index+1}</th>
+												<td style="vertical-align: middle;width:20%;">
+													<img alt="" src="http://192.168.41.6:9999/upload/profit/${rclassList.fileSaveName}" style="width:100px;height: 90px;object-fit:cover;">
+												</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.lessonDetailTitle}</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">20:32</td>
+												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.inDate}</td>
+											</tr>
+										</c:when>
+									
+									</c:choose>
 								</c:forEach>
 								</tbody>
 							</table>
@@ -549,18 +567,56 @@ function fn_reply_del(seq){
 	                                </div>
 	                                <div class="classes__sidebar__comment__text">
 	                                    <h6>
-	                                     	${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
-	                                     	<c:if test="${result.replyDepth == 1}">
-	                                     	<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
-	                                     	</c:if>
-	                                     	<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family: 'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>   
+	                                    	<c:choose>
+	                                    		<c:when test="${result.replySecretFlag == 'N'}">
+	                                    			${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
+	                                     			<c:if test="${result.replyDepth == 1}">
+	                                     				<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
+	                                     			</c:if>
+	                                    		<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family: 'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
+	                                    		</c:when>
+	                                    		
+	                                    		<c:when test="${(result.replySecretFlag == 'Y' && result.inUserId eq memberId) || (result.replySecretFlag == 'Y' && resultList.inUserId eq memberId)}">
+	                                    			${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
+	                                    			<img src="./resources/img/common/lock.png" alt="secretIcon" style="width: 25px; height: 23px;vertical-align: middle;">
+	                                     			<c:if test="${result.replyDepth == 1}">
+	                                     				<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
+	                                     			</c:if>
+	                                    		<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family: 'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
+	                                    		</c:when>
+	                                    		
+	                                    		<c:when test="${result.replySecretFlag == 'Y'}">
+	                                    			${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
+	                                     		<img src="./resources/img/common/lock.png" alt="secretIcon" style="width: 25px; height: 23px;vertical-align: middle;">
+	                                    		<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family: 'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
+	                                    		</c:when>
+	                                    	</c:choose>
 	                                    </h6>   
 	                                    <div style="margin-top: 20px;">
-		                                    <p>${result.replyContent}
-		                                    <c:if test="${result.inUserId eq memberId}">
-		                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
-											</c:if>
-		                                    </p>
+	                                    	<c:choose>
+	                                    		<c:when test="${result.replySecretFlag == 'N'}">
+				                                    <p>${result.replyContent}
+				                                    <c:if test="${result.inUserId eq memberId}">
+				                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
+													</c:if>
+				                                    </p>
+			                                    </c:when>
+			                                    
+			                                    <c:when test="${(result.replySecretFlag == 'Y' && result.inUserId eq memberId) || (result.replySecretFlag == 'Y' && resultList.inUserId eq memberId)}">
+				                                    <p>${result.replyContent}
+				                                    <c:if test="${result.inUserId eq memberId}">
+				                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
+													</c:if>
+				                                    </p>
+			                                    </c:when>
+			                                    
+			                                    
+			                                   <c:when test="${result.replySecretFlag == 'Y'}">
+			                                    	<p>비밀댓글입니다</p>
+			                                    
+			                                   </c:when>
+			                                </c:choose>
+		                                    
 	                                	</div>
 	                                </div><br>
 	                                <c:if test="${result.replyNextDepth == 1 || empty result.replyNextDepth}">
@@ -569,6 +625,7 @@ function fn_reply_del(seq){
 				                                <div class="classes__sidebar__comment__pic">
 				                                    <img src="${MyProfileImage}" alt="" >
 				                                </div>
+				                                <input type="checkbox" name="reSecret" value="비밀댓글">&nbsp;비밀댓글<br>
 			                                    <textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
 			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float:left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
 			                                </div>
@@ -587,6 +644,7 @@ function fn_reply_del(seq){
 	                                <div class="classes__sidebar__comment__pic">
 	                                    <img src="${MyProfileImage}" alt="">
 	                                </div>
+                                    <input type="checkbox" name="secret" value="비밀댓글">&nbsp;비밀댓글<br>
                                     <textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 79%;float: left"></textarea>
                                     <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: right;margin-top: 15px;" onclick="fn_replyAdd()">댓글작성</button>
                                 </div>
@@ -598,99 +656,6 @@ function fn_reply_del(seq){
                 </div>
 					</div>
 				</div>		
-				<div id="t4">
-							<div class="row">
-								<div class="col-lg-12">
-									<div class="leave__comment__text">
-										<h3>📝 문의를 남겨주세요</h3>
-										<form action="#">
-											<div class="row">
-												<div class="col-lg-12"></div>
-												<div class="col-lg-12 text-center">
-													<textarea placeholder="리뷰를 입력해 주세요."></textarea>
-													<button type="submit" class="site-btn" style="font-size: 1.2em;">작성 완료</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-								<div class="col-lg-4 order-lg-1 order-2" style="width: 100%; flex: 0 0 100%; max-width: 100%; padding-right: 0px; margin-left: 23px;">
-									<div class="blog__sidebar">
-										<div class="blog__sidebar__comment" style="overflow: scroll; height: 500px;">
-											<h4>리뷰</h4>
-											<div class="classes__sidebar__comment">
-												<div class="classes__sidebar__comment__pic">
-													<img src="./resources/img/classes-details/comment-1.png" alt="">
-													<div class="classes__sidebar__comment__rating">
-														<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half-o"></i>
-													</div>
-												</div>
-												<div class="classes__sidebar__comment__text">
-													<span>04 Mar 2018</span>
-													<h6>Brandon Kelley</h6>
-													<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,</p>
-												</div>
-											</div>
-											<div class="classes__sidebar__comment">
-												<div class="classes__sidebar__comment__pic">
-													<img src="./resources/img/classes-details/comment-1.png" alt="">
-													<div class="classes__sidebar__comment__rating">
-														<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half-o"></i>
-													</div>
-												</div>
-												<div class="classes__sidebar__comment__text">
-													<span>04 Mar 2018</span>
-													<h6>Brandon Kelley</h6>
-													<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,</p>
-												</div>
-											</div>
-											<div class="classes__sidebar__comment">
-												<div class="classes__sidebar__comment__pic">
-													<img src="./resources/img/classes-details/comment-1.png" alt="">
-													<div class="classes__sidebar__comment__rating">
-														<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half-o"></i>
-													</div>
-												</div>
-												<div class="classes__sidebar__comment__text">
-													<span>04 Mar 2018</span>
-													<h6>Brandon Kelley</h6>
-													<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,</p>
-												</div>
-											</div>
-											<div class="classes__sidebar__comment">
-												<div class="classes__sidebar__comment__pic">
-													<img src="./resources/img/classes-details/comment-1.png" alt="">
-													<div class="classes__sidebar__comment__rating">
-														<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half-o"></i>
-													</div>
-												</div>
-												<div class="classes__sidebar__comment__text">
-													<span>04 Mar 2018</span>
-													<h6>Brandon Kelley</h6>
-													<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,</p>
-												</div>
-											</div>
-											<div class="classes__sidebar__comment">
-												<div class="classes__sidebar__comment__pic">
-													<img src="./resources/img/classes-details/comment-2.png" alt="">
-													<div class="classes__sidebar__comment__rating">
-														<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half-o"></i>
-													</div>
-												</div>
-												<div class="classes__sidebar__comment__text">
-													<span>04 Mar 2018</span>
-													<h6>Christina Kelley</h6>
-													<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,</p>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-							
-		
-		
 				</div>
 			</div>
 				

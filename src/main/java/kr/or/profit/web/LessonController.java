@@ -96,9 +96,19 @@ public class LessonController {
       List<?> lessonList = lessonService.selectLessonList(map);
       model.addAttribute("resultList", lessonList);
       model.addAttribute("option", map);
+      
+      int trainerFlag = lessonService.checkTrainer(memberId);
+      if(trainerFlag > 0) {
+    	  model.addAttribute("rightTrainer", "1");
+      }else {
+    	  model.addAttribute("rightTrainer", "0");
+      }
+      
+      
       List<?> lessonTopList = lessonService.selectTopLessonList();
       model.addAttribute("resultTopList", lessonTopList);
       System.out.println("dddddddddddd"+model);
+      
       return "lesson/lessonList";
    }
    
@@ -145,6 +155,14 @@ public class LessonController {
       model.addAttribute("resultClassList", classList);
       System.out.println("디테일로 갈 파일 상세 리트스" + model);
       
+      //강의 구매한 사람있는지 확인
+      int buyLessonFlag = lessonService.selectBuyLesson(memberId);
+      if(buyLessonFlag > 0) {
+    	  model.addAttribute("buyer", "1");
+      }else {
+    	  model.addAttribute("buyer", "0");
+      }
+      
     //조회수 증가
       lessonService.increaseLessonHit(lessonSeq);
       
@@ -159,6 +177,7 @@ public class LessonController {
       String myprofile = lessonService.selectMyProfile(memberId);
       System.out.println("기본이미지 : " + myprofile);
       model.addAttribute("MyProfileImage", myprofile);
+      
       return "lesson/lessonDetail";
    }
    
@@ -174,21 +193,33 @@ public class LessonController {
 	public String replyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
+		System.out.println("댓글쓴사람 "+memberId);
 		System.out.println("오니?");
+		
 		String lessonSeq = request.getParameter("lessonSeq");
 		System.out.println("lessonSeq여기서찍어라 " + lessonSeq);
-		String replyContent = request.getParameter("replyContent");
 		
-		System.out.println("lessonSeq : " + lessonSeq);
+		String replyContent = request.getParameter("replyContent");
 		System.out.println("replyContent : " + replyContent);
+		
+		String secret = request.getParameter("secret");
+		System.out.println("secret값 " + secret);
+		
+		if(("비밀댓글").equals(secret)) {
+			secret = "Y";
+		}else {
+			secret = "N";
+		}
+		System.out.println("최종secret "+ secret);
 		
 		ReplyVO replyvo = new ReplyVO();
 		replyvo.setLessonSeq(lessonSeq);
 		replyvo.setReplyContent(replyContent);
+		replyvo.setReplySecretFlag(secret);
 		replyvo.setInUserId(memberId);
 		replyvo.setUpUserId(memberId);
 		
-		int insertResult = lessonService.insertLessonRereply(replyvo);
+		int insertResult = lessonService.insertLessonReply(replyvo);
 		
 
 	    String msg="ng";
@@ -199,6 +230,7 @@ public class LessonController {
 		return msg;
 	}
 
+		
 	/**
 	    * 자유게시판 답글 등록
 	    * @author 정예진
@@ -215,16 +247,26 @@ public class LessonController {
 			String lessonSeq = request.getParameter("lessonSeq");
 			String replyContent = request.getParameter("replyContent");
 			String replyParentSeq = request.getParameter("replyParentSeq");
+			String reSecret = request.getParameter("reSecret");
 			
 			System.out.println("lessonSeq : " + lessonSeq);
 			System.out.println("replyContent : " + replyContent);
 			System.out.println("replyParentSeq : " + replyParentSeq);
+			System.out.println("reSecret값2 " + reSecret);
+			
+			if(("비밀댓글").equals(reSecret)) {
+				reSecret = "Y";
+			}else {
+				reSecret = "N";
+			}
+			System.out.println("최종secret2 "+ reSecret);
 			
 			
 			ReplyVO replyvo = new ReplyVO();
 			replyvo.setLessonSeq(lessonSeq);
 			replyvo.setReplyContent(replyContent);
 			replyvo.setReplyParentSeq(replyParentSeq);
+			replyvo.setReplySecretFlag(reSecret);
 			replyvo.setInUserId(memberId);
 			replyvo.setUpUserId(memberId);
 
@@ -652,7 +694,12 @@ public class LessonController {
     * @return
     */
    @RequestMapping(value = "classAdd.do", method = {RequestMethod.GET, RequestMethod.POST})
-   public String classAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  { 
+   public String classAdd(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  {
+	   HttpSession session = request.getSession();
+	   String memberId = (String) session.getAttribute("memberId");
+	   System.out.println("강의 추가하는 사람"+memberId);
+	   
+	   lessonVO.setMemberId(memberId);
 	   Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
 	   model.addAttribute("resultList", lessonDetailList);
 	      System.out.println("디테일에서 seq가져오는" + model);
