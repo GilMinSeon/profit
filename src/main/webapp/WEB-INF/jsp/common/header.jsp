@@ -122,7 +122,7 @@
 								<li><a href="#">식단관리</a>
                                     <ul class="dropdown">
                                         <li><a href="chatList.do">1:1 상담</a></li>
-                                        <li><a href="">칼로리 계산기</a></li>
+                                        <li><a href="kcalList.do">칼로리 계산기</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="lessonList.do">온라인클래스</a></li>
