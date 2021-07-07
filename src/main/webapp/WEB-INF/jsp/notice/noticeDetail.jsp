@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="zxx">
-<%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
-
-
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
 <body>
 
 
 	<!-- Blog Hero Begin -->
-	<section class="breadcrumb-option blog-hero set-bg"
-		data-setbg="./resources/img/breadcrumb.jpg">
+	<section class="breadcrumb-option blog-hero set-bg" data-setbg="./resources/img/breadcrumb.jpg">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -24,34 +22,27 @@
 
 	<!-- Blog Details Section Begin -->
 	<section class="blog-details spad">
-
 		<div class="container">
-
 			<div class="row" style="justify-content: center">
-
 				<div class="col-lg-8 order-lg-2 order-1">
-					<div style="margin-bottom: 30px; text-align: center;">
-						<span style="font-size: 1.3em; font-weight: bold;">100일만에
-							-10kg만든 운동법</span>
-					</div>
-					<div style="text-align: right; margin-bottom: 5px;">
-						<span style="margin-left: 30px;">작성일&nbsp;&nbsp;&nbsp;<a>2021-06-15</a></span>
-					</div>
 					<div class="blog__details">
-						<div class="blog__details__large">
-							<img src="./resources/img/blog/details/blog-large.jpg" alt="">
-							<span>뽀미오빠</span>
+						<div style="margin-bottom: 30px; text-align: center;">
+							<c:set var="data" value="${data}" />
+							<span style="font-size: 1.3em; font-weight: bold;">${data.commonTitle}</span>
+						</div>
+						<div style="text-align: right; margin-bottom: 5px;">
+							<span style="margin-left: 30px;">작성일&nbsp;&nbsp;&nbsp;<a>${data.inDate}</a></span>
 						</div>
 						<div class="blog__details__text">
-							<p>Keeping fit during your university years may not be at the
-								front of your mind, but by maintaining a healthy body, youâre
-								going to see some positive side effects spilling into the rest
-								of your uni life, from having better concentration to having
-								more energy to party.</p>
+							<p>${data.commonContent}</p>
 						</div>
 						<div class="classes__item__text" style="text-align: center;">
-							<a href="noticeList" class="class-btn">목록</a> <a href="noticeMod"
-								class="class-btn">수정</a> <a href="noticeList" class="class-btn">삭제</a>
+							<a href="noticeList.do" class="class-btn">목록</a>
+							<c:set var="inUser" value="${sessionScope.memberId}" />
+							<c:if test="${inUser eq '1'}">
+								<a href="${path}noticeMod.do?communitySeq=${data.communitySeq}" class="class-btn">수정</a>
+								<a href="${path}noticeDelete.do?communitySeq=${data.communitySeq}" class="class-btn">삭제</a>
+							</c:if>
 						</div>
 					</div>
 				</div>

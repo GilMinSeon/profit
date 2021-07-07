@@ -127,7 +127,13 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.selectReplyList(lessonSeq);
 	}
 
-	//강의 상세 댓글 추가
+	//강의 댓글 추가
+	@Override
+	public int insertLessonReply(ReplyVO replyvo) throws Exception {
+		return lessonDAO.insertLessonReply(replyvo);
+	}
+	
+	//강의 상세 답글 추가
 	@Override
 	public int insertLessonRereply(ReplyVO replyvo) throws Exception {
 		return lessonDAO.insertLessonRereply(replyvo);
@@ -168,6 +174,20 @@ public class LessonServiceImpl implements LessonService {
 	public int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception {
 		return lessonDAO.insertBuyLesson(buyLessonVO);
 	}
+
+	//강의 구매한 사람이 있는지 확인
+	@Override
+	public int selectBuyLesson(String memberId) throws Exception {
+		return lessonDAO.selectBuyLesson(memberId);
+	}
+
+	//트레이너인지 확인
+	@Override
+	public int checkTrainer(String memberId) throws Exception {
+		return lessonDAO.checkTrainer(memberId);
+	}
+
+	
 
 
 

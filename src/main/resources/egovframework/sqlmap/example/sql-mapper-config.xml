@@ -12,8 +12,8 @@
 		<typeAlias alias="lessonVO" type="kr.or.profit.vo.LessonVO"/>
 		<typeAlias alias="fileVO" type="kr.or.profit.vo.AttachFileVO"/>
 		<typeAlias alias="processVO" type="kr.or.profit.vo.ProcessVO"/>
-		<typeAlias alias="qnaVO" type="kr.or.profit.vo.QnaVO"/>
 		<typeAlias alias="CommunityVO" type="kr.or.profit.vo.CommunityVO"/>
+		<typeAlias alias="qnaVO" type="kr.or.profit.vo.QnaVO"/>
 		<typeAlias alias="BookgoodVO" type="kr.or.profit.vo.BookgoodVO"/>
 		<typeAlias alias="chatProfileVO" type="kr.or.profit.vo.ChatProfileVO"/>
 		<typeAlias alias="Criteria" type="kr.or.profit.vo.Criteria"/>

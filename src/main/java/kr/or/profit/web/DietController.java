@@ -382,20 +382,10 @@ public class DietController {
 		return "diet/chatting";
 	}
 	
-	@RequestMapping(value = "return.do", method = RequestMethod.POST)
+	@RequestMapping(value = "kcalList.do", method = RequestMethod.GET)
 	public String return11(Locale locale, Model model) {
-		return "diet/return";
+		return "diet/kcalList";
 	}
 	
-	@RequestMapping(value = "close.do", method = RequestMethod.POST)
-	public String close(Locale locale, Model model) {
-		return "diet/close";
-	}
-	
-	
-	
-	
-
-
 	
 }
