@@ -8,76 +8,167 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.8.1/video-js.min.css" rel="stylesheet"> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.8.1/video.min.js"></script>
+
 <script>
 
-// var obj = document.getElementById("videoplay");
-// obj.addEventListener('loadedmetadata', function() {
-//     console.log(obj.duration);
-// });
-// $(document).ready(function(){
-// 	var time = obj.duration;
-// 	alert(time);
-// })
+// var videoContainer = document.getElementById("videoplay");
 
-function fn_delClass(){
-	var params = location.search.substr(location.search.indexOf("?") + 1);
-    var lessonDetailSeq = params.substr(params.indexOf("=")+1); 
-    console.log(lessonDetailSeq);
-    var flag_ok = confirm("강의를 삭제하시겠습니까?");
-    if(flag_ok){
-   		var param = "";
-   		param += "dummy=" + Math.random();
-   		param += "&lessonDetailSeq=" + lessonDetailSeq
-   		console.log(param)
-
-   		$.ajax({
-   			url : "class_delAjax.do",
-   			data : param,
-   			dataType : "text",
-   			async:false,
-   			success : function(data) {
-   				if(data == "ok"){
-   					alert("삭제가 정상적으로 완료되었습니다.");	
-   					location.href="lessonDetail.do?lessonSeq="+$("input:hidden[name=lessonSeq]").val();
-   				} else{
-   					alert("삭제에 실패하였습니다. 다시 한 번 시도해주세요")
-   				}
-   				console.log(data)
-   			}
-   		});
-		
-		
-	}
-}
-
-
-// const videoContainer = document.getElementById('videoplay')
+//초를 시,분,초로 변환
 // function formatDate(seconds) {
-// 	const secondsNumber = parseInt(seconds, 10)
-// 	  let hours = Math.floor(secondsNumber / 3600)
-// 	  let minutes = Math.floor((secondsNumber - hours * 3600) / 60)
-// 	  let totalSeconds = secondsNumber - hours * 3600 - minutes * 60
-	  
-// 	  if (hours < 10) {
-// 		    hours = `0${hours}`
-// 		  }
-// 		  if (minutes < 10) {
-// 		    minutes = `0${minutes}`
-// 		  }
-// 		  if (totalSeconds < 10) {
-// 		    totalSeconds = `0${totalSeconds}`
-// 		  }
-// 		  return `${hours}:${minutes}:${totalSeconds}`
+//   const secondsNumber = parseInt(seconds, 10);
+//   console.log(secondsNumber);
+//   alert(secondsNumber);
+//   let hours = Math.floor(secondsNumber / 3600)
+//   let minutes = Math.floor((secondsNumber - hours * 3600) / 60)
+//   let totalSeconds = secondsNumber - hours * 3600 - minutes * 60
+
+//   if (hours < 10) {
+//     hours = `0${hours}`
+//   }
+//   if (minutes < 10) {
+//     minutes = `0${minutes}`
+//   }
+//   if (totalSeconds < 10) {
+//     totalSeconds = `0${totalSeconds}`
+//   }
+//   return `${hours}:${minutes}:${totalSeconds}`
 // }
+
+//비디오 전체 길이를 가져오는 함수
 // async function setTotalTime() {
-// 	  const duration = await getBlobDuration(videoPlayer.src)
-// 	  setInterval(getCurrentTime, 1000)
-// 	  totalTime.innerHTML = formatDate(duration)
+//   const duration = await getBlobDuration(videoPlayer.src);
+//   alert("duration" + duration);
+//   console.log(duration);
+//   setInterval(getCurrentTime, 1000);
+//   totalTime.innerHTML = formatDate(duration);
+// }
+
+// if (videoContainer) {
+// 	  setTotalTime() ;
+// 	  console.log(setTotalTime());
 // 	}
+$(document).ready(function(){
+	var myAudio = document.getElementById("videoplay");
+	var time = myAudio.duration;
+	console.log(time);
+});
+	//수강시작버튼 눌렀을때
+	function start_play() {
+		var msg = "ok";
+		if (msg == "ok") {
+			var start = confirm("수강시작 일주일 후부터는 환불이 불가능합니다. \n수강을 시작하시겠습니까?");
+			if (start == true) {
+				fn_updBuyLesson();
+					
+			}
 
+		}
+	}
 
+	//수강시작누른 후 영상controls
+	function vid_play_pause() {
+		var videoplay = document.getElementById("videoplay");
+		var txt = "";
+		txt += "	<th scope='row' colspan='2'>";
+		txt += "		<video id='videoplay' controls width='100%'>";
+		txt += "		<source src='http://192.168.41.6:9999/upload/profit/${classResult.fileSaveName}'>";
+		txt += "	</video>";
+		txt += "	</th>";
+		$("#newVideo").html(txt);
+	}
+	
+	//상세강의 수강시작했을때 buy_lesson테이블 update
+	function fn_updBuyLesson(){
+		var lessonSeq = $('input:hidden[name=lessonSeq]').val();
+		
+		var param = "";
+		param += "dummy=" + Math.random();
+		param += "&lessonSeq=" + lessonSeq
+		console.log(param);
+		
+		$.ajax({
+			url : "updBuyLessonAjax.do",
+			data : param,
+			dataType : "text",
+			async : false,
+			success : function(data) {
+				if (data == "ok") {
+					alert("수강이 시작되었습니다.");
+					document.getElementById("startBtn").style.display = "none";
+					document.getElementById("pointer").style.display = "none";
+					vid_play_pause();
+				} else {
+					alert("문제가 발생했습니다. 다시 한 번 시도해주세요");
+				}
+				console.log(data)
+			},
+		
+		error : function(error){
+			alert("문제가 있습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		});
+	}
+
+	//상세강의 삭제
+	function fn_delClass() {
+		var params = location.search.substr(location.search.indexOf("?") + 1);
+		var lessonDetailSeq = params.substr(params.indexOf("=") + 1);
+		console.log(lessonDetailSeq);
+		var flag_ok = confirm("강의를 삭제하시겠습니까?");
+		if (flag_ok) {
+			var param = "";
+			param += "dummy=" + Math.random();
+			param += "&lessonDetailSeq=" + lessonDetailSeq
+			console.log(param)
+
+			$.ajax({
+				url : "class_delAjax.do",
+				data : param,
+				dataType : "text",
+				async : false,
+				success : function(data) {
+					if (data == "ok") {
+						alert("삭제가 정상적으로 완료되었습니다.");
+						location.href = "lessonDetail.do?lessonSeq="
+								+ $("input:hidden[name=lessonSeq]").val();
+					} else {
+						alert("삭제에 실패하였습니다. 다시 한 번 시도해주세요")
+					}
+					console.log(data)
+				}
+			});
+
+		}
+	}
 </script>
-
+<style>
+.class-btn_c{
+	font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    background:#5768AD;
+    display: inline-block;
+    border: 1px solid rgba(155, 158, 163, 0.2);
+    padding: 10px 15px 7px;
+    border-radius: 2px;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+    cursor:pointer;
+    float : left;
+}
+.class_btn_c:hover{
+    background: #ffffff;
+    border: 1px solid #5768AD;
+    color: #5768AD;
+}
+</style>
 </head>
 <body>
 	<!-- Breadcrumb Begin -->
@@ -101,6 +192,7 @@ function fn_delClass(){
 					<div class="container">
 						<h3>📽 강의시청</h3>
 						<br>
+						<input type = "hidden" name="lessonDetailSeq" value="${classResult.lessonDetailSeq}">
 						<input type="hidden" name="lessonSeq" value="${classResult.lessonSeq}">
 						<table class="table table" style="text-align: center;">
 							<tbody>
@@ -130,16 +222,29 @@ function fn_delClass(){
 <%-- 									<td>${classResult.inDate}</td> --%>
 <!-- 								</tr> -->
 								
-								<tr>
+								<tr id="newVideo">
 									<th scope="row" colspan="2">
-										<video id="videoplay" controls  src="http://192.168.41.6:9999/upload/profit/${classResult.fileSaveName}" width="100%" ></video>
+										<video id="videoplay" width="100%" >
+											<source src="http://192.168.41.6:9999/upload/profit/${classResult.fileSaveName}">										
+										</video>
+										<br/><br/>
+										<button type="button" id="startBtn" class="class-btn_c" onclick="start_play()">수강시작</button>
+										<span class="blinking"  id="pointer" style="color:#ED2348;float:left;">← 수강시작을 눌러 강의를 바로 들어보세요  </span>&nbsp;
+<!-- 										<button type="button" id="playBtn" class="class-btn_c" onclick="vid_play_pause()" style="display:none;">Play/Pause</button> -->
 									</th>
 								</tr>
 							</tbody>
 						</table>
 						<div class="classes__item__text" style="text-align: right;">
 							<a href="javascript:history.back();" class="class-btn">목록</a>
-							<input type="button" onclick="fn_delClass()" class="class-btn" style="cursor:pointer;" value="삭제">
+							<c:choose>
+								<c:when test="${rightTrainer eq '1'}">
+									<input type="button" onclick="fn_delClass()" class="class-btn" style="cursor:pointer;" value="삭제">
+								</c:when>
+								<c:when test="${rightTrainer eq '0'}">
+								
+								</c:when>							
+							</c:choose>
 						</div>
 					</div>
 				</section>

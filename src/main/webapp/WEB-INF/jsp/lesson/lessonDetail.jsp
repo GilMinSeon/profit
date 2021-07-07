@@ -537,6 +537,28 @@ function fn_reply_del(seq){
 								</c:forEach>
 								</tbody>
 							</table>
+							
+							<!-- 페이징처리 -->
+<!-- 			            	<div class="col-lg-12"> -->
+<!-- 								<div class="classes__pagination"> -->
+<%-- 								<c:if test="${pageMaker.prev}"> --%>
+<%-- 									<a href="lessonDetail.do${pageMaker.makeQuery(pageMaker.startPage - 1)}"> --%>
+<!-- 										<span class="arrow_carrot-left"></span> -->
+<!-- 									</a> -->
+<%-- 								</c:if>  --%>
+								
+<%-- 								<c:set var="page" value="${pageMaker.cri.page}"/> --%>
+<%-- 								<c:set var="idx" value="${idx}"/> --%>
+<%-- 								<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> --%>
+<%-- 			            			<a href="lessonDetail.do${pageMaker.makeQuery(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a> --%>
+<%-- 								</c:forEach> --%>
+								
+<%-- 								<c:if test="${pageMaker.next && pageMaker.endPage > 0}"> --%>
+<%-- 									<a href="lessonDetail.do${pageMaker.makeQuery(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a> --%>
+<%-- 								</c:if> --%>
+<!-- 								</div> -->
+<!-- 							</div> -->
+							
 						</div>
 					</section>
 				</div>
@@ -560,7 +582,7 @@ function fn_reply_del(seq){
 	                                   <c:forEach var="result" items="${resultList['replyList']}" varStatus="status">
 	                                <form id="frm${status.count}">
 	                                <input type="hidden" name="lessonSeq" value="${result.lessonSeq}">
-	                                <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
+	                               <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
 									<input type="hidden" name="replyParentSeq" value="${cnt}">
 	                                <div class="classes__sidebar__comment__pic" style="<c:if test="${result.replyDepth == 2}">margin-left:100px;</c:if>">
 	                                    <img src="${result.filePath}" alt="">
