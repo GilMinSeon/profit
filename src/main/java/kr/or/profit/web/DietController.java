@@ -383,8 +383,13 @@ public class DietController {
 	}
 	
 	@RequestMapping(value = "kcalList.do", method = RequestMethod.GET)
-	public String return11(Locale locale, Model model) {
+	public String kcalList(Locale locale, Model model) {
 		return "diet/kcalList";
+	}
+	
+	@RequestMapping(value = "kcalDetail.do", method = RequestMethod.GET)
+	public String kcalDetail(Locale locale, Model model) {
+		return "diet/kcalDetail";
 	}
 	
 	

@@ -99,6 +99,12 @@ public interface LessonMapper {
 	//페이징 - 온라인클래스 전체 글 개수 
 	int selectLessonCnt(Criteria cri) throws Exception;
 
+	//페이징 - 온라인클래스 강의 상세 전체 글 개수
+	int selectLessonClassCnt(Criteria cri) throws Exception;
+
+	//수강시작 시 업데이트
+	int updBuyLesson(BuyLessonVO vo) throws Exception;
+
 
 
 
