@@ -151,51 +151,51 @@ public class LessonController {
     * @return
     * @throws Exception
     */
-   @RequestMapping(value = "lessonDetail.do",  method = {RequestMethod.GET, RequestMethod.POST})
-   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request,Criteria cri) throws Exception  { 
-      HttpSession session = request.getSession();
-      String memberId = (String) session.getAttribute("memberId");
-      System.out.println("민정이 "+memberId);
-      
-      lessonVO.setMemberId(memberId);
-      Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
-      String lessonSeq = (String) lessonDetailList.get("lessonSeq");
-      lessonDetailList.put("lessonSeq", lessonSeq);
-      System.out.println("레슨시퀀은 뭐냐ㅕ "+lessonSeq);
-      System.out.println("제발찍혀라" + model);
-      
-      Map<String, Object> map = new HashMap<>();
-      map.put("lessonSeq", lessonSeq);
-      map.put("cri", cri);
-      List<?> classList = lessonService.selectClassList(map);
-      model.addAttribute("resultClassList", classList);
-      System.out.println("디테일로 갈 파일 상세 리트스" + model);
-      
-      //강의 구매한 사람있는지 확인
-      int buyLessonFlag = lessonService.selectBuyLesson(memberId);
-      if(buyLessonFlag > 0) {
-    	  model.addAttribute("buyer", "1");
-      }else {
-    	  model.addAttribute("buyer", "0");
-      }
-      
-    //조회수 증가
-      lessonService.increaseLessonHit(lessonSeq);
-      
-	// 댓글 목록 가져오기
-      List<Map<String, Object>> replyList = lessonService.selectReplyList(lessonSeq);
-      System.out.println("replyList : "+replyList);
-      lessonDetailList.put("replyList", replyList);
-      model.addAttribute("resultList", lessonDetailList);
-      System.out.println("resultList " + model.toString());
-      
-    //댓글 내 프로필 사진 이미지 정보
-      String myprofile = lessonService.selectMyProfile(memberId);
-      System.out.println("기본이미지 : " + myprofile);
-      model.addAttribute("MyProfileImage", myprofile);
-      
-      return "lesson/lessonDetail";
-   }
+//   @RequestMapping(value = "lessonDetail.do",  method = {RequestMethod.GET, RequestMethod.POST})
+//   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request,Criteria cri) throws Exception  { 
+//      HttpSession session = request.getSession();
+//      String memberId = (String) session.getAttribute("memberId");
+//      System.out.println("민정이 "+memberId);
+//      
+//      lessonVO.setMemberId(memberId);
+//      Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
+//      String lessonSeq = (String) lessonDetailList.get("lessonSeq");
+//      lessonDetailList.put("lessonSeq", lessonSeq);
+//      System.out.println("레슨시퀀은 뭐냐ㅕ "+lessonSeq);
+//      System.out.println("제발찍혀라" + model);
+//      
+//      Map<String, Object> map = new HashMap<>();
+//      map.put("lessonSeq", lessonSeq);
+//      map.put("cri", cri);
+//      List<?> classList = lessonService.selectClassList(map);
+//      model.addAttribute("resultClassList", classList);
+//      System.out.println("디테일로 갈 파일 상세 리트스" + model);
+//      
+//      //강의 구매한 사람있는지 확인
+//      int buyLessonFlag = lessonService.selectBuyLesson(memberId);
+//      if(buyLessonFlag > 0) {
+//    	  model.addAttribute("buyer", "1");
+//      }else {
+//    	  model.addAttribute("buyer", "0");
+//      }
+//      
+//    //조회수 증가
+//      lessonService.increaseLessonHit(lessonSeq);
+//      
+//	// 댓글 목록 가져오기
+//      List<Map<String, Object>> replyList = lessonService.selectReplyList(lessonSeq);
+//      System.out.println("replyList : "+replyList);
+//      lessonDetailList.put("replyList", replyList);
+//      model.addAttribute("resultList", lessonDetailList);
+//      System.out.println("resultList " + model.toString());
+//      
+//    //댓글 내 프로필 사진 이미지 정보
+//      String myprofile = lessonService.selectMyProfile(memberId);
+//      System.out.println("기본이미지 : " + myprofile);
+//      model.addAttribute("MyProfileImage", myprofile);
+//      
+//      return "lesson/lessonDetail";
+//   }
    
 	/**
     * 자유게시판 댓글 등록

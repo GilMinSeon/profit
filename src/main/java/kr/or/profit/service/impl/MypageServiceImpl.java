@@ -11,6 +11,8 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import kr.or.profit.mapper.MypageMapper;
 import kr.or.profit.service.MypageService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
 
@@ -69,6 +71,17 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 	@Override
 	public int checkApplyPage(String memberId) throws Exception {
 		return mypageDAO.checkApplyPage(memberId);
+	}
+	
+	//북마크
+	@Override
+	public List<Map<String, String>> selectBookmarkList(Criteria cri) throws Exception {
+		return mypageDAO.selectBookmarkList(cri);
+	}
+
+	@Override
+	public int selectBookmarkCnt(Criteria cri) throws Exception {
+		return mypageDAO.selectBookmarkCnt(cri);
 	}
 
 	
