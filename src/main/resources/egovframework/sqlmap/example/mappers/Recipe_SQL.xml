@@ -20,45 +20,59 @@
 <!-- 	글목록 -->
 	<select id="recipeList" resultType="egovMap">
 		SELECT
-		    COMMUNITY_SEQ,
-			COMMON_SEQ,
-			COMMUNITY_CATEGORY_SEQ,
-			FILE_SEQ,
-			COMMON_TITLE,
-			TO_CHAR(COMMON_CONTENT) COMMON_CONTENT,
-			COMMON_HIT,
-			COMMON_DEL_FLAG,
-			IN_USER_ID,
-			TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
-			UP_USER_ID,
-			TO_CHAR(UP_DATE, 'YYYY-MM-DD') IN_DATE
+			(SELECT
+                COUNT(*)
+            FROM
+                REPLY B
+            WHERE
+                A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+                ) CNT,
+		    A.COMMUNITY_SEQ,
+			A.COMMON_SEQ,
+			A.COMMUNITY_CATEGORY_SEQ,
+			A.FILE_SEQ,
+			A.COMMON_TITLE,
+			TO_CHAR(A.COMMON_CONTENT) COMMON_CONTENT,
+			A.COMMON_HIT,
+			A.COMMON_DEL_FLAG,
+			A.IN_USER_ID,
+			TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
+			A.UP_USER_ID,
+			TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') IN_DATE
 		FROM
-		    COMMUNITY
+		    COMMUNITY A
 		WHERE
-		    COMMON_SEQ = '6'
+		    A.COMMON_SEQ = '6'
 		AND
-			COMMON_DEL_FLAG = 'N'
+			A.COMMON_DEL_FLAG = 'N'
 	</select>
 
 <!-- 	글상세보기 -->
 	<select id="recipeDetail" resultType="egovMap">
 		SELECT
-		    COMMUNITY_SEQ,
-			COMMON_SEQ,
-			COMMUNITY_CATEGORY_SEQ,
-			FILE_SEQ,
-			COMMON_TITLE,
-			TO_CHAR(COMMON_CONTENT) COMMON_CONTENT,
-			COMMON_HIT,
-			COMMON_DEL_FLAG,
-			IN_USER_ID,
-			TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
-			UP_USER_ID,
-			TO_CHAR(UP_DATE, 'YYYY-MM-DD') IN_DATE
+			(SELECT
+                COUNT(*)
+            FROM
+                REPLY B
+            WHERE
+                A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+                ) CNT,
+		    A.COMMUNITY_SEQ,
+			A.COMMON_SEQ,
+			A.COMMUNITY_CATEGORY_SEQ,
+			A.FILE_SEQ,
+			A.COMMON_TITLE,
+			TO_CHAR(A.COMMON_CONTENT) COMMON_CONTENT,
+			A.COMMON_HIT,
+			A.COMMON_DEL_FLAG,
+			A.IN_USER_ID,
+			TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
+			A.UP_USER_ID,
+			TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') IN_DATE
 		FROM
-		    COMMUNITY
+		    COMMUNITY A
 		WHERE
-		    COMMUNITY_SEQ = #{communitySeq}
+		    A.COMMUNITY_SEQ = #{communitySeq}
 	</select>
 
 <!-- 	글등록 -->
@@ -138,6 +152,7 @@
 				REPLY_CONTENT,
 				REPLY_DEL_FLAG,
 				REPLY_PARENT_SEQ,
+				REPLY_DEPTH,
 				IN_USER_ID,
 				IN_DATE,
 				UP_USER_ID,
@@ -152,10 +167,139 @@
 				#{replyContent},
 				'N',
 				'0',
+				'0',
 				#{memberId},
 				SYSDATE,
 				#{memberId},
 				SYSDATE
 						)
 	</insert>
+
+	<!-- 	댓글목록 -->
+	<select id="recipeDetailReply" resultType="hashMap">
+		SELECT
+		    REPLY_SEQ,
+		    COMMUNITY_SEQ,
+		    REPLY_CONTENT,
+		    REPLY_DEL_FLAG,
+		    REPLY_PARENT_SEQ,
+		    REPLY_DEPTH,
+		    A.IN_USER_ID,
+		    B.FILE_SEQ,
+		    C.FILE_PATH,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE
+		FROM
+		    REPLY A
+		    LEFT JOIN MEMBER B ON (A.IN_USER_ID = B.IN_USER_ID)
+		    LEFT JOIN ATTACH_FILE C ON(B.FILE_SEQ = C.FILE_SEQ)
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
+		AND
+			REPLY_DEL_FLAG = 'N'
+		AND
+			REPLY_DEPTH = '0'
+	</select>
+
+	<!-- 	댓글 삭제 -->
+	<update id="recipeReplyDelete" parameterType="hashMap" >
+		UPDATE
+		    REPLY
+		SET
+		    REPLY_DEL_FLAG = 'Y'
+		WHERE
+		    REPLY_SEQ = #{replySeq}
+	</update>
+
+	<!-- 	대댓 글등록 -->
+	<insert id="recipeReplyAdd" parameterType="hashMap">
+		INSERT INTO REPLY
+			(
+				REPLY_SEQ,
+				COMMUNITY_SEQ,
+				REPLY_CONTENT,
+				REPLY_DEL_FLAG,
+				REPLY_PARENT_SEQ,
+				REPLY_DEPTH,
+				IN_USER_ID,
+				IN_DATE,
+				UP_USER_ID,
+				UP_DATE	)
+		VALUES
+			(
+				(SELECT
+		            NVL(MAX(TO_NUMBER(REPLY_SEQ)),0) AS REPLY_SEQ
+		        FROM
+		            REPLY)+1,
+				#{communitySeq},
+				#{replyContent},
+				'N',
+				#{replySeq},
+				'1',
+				#{memberId},
+				SYSDATE,
+				#{memberId},
+				SYSDATE
+						)
+	</insert>
+
+	<!-- 	대 댓글목록 -->
+	<select id="recipeDetailReplyList" resultType="hashMap">
+		SELECT
+		    REPLY_SEQ,
+		    COMMUNITY_SEQ,
+		    REPLY_CONTENT,
+		    REPLY_DEL_FLAG,
+		    REPLY_PARENT_SEQ,
+		    REPLY_DEPTH,
+		    A.IN_USER_ID,
+		    B.FILE_SEQ,
+		    C.FILE_PATH,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE
+		FROM
+		    REPLY A
+		    LEFT JOIN MEMBER B ON (A.IN_USER_ID = B.IN_USER_ID)
+		    LEFT JOIN ATTACH_FILE C ON(B.FILE_SEQ = C.FILE_SEQ)
+		WHERE
+			COMMUNITY_SEQ = #{communitySeq}
+		AND
+			REPLY_DEPTH = '1'
+		AND
+			REPLY_DEL_FLAG = 'N'
+
+	</select>
+
+	<!-- 	로그인한 회원정보 -->
+	<select id="recipeDetailMember" resultType="hashMap">
+		SELECT
+		    A.MEMBER_ID,
+		    B.FILE_PATH,
+		    A.MEMBER_PWD,
+		    A.MEMBER_NAME,
+		    A.MEMBER_NICKNAME,
+		    A.MEMBER_MOBILE,
+		    A.MEMBER_GENDER,
+		    A.MEMBER_HEIGHT,
+		    A.MEMBER_WEIGHT,
+		    A.MEMBER_EMAIL,
+		    A.MEMBER_GUBUN,
+		    A.MEMBER_ROUTE,
+		    A.IN_USER_ID,
+		    A.IN_DATE,
+		    A.UP_USER_ID,
+		    A.UP_DATE
+		FROM
+		    member a, (
+		                SELECT
+		                    A.FILE_PATH
+		                FROM
+		                    ATTACH_FILE A, member B
+		                WHERE
+		                    A.FILE_SEQ = B.FILE_SEQ
+		                AND
+		                   B.member_ID = #{memberId}
+		                ) b
+		WHERE
+		    A.member_id = #{memberId}
+	</select>
+
 </mapper>

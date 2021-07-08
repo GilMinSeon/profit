@@ -13,42 +13,6 @@
 
 <script>
 
-// var videoContainer = document.getElementById("videoplay");
-
-//초를 시,분,초로 변환
-// function formatDate(seconds) {
-//   const secondsNumber = parseInt(seconds, 10);
-//   console.log(secondsNumber);
-//   alert(secondsNumber);
-//   let hours = Math.floor(secondsNumber / 3600)
-//   let minutes = Math.floor((secondsNumber - hours * 3600) / 60)
-//   let totalSeconds = secondsNumber - hours * 3600 - minutes * 60
-
-//   if (hours < 10) {
-//     hours = `0${hours}`
-//   }
-//   if (minutes < 10) {
-//     minutes = `0${minutes}`
-//   }
-//   if (totalSeconds < 10) {
-//     totalSeconds = `0${totalSeconds}`
-//   }
-//   return `${hours}:${minutes}:${totalSeconds}`
-// }
-
-//비디오 전체 길이를 가져오는 함수
-// async function setTotalTime() {
-//   const duration = await getBlobDuration(videoPlayer.src);
-//   alert("duration" + duration);
-//   console.log(duration);
-//   setInterval(getCurrentTime, 1000);
-//   totalTime.innerHTML = formatDate(duration);
-// }
-
-// if (videoContainer) {
-// 	  setTotalTime() ;
-// 	  console.log(setTotalTime());
-// 	}
 $(document).ready(function(){
 // 	var myAudio = document.getElementById("videoplay");
 // 	var time = myAudio.duration;

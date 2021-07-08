@@ -1,5 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,7 +82,7 @@
 					<div class="text-center">
 						<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">마이 클래스</h4>
 						<br/>
-						<p style="font-family: DM Sans, sans-serif;font-size: 1.2em;color:#5768AD;">나의 강의 정보를 확인해 보세요.</p>
+						<p style="font-family: DM Sans, sans-serif;font-size: 1.2em;color:#5768AD;">나의 구매 강좌를 확인하세요.</p>
 						<br/><br/>
 							
 							
@@ -88,42 +91,46 @@
 									<tr style="background: #E6E6E6;">
 										<th scope="col">번호</th>
 										<th scope="col" colspan="2">제목</th>
-										<th scope="col">기간</th>
+										<th scope="col">기간<span style="font-size: 12px;">(개월)</span></th>
 										<th scope="col">상태</th>
 									</tr>
 								</thead>
 								<tbody>
+								<c:forEach var="result" items="${buyListResult}" varStatus="status">
+								<input type="hidden" name="lessonSeq" value="${result.lessonSeq}">
+								<input type="hidden" name="buyLessonSeq" value="${result.buyLessonSeq}">
 									<tr>
-										<th scope="row">1</th>
-										<td colspan="2"><a href="lessionDetail"
-											style="text-decoration: none; color: #5768AD;"> 예진쌤의 칼소폭 30일 완성 </a></td>
-										<td>5주</td>
-										<td><a href="payDetail" style="text-decoration: none; color: #2FBC49;">결제완료</a></td>
+										<th scope="row">${status.index+1}</th>
+										<td colspan="2"><a href="lessonDetail.do?buyLessonSeq=${result.buyLessonSeq}"
+											style="text-decoration: none; color: #5768AD;"> ${result.lessonTitle} </a></td>
+										<td>${result.lessonMonth}</td>
+										<td><a href="myLessonPayDetail.do?buyLessonSeq=${result.buyLessonSeq}" style="text-decoration: none; color: #2FBC49;">결제완료</a></td>
 										
 									</tr>
-									<tr>
-										<th scope="row">2</th>
-										<td colspan="2"><a href="lessionDetail"
-											style="text-decoration: none; color: #5768AD;"> 권민정의 핵폭탄 땀폭발 홈트 </a></td>
-										<td>5주</td>
-										<td><a href="payDetail" style="text-decoration: none; color: #3095FA;">수강중</a></td>
-									</tr>
-									<tr>
-										<th scope="row">3</th>
-										<td colspan="2"><a href="lessionDetail"
-											style="text-decoration: none; color: #5768AD;"> 박상빈의 하체스트레칭 </a></td>
-										<td>5주</td>
-										<td><a href="payDetail" style="text-decoration: none; color: #FC2B45;">환불완료</a></td>
-									</tr>
-									<tr>
-										<th scope="row">4</th>
-										<td colspan="2"><a href="lessionDetail"
-											style="text-decoration: none; color: #5768AD;"> 길민선의 코어근육강화 </a></td>
-										<td>5주</td>
-										<td><a href="payDetail" style="text-decoration: none; color: #56585E;">기간만료</a></td>
-									</tr>
+								</c:forEach>
 								</tbody>
 							</table>
+							
+							<!-- 페이징처리 -->
+		            	<div class="col-lg-12">
+							<div class="classes__pagination">
+							<c:if test="${pageMaker.prev}">
+								<a href="myLessonList.do${pageMaker.makeQueryBuyLesson(pageMaker.startPage - 1)}">
+									<span class="arrow_carrot-left"></span>
+								</a>
+							</c:if> 
+							
+							<c:set var="page" value="${pageMaker.cri.page}"/>
+							<c:set var="idx" value="${idx}"/>
+							<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+		            			<a href="myLessonList.do${pageMaker.makeQueryBuyLesson(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+							</c:forEach>
+							
+							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+								<a href="myLessonList.do${pageMaker.makeQueryBuyLesson(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+							</c:if>
+							</div>
+						</div>
                         
                          
 						
