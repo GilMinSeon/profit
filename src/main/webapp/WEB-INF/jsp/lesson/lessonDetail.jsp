@@ -10,7 +10,36 @@
 <title>Insert title here</title>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
+// $(document).ready(function(){
+// 	var link = document.location.href; //현재 접속url
+// 	var tab = link.split('/').pop(); //배열의 맨 마지막 요소를 삭제하고 삭제한 해당값반환
+// 	$('a[href$='+tab+']').trigger("show");
+// });
+
+
 $(function(){
+// 	var link = document.location.href; //현재 접속url
+// 	var tab = link.split('/').pop(); //배열의 맨 마지막 요소를 삭제하고 삭제한 해당값반환
+// 	$('a[href$='+tab+']').trigger("click");
+	
+// 	$("#tab_list").tabs({
+
+// 	       select: function(event, ui) {                   
+
+// 	      window.location.replace(ui.tab.hash);
+
+// 	   //  위 두줄을 추가를 하면 새로고침을 해도 선택된 탭에서 계속 유지가 된다.
+
+// 	   }
+
+// 	});
+
+
+// #gnb의 자식 엘리먼트(li)가 몇번째인지 확인한 후 a요소를 찾은 후 on이라는 클래스 추가
+
+
+
+
 	
 	//좋아요북마크 취소
 	$(document).on("click",".remove",function(){
@@ -471,16 +500,16 @@ function fn_reply_del(seq){
 				</c:if>
 			</div>
 			
-			<div class="d-flex justify-content-between align-items-center has-border">
+			<div class="d-flex justify-content-between align-items-center has-border" id="tab_list" >
 				<ul id="titeul" class="nav sub-nav sub-nav--has-border">
 					<li class="nav-item" id="li1">
-						<a id="tite1" class="nav-link sub-nav-link" style="font-size:17px;">클래스 소개</a>
+						<a href="#1" id="tite1" class="nav-link sub-nav-link" style="font-size:17px;">클래스 소개</a>
 					</li>
 					<li class="nav-item" id="li2">
-						<a id="tite2" class="nav-link sub-nav-link" style="font-size:17px;">커리큘럼</a>
+						<a href="#2" id="tite2" class="nav-link sub-nav-link" style="font-size:17px;">커리큘럼</a>
 					</li>
 					<li class="nav-item" id="li3">
-						<a id="tite3" class="nav-link sub-nav-link" style="font-size:17px;">댓글</a>
+						<a href="#3" id="tite3" class="nav-link sub-nav-link" style="font-size:17px;">댓글</a>
 					</li>
 				</ul>
 			</div>
@@ -538,26 +567,26 @@ function fn_reply_del(seq){
 								</tbody>
 							</table>
 							
-							<!-- 페이징처리 -->
-<!-- 			            	<div class="col-lg-12"> -->
-<!-- 								<div class="classes__pagination"> -->
-<%-- 								<c:if test="${pageMaker.prev}"> --%>
-<%-- 									<a href="lessonDetail.do${pageMaker.makeQuery(pageMaker.startPage - 1)}"> --%>
-<!-- 										<span class="arrow_carrot-left"></span> -->
-<!-- 									</a> -->
-<%-- 								</c:if>  --%>
-								
-<%-- 								<c:set var="page" value="${pageMaker.cri.page}"/> --%>
-<%-- 								<c:set var="idx" value="${idx}"/> --%>
-<%-- 								<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> --%>
-<%-- 			            			<a href="lessonDetail.do${pageMaker.makeQuery(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a> --%>
-<%-- 								</c:forEach> --%>
-								
-<%-- 								<c:if test="${pageMaker.next && pageMaker.endPage > 0}"> --%>
-<%-- 									<a href="lessonDetail.do${pageMaker.makeQuery(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a> --%>
-<%-- 								</c:if> --%>
-<!-- 								</div> -->
-<!-- 							</div> -->
+						<!-- 페이징처리 -->
+		            	<div class="col-lg-12">
+							<div class="classes__pagination">
+							<c:if test="${pageMaker.prev}">
+								<a href="lessonDetail.do${pageMaker.makeQueryLesson(pageMaker.startPage - 1)}">
+									<span class="arrow_carrot-left"></span>
+								</a>
+							</c:if> 
+							
+							<c:set var="page" value="${pageMaker.cri.page}"/>
+							<c:set var="idx" value="${idx}"/>
+							<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+		            			<a href="lessonDetail.do${pageMaker.makeQueryLesson(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+							</c:forEach>
+							
+							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+								<a href="lessonDetail.do${pageMaker.makeQueryLesson(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+							</c:if>
+							</div>
+						</div>
 							
 						</div>
 					</section>

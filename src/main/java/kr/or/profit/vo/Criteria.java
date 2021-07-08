@@ -16,6 +16,17 @@ public class Criteria {
 	
 	//북마크
 	private String commonSeq;
+	
+	//온라인클래스 상세
+	private String lessonSeq;
+
+	public String getLessonSeq() {
+		return lessonSeq;
+	}
+
+	public void setLessonSeq(String lessonSeq) {
+		this.lessonSeq = lessonSeq;
+	}
 
 	public String getCommonSeq() {
 		return commonSeq;

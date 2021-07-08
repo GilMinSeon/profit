@@ -98,6 +98,7 @@ public class PageMaker {
 		UriComponents uriComponents = 
 				UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
+				.queryParam("lessonSeq", cri.getLessonSeq())
 				.build();
 		
 		return uriComponents.toUriString();

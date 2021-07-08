@@ -49,7 +49,7 @@ public interface LessonService {
 	public int insertClass(LessonDetailVO vo) throws Exception;
 
 	//상세강의 목록조회
-	public List<?> selectClassList(String lessonSeq) throws Exception;
+	public List<?> selectClassList(Criteria cri) throws Exception;
 
 	//상세강의 디테일조회
 	public Map<String, Object> selectclassDetail(LessonDetailVO lDetailVO) throws Exception;
@@ -90,7 +90,7 @@ public interface LessonService {
 	public int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception;
 
 	//강의 구매한 사람이 있는지 확인
-	public int selectBuyLesson(String memberId, String lessonSeq) throws Exception;
+	public int selectBuyLesson(Map<String, Object> buyMap) throws Exception;
 
 	//트레이너인지 확인
 	public int checkTrainer(String memberId) throws Exception;
@@ -103,6 +103,9 @@ public interface LessonService {
 
 	//수강시작 시 업데이트
 	public int updBuyLesson(BuyLessonVO vo) throws Exception;
+
+	//상세강의 글 개수 
+	public int selectClassCnt(Criteria cri) throws Exception;
 
 
 
