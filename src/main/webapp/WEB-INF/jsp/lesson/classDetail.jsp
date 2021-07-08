@@ -86,33 +86,16 @@ $(document).ready(function(){
 	        clearInterval(i);
 			$("#videoTime").append(time);
 			
-			var param = "";
-			param += "dummy=" + Math.random();
-			param += "&time=" + time;
+// 			var param = "";
+// 			param += "dummy=" + Math.random();
+// 			param += "&time=" + time;
 			
-			$.ajax({
-				url : "sendTimeAjax.do",
-				data : param,
-				dataType : "text",
-				async : false,
-				success : function(data) {
-					if (data == "ok") {
-						alert("수강이 시작되었습니다.");
-						document.getElementById("startBtn").style.display = "none";
-						document.getElementById("pointer").style.display = "none";
-						vid_play_pause();
-					} else {
-						alert("문제가 발생했습니다. 다시 한 번 시도해주세요");
-					}
-					console.log(data)
-				},
-			
-			error : function(error){
-				alert("문제가 있습니다. 다시 시도해 주세요.");
-				console.log(error);
-				console.log(error.status);
-			}
-			});
+// 			$.ajax({
+// 				url : "sendTimeAjax.do",
+// 				data : param,
+// 				dataType : "text",
+// 				async : false
+// 			});
 			
 	    }
 	}, 200);
