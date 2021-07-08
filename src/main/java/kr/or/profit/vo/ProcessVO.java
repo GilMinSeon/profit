@@ -17,11 +17,41 @@ public class ProcessVO {
 	private String upUserId;
 	private Date upDate;
 	
-	//민선 추가
+	//민선 추가-내정보 탭
 	private String memberName;
 	private String memberGender;
 	private String memberMobile;
 	
+	//민선추가-관리자 프로세스 리스트
+	private String statusA;
+	private String statusB;
+	private String statusC;
+	private String today;
+	
+	public String getStatusA() {
+		return statusA;
+	}
+	public void setStatusA(String statusA) {
+		this.statusA = statusA;
+	}
+	public String getStatusB() {
+		return statusB;
+	}
+	public void setStatusB(String statusB) {
+		this.statusB = statusB;
+	}
+	public String getStatusC() {
+		return statusC;
+	}
+	public void setStatusC(String statusC) {
+		this.statusC = statusC;
+	}
+	public String getToday() {
+		return today;
+	}
+	public void setToday(String today) {
+		this.today = today;
+	}
 	public String getMemberName() {
 		return memberName;
 	}
