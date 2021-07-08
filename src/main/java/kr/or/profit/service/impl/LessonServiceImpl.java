@@ -12,6 +12,7 @@ import kr.or.profit.service.LessonService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.BuyLessonVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -37,9 +38,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//강의 목록조회
 	@Override
-	public List<?> selectLessonList(Map<String, Object> map) throws Exception {
-		System.out.println("map : " + map);
-		return lessonDAO.selectLessonList(map);
+	public List<?> selectLessonList(Criteria cri) throws Exception {
+		return lessonDAO.selectLessonList(cri);
 	}
 
 	//강의 상세조회
@@ -88,8 +88,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//상세강의 목록 조회
 	@Override
-	public List<?> selectClassList(String lessonSeq) throws Exception {
-		return lessonDAO.selectClassList(lessonSeq);
+	public List<?> selectClassList(Criteria cri) throws Exception {
+		return lessonDAO.selectClassList(cri);
 	}
 
 	//상세강의 디테일 조회
@@ -177,8 +177,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//강의 구매한 사람이 있는지 확인
 	@Override
-	public int selectBuyLesson(String memberId) throws Exception {
-		return lessonDAO.selectBuyLesson(memberId);
+	public int selectBuyLesson(Map<String, Object> buyMap) throws Exception {
+		return lessonDAO.selectBuyLesson(buyMap);
 	}
 
 	//트레이너인지 확인
@@ -187,6 +187,31 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.checkTrainer(memberId);
 	}
 
+	//페이징 - 온라인클래스 전체 글 개수 
+	@Override
+	public int selectLessonCnt(Criteria cri) throws Exception {
+		return lessonDAO.selectLessonCnt(cri);
+	}
+
+	//페이징 - 온라인클래스 강의 상세 전체 글 개수
+	@Override
+	public int selectLessonClassCnt(Criteria cri) throws Exception {
+		return lessonDAO.selectLessonClassCnt(cri);
+	}
+
+	//수강시작 시 업데이트
+	@Override
+	public int updBuyLesson(BuyLessonVO vo) throws Exception {
+		return lessonDAO.updBuyLesson(vo);
+	}
+
+	//상세강의 글 개수 
+	@Override
+	public int selectClassCnt(Criteria cri) throws Exception {
+		return lessonDAO.selectClassCnt(cri);
+	}
+
+	
 	
 
 

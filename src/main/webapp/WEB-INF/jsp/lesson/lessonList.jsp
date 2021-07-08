@@ -4,6 +4,7 @@
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 
@@ -144,11 +145,12 @@
             <div class="row">
                 <div class="team__slider owl-carousel">
 				<c:forEach var="resultTop" items="${resultTopList}" varStatus="status">
-				<c:if test="${resultTop.lessonPrivateFlag eq 'n'}">
+				<c:if test="${resultTop.lessonPrivateFlag eq 'N'}">
                     <div class="col-lg-6">
                         <div class="team__item" style="padding-top:0px;padding-bottom: 10px;">
                         <div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${resultTop.fileSaveName}" style="padding-top: 0px;">
-                            <span>${resultTop.inDate}</span>
+                            <span>${fn:substring(resultTop.inDate,0,10)}</span>
+                           
                         </div>
                         <div class="classes__item__text" style="padding-top: 10px;padding-bottom: 10px; padding-left: 0;padding-right: 0;">
                             <div style="text-align: right;">
@@ -228,13 +230,13 @@
 								<select name="selCate" id="selCate">
 									<option value="">카테고리</option>
 									<option value="헬스" 
-										<c:if test="${option.selCate == '헬스'}">selected</c:if>>헬스</option>
+										<c:if test="${selCate eq '헬스'}">selected</c:if>>헬스</option>
 									<option value="필라테스"
-										<c:if test="${option.selCate == '필라테스'}">selected</c:if>>필라테스</option>
+										<c:if test="${selCate eq '필라테스'}">selected</c:if>>필라테스</option>
 									<option value="요가"
-										<c:if test="${option.selCate == '요가'}">selected</c:if>>요가</option>
+										<c:if test="${selCate eq '요가'}">selected</c:if>>요가</option>
 									<option value="맨몸운동"
-										<c:if test="${option.selCate == '맨몸운동'}">selected</c:if>>맨몸운동</option>
+										<c:if test="${selCate eq '맨몸운동'}">selected</c:if>>맨몸운동</option>
 								</select>
 							</div>
 							<div class="class__filter__select">
@@ -242,11 +244,11 @@
 								<select name="selLev" id="selLev"> 
 									<option value="">전체</option>
 									<option value="조회순"
-										<c:if test="${option.selLev == '조회순'}">selected</c:if>>조회순</option>
+										<c:if test="${selLev eq '조회순'}">selected</c:if>>조회순</option>
 									<option value="좋아요순"
-										<c:if test="${option.selLev == '좋아요순'}">selected</c:if>>좋아요순</option>
+										<c:if test="${selLev eq '좋아요순'}">selected</c:if>>좋아요순</option>
 									<option value="댓글순"
-										<c:if test="${option.selLev == '댓글순'}">selected</c:if>>댓글순</option>
+										<c:if test="${selLev eq '댓글순'}">selected</c:if>>댓글순</option>
 								</select>
 							</div>
 							<div class="class__filter__input">
@@ -278,7 +280,7 @@
 			
 			<div class="row">
 			<c:forEach var="result" items="${resultList}" varStatus="status">
-			<c:if test="${result.lessonPrivateFlag eq 'n'}">
+			<c:if test="${result.lessonPrivateFlag eq 'N'}">
 			<input type="hidden" name="lessonSeq">
 				<div class="col-lg-4 col-md-6">
 					<div class="classes__item classes__item__page">
@@ -286,7 +288,7 @@
 						<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
 							<div style="text-align: right;">
 								<div style="display: inline-block;vertical-align:sub;float: left">
-									<p style="margin:0;">${result.inDate}&nbsp;&nbsp;</p>
+									<p style="margin:0;">${fn:substring(result.inDate,0,10)}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
@@ -344,13 +346,25 @@
 				</div>
 				</c:if>
 				</c:forEach>
+				
+				<!-- 페이징처리 -->
 				<div class="col-lg-12">
 					<div class="classes__pagination">
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">
-							<span class="arrow_carrot-right"></span>
+					<c:if test="${pageMaker.prev}">
+						<a href="lessonList.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
 						</a>
+					</c:if> 
+					
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="lessonList.do${pageMaker.makeQuery(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
+					
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="lessonList.do${pageMaker.makeQuery(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
 					</div>
 				</div>
 			

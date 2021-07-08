@@ -42,9 +42,11 @@ import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.BuyTicketVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.MemberVO;
+import kr.or.profit.vo.PageMaker;
 import kr.or.profit.vo.ReplyVO;
 import net.sf.json.JSONObject;
 
@@ -71,32 +73,60 @@ public class LessonController {
     * @return
     */
    @RequestMapping(value = "lessonList.do",  method = {RequestMethod.GET, RequestMethod.POST})
-   public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request, @RequestParam(value="selCate", required=false) String selCate, @RequestParam(value="selLev", required=false) String selLev,@RequestParam(value="keyword", required=false) String keyword) throws Exception  {
-	  Map<String, Object> map = new HashMap<>();
+   public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request,
+		   Criteria cri,
+		   @RequestParam(value="selCate", required=false) String selCate, 
+		   @RequestParam(value="selLev", required=false) String selLev,
+		   @RequestParam(value="keyword", required=false) String keyword) throws Exception  {
+	   
+	   HttpSession session = request.getSession();
+	   String memberId = (String) session.getAttribute("memberId");
+	   System.out.println("memberId나와랏 " + memberId);
+	   if (memberId == null) {
+		   memberId = "";
+	   }
+	   
+//	  Map<String, Object> map = new HashMap<>();
 	  selCate = request.getParameter("selCate");
 	  selLev = request.getParameter("selLev");
 	  keyword = request.getParameter("keyword");
-	  HttpSession session = request.getSession();
-	  String memberId = (String) session.getAttribute("memberId");
-	  System.out.println("memberId나와랏 " + memberId);
-	  if (memberId == null) {
-			memberId = "";
-		}
-	  
 	  System.out.println("selCate " +selCate );
 	  System.out.println("selLev " +selLev );
 	  System.out.println("keyword " +keyword );
 	  
-	  map.put("selCate", selCate);
-	  map.put("selLev", selLev);
-	  map.put("keyword", keyword);	
-	  map.put("memberId", memberId);
+//	  map.put("selCate", selCate);
+//	  map.put("selLev", selLev);
+//	  map.put("keyword", keyword);	
+//	  map.put("memberId", memberId);
+	  
+	  cri.setMemberId(memberId);
+	  cri.setSelCate(selCate);
+	  cri.setSelLev(selLev);
+	  cri.setKeyword(keyword);
 	 
 	  
-      List<?> lessonList = lessonService.selectLessonList(map);
+      List<?> lessonList = lessonService.selectLessonList(cri);
       model.addAttribute("resultList", lessonList);
-      model.addAttribute("option", map);
+//      model.addAttribute("option", map);
+      System.out.println("resultList새롬이 "+ model.toString());
       
+   // 페이징처리
+      PageMaker pageMaker = new PageMaker();
+      pageMaker.setCri(cri);
+      
+   // 전체 글 개수 세팅 - 검색결과과 무관하게 페이징 생성 => 수정필요
+   	  pageMaker.setTotalCount(lessonService.selectLessonCnt(cri)); 
+      
+   	  System.out.println(lessonService.selectLessonCnt(cri) + "가져오는 개수!!!!!!!!!!!!");
+   	
+   	  model.addAttribute("pageMaker", pageMaker);
+   	  
+   	//입력한 검색어 유지시키기
+   	  model.addAttribute("selCate", selCate);
+   	  model.addAttribute("selLev", selLev);
+   	  model.addAttribute("keyword", keyword);
+   	  
+      //트레이너인지 아닌지 여부
       int trainerFlag = lessonService.checkTrainer(memberId);
       if(trainerFlag > 0) {
     	  model.addAttribute("rightTrainer", "1");
@@ -104,7 +134,7 @@ public class LessonController {
     	  model.addAttribute("rightTrainer", "0");
       }
       
-      
+      //인기강의top5
       List<?> lessonTopList = lessonService.selectTopLessonList();
       model.addAttribute("resultTopList", lessonTopList);
       System.out.println("dddddddddddd"+model);
@@ -112,23 +142,6 @@ public class LessonController {
       return "lesson/lessonList";
    }
    
-//   /**
-//    * 강의 목록 조회 -나중에 페이징처리하자민정아
-//    * @param locale
-//    * @param model
-//    * @return
-//    */
-//   @RequestMapping(value = "lessonList.do",  method = {RequestMethod.GET, RequestMethod.POST})
-//   public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
-//  
-//	  
-//      List<?> lessonList = lessonService.selectLessonList();
-//      model.addAttribute("resultList", lessonList);
-//      List<?> lessonTopList = lessonService.selectTopLessonList();
-//      model.addAttribute("resultTopList", lessonTopList);
-//      System.out.println("dddddddddddd"+model);
-//      return "lesson/lessonList";
-//   }
    
    /**
     * 강의 상세 조회
@@ -139,7 +152,7 @@ public class LessonController {
     * @throws Exception
     */
    @RequestMapping(value = "lessonDetail.do",  method = {RequestMethod.GET, RequestMethod.POST})
-   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
+   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request, Criteria cri) throws Exception  { 
       HttpSession session = request.getSession();
       String memberId = (String) session.getAttribute("memberId");
       System.out.println("민정이 "+memberId);
@@ -151,12 +164,34 @@ public class LessonController {
       System.out.println("레슨시퀀은 뭐냐ㅕ "+lessonSeq);
       System.out.println("제발찍혀라" + model);
       
-      List<?> classList = lessonService.selectClassList(lessonSeq);
+      cri.setMemberId(memberId);
+      cri.setMemberId(lessonSeq);
+      cri.setPerPageNum(5);
+      
+      List<?> classList = lessonService.selectClassList(cri);
+      
+      System.out.println(cri.getRowStart());
+      System.out.println(cri.getRowEnd());
+      
       model.addAttribute("resultClassList", classList);
-      System.out.println("디테일로 갈 파일 상세 리트스" + model);
+      System.out.println("디테일로 갈 파일 상세 리트스" + model.toString());
+      
+    //페이징처리
+      PageMaker pageMaker = new PageMaker();
+      pageMaker.setCri(cri);
+      
+    //전체 글 개수 세팅
+      pageMaker.setTotalCount(lessonService.selectClassCnt(cri));
+      
+      System.out.println("전체글개수-----------");
+      
+      model.addAttribute("pageMaker", pageMaker);
       
       //강의 구매한 사람있는지 확인
-      int buyLessonFlag = lessonService.selectBuyLesson(memberId);
+      Map<String, Object> buyMap = new HashMap<>();
+      buyMap.put("memberId", memberId);
+      buyMap.put("lessonSeq", lessonSeq);
+      int buyLessonFlag = lessonService.selectBuyLesson(buyMap);
       if(buyLessonFlag > 0) {
     	  model.addAttribute("buyer", "1");
       }else {
@@ -483,7 +518,7 @@ public class LessonController {
 	            attachvo.setFileDetailSeq(Integer.toString(cnt));
 	            attachvo.setFileRealName(originalFileName);
 	            attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
-	            attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
+	            attachvo.setFilePath("http://192.168.41.6:9999/upload/profit/" + uuid.toString()  + "_" + originalFileName);
 	            attachvo.setInUserId(memberId);
 	            attachvo.setUpUserId(memberId);
 	            fileVOList.add(attachvo);
@@ -763,17 +798,23 @@ public class LessonController {
     * @return
     */
    @RequestMapping(value = "classDetail.do", method = RequestMethod.GET)
-   public String classDetail(@ModelAttribute("lDetailVO") LessonDetailVO lDetailVO, LessonVO lessonVO, AttachFileVO fileVO, Model model) throws Exception  {
-//	   Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
-//	   String lessonSeq = (String) lessonDetailList.get("lessonSeq");
-//	   String lessonDetailSeq = lDetailVO.getLessonDetailSeq();
-//	  
-//	   System.out.println("보고싶은1 " + lessonSeq);
-//	   System.out.println("보고싶은2 " + lessonDetailSeq);
-//	  
-//	   lDetailVO.setLessonSeq(lessonSeq);
-//	   lDetailVO.setLessonDetailSeq(lessonDetailSeq);
+   public String classDetail(@ModelAttribute("lDetailVO") LessonDetailVO lDetailVO, LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  {
+
+	   HttpSession session = request.getSession();
+	   String memberId = (String) session.getAttribute("memberId");
+	   System.out.println("상세강의로갈memberId " + memberId);
+	   if (memberId == null) {
+		   memberId = "";
+	   }
 	   
+	   //트레이너인지 아닌지 여부
+	      int trainerFlag = lessonService.checkTrainer(memberId);
+	      if(trainerFlag > 0) {
+	    	  model.addAttribute("rightTrainer", "1");
+	      }else {
+	    	  model.addAttribute("rightTrainer", "0");
+	      }
+	   //상세강의 상세보기
 	   Map<String, Object> classDetailList = lessonService.selectclassDetail(lDetailVO);
 	   model.addAttribute("classResult", classDetailList);
 	   System.out.println("뭐 들어있는지볼까 "+model);
@@ -816,48 +857,65 @@ public class LessonController {
        return msg;
    }
    
+	   
    /**
-    * 카테고리 선택하면
-    * @param lessonVO
-    * @param fileVO
-    * @param model
-    * @param request
-    * @return
-    * @throws Exception
+    * 강의 수강선택하면 구매테이블update
+    * @throws Exception 
     */
-//   @RequestMapping(value = "searchCateAjax.do", produces = "application/text; charser=utf-8")
-//	public @ResponseBody String selectCate(LessonDetailVO lDetailVO, LessonVO lessonVO,  AttachFileVO fileVO, HttpServletRequest request) throws Exception {
-//	   System.out.println("들어와?");
-//	   String sel_cvalue = request.getParameter("sel_cvalue");
-//	   String sel_lvalue = request.getParameter("sel_lvalue");
-//	   String keyword = request.getParameter("keyword");
-//	   
-//	   System.out.println("sel_cvalue " +sel_cvalue );
-//	   System.out.println("sel_lvalue " +sel_lvalue );
-//	   System.out.println("keyword " +keyword );
-//	   
-//	   Map<String, Object> map = new HashMap();
-//	   map.put("sel_cvalue", sel_cvalue);
-//	   map.put("sel_lvalue", sel_lvalue);
-//	   map.put("keyword", keyword);
-//	   
-//	   List<?> selCateLessonList = lessonService.selectCateLessonList(map);
-//	   JSONObject jsonObject = new JSONObject();
-//	   System.out.println("selCateLessonList "+selCateLessonList);
-////	   String msg = "";
-//		if (selCateLessonList != null) {
-////			msg="ok";
-//			jsonObject.put("msg", "ok");
-//			jsonObject.put("selCateLessonList", selCateLessonList);
-//		} else {
-//			jsonObject.put("msg", "no");
-////			msg = "no";
-//		}
-//		String jsonInfo = jsonObject.toString();
-//		System.out.println("jsonInfo "+jsonInfo);
-////		System.out.println("msg " + msg);
-//		return jsonInfo;
-//	}
+   @RequestMapping(value = "updBuyLessonAjax.do")
+   @ResponseBody
+   public String updBuyLesson(HttpServletRequest request, Model model) throws Exception {
+	   HttpSession session = request.getSession();
+	   String memberId = (String) session.getAttribute("memberId");
+	   System.out.println("memberId업데이트하게나와랏 " + memberId);
+	   if (memberId == null) {
+		   memberId = "";
+	   }
+	   
+      String lessonSeq = request.getParameter("lessonSeq");
+      System.out.println("lessonSeq가져오삼= " + lessonSeq);
+      
+      BuyLessonVO vo = new BuyLessonVO();
+      vo.setMemberId(memberId);
+      vo.setLessonSeq(lessonSeq);
+      System.out.println("여기1");
+      
+	  int cnt = lessonService.updBuyLesson(vo);
+	  System.out.println("여기2");
+      String msg = "ng";
+      
+      if(cnt > 0) {
+         msg = "ok";
+      }
+      System.out.println("얌마"+msg);
+       return msg;
+   }
+   
+//   /**
+//    * 동영상시간 lessonDetail로 보내기
+//    * @param request
+//    * @param model
+//    * @return
+//    * @throws Exception
+//    */
+//   @RequestMapping(value = "sendTimeAjax.do")
+//   @ResponseBody
+//   public String sendTime(HttpServletRequest request, Model model) throws Exception {
+//
+//	  String time = request.getParameter("time");
+//	  System.out.println("영상재생시간가져오니 "+time);
+//	  model.addAttribute("time", time);
+////      String msg = "ng";
+////      
+////      if(cnt > 0) {
+////         msg = "ok";
+////      }
+////      System.out.println("얌마"+msg);
+//       return "redit:/lesson/lessonDetail";
+//   }
 //   
+   
+   
+   
    
 }

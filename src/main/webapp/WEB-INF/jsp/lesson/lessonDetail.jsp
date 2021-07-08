@@ -10,7 +10,36 @@
 <title>Insert title here</title>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
+// $(document).ready(function(){
+// 	var link = document.location.href; //현재 접속url
+// 	var tab = link.split('/').pop(); //배열의 맨 마지막 요소를 삭제하고 삭제한 해당값반환
+// 	$('a[href$='+tab+']').trigger("show");
+// });
+
+
 $(function(){
+// 	var link = document.location.href; //현재 접속url
+// 	var tab = link.split('/').pop(); //배열의 맨 마지막 요소를 삭제하고 삭제한 해당값반환
+// 	$('a[href$='+tab+']').trigger("click");
+	
+// 	$("#tab_list").tabs({
+
+// 	       select: function(event, ui) {                   
+
+// 	      window.location.replace(ui.tab.hash);
+
+// 	   //  위 두줄을 추가를 하면 새로고침을 해도 선택된 탭에서 계속 유지가 된다.
+
+// 	   }
+
+// 	});
+
+
+// #gnb의 자식 엘리먼트(li)가 몇번째인지 확인한 후 a요소를 찾은 후 on이라는 클래스 추가
+
+
+
+
 	
 	//좋아요북마크 취소
 	$(document).on("click",".remove",function(){
@@ -426,25 +455,25 @@ function fn_reply_del(seq){
 		// 	style="border-bottom: 3px solid #7952B3;"
 		$(function() {
 			$('#tite1').click(function() {
-				$('#li1').css('border-bottom', '3px solid #7952B3');
-				$('#li2').css('border-bottom', '3px solid #ffffff');
-				$('#li3').css('border-bottom', '3px solid #ffffff');
+				$('#li1').css({'border-bottom':'3px solid #7952B3', 'text-shadow' :'3px 3px 10px #7952B3', 'font-weight' : 'bold'});
+				$('#li2').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
+				$('#li3').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
 				$('#t1').show().siblings('div').hide();
 			})
 		});
 		$(function() {
 			$('#tite2').click(function() {
-				$('#li1').css('border-bottom', '3px solid #ffffff');
-				$('#li2').css('border-bottom', '3px solid #7952B3');
-				$('#li3').css('border-bottom', '3px solid #ffffff');
+				$('#li1').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
+				$('#li2').css({'border-bottom': '3px solid #7952B3', 'text-shadow' :'3px 3px 10px #7952B3', 'font-weight' : 'bold'});
+				$('#li3').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
 				$('#t2').show().siblings('div').hide();
 			})
 		});
 		$(function() {
 			$('#tite3').click(function() {
-				$('#li1').css('border-bottom', '3px solid #ffffff');
-				$('#li2').css('border-bottom', '3px solid #ffffff');
-				$('#li3').css('border-bottom', '3px solid #7952B3');
+				$('#li1').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
+				$('#li2').css({'border-bottom': '3px solid #ffffff', 'text-shadow' :'none', 'font-weight' : 'normal'});
+				$('#li3').css({'border-bottom': '3px solid #7952B3', 'text-shadow' :'3px 3px 10px #7952B3', 'font-weight' : 'bold'});
 				$('#t3').show().siblings('div').hide();
 			})
 		});
@@ -456,7 +485,7 @@ function fn_reply_del(seq){
 			<div class="classes__item__text" style="text-align: right;">
 			<c:choose>
 				<c:when test="${buyer eq '1'}">
-					<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
+					<a href="javascript:alert('이미 강의를 구매하셨습니다. \n하단의 커리큘럼에서 강의 영상을 봐주시거나 마이페이지에서 확인해주세요');" class="class-btn">강의구매</a>
 				</c:when>
 				<c:when test="${buyer eq '0'}">
                 	<span class="blinking" style="color:#ED2348;">강의를 구매하시면 커리큘럼 내에서 영상을 볼 수 있어요! → </span>&nbsp;
@@ -471,16 +500,16 @@ function fn_reply_del(seq){
 				</c:if>
 			</div>
 			
-			<div class="d-flex justify-content-between align-items-center has-border">
+			<div class="d-flex justify-content-between align-items-center has-border" id="tab_list" >
 				<ul id="titeul" class="nav sub-nav sub-nav--has-border">
 					<li class="nav-item" id="li1">
-						<a id="tite1" class="nav-link sub-nav-link" style="font-size:17px;">클래스 소개</a>
+						<a href="#1" id="tite1" class="nav-link sub-nav-link" style="font-size:17px;">클래스 소개</a>
 					</li>
 					<li class="nav-item" id="li2">
-						<a id="tite2" class="nav-link sub-nav-link" style="font-size:17px;">커리큘럼</a>
+						<a href="#2" id="tite2" class="nav-link sub-nav-link" style="font-size:17px;">커리큘럼</a>
 					</li>
 					<li class="nav-item" id="li3">
-						<a id="tite3" class="nav-link sub-nav-link" style="font-size:17px;">댓글</a>
+						<a href="#3" id="tite3" class="nav-link sub-nav-link" style="font-size:17px;">댓글</a>
 					</li>
 				</ul>
 			</div>
@@ -501,12 +530,12 @@ function fn_reply_del(seq){
 							<br/><br/>
 							<table class="table table-hover" style="text-align: center;">
 								<tbody>
-									<tr style="background-color:#5768AD;">
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">번호</th>
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">썸네일</th>
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">상세 강의 명</th>
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">재생시간</th>
-										<th style="color:white;font-size:15px;font-family: 'DM Sans', sans-serif;">등록일</th>
+									<tr style="background-color:rgb(211,197,245,0.5);">
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">번호</th>
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">썸네일</th>
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">상세 강의 명</th>
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">재생시간</th>
+										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">등록일</th>
 									</tr>
 								<c:forEach var="rclassList" items="${resultClassList}" varStatus="status">
 									<c:choose>
@@ -537,6 +566,28 @@ function fn_reply_del(seq){
 								</c:forEach>
 								</tbody>
 							</table>
+							
+						<!-- 페이징처리 -->
+		            	<div class="col-lg-12">
+							<div class="classes__pagination">
+							<c:if test="${pageMaker.prev}">
+								<a href="lessonDetail.do${pageMaker.makeQueryLesson(pageMaker.startPage - 1)}">
+									<span class="arrow_carrot-left"></span>
+								</a>
+							</c:if> 
+							
+							<c:set var="page" value="${pageMaker.cri.page}"/>
+							<c:set var="idx" value="${idx}"/>
+							<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+		            			<a href="lessonDetail.do${pageMaker.makeQueryLesson(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+							</c:forEach>
+							
+							<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+								<a href="lessonDetail.do${pageMaker.makeQueryLesson(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+							</c:if>
+							</div>
+						</div>
+							
 						</div>
 					</section>
 				</div>
@@ -560,7 +611,7 @@ function fn_reply_del(seq){
 	                                   <c:forEach var="result" items="${resultList['replyList']}" varStatus="status">
 	                                <form id="frm${status.count}">
 	                                <input type="hidden" name="lessonSeq" value="${result.lessonSeq}">
-	                                <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
+	                               <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
 									<input type="hidden" name="replyParentSeq" value="${cnt}">
 	                                <div class="classes__sidebar__comment__pic" style="<c:if test="${result.replyDepth == 2}">margin-left:100px;</c:if>">
 	                                    <img src="${result.filePath}" alt="">
@@ -597,7 +648,7 @@ function fn_reply_del(seq){
 	                                    		<c:when test="${result.replySecretFlag == 'N'}">
 				                                    <p>${result.replyContent}
 				                                    <c:if test="${result.inUserId eq memberId}">
-				                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
+				                                    <img src="./resources/img/common/delete.png" style="width:15px; height: 15x;margin-left : 20px;"onclick="fn_reply_del(${result.replySeq})">
 													</c:if>
 				                                    </p>
 			                                    </c:when>

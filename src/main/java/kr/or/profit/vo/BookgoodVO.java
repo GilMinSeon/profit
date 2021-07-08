@@ -5,13 +5,67 @@ import java.util.Date;
 public class BookgoodVO {
 	
 	private String bookgoodSeq;
-	private String memberId;
+	private Date inDate;
+	
+	//myinfo 북마크
 	private String communitySeq;
+	private String commonTitle;
+	private String cDate;
+	private String cFilepath;
 	private String lessonSeq;
+	private String lessonTitle;
+	private String lFilepath;
+	private String lDate;
+	private String commonSeq;
+	
+	public String getCommonSeq() {
+		return commonSeq;
+	}
+	public void setCommonSeq(String commonSeq) {
+		this.commonSeq = commonSeq;
+	}
+	public String getCommonTitle() {
+		return commonTitle;
+	}
+	public void setCommonTitle(String commonTitle) {
+		this.commonTitle = commonTitle;
+	}
+	public String getcDate() {
+		return cDate;
+	}
+	public void setcDate(String cDate) {
+		this.cDate = cDate;
+	}
+	public String getcFilepath() {
+		return cFilepath;
+	}
+	public void setcFilepath(String cFilepath) {
+		this.cFilepath = cFilepath;
+	}
+	public String getLessonTitle() {
+		return lessonTitle;
+	}
+	public void setLessonTitle(String lessonTitle) {
+		this.lessonTitle = lessonTitle;
+	}
+	public String getlFilepath() {
+		return lFilepath;
+	}
+	public void setlFilepath(String lFilepath) {
+		this.lFilepath = lFilepath;
+	}
+	public String getlDate() {
+		return lDate;
+	}
+	public void setlDate(String lDate) {
+		this.lDate = lDate;
+	}
+	
+	
+	private String memberId;
 	private String bookgoodGubun;
 	private String bookgoodFlag;
 	private String inUserId;
-	private Date inDate;
 	private String upUserId;
 	private Date upDate;
 	public String getBookgoodSeq() {

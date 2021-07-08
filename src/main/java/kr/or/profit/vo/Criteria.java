@@ -13,6 +13,28 @@ public class Criteria {
 	private String selCate;
 	private String selLev;
 	private String keyword;
+	
+	//북마크
+	private String commonSeq;
+	
+	//온라인클래스 상세
+	private String lessonSeq;
+
+	public String getLessonSeq() {
+		return lessonSeq;
+	}
+
+	public void setLessonSeq(String lessonSeq) {
+		this.lessonSeq = lessonSeq;
+	}
+
+	public String getCommonSeq() {
+		return commonSeq;
+	}
+
+	public void setCommonSeq(String commonSeq) {
+		this.commonSeq = commonSeq;
+	}
 
 	public String getSelCate() {
 		return selCate;

@@ -6,6 +6,7 @@ import java.util.Map;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.BuyLessonVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonDetailVO;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
@@ -17,7 +18,7 @@ public interface LessonService {
 	public int insertLesson(LessonVO vo) throws Exception;
 
 	//강의 목록조회 ->나중에 페이징처리하기
-	public List<?> selectLessonList(Map<String, Object> map) throws Exception;
+	public List<?> selectLessonList(Criteria cri) throws Exception;
 
 	//강의 상세조회
 	public Map<String, Object> selectLessonDetail(LessonVO lessonVO) throws Exception;
@@ -48,7 +49,7 @@ public interface LessonService {
 	public int insertClass(LessonDetailVO vo) throws Exception;
 
 	//상세강의 목록조회
-	public List<?> selectClassList(String lessonSeq) throws Exception;
+	public List<?> selectClassList(Criteria cri) throws Exception;
 
 	//상세강의 디테일조회
 	public Map<String, Object> selectclassDetail(LessonDetailVO lDetailVO) throws Exception;
@@ -89,10 +90,22 @@ public interface LessonService {
 	public int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception;
 
 	//강의 구매한 사람이 있는지 확인
-	public int selectBuyLesson(String memberId) throws Exception;
+	public int selectBuyLesson(Map<String, Object> buyMap) throws Exception;
 
 	//트레이너인지 확인
 	public int checkTrainer(String memberId) throws Exception;
+
+	//페이징 - 온라인클래스 전체 글 개수 
+	public int selectLessonCnt(Criteria cri) throws Exception;
+
+	//페이징 - 온라인클래스 강의 상세 전체 글 개수
+	public int selectLessonClassCnt(Criteria cri) throws Exception;
+
+	//수강시작 시 업데이트
+	public int updBuyLesson(BuyLessonVO vo) throws Exception;
+
+	//상세강의 글 개수 
+	public int selectClassCnt(Criteria cri) throws Exception;
 
 
 

@@ -27,6 +27,35 @@ $("#exe_btn").show();
 
 
 function fn_submit(){
+	
+	var lessonDetailTitle = $("#lessonDetailTitle").val();
+	if(lessonDetailTitle==""){
+		alert("상세강의 제목을 입력해주세요.");
+		$("#lessonDetailTitle").focus();
+		return;
+	}
+	
+	var lessonDetailContent = $("#lessonDetailContent").val();
+	if(lessonDetailContent==""){
+		alert("상세강의 내용을 입력해주세요.");
+		$("#lessonDetailContent").focus();
+		return;
+	}
+	
+	
+	var fileCheck = document.getElementById("file").value;
+	if(!fileCheck){
+	 alert("썸네일 파일을 첨부해 주세요");
+	 return false;
+	}
+
+	var fileCheck2 = document.getElementById("file_dong").value;
+	if(!fileCheck2){
+	 alert("강의 동영상을 첨부해 주세요");
+	 return false;
+	}
+	
+	
 	var msg = "ok";
 	if(msg=="ok"){
 		var apply = confirm("상세강의를 등록하시겠습니까?");
@@ -73,8 +102,8 @@ function send_file(){
     animation:blinkingText 1.9s infinite;
 }
  @keyframes blinkingText{ 
-     0%{     color: #4CED67;    } 
-     49%{    color: #4CED67; } 
+     0%{     color: #FF9614;    } 
+     49%{    color: #FF9614; } 
      60%{    color: transparent; } 
      99%{    color:transparent;  } 
      100%{   color: #000;    } 
@@ -88,6 +117,9 @@ summary {
 summary {
     list-style: none;
   }
+summary:hover{
+	color : #FF9614;
+}
   summary::-webkit-details-marker {
     display: none;
   }
@@ -111,6 +143,21 @@ background: #ffffff;
 	color: #5768AD;
 	cursor: pointer;
 } 
+
+.btn_file{
+	font-size: 17px;
+	color: #5768AD;
+	font-weight: 700;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 14px 50px;
+	background: #ffffff;
+	border: none;
+	letter-spacing: 2px;
+	border-radius: 2px;
+	cursor: pointer;
+
+}
 </style>
 </head>
 <body>
@@ -174,7 +221,7 @@ background: #ffffff;
 						  <h5 style="display: inline; float: left; color: black;">썸네일 이미지</h5>
 						  &nbsp;
 						  <div class="file_pre" style="text-align: left;margin-top: 30px;">  
-						    <input type="file" id="file" name="file" onchange="readURL(this);"> 
+						    <input type="file" id="file" name="file" onchange="readURL(this);" class="btn_file"> 
 						  </div>
 						  <br/>
 						  <span class="blinking" style="float:left;"> 미리보기로 확인해보세요 →&nbsp;&nbsp;&nbsp;&nbsp; </span>
@@ -193,7 +240,7 @@ background: #ffffff;
 							<h5 style="display: inline; float: left; color: black;">강의 영상</h5>
 						    &nbsp;
 						    <div style="text-align: left;margin-top: 30px;">
-								<input type="file" id="file_dong" name="file_dong">
+								<input type="file" id="file_dong" name="file_dong" class="btn_file">
 							</div>
 							
 						</div>

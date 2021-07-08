@@ -168,7 +168,7 @@ public class CommunityController {
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		
-		// 전체 글 개수 세팅 - 검색결과과 무관하게 페이징 생성 => 수정필요
+		// 전체 글 개수 세팅 - 검색결과과 무관하게 페이징 생성 => 수정필요 => 수정 완
 		pageMaker.setTotalCount(communityService.selectBoardCnt(cri)); 
 		
 		System.out.println(communityService.selectBoardCnt(cri) + "가져오는 개수!!!!!!!!!!!!");
