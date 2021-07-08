@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonPayVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
@@ -43,5 +44,20 @@ public interface MypageService {
 	
 	//페이징용 북마크 전체 개수
 	public int selectBookmarkCnt(Criteria cri) throws Exception;
+
+	
+	
+	
+	
+	
+	//민정
+	//회원이 구매한 강의 list
+	public List<?> myBuyLessonList(Criteria cri) throws Exception;
+	
+	//페이징용 구매강의 개수
+	public int selectbuyLessonCnt(Criteria cri) throws Exception;
+
+	//마이페이지 결제상세
+	public Map<String, Object> selectMyLessonPayDetail(BuyLessonPayVO vo) throws Exception;
 	
 }
