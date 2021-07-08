@@ -125,12 +125,12 @@ public class QnaController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "qnaDetail.do", method = RequestMethod.GET)
-	public String qnaDetail(@RequestParam Map<String, Object> map, ModelMap model, HttpSession ssion) throws Exception {
+	public String qnaDetail(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
 		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
 		List<?> qnaDetailReply = qnaService.qnaDetailReply(map);
 
-		model.addAttribute("qnaReply", qnaDetailReply);
 		model.addAttribute("data", qnaDetail);
+		model.addAttribute("qnaReply", qnaDetailReply);
 
 		return "qna/qnaDetail";
 	}

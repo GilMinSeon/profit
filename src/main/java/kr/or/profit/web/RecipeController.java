@@ -2,7 +2,6 @@ package kr.or.profit.web;
 
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -50,16 +49,32 @@ public class RecipeController {
 	    * @throws Exception
 	    */
 	@RequestMapping(value = "recipeDetail.do", method = RequestMethod.GET)
-	public String recipeDetail(@RequestParam Map<String, Object> map, Model model) throws Exception {
+	public String recipeDetail(@RequestParam Map<String, Object> map, HttpSession ssion, Model model) throws Exception {
+		map.put("memberId", ssion.getAttribute("memberId"));
 		System.out.println("상세옴여기  = " + map);
+
 		Map<String, Object> recipeDetail = recipeService.recipeDetail(map);
 		recipeCommonHit(map);
+		List<?> recipeDetailReply = recipeService.recipeDetailReply(map);
+		List<?> recipeDetailReplyList = recipeService.recipeDetailReplyList(map);
+		Map<String, Object> recipeDetailMember = recipeService.recipeDetailMember(map);
+
+
 		System.out.println("돌아옴 = " + recipeDetail);
+		System.out.println("댓글돌아옴 = " + recipeDetailReply);
+		System.out.println("대  댓  글돌아옴 = " + recipeDetailReplyList);
+		System.out.println("멤버 돌아옴 = " + recipeDetailMember);
 
 
 		model.addAttribute("data", recipeDetail);
+		model.addAttribute("recipeDetailReply", recipeDetailReply);
+		model.addAttribute("recipeDetailReplyList", recipeDetailReplyList);
+		model.addAttribute("recipeDetailMember", recipeDetailMember);
 		return "community/recipeDetail";
 	}
+
+
+
 
 	/**
 	    * 레시피 등록(recipeAdd)GET
@@ -188,6 +203,52 @@ public class RecipeController {
 			msg = "ok";
 		}
 		System.out.println("msg = " + msg);
+		return msg;
+	}
+
+	/**
+	 * 레시피 댓글 삭제(recipeReplyDelete)
+	 * @author 박상빈
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+
+	@RequestMapping(value = "recipeReplyDelete.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String recipeReplyDelete(@RequestParam Map<String, Object> map, Model model) throws Exception {
+		System.out.println("댓글삭제 옴" + map);
+		int recipeReplyDelete = recipeService.recipeReplyDelete(map);
+		System.out.println("댓글삭제 하고 옴 = " + recipeReplyDelete);
+
+		String msg = "ng";
+
+		if(recipeReplyDelete > 0) {
+			msg = "ok";
+		}
+		System.out.println("msg = " + msg);
+		return msg;
+	}
+	/**
+	 * 레시피 대댓글 등록(recipeReply)
+	 * @author 박상빈
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+
+	@RequestMapping(value = "recipeReplyAdd.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String recipeReplyAdd(@RequestParam Map<String, Object> map,Model model) throws Exception {
+
+		System.out.println("대댓글 옴" + map);
+		int recipeReplyAdd = recipeService.recipeReplyAdd(map);
+
+		String msg = "ng";
+		if(recipeReplyAdd > 0) {
+			msg = "ok";
+		}
+
 		return msg;
 	}
 
