@@ -130,7 +130,7 @@ function fn_param(seq){
                                     <p style="font-weight: bold; color: #8B94B5; margin-bottom: 10px;">
                                 		카테고리 | <span>온라인클래스</span>&nbsp;
                                 	</p>
-                                    <h5><a style="font-size: 18px;font-weight: bold;" href="lessonDetail.do?lessonSeq='+ ${list.lessonSeq}+'">${list.lessonTitle }</a></h5>
+                                    <h5><a style="font-size: 18px;font-weight: bold;" href="lessonDetail.do?lessonSeq=${list.lessonSeq}">${list.lessonTitle }</a></h5>
                                 </div>
                             </div>
                         </div>
@@ -157,10 +157,10 @@ function fn_param(seq){
                                 		</c:if>
                                 	</p>
                                 	<c:if test="${list.commonSeq eq '5' }">
-                                    <h5><a style="font-size: 18px;font-weight: bold;" href="boardDetail.do?communitySeq='+ ${list.communitySeq}+'">${list.commonTitle }</a></h5>
+                                    <h5><a style="font-size: 18px;font-weight: bold;" href="boardDetail.do?communitySeq=${list.communitySeq}">${list.commonTitle }</a></h5>
                                     </c:if>
                                     <c:if test="${list.commonSeq eq '6' }">
-                                    <h5><a style="font-size: 18px;font-weight: bold;" href="recipeDetail.do?communitySeq='+ ${list.communitySeq}+'">${list.commonTitle }</a></h5>
+                                    <h5><a style="font-size: 18px;font-weight: bold;" href="recipeDetail.do?communitySeq=${list.communitySeq}">${list.commonTitle }</a></h5>
                                     </c:if>
                                 </div>
                             </div>
