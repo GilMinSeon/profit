@@ -2,6 +2,7 @@
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -137,7 +138,7 @@
 				                                    
 				                                    <tr>
 				                                    	<th style="display:table-cell; vertical-align: middle;">결제일</th>
-				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${payDetailList.payDate}</td>
+				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${fn:substring(payDetailList.paydate,0,10)}</td>
 				                                    </tr>
 				                                    
 				                                    
