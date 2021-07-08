@@ -44,12 +44,18 @@ public class AdminChatController {
 		List<Map<String, Object>> chatList = adminChatService.selectAdminChatList(cri);
 		
 		model.addAttribute("chatList", chatList);
+		System.out.println("========");
+		System.out.println(chatList.size());
 		System.out.println(model.toString());
 		
 		//페이징처리
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		System.out.println("====");
+		System.out.println("뭔데");
+		System.out.println(pageMaker.getCri().getPage());
+		System.out.println(pageMaker.getCri().getPageStart());
+		System.out.println(pageMaker.getCri().getPerPageNum());
+		
 		System.out.println(adminChatService.selectAdminChatCnt(cri));
 		//전체 글 개수 세팅
 		pageMaker.setTotalCount(adminChatService.selectAdminChatCnt(cri));
