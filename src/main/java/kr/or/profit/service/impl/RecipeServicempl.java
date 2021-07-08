@@ -53,9 +53,35 @@ public class RecipeServicempl implements RecipeService {
 	public int recipeCommonHit(Map<String, Object> map) throws Exception {
 		return mapper.recipeCommonHit(map);
 	}
+	//댓글 등록
 	@Override
 	public int recipeReply(Map<String, Object> map) throws Exception {
 		return mapper.recipeReply(map);
+	}
+	//댓글 목록
+	@Override
+	public List<?> recipeDetailReply(Map<String, Object> map) throws Exception {
+		return mapper.recipeDetailReply(map);
+	}
+	//댓글 삭제
+	@Override
+	public int recipeReplyDelete(Map<String, Object> map) throws Exception {
+		return mapper.recipeReplyDelete(map);
+	}
+	//대댓글 등록
+	@Override
+	public int recipeReplyAdd(Map<String, Object> map) throws Exception {
+		System.out.println("서비스옴(대댓글) = " + map);
+		return mapper.recipeReplyAdd(map);
+	}
+	//대댓글 목록
+	@Override
+	public List<?> recipeDetailReplyList(Map<String, Object> map) throws Exception {
+		return mapper.recipeDetailReplyList(map);
+	}
+	@Override
+	public Map<String, Object> recipeDetailMember(Map<String, Object> map) throws Exception {
+		return mapper.recipeDetailMember(map);
 	}
 
 }
