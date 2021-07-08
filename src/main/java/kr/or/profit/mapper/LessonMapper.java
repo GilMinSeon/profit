@@ -47,7 +47,7 @@ public interface LessonMapper {
 	int insertClass(LessonDetailVO vo) throws Exception;
 
 	//상세강의 목록 조회
-	List<?> selectClassList(String lessonSeq) throws Exception;
+	List<?> selectClassList(Criteria cri) throws Exception;
 
 	//상세 강의 디테일 조회
 	Map<String, Object> selectclassDetail(LessonDetailVO vo) throws Exception;
@@ -91,7 +91,7 @@ public interface LessonMapper {
 	int insertBuyLesson(BuyLessonVO buyLessonVO) throws Exception;
 
 	//강의 구매한 사람이 있는지 확인
-	int selectBuyLesson(String memberId) throws Exception;
+	int selectBuyLesson(Map<String, Object> buyMap) throws Exception;
 
 	//트레인지 확인
 	int checkTrainer(String memberId) throws Exception;
@@ -104,6 +104,9 @@ public interface LessonMapper {
 
 	//수강시작 시 업데이트
 	int updBuyLesson(BuyLessonVO vo) throws Exception;
+
+	//상세 강의 글 개수
+	int selectClassCnt(Criteria cri) throws Exception;
 
 
 

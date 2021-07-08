@@ -50,10 +50,77 @@
 // 	  console.log(setTotalTime());
 // 	}
 $(document).ready(function(){
-	var myAudio = document.getElementById("videoplay");
-	var time = myAudio.duration;
-	console.log(time);
+// 	var myAudio = document.getElementById("videoplay");
+// 	var time = myAudio.duration;
+// 	console.log(time);
+
+// var video = $('video')[0];
+// var t = setInterval(function () {
+//     if(video.readyState > 0) {
+//         var duration = video.duration;
+//         console.log(duration);
+//         clearInterval(t);
+//     }
+// }, 500);
+
+	var video = $('video')[0];
+	var i = setInterval(function() {
+	    if(video.readyState > 0) {
+	        var minutes = parseInt(video.duration / 60, 10);
+	        var seconds = Math.floor(video.duration % 60);
+	        var time = minutes+":"+seconds;
+// 	        if(minutes<10){
+// 	        	minutes = 0minutes;
+// 	        }
+// 	        if(seconds<10){
+// 	        	seconds = 0seconds;
+// 	        }
+// 	        return minutes+":"+seconds;
+	        console.log("time "+time);
+			console.log("몇분?? "+minutes);
+			console.log("몇초?? " +seconds );
+			console.log(minutes+":"+seconds);
+			
+	        // (Put the minutes and seconds in the display)
+
+	        clearInterval(i);
+			$("#videoTime").append(time);
+			
+			var param = "";
+			param += "dummy=" + Math.random();
+			param += "&time=" + time;
+			
+			$.ajax({
+				url : "sendTimeAjax.do",
+				data : param,
+				dataType : "text",
+				async : false,
+				success : function(data) {
+					if (data == "ok") {
+						alert("수강이 시작되었습니다.");
+						document.getElementById("startBtn").style.display = "none";
+						document.getElementById("pointer").style.display = "none";
+						vid_play_pause();
+					} else {
+						alert("문제가 발생했습니다. 다시 한 번 시도해주세요");
+					}
+					console.log(data)
+				},
+			
+			error : function(error){
+				alert("문제가 있습니다. 다시 시도해 주세요.");
+				console.log(error);
+				console.log(error.status);
+			}
+			});
+			
+	    }
+	}, 200);
+	
+	
 });
+
+
 	//수강시작버튼 눌렀을때
 	function start_play() {
 		var msg = "ok";
@@ -208,7 +275,7 @@ $(document).ready(function(){
 									<th scope="row" style="background-color: #E6E6E6;">강의 정보</th>
 									<td>
 										<div style="display: inline-block;"><span style="color: #666">수강가능일</span>&nbsp;&nbsp;<span>바로수강가능</span></div>&nbsp;&nbsp; | &nbsp;&nbsp;
-										<div style="display: inline-block;"><span style="color: #666">재생시간</span>&nbsp;&nbsp;<span>20:30</span></div>&nbsp;&nbsp; | &nbsp;&nbsp;
+										<div style="display: inline-block;"><span style="color: #666">재생시간</span>&nbsp;&nbsp;<span id="videoTime"></span></div>&nbsp;&nbsp; | &nbsp;&nbsp;
 										<div style="display: inline-block;"><span style="color: #666">등록일</span>&nbsp;&nbsp;<span>${classResult.inDate}</span></div>
 									</td>
 									

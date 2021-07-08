@@ -88,8 +88,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//상세강의 목록 조회
 	@Override
-	public List<?> selectClassList(String lessonSeq) throws Exception {
-		return lessonDAO.selectClassList(lessonSeq);
+	public List<?> selectClassList(Criteria cri) throws Exception {
+		return lessonDAO.selectClassList(cri);
 	}
 
 	//상세강의 디테일 조회
@@ -177,8 +177,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//강의 구매한 사람이 있는지 확인
 	@Override
-	public int selectBuyLesson(String memberId) throws Exception {
-		return lessonDAO.selectBuyLesson(memberId);
+	public int selectBuyLesson(Map<String, Object> buyMap) throws Exception {
+		return lessonDAO.selectBuyLesson(buyMap);
 	}
 
 	//트레이너인지 확인
@@ -205,6 +205,13 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.updBuyLesson(vo);
 	}
 
+	//상세강의 글 개수 
+	@Override
+	public int selectClassCnt(Criteria cri) throws Exception {
+		return lessonDAO.selectClassCnt(cri);
+	}
+
+	
 	
 
 

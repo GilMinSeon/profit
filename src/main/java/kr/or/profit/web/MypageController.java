@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,10 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.or.profit.service.MemberService;
 import kr.or.profit.service.MypageService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
+import kr.or.profit.vo.PageMaker;
 import kr.or.profit.vo.ProcessVO;
 
 /**
@@ -83,10 +87,45 @@ public class MypageController {
 	
 	
 	
-	//2. 북마크
+	//2. 북마크 리스트
 	@RequestMapping(value = "bookmark.do", method = RequestMethod.GET)
-	public String bookmark(Locale locale, Model model) {
-
+	public String bookmark(HttpServletRequest request, Model model, Criteria cri,
+			@RequestParam(value = "commonSeq", required = false) String commonSeq
+			) throws Exception {
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		commonSeq = request.getParameter("commonSeq");
+		
+		cri.setMemberId(memberId);
+		cri.setCommonSeq(commonSeq);
+		cri.setPerPageNum(6);
+		
+//		BookgoodVO paramVO = new BookgoodVO();
+//		paramVO.setMemberId(memberId);
+//		paramVO.setCommonSeq(commonSeq);
+		
+		List<Map<String, String>> list = mypageService.selectBookmarkList(cri);
+		
+		System.out.println(cri.getRowStart());
+		System.out.println(cri.getRowEnd());
+		
+		
+		System.out.println(list.toString());
+		model.addAttribute("list", list);
+		model.addAttribute("commonSeq", commonSeq);
+		
+		//페이징처리
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		
+		//전체 글 개수 세팅
+		pageMaker.setTotalCount(mypageService.selectBookmarkCnt(cri));
+		
+		System.out.println("전체글개수-----------");
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		
 		return "mypage/bookmark";
 	}
 

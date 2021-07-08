@@ -40,7 +40,7 @@
 					#{lessonCore, jdbcType=VARCHAR},
 					#{lessonIntro, jdbcType=VARCHAR},
 					#{lessonPrice, jdbcType=VARCHAR},
-					'n',
+					'N',
 					#{lessonMonth, jdbcType=VARCHAR},
 					#{inUserId, jdbcType=VARCHAR},
 					sysdate,
@@ -674,31 +674,72 @@
 	
 	
 	<!-- 상세강의 목록조회 -->
-	<select id="selectClassList"  resultType="egovMap" parameterType="String" >	<!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
+<!-- 	<select id="selectClassList"  resultType="egovMap" parameterType="Criteria" >	 egovMap :  key 에 대하여 Camel Case 변환하여 super.put -->
 
-			SELECT A.LESSON_DETAIL_SEQ,
-			        A.LESSON_SEQ,
-			        A.FILE_SEQ,
-			        A.LESSON_DETAIL_TITLE,
-			        A.LESSON_DETAIL_CONTENT,
-			        A.IN_USER_ID,
-			        TO_CHAR(A.IN_DATE,'YYYY-MM-DD') IN_DATE,
-			        A.UP_USER_ID,
-			        A.UP_DATE,
-			        B.FILE_SAVE_NAME,
-			        C.LESSON_CATEGORY_NAME
-			FROM LESSON_DETAIL A
-			LEFT OUTER JOIN(SELECT FILE_SEQ, FILE_SAVE_NAME, FILE_PATH
-			                    FROM ATTACH_FILE
-			                    WHERE FILE_DETAIL_SEQ='1') B
-			    ON A.FILE_SEQ = B.FILE_SEQ
-			LEFT OUTER JOIN(SELECT D.LESSON_CATEGORY_NAME,D.LESSON_CATEGORY_SEQ, E.LESSON_SEQ
-			                    FROM LESSON_CATEGORY D, LESSON E
-			                    WHERE D.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ) C
-			    ON A.LESSON_SEQ = C.LESSON_SEQ
-			WHERE A.LESSON_SEQ = #{lessonSeq, jdbcType=VARCHAR}
-			ORDER BY TO_NUMBER(LESSON_DETAIL_SEQ)
+<!-- 			SELECT A.LESSON_DETAIL_SEQ, -->
+<!-- 			        A.LESSON_SEQ, -->
+<!-- 			        A.FILE_SEQ, -->
+<!-- 			        A.LESSON_DETAIL_TITLE, -->
+<!-- 			        A.LESSON_DETAIL_CONTENT, -->
+<!-- 			        A.IN_USER_ID, -->
+<!-- 			        TO_CHAR(A.IN_DATE,'YYYY-MM-DD') IN_DATE, -->
+<!-- 			        A.UP_USER_ID, -->
+<!-- 			        A.UP_DATE, -->
+<!-- 			        B.FILE_SAVE_NAME, -->
+<!-- 			        C.LESSON_CATEGORY_NAME -->
+<!-- 			FROM LESSON_DETAIL A -->
+<!-- 			LEFT OUTER JOIN(SELECT FILE_SEQ, FILE_SAVE_NAME, FILE_PATH -->
+<!-- 			                    FROM ATTACH_FILE -->
+<!-- 			                    WHERE FILE_DETAIL_SEQ='1') B -->
+<!-- 			    ON A.FILE_SEQ = B.FILE_SEQ -->
+<!-- 			LEFT OUTER JOIN(SELECT D.LESSON_CATEGORY_NAME,D.LESSON_CATEGORY_SEQ, E.LESSON_SEQ -->
+<!-- 			                    FROM LESSON_CATEGORY D, LESSON E -->
+<!-- 			                    WHERE D.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ) C -->
+<!-- 			    ON A.LESSON_SEQ = C.LESSON_SEQ -->
+<!-- 			WHERE A.LESSON_SEQ = #{lessonSeq, jdbcType=VARCHAR} -->
+<!-- 			ORDER BY TO_NUMBER(LESSON_DETAIL_SEQ) -->
+<!-- 	</select> -->
+	
+	<!-- 상세강의 목록조회 -->
+	<select id="selectClassList"  resultType="egovMap" parameterType="Criteria" >	 <!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
+		select tt.rm, tt.LESSON_DETAIL_SEQ, tt.LESSON_SEQ, tt.FILE_SEQ, tt.LESSON_DETAIL_TITLE, tt.LESSON_DETAIL_CONTENT,
+		       tt.IN_USER_ID, tt.IN_DATE, tt.UP_USER_ID, tt.UP_DATE, tt.LESSON_CATEGORY_NAME,tt.FILE_SAVE_NAME,tt.FILE_PATH
+		    from
+		        (select rownum as rm, tb.LESSON_DETAIL_SEQ, tb.LESSON_SEQ, tb.FILE_SEQ,
+		                tb.LESSON_DETAIL_TITLE, tb.LESSON_DETAIL_CONTENT, tb.IN_USER_ID, tb.IN_DATE,
+		                tb.UP_USER_ID, tb.UP_DATE, tb.LESSON_CATEGORY_NAME,tb.FILE_SAVE_NAME,tb.FILE_PATH
+		        from(SELECT 
+		                A.LESSON_DETAIL_SEQ,
+		                A.LESSON_SEQ,
+		                A.FILE_SEQ,
+		                A.LESSON_DETAIL_TITLE,
+		                A.LESSON_DETAIL_CONTENT,
+		                A.IN_USER_ID,
+		                TO_CHAR(A.IN_DATE,'YYYY-MM-DD') IN_DATE,
+		                A.UP_USER_ID,
+		                A.UP_DATE,
+		                B.FILE_SAVE_NAME,
+		                B.FILE_PATH,
+		                C.LESSON_CATEGORY_NAME
+		                    FROM LESSON_DETAIL A
+		                    LEFT OUTER JOIN(SELECT FILE_SEQ, FILE_SAVE_NAME, FILE_PATH
+		                                        FROM ATTACH_FILE
+		                                        WHERE FILE_DETAIL_SEQ='1') B
+		                        ON A.FILE_SEQ = B.FILE_SEQ
+		                    LEFT OUTER JOIN(SELECT D.LESSON_CATEGORY_NAME,D.LESSON_CATEGORY_SEQ, E.LESSON_SEQ
+		                                        FROM LESSON_CATEGORY D, LESSON E
+		                                        WHERE D.LESSON_CATEGORY_SEQ = E.LESSON_CATEGORY_SEQ) C
+		                        ON A.LESSON_SEQ = C.LESSON_SEQ
+		                    WHERE A.LESSON_SEQ = #{lessonSeq, jdbcType=VARCHAR}
+		                   
+		                    ORDER BY TO_NUMBER(a.LESSON_DETAIL_SEQ)
+		                )tb
+		            )tt
+		     
+		     where tt.rm between #{rowStart} and  #{rowEnd}
 	</select>
+	
+	
 	    
     <!-- 상세 강의 디테일 조회 -->
 	<select id="selectclassDetail" resultType="egovMap">
@@ -824,12 +865,13 @@
  		]]> 
 	</insert>
 	
-	<!-- 사용가능한 이용권 존재여부 확인 -->
-	<select id="selectBuyLesson" resultType="int">
+	<!-- 강의 구매한 사람이 있는지 확인 -->
+	<select id="selectBuyLesson" resultType="int" parameterType="hashmap">
 	    SELECT COUNT(*)
 		FROM BUY_LESSON
 		WHERE IN_USER_ID = #{memberId}
 		AND LESSON_REFUND_FLAG = 'N'
+		AND LESSON_SEQ = #{lessonSeq}
 	</select>
 	
 	<!-- 강의등록 전 트레이너인지 확인 -->
@@ -851,5 +893,16 @@
             AND LESSON_REFUND_FLAG = 'N'
 	</update>
 
+    
+    <!-- 페이징용 상세강의 개수 cnt -->
+    <select id="selectClassCnt" parameterType="Criteria" resultType="int">
+        select count(*)
+		    from lesson_detail a
+		    left join lesson b
+		    on (a.lesson_seq = b.lesson_seq)
+		where b.lesson_private_flag='N'
+		AND A.Lesson_Seq =#{lessonSeq}
+        
+    </select>
 	
 </mapper>

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
 
@@ -35,5 +37,11 @@ public interface MypageService {
 	public List<?> selectFileInfo(String fileSeq) throws Exception;
 	
 	public int checkApplyPage(String memberId) throws Exception;
+	
+	//북마크
+	public List<Map<String, String>> selectBookmarkList(Criteria cri) throws Exception;
+	
+	//페이징용 북마크 전체 개수
+	public int selectBookmarkCnt(Criteria cri) throws Exception;
 	
 }

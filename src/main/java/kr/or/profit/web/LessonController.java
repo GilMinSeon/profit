@@ -152,7 +152,7 @@ public class LessonController {
     * @throws Exception
     */
    @RequestMapping(value = "lessonDetail.do",  method = {RequestMethod.GET, RequestMethod.POST})
-   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request) throws Exception  { 
+   public String lessonDetail(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request, Criteria cri) throws Exception  { 
       HttpSession session = request.getSession();
       String memberId = (String) session.getAttribute("memberId");
       System.out.println("민정이 "+memberId);
@@ -164,12 +164,34 @@ public class LessonController {
       System.out.println("레슨시퀀은 뭐냐ㅕ "+lessonSeq);
       System.out.println("제발찍혀라" + model);
       
-      List<?> classList = lessonService.selectClassList(lessonSeq);
+      cri.setMemberId(memberId);
+      cri.setMemberId(lessonSeq);
+      cri.setPerPageNum(5);
+      
+      List<?> classList = lessonService.selectClassList(cri);
+      
+      System.out.println(cri.getRowStart());
+      System.out.println(cri.getRowEnd());
+      
       model.addAttribute("resultClassList", classList);
-      System.out.println("디테일로 갈 파일 상세 리트스" + model);
+      System.out.println("디테일로 갈 파일 상세 리트스" + model.toString());
+      
+    //페이징처리
+      PageMaker pageMaker = new PageMaker();
+      pageMaker.setCri(cri);
+      
+    //전체 글 개수 세팅
+      pageMaker.setTotalCount(lessonService.selectClassCnt(cri));
+      
+      System.out.println("전체글개수-----------");
+      
+      model.addAttribute("pageMaker", pageMaker);
       
       //강의 구매한 사람있는지 확인
-      int buyLessonFlag = lessonService.selectBuyLesson(memberId);
+      Map<String, Object> buyMap = new HashMap<>();
+      buyMap.put("memberId", memberId);
+      buyMap.put("lessonSeq", lessonSeq);
+      int buyLessonFlag = lessonService.selectBuyLesson(buyMap);
       if(buyLessonFlag > 0) {
     	  model.addAttribute("buyer", "1");
       }else {
@@ -496,7 +518,7 @@ public class LessonController {
 	            attachvo.setFileDetailSeq(Integer.toString(cnt));
 	            attachvo.setFileRealName(originalFileName);
 	            attachvo.setFileSaveName(uuid.toString()  + "_" + originalFileName);
-	            attachvo.setFilePath(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString()  + "_" + originalFileName);
+	            attachvo.setFilePath("http://192.168.41.6:9999/upload/profit/" + uuid.toString()  + "_" + originalFileName);
 	            attachvo.setInUserId(memberId);
 	            attachvo.setUpUserId(memberId);
 	            fileVOList.add(attachvo);
@@ -868,5 +890,32 @@ public class LessonController {
       System.out.println("얌마"+msg);
        return msg;
    }
+   
+//   /**
+//    * 동영상시간 lessonDetail로 보내기
+//    * @param request
+//    * @param model
+//    * @return
+//    * @throws Exception
+//    */
+//   @RequestMapping(value = "sendTimeAjax.do")
+//   @ResponseBody
+//   public String sendTime(HttpServletRequest request) throws Exception {
+//
+//	  String time = request.getParameter(time);
+//	  System.out.println("영상재생시간가져오니 "+time);
+//	  
+////      String msg = "ng";
+////      
+////      if(cnt > 0) {
+////         msg = "ok";
+////      }
+////      System.out.println("얌마"+msg);
+//       return null;
+//   }
+   
+   
+   
+   
    
 }
