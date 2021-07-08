@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.or.profit.mapper.AdminChatMapper">
+
+	<select id="selectAdminChatList" resultType="egovMap">	
+		select rm, buy_ticket_seq, ticket_category_seq,
+		ticket_name, ticket_remain, ticket_refund_flag,in_user_id, member_name,
+		to_char(in_date,'YYYY-MM-DD') as in_date
+		from
+		(
+		select rownum as rm, buy_ticket_seq, ticket_category_seq,
+		ticket_name, ticket_remain, ticket_refund_flag,in_user_id, member_name,in_date
+		from
+		(
+		select 
+		a.buy_ticket_seq, 
+		a.ticket_category_seq,
+		c.ticket_name,
+		a.ticket_remain, 
+		a.ticket_refund_flag, 
+		a.in_user_id,
+		b.member_name,
+		a.in_date
+		from buy_ticket a
+		left join member b on
+		(a.in_user_id = b.member_id)
+		left join ticket_category c on
+		(a.ticket_category_seq = c.ticket_category_seq)
+		where 1=1 
+		<if test="selStatus == '결제'">
+		    and ticket_refund_flag = 'N'
+		</if>
+		<if test="selStatus == '환불'">
+		    and ticket_refund_flag = 'Y'
+		</if>
+		<if test="selDate != null and selDate !=''">
+		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selIdentity == '아이디'">
+		    and a.in_user_id like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '이름'">
+		    and b.member_name like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '전체'">
+		    and (b.member_name like '%' || #{searchKeyword} || '%' or
+		    a.in_user_id like '%' || #{searchKeyword} || '%'
+		    )
+		</if>
+		)
+		)
+		order by in_date desc
+	</select>
+	
+	<select id="selectAdminChatCnt" parameterType="Criteria" resultType="int">
+	  	select 
+		count(*)
+		from
+		(
+		select 
+		a.buy_ticket_seq, 
+		a.ticket_category_seq,
+		c.ticket_name,
+		a.ticket_remain, 
+		a.ticket_refund_flag, 
+		a.in_user_id,
+		b.member_name,
+		a.in_date
+		from buy_ticket a
+		left join member b on
+		(a.in_user_id = b.member_id)
+		left join ticket_category c on
+		(a.ticket_category_seq = c.ticket_category_seq)
+		where 1=1 
+		<if test="selStatus == '결제'">
+		    and ticket_refund_flag = 'N'
+		</if>
+		<if test="selStatus == '환불'">
+		    and ticket_refund_flag = 'Y'
+		</if>
+		<if test="selDate != null and selDate !=''">
+		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selIdentity == '아이디'">
+		    and a.in_user_id=#{searchKeyword} 
+		</if>
+		<if test="selIdentity == '이름'">
+		    and b.member_name=#{searchKeyword} 
+		</if>
+		<if test="selIdentity == '전체'">
+		    and (b.member_name=#{searchKeyword} or
+		    a.in_user_id=#{searchKeyword})
+		</if>
+		)
+		order by in_date desc
+	    
+	</select>
+</mapper>
