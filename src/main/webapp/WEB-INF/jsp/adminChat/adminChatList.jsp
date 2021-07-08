@@ -127,10 +127,6 @@ $(document).ready(function(){
 					</c:forEach>
 				</tbody>
 			</table>
-			dfdf
-			${pageMaker.cri.page}
-			${pageMaker.startPage}
-			${pageMaker.endPage}
 			<!-- 페이징처리 -->
             	<div class="col-lg-12">
 					<div class="classes__pagination">

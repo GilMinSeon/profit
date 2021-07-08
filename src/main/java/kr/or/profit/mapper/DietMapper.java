@@ -10,6 +10,7 @@ import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.CommunityVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ReplyVO;
 
 @Mapper("dietMapper")
@@ -59,4 +60,10 @@ public interface DietMapper {
 	
 	//상담 프로필 활성화
 	int updatePublic(String chatProfileSeq) throws Exception;
+	
+	//칼로리 정보 목록 조회
+	List<Map<String, Object>> selectKcalList(Criteria cri) throws Exception;
+	
+	//페이징 - 칼로리 정보 목록 전체 글 개수
+	int selectKcalCnt(Criteria cri) throws Exception;
 }

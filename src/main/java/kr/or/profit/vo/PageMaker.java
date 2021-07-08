@@ -163,5 +163,14 @@ public class PageMaker {
 
 		return uriComponents.toUriString();
 	}
+	
+	// 칼로리 정보 목록
+	public String makeQueryKal(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+				.queryParam("searchKeyword", cri.getSearchKeyword())
+				.build();
+
+		return uriComponents.toUriString();
+	}
 
 }
