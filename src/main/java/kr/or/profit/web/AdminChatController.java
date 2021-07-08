@@ -13,18 +13,18 @@ public class AdminChatController {
 	@RequestMapping(value = "adminChatList.do", method = RequestMethod.GET)
 	public String adminChatList(Locale locale, Model model) {
 
-		return "admin/adminChatList";
+		return "adminChat/adminChatList";
 	}
 	
 	@RequestMapping(value = "adminChatDetail.do", method = RequestMethod.GET)
 	public String adminChatDetail(Locale locale, Model model) {
 
-		return "admin/adminChatDetail";
+		return "adminChat/adminChatDetail";
 	}
 	
 	@RequestMapping(value = "adminTicketPayList.do", method = RequestMethod.GET)
 	public String adminTicketPayList(Locale locale, Model model) {
 
-		return "admin/adminTicketPayList";
+		return "adminChat/adminTicketPayList";
 	}
 }

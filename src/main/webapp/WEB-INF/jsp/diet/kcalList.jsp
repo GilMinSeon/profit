@@ -53,20 +53,19 @@ none
 	display: none;
 }
 
-#kcalList tr td {
+.kcalList tr td {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #6c7ae05c;
 }
 
-#kcalList tr:hover {
+.kcalList tr:hover {
 	background-color: #f8f6ff;
 }
 
 </style>
 
 <script>
-
 function fn_modalOpen(){
 	$("#myModal").modal('show');
 }
@@ -216,7 +215,7 @@ function fn_modalOpen(){
 					    <div class="modal-dialog" role="document">
 					        <div class="modal-content" style="margin-top: 0px;margin-left:50px;width: 770px;height:900px;">
 					            <div class="modal-header">
-					                <h5 class="modal-title">🍤음식 정보 상세보기</h5>
+					                <h3 class="modal-title">🍤음식 정보 상세보기</h3>
 					                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					                    <span aria-hidden="true">&times;</span>
 					                </button>
@@ -285,78 +284,78 @@ function fn_modalOpen(){
 					</div>
 
 					<div style="text-align: center;">
-						<table id="kcalList"
+						<table id="myTable" class="kcalList"
 							style="margin-right: 0; margin-left: auto; margin-right: auto;">
 							<tr>
 								<th
-									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 45%;">식품이름</th>
+									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 45%;font-size: 1.2em;">식품이름</th>
 								<th
-									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 20%;">총
+									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 20%;font-size: 1.2em;">총
 									내용량</th>
 								<th
-									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 10%;">열량</th>
+									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 10%;font-size: 1.2em;">열량</th>
 								<th
 									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 10%;"></th>
 							<tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 							<tr>
-								<td>삶은 달걀</td>
+								<td onclick="fn_modalOpen()">삶은 달걀</td>
 								<td>1개(50g)</td>
 								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_modalOpen()"></td>
+								<td><input class="class-btn" type="button" value="담기"></td>
 							</tr>
 						</table>
 
