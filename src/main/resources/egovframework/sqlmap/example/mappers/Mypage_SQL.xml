@@ -324,5 +324,16 @@
 		    (b.file_seq = c.file_seq)
 		where  a.buy_lesson_seq = #{buyLessonSeq}
 	</select>
+	
+	
+<!-- 	환불가능한지 체킹 -->
+	<select id="selectcheckRefundFlag" resultType="int" parameterType="hashmap">
+	    SELECT COUNT(*)
+		FROM BUY_LESSON
+		WHERE IN_USER_ID = #{memberId}
+		AND LESSON_REFUND_FLAG = 'N'
+		AND LESSON_SEQ = #{lessonSeq}
+	</select>
+	
 
 </mapper>

@@ -679,24 +679,29 @@ public class LessonController {
 		String lessonMonth = request.getParameter("lessonMonth");
 		int month = Integer.parseInt(lessonMonth);
 		System.out.println("string을int로 "+ month);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY/MM/dd");
 		//오늘 날짜를 기준으루..
 		Calendar cal = Calendar.getInstance ( );
 		System.out.println("cals는? "+cal);
 		//lessonMonth개월 후의 날
-		cal.add ( cal.MONTH, +month );
-		int final_year = cal.get ( cal.YEAR );
-		int final_month = cal.get ( cal.MONTH ) + 1;
-		int final_date = cal.get ( cal.DATE );
+		cal.add ( Calendar.MONTH, month);
+		String date = sdf.format(cal.getTime());
+		System.out.println(sdf.format(cal.getTime()));
+		
+//		String final_year = sdf.format(cal.get ( cal.YEAR ));
+//		String final_month = sdf.format(cal.get ( cal.MONTH ) + 1);
+//		String final_date = sdf.format(cal.get ( cal.DATE ));
 
-		System.out.println ( final_year );
-		System.out.println ( final_month );
-		System.out.println ( final_date );
+//		System.out.println ( final_year );
+//		System.out.println ( final_month );
+//		System.out.println ( final_date );
 		
-		String fYear = Integer.toString(final_year);
-		String fMonth = Integer.toString(final_month);
-		String fDate = Integer.toString(final_date);
+//		String fYear = Integer.toString(final_year);
+//		String fMonth = Integer.toString(final_month);
+//		String fDate = Integer.toString(final_date);
 		
-		String date = fYear+"/"+fMonth+"/"+fDate;
+//		String date = final_month;
 				
 		System.out.println("lessonTitle : " + lessonTitle);
 		System.out.println("lessonPrice : " + lessonPrice );
@@ -914,8 +919,5 @@ public class LessonController {
 //       return "redit:/lesson/lessonDetail";
 //   }
 //   
-   
-   
-   
    
 }
