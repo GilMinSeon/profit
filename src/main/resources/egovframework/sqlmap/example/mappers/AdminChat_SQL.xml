@@ -50,6 +50,7 @@
 		</if>
 		)
 		)
+		where rm between #{rowStart} and #{rowEnd}
 		order by in_date desc
 	</select>
 	
