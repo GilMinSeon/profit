@@ -84,14 +84,15 @@
 		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
 		</if>
 		<if test="selIdentity == '아이디'">
-		    and a.in_user_id=#{searchKeyword} 
+		    and a.in_user_id like '%' || #{searchKeyword} || '%' 
 		</if>
 		<if test="selIdentity == '이름'">
-		    and b.member_name=#{searchKeyword} 
+		    and b.member_name like '%' || #{searchKeyword} || '%' 
 		</if>
 		<if test="selIdentity == '전체'">
-		    and (b.member_name=#{searchKeyword} or
-		    a.in_user_id=#{searchKeyword})
+		    and (b.member_name like '%' || #{searchKeyword} || '%' or
+		    a.in_user_id like '%' || #{searchKeyword} || '%'
+		    )
 		</if>
 		)
 		order by in_date desc

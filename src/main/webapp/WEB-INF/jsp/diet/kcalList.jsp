@@ -63,11 +63,26 @@ none
 	background-color: #f8f6ff;
 }
 
+.kcal_span{
+font-weight: bold;
+}
+.kcal_img{
+width: 15px; 
+height: 15px;
+}
+
 </style>
 
 <script>
 function fn_modalOpen(){
 	$("#myModal").modal('show');
+}
+
+function fn_calcAdd(foodName, kcalNum){
+	$(".box").append("<p class='ex'>🥨 제육덮밥&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + 
+					 "<span class='kcal_span'>500 Kcal&nbsp;&nbsp;&nbsp;" + 
+					 "<img class='kcal_img' src='./resources/img/common/delete2.png'></span></p>");
+    $(".ex").hide().fadeIn(700);
 }
 </script>
 </head>
@@ -109,60 +124,13 @@ function fn_modalOpen(){
 					</div>
 					<div>
 						<div class="box" style="overflow-y: scroll; height: 370px;padding-left: 30px;padding-right:15px;">
-							<p>
+							<!-- <p>
 								🥨 제육덮밥&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
 									style="font-weight: bold;">500 Kcal&nbsp;&nbsp;&nbsp;<img
 									src="./resources/img/common/delete2.png"
 									style="width: 15px; height: 15px;"></span>
-							</p>
-							<p>
-								🥨 김치 치즈 탕수육&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">700 Kcal&nbsp;&nbsp;&nbsp;</span><img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;">
-							</p>
-							<p>
-								🥨 연어샐러드&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">150 Kcal&nbsp;&nbsp;&nbsp;</span><img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;">
-							</p>
-							<p>
-								🥨 빠네 파스타&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">550 Kcal&nbsp;&nbsp;&nbsp;</span><img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;">
-							</p>
-							<p>
-								🥨 마르게리따 피자&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">670 Kcal&nbsp;&nbsp;&nbsp;</span><img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;">
-							</p>
-							<p>
-								🥨 얼큰이 칼국수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">580 Kcal&nbsp;&nbsp;&nbsp;</span><img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;">
-							</p>
-							<p>
-								🥨 곱창전골&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">760 Kcal&nbsp;&nbsp;&nbsp;</span><img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;">
-							</p>
-							<p>
-								🥨 마카롱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">150 Kcal&nbsp;&nbsp;&nbsp;</span><img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;">
-							</p>
-							<p>
-								🥨 밀크티 쉐이크&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">280 Kcal&nbsp;&nbsp;&nbsp;</span><img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;">
-							</p>
+							</p> -->
+							
 						</div>
 						<hr>
 						<div style="text-align: right;margin-right: 20px;">
@@ -191,11 +159,11 @@ function fn_modalOpen(){
 					<div class="classes__filter">
 						<div class="row">
 							<div class="col-lg-12">
-								<form method="get" id="frm" action="lessonList.do#location123">
+								<form action="kcalList.do#location123">
 									<div class="class__filter__input">
-										<p>Search:</p>
+										<p>검색</p>
 										<input type="text" style="width: 470px;" placeholder="검색"
-											id="keyword" name="keyword" value="${option.keyword}">
+											id="keyword" name="searchKeyword" value="${searchKeyword}">
 									</div>
 									<div class="class__filter__btn">
 										<button type="submit" style="cursor: pointer;">
@@ -297,70 +265,40 @@ function fn_modalOpen(){
 								<th
 									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 10%;"></th>
 							<tr>
+							<c:forEach var="result" items="${kcalList}" varStatus="status">
 							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
+								<td onclick="fn_modalOpen()">${result.descKor}</td>
+								<td>${result.servingSize}</td>
+								<td>${result.nutrCont1}</td>
+								<td><input class="class-btn" type="button" value="담기" onclick="fn_calcAdd(${result.descKor},${result.nutrCont1})"></td>
 							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
-							<tr>
-								<td onclick="fn_modalOpen()">삶은 달걀</td>
-								<td>1개(50g)</td>
-								<td>68 Kcal</td>
-								<td><input class="class-btn" type="button" value="담기"></td>
-							</tr>
+							</c:forEach>
 						</table>
-
+						<br>
+						<!-- 페이징처리 -->
+            	<div class="col-lg-12">
+					<div class="classes__pagination">
+					<c:if test="${pageMaker.prev}">
+						<a href="kcalList.do${pageMaker.makeQueryKal(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
+						</a>
+					</c:if> 
+					
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="kcalList.do${pageMaker.makeQueryKal(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
+					
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="kcalList.do${pageMaker.makeQueryKal(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
 					</div>
 				</div>
+					</div>
+				</div>
+				
+				
 				
 			</div>
 		</div>

@@ -367,4 +367,32 @@
 	      
 	</update>
 	
+	<!-- 칼로리 정보 목록-->
+	<select id="selectKcalList" resultType="egovMap">
+	    select rm , num, desc_kor, maker_name, serving_size, nutr_cont1, nutr_cont2, nutr_cont3, nutr_cont4, nutr_cont5, nutr_cont6
+		from
+		(
+		select rownum as rm , num, desc_kor, maker_name, serving_size, nutr_cont1, nutr_cont2, nutr_cont3, nutr_cont4, nutr_cont5, nutr_cont6
+		from(
+		select *
+		from food_ntr_irdnt_db
+		where 1=1
+		<if test="searchKeyword != null and searchKeyword != ''">
+		and desc_kor like '%' || #{searchKeyword} || '%'
+		</if>
+        order by desc_kor asc
+		)
+		)
+		where rm between #{rowStart} and #{rowEnd}
+	</select>
+	
+	<!-- 칼로리 정보 글 개수 -->
+		<select id="selectKcalCnt" parameterType="Criteria" resultType="int">
+		select count(*)
+		from food_ntr_irdnt_db
+		where 1=1 
+		<if test="searchKeyword != null and searchKeyword != ''">
+		and desc_kor like '%' || #{searchKeyword} || '%'
+		</if>
+		</select>
 </mapper>
