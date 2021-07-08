@@ -53,13 +53,6 @@
 <!-- 	관리자 목록 -->
 	<select id="qnaListAll" resultType="egovMap">
 		SELECT
-		    (SELECT
-		            COUNT(*)
-		        FROM
-		            REPLY B
-		        WHERE
-		            A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
-		        ) CNT,
 		    A.COMMUNITY_SEQ,
 		    A.COMMON_SEQ,
 		    A.COMMUNITY_CATEGORY_SEQ,
@@ -115,6 +108,13 @@
 <!-- 	상세보기 -->
 	<select id="qnaDetail" resultType="egovMap">
 		SELECT
+			(SELECT
+                COUNT(*)
+            FROM
+                REPLY B
+            WHERE
+                A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+                ) CNT,
 		    COMMUNITY_SEQ,
 		    COMMON_SEQ,
 		    COMMON_TITLE,

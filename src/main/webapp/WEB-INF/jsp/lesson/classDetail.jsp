@@ -13,42 +13,6 @@
 
 <script>
 
-// var videoContainer = document.getElementById("videoplay");
-
-//초를 시,분,초로 변환
-// function formatDate(seconds) {
-//   const secondsNumber = parseInt(seconds, 10);
-//   console.log(secondsNumber);
-//   alert(secondsNumber);
-//   let hours = Math.floor(secondsNumber / 3600)
-//   let minutes = Math.floor((secondsNumber - hours * 3600) / 60)
-//   let totalSeconds = secondsNumber - hours * 3600 - minutes * 60
-
-//   if (hours < 10) {
-//     hours = `0${hours}`
-//   }
-//   if (minutes < 10) {
-//     minutes = `0${minutes}`
-//   }
-//   if (totalSeconds < 10) {
-//     totalSeconds = `0${totalSeconds}`
-//   }
-//   return `${hours}:${minutes}:${totalSeconds}`
-// }
-
-//비디오 전체 길이를 가져오는 함수
-// async function setTotalTime() {
-//   const duration = await getBlobDuration(videoPlayer.src);
-//   alert("duration" + duration);
-//   console.log(duration);
-//   setInterval(getCurrentTime, 1000);
-//   totalTime.innerHTML = formatDate(duration);
-// }
-
-// if (videoContainer) {
-// 	  setTotalTime() ;
-// 	  console.log(setTotalTime());
-// 	}
 $(document).ready(function(){
 // 	var myAudio = document.getElementById("videoplay");
 // 	var time = myAudio.duration;
@@ -86,33 +50,16 @@ $(document).ready(function(){
 	        clearInterval(i);
 			$("#videoTime").append(time);
 			
-			var param = "";
-			param += "dummy=" + Math.random();
-			param += "&time=" + time;
+// 			var param = "";
+// 			param += "dummy=" + Math.random();
+// 			param += "&time=" + time;
 			
-			$.ajax({
-				url : "sendTimeAjax.do",
-				data : param,
-				dataType : "text",
-				async : false,
-				success : function(data) {
-					if (data == "ok") {
-						alert("수강이 시작되었습니다.");
-						document.getElementById("startBtn").style.display = "none";
-						document.getElementById("pointer").style.display = "none";
-						vid_play_pause();
-					} else {
-						alert("문제가 발생했습니다. 다시 한 번 시도해주세요");
-					}
-					console.log(data)
-				},
-			
-			error : function(error){
-				alert("문제가 있습니다. 다시 시도해 주세요.");
-				console.log(error);
-				console.log(error.status);
-			}
-			});
+// 			$.ajax({
+// 				url : "sendTimeAjax.do",
+// 				data : param,
+// 				dataType : "text",
+// 				async : false
+// 			});
 			
 	    }
 	}, 200);

@@ -22,4 +22,15 @@ public interface RecipeMapper {
 
 	int recipeReply(Map<String, Object> map) throws Exception;
 
+	List<?> recipeDetailReply(Map<String, Object> map) throws Exception;
+
+	int recipeReplyDelete(Map<String, Object> map) throws Exception;
+
+	int recipeReplyAdd(Map<String, Object> map) throws Exception;
+
+	List<?> recipeDetailReplyList(Map<String, Object> map) throws Exception;
+
+	Map<String, Object> recipeDetailMember(Map<String, Object> map) throws Exception;
+
+
 }

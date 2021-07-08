@@ -503,13 +503,13 @@ function fn_reply_del(seq){
 			<div class="d-flex justify-content-between align-items-center has-border" id="tab_list" >
 				<ul id="titeul" class="nav sub-nav sub-nav--has-border">
 					<li class="nav-item" id="li1">
-						<a href="#1" id="tite1" class="nav-link sub-nav-link" style="font-size:17px;">클래스 소개</a>
+						<a  id="tite1" class="nav-link sub-nav-link" style="font-size:17px;">클래스 소개</a>
 					</li>
 					<li class="nav-item" id="li2">
-						<a href="#2" id="tite2" class="nav-link sub-nav-link" style="font-size:17px;">커리큘럼</a>
+						<a  id="tite2" class="nav-link sub-nav-link" style="font-size:17px;">커리큘럼</a>
 					</li>
 					<li class="nav-item" id="li3">
-						<a href="#3" id="tite3" class="nav-link sub-nav-link" style="font-size:17px;">댓글</a>
+						<a id="tite3" class="nav-link sub-nav-link" style="font-size:17px;">댓글</a>
 					</li>
 				</ul>
 			</div>

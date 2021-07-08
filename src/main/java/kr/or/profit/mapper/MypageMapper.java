@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonPayVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
@@ -47,6 +48,15 @@ public interface MypageMapper {
 	public List<Map<String, String>> selectBookmarkList(Criteria cri);
 	
 	public int selectBookmarkCnt(Criteria cri);
+
+	//회원이 구매한 강의 list
+	public List<?> myBuyLessonList(Criteria cri) throws Exception;
+	
+	//구매강의 개수
+	public int selectbuyLessonCnt(Criteria cri) throws Exception;
+
+	//마이페이지 결제상세
+	public Map<String, Object> selectMyLessonPayDetail(BuyLessonPayVO vo) throws Exception;
 	
 	
 }

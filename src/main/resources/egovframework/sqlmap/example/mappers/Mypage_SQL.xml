@@ -281,6 +281,48 @@
 	
 	
 	
+<!-- 	회원이 구매한 강의 list -->
+	<select id="myBuyLessonList" parameterType="Criteria" resultType="egovMap">
+		select a.lesson_title,
+        	   a.lesson_month,
+        	   a.lesson_seq,
+        	   b.buy_lesson_seq
+        from lesson a
+        	left join buy_lesson b
+        	on(a.lesson_seq = b.lesson_seq)
+   		where b.in_user_id= #{memberId}
+	</select>
 
+	
+	<!-- 페이징용구매강의 전체 개수 cnt -->
+    <select id="selectbuyLessonCnt" parameterType="Criteria" resultType="int">
+        select count(*)
+		    from buy_lesson
+		where in_user_id= #{memberId}
+        
+    </select>
+    
+    
+    
+    <!-- 구매한강의 결제상세 -->
+	<select id="selectMyLessonPayDetail" parameterType="BuyLessonPayVO" resultType="egovMap">
+		select a.in_user_id buyer,
+		       a.buy_lesson_seq,
+		       b.lesson_title,
+		       b.lesson_price,
+		       a.lesson_finish_date,
+		       a.in_date payDate,
+		       a.lesson_refund_flag,
+		       a.lesson_click_flag,
+		       a.lesson_click_date,
+		       c.file_save_name,
+		       c.file_path
+		       from buy_lesson a
+		    left join lesson b on
+		    (a.lesson_seq = b.lesson_seq)
+		    left join attach_file c on
+		    (b.file_seq = c.file_seq)
+		where  a.buy_lesson_seq = #{buyLessonSeq}
+	</select>
 
 </mapper>

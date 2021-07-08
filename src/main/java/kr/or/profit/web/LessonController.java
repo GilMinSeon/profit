@@ -900,20 +900,20 @@ public class LessonController {
 //    */
 //   @RequestMapping(value = "sendTimeAjax.do")
 //   @ResponseBody
-//   public String sendTime(HttpServletRequest request) throws Exception {
+//   public String sendTime(HttpServletRequest request, Model model) throws Exception {
 //
-//	  String time = request.getParameter(time);
+//	  String time = request.getParameter("time");
 //	  System.out.println("영상재생시간가져오니 "+time);
-//	  
+//	  model.addAttribute("time", time);
 ////      String msg = "ng";
 ////      
 ////      if(cnt > 0) {
 ////         msg = "ok";
 ////      }
 ////      System.out.println("얌마"+msg);
-//       return null;
+//       return "redit:/lesson/lessonDetail";
 //   }
-   
+//   
    
    
    
