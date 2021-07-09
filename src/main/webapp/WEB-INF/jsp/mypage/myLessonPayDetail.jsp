@@ -8,6 +8,58 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+function fn_refund(){
+	var buyLessonSeq = $("input:hidden[name=buyLessonSeq]").val();
+	var buyer = $("input:hidden[name=buyer]").val();
+	console.log("buyLessonSeq "+buyLessonSeq);
+	console.log("buyer "+ buyer);
+	
+	var param = "";
+	param += "dummy=" + Math.random();
+	param += "&buyLessonSeq=" + buyLessonSeq;
+	param += "&buyer=" + buyer;
+	console.log(param);
+	
+	$.ajax({
+		type : 'post',
+		url : 'checkRefundAjax.do',
+		data : param,
+		async:false,
+		dataType:"text",
+		success : function(data){
+		if(data=="ok"){
+			alert("등록이 정상적으로 완료되었습니다.");
+			location.href="lessonList.do";
+			window.loacation.reload();
+		}else if(data=="no"){
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
+		}else{
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
+		}
+	},
+		error : function(error){
+			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+	
+	
+	
+	var msg = "ok";
+	if(msg=="ok"){
+		var save = confirm("정말 환불을 요청하시겠습니까?");
+		if(save == true){
+			alert("환불요청이 접수되었습니다. \n관리자 확인 후 결제하신 수단으로 환불이 진행됩니다. \n환불기간은 3~5일정도 소요됩니다.");
+		}
+		
+	}
+	
+}
+</script>
 </head>
 <body>
 
@@ -75,7 +127,7 @@
                 <div class="col-lg-8 order-lg-2 order-1">
                     <div class="row" style="display: inline-block;width: 100%;" >
                         	<!-- Appoinment Section Begin -->
-					<section class="appointment" style=" margin-bottom: 50px;">
+					<section class="appointment"">
 						<div class="container">
 				            <div class="row">
 				                <div class="col-lg-12">
@@ -111,20 +163,20 @@
 				
 				                        <!-- Table row -->
 				<!--                        <form id="payForm" method="POST" accept-charset="UTF-8"> -->
-				                        <div class="row" style="width:600px;padding-right:20px;">
+				                        <div class="row">
 				                            <div class="col-xs-12 table-responsive">
-				                                <table class="table table-striped">
-				                                
-<!-- 				                                    <thead> -->
+				                            <input type="hidden" name="buyLessonSeq" value="${payDetailList.buyLessonSeq}">
+				                            <input type="hidden" name="buyer" value="${payDetailList.buyer}">
+				                                <table class="table" style="margin-bottom: 0px;">
 				                                    <tr></tr>
 				                                    
 				                                    <tr>
-				                                    	<th style="display:table-cell; vertical-align: middle;">구매자</th>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">구매자</th>
 				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${payDetailList.buyer}</td>
 				                                    </tr>
 				                                    
 				                                    <tr>
-				                                    	<th style="display:table-cell; vertical-align: middle;">상품명</th>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">상품명</th>
 				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">
 															<img src="http://192.168.41.6:9999/upload/profit/${payDetailList.fileSaveName}" style="width:100px;height: 70px;object-fit: cover; ">&nbsp;&nbsp;&nbsp;
 				                                            	${payDetailList.lessonTitle}
@@ -132,35 +184,15 @@
 				                                    </tr>
 				                                    
 				                                    <tr>
-				                                    	<th style="display:table-cell; vertical-align: middle;">가격</th>
-				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${payDetailList.lessonPrice}</td>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">가격</th>
+				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${payDetailList.lessonPrice}원</td>
 				                                    </tr>
 				                                    
 				                                    <tr>
-				                                    	<th style="display:table-cell; vertical-align: middle;">결제일</th>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">결제일</th>
 				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${fn:substring(payDetailList.paydate,0,10)}</td>
 				                                    </tr>
 				                                    
-				                                    
-<!-- 			                                        <tr> -->
-<!-- 			                                            <th style="display:table-cell; vertical-align: middle;">구매자</th> -->
-<!-- 			                                            <th colspan="2" style="display:table-cell; vertical-align: middle;">상품명</th> -->
-<!-- 			                                             <th>가격<br><span style="font-size: 0.8em">(원(&#8361;))</span></th> -->
-<!-- 			                                             <th>결제일</th> -->
-<!-- 			                                        </tr> -->
-				                                        
-<!-- 				                                    </thead> -->
-<!-- 				                                    <tbody> -->
-<!-- 				                                        <tr> -->
-<%-- 				                                            <td style="display:table-cell; vertical-align: middle;">${memberId}</td> --%>
-<!-- 				                                            <td colspan="2"> -->
-<%-- 				                                            	<img src="http://192.168.41.6:9999/upload/profit/${result.fileSaveName}" style="width:100px;height: 70px;object-fit: cover; ">&nbsp;&nbsp;&nbsp; --%>
-<%-- 				                                            	${result.lessonTitle} --%>
-<!-- 				                                            </td> -->
-<%-- 				                                            <td style="display:table-cell; vertical-align: middle;">${result.lessonPrice}</td> --%>
-<%-- 				                                            <td style="display:table-cell; vertical-align: middle;">${result.lessonPrice}</td> --%>
-<!-- 				                                        </tr> -->
-<!-- 				                                                                            </tbody> -->
 				                                </table>
 				                            </div><!-- /.col -->
 				                        </div><!-- /.row -->
@@ -179,9 +211,9 @@
 				                                        </tbody>
 				                                        
 				                                    </table>
-				                                    <br/>
+				                                    <br/><br/>
 				                                     <div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
-													         <a class="class-btn_w" style="font-size: 1.1em;cursor:pointer;" onclick="fn_pay('${result.lessonTitle}','${result.lessonPrice}', '${result.lessonSeq}', '${result.lessonMonth}')">&nbsp;&nbsp;환불하기&nbsp;&nbsp;</a>
+													         <a class="class-btn_w" style="font-size: 1.1em;cursor:pointer;" onclick="fn_refund()">&nbsp;&nbsp;환불하기&nbsp;&nbsp;</a>
 													         <a href="myLessonList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
 				
 												    </div>

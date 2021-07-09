@@ -203,7 +203,6 @@ public class MypageController {
 	
 	
 	
-	
 	///////////////////////////////////////
 	
 	//이용권 구매내역
@@ -509,4 +508,38 @@ public class MypageController {
 		return fileVOList;
 	}
 
+	
+		//민정
+		//환불가능여부 확인
+		@RequestMapping(value = "checkRefundAjax.do", method = RequestMethod.POST)
+		@ResponseBody
+		public String checkRefund(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception {
+		   
+			HttpSession session = request.getSession();
+			String memberId = (String) session.getAttribute("memberId");
+			System.out.println("환불확인Id " + memberId);
+			
+			String buyLessonSeq = request.getParameter("buyLessonSeq");
+			System.out.println("환불확인seq "+ buyLessonSeq);
+			
+			 //환불 할 수 있는 사람인지 확인
+		      Map<String, Object> refundMap = new HashMap<>();
+		      refundMap.put("memberId", memberId);
+		      refundMap.put("buyLessonSeq", buyLessonSeq);
+		      int checkRefundFlag = mypageService.selectcheckRefundFlag(refundMap);
+		      if(checkRefundFlag > 0) {
+		    	  model.addAttribute("buyer", "1");
+		      }else {
+		    	  model.addAttribute("buyer", "0");
+		      }
+			
+			
+			String msg = "ok";
+			
+
+			return msg;
+			
+		}
+	
+	
 }

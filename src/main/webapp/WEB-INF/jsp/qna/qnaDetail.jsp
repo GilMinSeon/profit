@@ -6,11 +6,52 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<style>
+.classes__item__text .class-btn:hover {
+	background: #ffffff;
+	border: 1px solid #5768AD;
+	color: #5768AD;
+}
+
+.classes__item__text .class-btn {
+	font-size: 17px;
+	font-weight: 700;
+	color: #ffffff;
+	background: #5768AD;
+	display: inline-block;
+	border: 1px solid rgba(155, 158, 163, 0.2);
+	padding: 10px 20px 7px;
+	border-radius: 2px;
+	-webkit-transition: all 0.4s;
+	-moz-transition: all 0.4s;
+	-ms-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	transition: all 0.4s;
+	width: 140px;
+}
+
+#reply {
+	width: 90%;
+	font-size: 13px;
+	color: #6E7580;
+	padding-left: 30px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	background: #ffffff;
+	border-radius: 2px;
+	height: 50px;
+	margin-bottom: 35px;
+	resize: none;
+	padding-top: 14px;
+	margin-top: 15px;
+}
+
+.breadcrumb-option, .blog-hero {
+	padding-top: 215px;
+	padding-bottom: 170px;
+	margin-top: -75px;
+}
+</style>
 <script type="text/javascript">
-
-<!-- Leave Comment End -->
-
-
 // 댓글 추가
 	function fn_qnaReplyAdd() {
 		var formData = new FormData($('#replyfrm')[0]);
@@ -34,16 +75,13 @@
 				}
 			}
 		})
-
 	}
 
 // 댓글 삭제
 	function fn_reply_del(replySeq) {
-
 		var result = confirm("정말 댓글을 삭제하시겠습니까?"+replySeq);
 		if(result){
 			var replySeq = "replySeq="+ replySeq;
-
 			$.ajax({
 				type : 'POST',
 				async:false,
@@ -62,7 +100,6 @@
 				}
 			})
 		}
-
 	}
 
 </script>
@@ -129,13 +166,13 @@
 					<div class="blog__sidebar">
 						<div class="blog__sidebar__comment" style="overflow-x: hidden; height: 500px; padding: 10px;">
 							<div class="classes__sidebar__comment" style="border-bottom: 0">
-
+								<c:set var="qnaDetailMember" value="${qnaDetailMember}" />
 								<c:set var="replyCheck" value="${qnaReply}" />
 								<c:if test="${not empty replyCheck}">
 									<c:forEach var="qnaReply" items="${qnaReply}">
 										<form id="frm">
 											<div class="classes__sidebar__comment__pic">
-												<img src="./resources/img/classes-details/comment-1.png" alt="">
+												<img src="${qnaReply.filePath}" alt="">
 											</div>
 											<div class="classes__sidebar__comment__text">
 												<h6>
@@ -174,12 +211,14 @@
 							<c:set var="inUser" value="${sessionScope.memberId}" />
 							<c:if test="${inUser eq '1'}">
 								<form id="replyfrm">
+									<input type="hidden" name="communitySeq" value="${data.communitySeq}">
 									<div class="row">
 										<div class="col-lg-12"></div>
 										<div class="col-lg-12">
-											<div class="classes__sidebar__comment__pic"></div>
-											<input type="hidden" name="communitySeq" value="${data.communitySeq}">
-											<textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 100%; float: left;"></textarea>
+											<div class="classes__sidebar__comment__pic">
+												<img src="${qnaDetailMember.FILE_PATH}" alt="">
+											</div>
+											<textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 79%; float: left"></textarea>
 											<input type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: right; margin-top: 15px;" onclick="fn_qnaReplyAdd()" value="답변 등록">
 										</div>
 									</div>

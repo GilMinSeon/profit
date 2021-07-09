@@ -59,5 +59,8 @@ public interface MypageService {
 
 	//마이페이지 결제상세
 	public Map<String, Object> selectMyLessonPayDetail(BuyLessonPayVO vo) throws Exception;
+
+	//마이페이지 환불가능 체킹
+	public int selectcheckRefundFlag(Map<String, Object> refundMap) throws Exception;
 	
 }

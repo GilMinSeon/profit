@@ -1,12 +1,15 @@
 package kr.or.profit.web;
 
+import java.io.File;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.or.profit.service.NoticeService;
 
@@ -23,6 +28,7 @@ public class NoticeController {
 
 	@Resource(name = "noticeService")
 	private NoticeService noticeService;
+
 
 	/**
 	 * 공지사항 목록(noticeList)
@@ -64,7 +70,18 @@ public class NoticeController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "noticeAdd.do", method = RequestMethod.POST)
-	public void noticeInsert(@RequestParam Map<String, Object> map, Model model, HttpServletResponse response) throws Exception {
+	@ResponseBody
+	public void noticeInsert(@RequestParam MultipartHttpServletRequest multipartRequest, Map<String, Object> map, MultipartFile file, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("공지사항옴 = " + map);
+
+		if(map.get("contents").equals("") || map.get("title").equals("")) {
+
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('내용을 확인해주세요'); location.href=noticeAdd.do';</script>");
+			out.flush();
+		}
+
 		int noticeInsert = noticeService.noticeInsert(map);
 
 		response.setContentType("text/html; charset=UTF-8");
@@ -72,6 +89,9 @@ public class NoticeController {
 		out.println("<script>alert('공지사항이 등록 되었습니다'); location.href=noticeList.do';</script>");
 		out.flush();
 	}
+
+
+
 	/**
 	 * 조회수 증가(noticeHit)
 	 *
@@ -155,5 +175,7 @@ public class NoticeController {
 		out.println("<script>alert('공지사항이 삭제 되었습니다');location.href='noticeList.do';</script>");
 		out.flush();
 	}
+
+
 
 }

@@ -53,6 +53,13 @@
 <!-- 	관리자 목록 -->
 	<select id="qnaListAll" resultType="egovMap">
 		SELECT
+			(SELECT
+	            COUNT(*)
+	        FROM
+	            REPLY B
+	        WHERE
+	            A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+	        ) CNT,
 		    A.COMMUNITY_SEQ,
 		    A.COMMON_SEQ,
 		    A.COMMUNITY_CATEGORY_SEQ,
@@ -92,12 +99,12 @@
 		VALUES
 			(
 				(SELECT
-                    COUNT(*)
-                FROM
-                    COMMUNITY)+1,
+		            NVL(MAX(TO_NUMBER(COMMUNITY_SEQ)),0) AS COMMUNITY_SEQ
+		        FROM
+		            COMMUNITY)+1,
 				'8',
-				#{title},
-				#{contents},
+				#{commonTitle},
+				#{commonContent},
 				'N',
 				#{memberId},
 				SYSDATE,
@@ -115,17 +122,17 @@
             WHERE
                 A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
                 ) CNT,
-		    COMMUNITY_SEQ,
-		    COMMON_SEQ,
-		    COMMON_TITLE,
-		    TO_CHAR(COMMON_CONTENT) COMMON_CONTENT,
-		    COMMON_DEL_FLAG,
-		    IN_USER_ID,
-		    TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
-		    UP_USER_ID,
-		    TO_CHAR(UP_DATE, 'YYYY-MM-DD') UP_DATE
+		    A.COMMUNITY_SEQ,
+		    A.COMMON_SEQ,
+		    A.COMMON_TITLE,
+		    TO_CHAR(A.COMMON_CONTENT) COMMON_CONTENT,
+		    A.COMMON_DEL_FLAG,
+		    A.IN_USER_ID,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
+		    A.UP_USER_ID,
+		    TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') UP_DATE
 		FROM
-		    COMMUNITY
+		    COMMUNITY A
 		WHERE
 		    COMMUNITY_SEQ = #{communitySeq}
 	</select>
@@ -135,8 +142,8 @@
 		UPDATE
 		    COMMUNITY
 		SET
-		    COMMON_TITLE    = #{title},
-		    COMMON_CONTENT  = #{contents},
+		    COMMON_TITLE    = #{commonTitle},
+		    COMMON_CONTENT  = #{commonContent},
 		    UP_DATE         = SYSDATE
 		WHERE
 		    COMMUNITY_SEQ = #{communitySeq}
@@ -184,24 +191,26 @@
 	<!-- 	댓글 목록 -->
 	<select id="qnaDetailReply" resultType="egovMap">
 		SELECT
-		   REPLY_SEQ,
-		   COMMUNITY_SEQ,
-		   LESSON_SEQ,
-		   CHAT_PROFILE_SEQ,
-		   REPLY_CONTENT,
-		   REPLY_DEL_FLAG,
-		   REPLY_PARENT_SEQ,
-		   REPLY_DEPTH,
-		   IN_USER_ID,
-		   TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
-		   UP_USER_ID,
-		   TO_CHAR(UP_DATE, 'YYYY-MM-DD') UP_DATE
+		    REPLY_SEQ,
+		    COMMUNITY_SEQ,
+		    REPLY_CONTENT,
+		    REPLY_DEL_FLAG,
+		    REPLY_PARENT_SEQ,
+		    REPLY_DEPTH,
+		    A.IN_USER_ID,
+		    B.FILE_SEQ,
+		    C.FILE_PATH,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE
 		FROM
-		    REPLY
+		    REPLY A
+		    LEFT JOIN MEMBER B ON (A.IN_USER_ID = B.IN_USER_ID)
+		    LEFT JOIN ATTACH_FILE C ON(B.FILE_SEQ = C.FILE_SEQ)
 		WHERE
 		    COMMUNITY_SEQ = #{communitySeq}
 		AND
 			REPLY_DEL_FLAG = 'N'
+		AND
+			REPLY_DEPTH = '0'
 
 	</select>
 	<!-- 	댓글 삭제 -->
@@ -213,5 +222,39 @@
 		WHERE
 		    REPLY_SEQ = #{replySeq}
 	</update>
+
+<!-- 	로그인한 회원정보 -->
+	<select id="qnaDetailMember" resultType="hashMap">
+		SELECT
+		    A.MEMBER_ID,
+		    B.FILE_PATH,
+		    A.MEMBER_PWD,
+		    A.MEMBER_NAME,
+		    A.MEMBER_NICKNAME,
+		    A.MEMBER_MOBILE,
+		    A.MEMBER_GENDER,
+		    A.MEMBER_HEIGHT,
+		    A.MEMBER_WEIGHT,
+		    A.MEMBER_EMAIL,
+		    A.MEMBER_GUBUN,
+		    A.MEMBER_ROUTE,
+		    A.IN_USER_ID,
+		    A.IN_DATE,
+		    A.UP_USER_ID,
+		    A.UP_DATE
+		FROM
+		    member a, (
+		                SELECT
+		                    A.FILE_PATH
+		                FROM
+		                    ATTACH_FILE A, member B
+		                WHERE
+		                    A.FILE_SEQ = B.FILE_SEQ
+		                AND
+		                   B.member_ID = #{memberId}
+		                ) b
+		WHERE
+		    A.member_id = #{memberId}
+	</select>
 
 </mapper>
