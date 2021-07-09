@@ -49,6 +49,8 @@ public interface MypageMapper {
 	
 	public int selectBookmarkCnt(Criteria cri);
 
+	
+	//민정
 	//회원이 구매한 강의 list
 	public List<?> myBuyLessonList(Criteria cri) throws Exception;
 	
@@ -60,6 +62,9 @@ public interface MypageMapper {
 
 	//마이페이지 환불가능여부 체킹
 	public int selectcheckRefundFlag(Map<String, Object> refundMap) throws Exception;
-	
+
+	//마이페이지 환불여부 변경
+	public int updBuyLessonRefundFlag(Map<String, Object> refundFlagMap) throws Exception;
+
 	
 }

@@ -12,12 +12,15 @@
 function fn_refund(){
 	var buyLessonSeq = $("input:hidden[name=buyLessonSeq]").val();
 	var buyer = $("input:hidden[name=buyer]").val();
+	var lessonSeq = $("input:hidden[name=lessonSeq]").val();
 	console.log("buyLessonSeq "+buyLessonSeq);
+	console.log("lessonSeq "+lessonSeq);
 	console.log("buyer "+ buyer);
 	
 	var param = "";
 	param += "dummy=" + Math.random();
 	param += "&buyLessonSeq=" + buyLessonSeq;
+	param += "&lessonSeq=" + lessonSeq;
 	param += "&buyer=" + buyer;
 	console.log(param);
 	
@@ -29,26 +32,22 @@ function fn_refund(){
 		dataType:"text",
 		success : function(data){
 		if(data=="ok"){
-			alert("등록이 정상적으로 완료되었습니다.");
-			location.href="lessonList.do";
-			window.loacation.reload();
+			go_refund();
 		}else if(data=="no"){
-			alert("등록이 실패하였습니다. 다시 시도해주세요");
+			alert("환불대상이 아닙니다. \n마이페이지에 마이클래스에서 내 강의상태를 확인해 주세요.");
 		}else{
-			alert("등록이 실패하였습니다. 다시 시도해주세요");
+			alert("환불요청에 문제가 있습니다. \n다시 시도해주시거나 관리자에게 문의해주세요");
 		}
 	},
 		error : function(error){
-			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
+			alert("환불 실패하였습니다. 다시 시도해 주세요.");
 			console.log(error);
 			console.log(error.status);
 		}
-		
-		
-	})
-	
-	
-	
+	});
+}	
+
+function go_refund(){	
 	var msg = "ok";
 	if(msg=="ok"){
 		var save = confirm("정말 환불을 요청하시겠습니까?");
@@ -57,8 +56,9 @@ function fn_refund(){
 		}
 		
 	}
-	
 }
+
+
 </script>
 </head>
 <body>
@@ -167,29 +167,30 @@ function fn_refund(){
 				                            <div class="col-xs-12 table-responsive">
 				                            <input type="hidden" name="buyLessonSeq" value="${payDetailList.buyLessonSeq}">
 				                            <input type="hidden" name="buyer" value="${payDetailList.buyer}">
+				                            <input type="hidden" name="lessonSeq" value="${payDetailList.lessonSeq}">
 				                                <table class="table" style="margin-bottom: 0px;">
 				                                    <tr></tr>
 				                                    
 				                                    <tr>
-				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">구매자</th>
+				                                    	<th style="display:table-cell; vertical-align: middle;width:20%;background: #6d7ab0 ; color: white;font-size: 1.1em;">구매자</th>
 				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${payDetailList.buyer}</td>
 				                                    </tr>
 				                                    
 				                                    <tr>
-				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">상품명</th>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#6d7ab0; color: white;font-size: 1.1em;">상품명</th>
 				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">
 															<img src="http://192.168.41.6:9999/upload/profit/${payDetailList.fileSaveName}" style="width:100px;height: 70px;object-fit: cover; ">&nbsp;&nbsp;&nbsp;
-				                                            	${payDetailList.lessonTitle}
+				                                            <br/><br/>	${payDetailList.lessonTitle}
 														</td>
 				                                    </tr>
 				                                    
 				                                    <tr>
-				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">가격</th>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#6d7ab0; color: white;font-size: 1.1em;">가격</th>
 				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${payDetailList.lessonPrice}원</td>
 				                                    </tr>
 				                                    
 				                                    <tr>
-				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">결제일</th>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#6d7ab0; color: white;font-size: 1.1em;">결제일</th>
 				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${fn:substring(payDetailList.paydate,0,10)}</td>
 				                                    </tr>
 				                                    
@@ -211,12 +212,13 @@ function fn_refund(){
 				                                        </tbody>
 				                                        
 				                                    </table>
-				                                    <br/><br/>
-				                                     <div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
-													         <a class="class-btn_w" style="font-size: 1.1em;cursor:pointer;" onclick="fn_refund()">&nbsp;&nbsp;환불하기&nbsp;&nbsp;</a>
-													         <a href="myLessonList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
-				
-												    </div>
+				                                    <br/><br/><br/><br/>
+				                                    
+		                                    		<div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
+												         <a class="class-btn_w" style="font-size: 1.1em;cursor:pointer;" onclick="fn_refund()">&nbsp;&nbsp;환불하기&nbsp;&nbsp;</a>
+												         <a href="myLessonList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
+										   			 </div>
+				                                    
 				                                </div>
 				                            </div><!-- /.col -->
 				                        </div><!-- /.row -->
