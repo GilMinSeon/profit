@@ -47,7 +47,7 @@ public class RecipeController {
 	}
 
 	/**
-	    * 레시피 상세보기(recipeDetail)
+	    * 레시피 상세보기/댓글 목록(recipeDetail)
 	    * @author 박상빈
 	    * @param model
 	    * @return String - community/recipeDetail
@@ -67,9 +67,9 @@ public class RecipeController {
 //		List<?> recipeGoodList = recipeService.recipeGoodList();
 
 
-		System.out.println("돌아옴 = " + recipeDetail);
-		System.out.println("댓글돌아옴 = " + recipeDetailReply);
-		System.out.println("대  댓  글돌아옴 = " + recipeDetailReplyList);
+		System.out.println("레시피 상세보기 옴 = " + recipeDetail);
+		System.out.println("댓글돌아 옴 = " + recipeDetailReply);
+		System.out.println("대  댓글돌아옴 = " + recipeDetailReplyList);
 		System.out.println("멤버 돌아옴 = " + recipeDetailMember);
 		System.out.println("최신글5개 = " + recipeNewList);
 //		System.out.println("인기글(좋아요)5개 = " + recipeGoodList);
@@ -291,7 +291,7 @@ public class RecipeController {
 		return msg;
 	}
 	/**
-	 * 레시피 대댓글 등록(recipeReply)
+	 * 레시피 대 댓글 등록(recipeReply)
 	 * @author 박상빈
 	 * @param map
 	 * @return

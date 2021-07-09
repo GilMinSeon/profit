@@ -18,7 +18,7 @@
 	</resultMap>
 
 	<!-- qna 목록 댓글 개수 -->
-	<select id="qnaList" parameterType="hashMap"  resultType="egovMap">
+	<select id="qnaList" resultType="egovMap">
 		SELECT
 		    (SELECT
 		            COUNT(*)
@@ -44,8 +44,6 @@
 		    COMMUNITY A
 		WHERE
 		    A.COMMON_SEQ = '8'
-		AND
-			A.IN_USER_ID = #{memberId}
 		AND
 			A.COMMON_DEL_FLAG = 'N'
 
@@ -257,4 +255,62 @@
 		    A.member_id = #{memberId}
 	</select>
 
+
+	<!-- 	대 댓글목록 -->
+	<select id="qnaDetailReplyList" resultType="hashMap">
+		SELECT
+		    REPLY_SEQ,
+		    COMMUNITY_SEQ,
+		    REPLY_CONTENT,
+		    REPLY_DEL_FLAG,
+		    REPLY_PARENT_SEQ,
+		    REPLY_DEPTH,
+		    A.IN_USER_ID,
+		    B.FILE_SEQ,
+		    C.FILE_PATH,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE
+		FROM
+		    REPLY A
+		    LEFT JOIN MEMBER B ON (A.IN_USER_ID = B.IN_USER_ID)
+		    LEFT JOIN ATTACH_FILE C ON(B.FILE_SEQ = C.FILE_SEQ)
+		WHERE
+			COMMUNITY_SEQ = #{communitySeq}
+		AND
+			REPLY_DEPTH = '1'
+		AND
+			REPLY_DEL_FLAG = 'N'
+
+	</select>
+
+	<!-- 	대 댓 글등록 -->
+	<insert id="qnaReplyAdd" parameterType="hashMap">
+		INSERT INTO REPLY
+			(
+				REPLY_SEQ,
+				COMMUNITY_SEQ,
+				REPLY_CONTENT,
+				REPLY_DEL_FLAG,
+				REPLY_PARENT_SEQ,
+				REPLY_DEPTH,
+				IN_USER_ID,
+				IN_DATE,
+				UP_USER_ID,
+				UP_DATE	)
+		VALUES
+			(
+				(SELECT
+		            NVL(MAX(TO_NUMBER(REPLY_SEQ)),0) AS REPLY_SEQ
+		        FROM
+		            REPLY)+1,
+				#{communitySeq},
+				#{replyContent},
+				'N',
+				#{replySeq},
+				'1',
+				#{memberId},
+				SYSDATE,
+				#{memberId},
+				SYSDATE
+						)
+	</insert>
 </mapper>

@@ -52,6 +52,10 @@
 	color: #666;
 	margin-right: 5px;
 }
+
+.table tr:hover {
+	background-color: #f8f6ff;
+}
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
@@ -78,86 +82,105 @@
 
 
 	<!-- Faq Begin -->
-	<div class="faq spad">
+	<section class="classes spad">
 		<div class="container">
-			<div class="row d-flex justify-content-center">
-				<div class="col-lg-10">
-					<div class="faq__accordion">
-						<h3>FAQ</h3>
-						<br>
-						<script type="text/javascript">
-							$(document).ready(function() {
-								$(".que").click(function() {
-									$(this).next(".anw").stop().slideToggle(300);
-								});
-							});
-						</script>
-						<div id="Accordion_wrap">
-							<!-- 아코디언 시작 -->
-							<!-- 1아코디언 -->
-							<div class="que">
-								<span>This is first question.</span>
+			<div class="classes__filter">
+				<div class="faq spad">
+					<div class="classes__filter">
+						<div class="row d-flex justify-content-center">
+							<div class="col-lg-10">
+								<h3>FAQ</h3>
+								<br>
+								<script type="text/javascript">
+									$(document).ready(function() {
+										$(".que").click(function() {
+											$(this).next(".anw").stop().slideToggle(300);
+										});
+									});
+								</script>
+								<div id="Accordion_wrap">
+									<!-- 아코디언 시작 -->
+									<!-- 1아코디언 -->
+									<div class="que">
+										<span>가입하려면 어떻게 해야 하나요?</span>
+									</div>
+									<div class="anw">
+										<span>회원가입 방법 : 오른쪽 상단에 회원가입을 클릭 후 회원가입을 진행한다.</span>
+									</div>
+									<!--2아코디언 -->
+									<div class="que">
+										<span>카카오 로그인은 어떻게하나요?</span>
+									</div>
+									<div class="anw">
+										<p>
+											<span>1.오른쪽 상단에 로그인 화면에서 카카오 로그인은 클릭한다</span>
+										</p>
+										<p>-카카오 아이디,이메일,전화번호 입력한다.</p>
+										<p>-카카오 비밀번호를 입력한다.</p>
+										<p>-로그인 버튼을 클릭한다.</p>
+										<p>
+											<span>2.QR코드 로그인을 클릭후 QR코드를 인식한다.</span>
+										</p>
+									</div>
+									<!-- 3아코디언 -->
+									<div class="que">
+										<span>준비중</span>
+									</div>
+									<div class="anw">
+										<span>준비중</span>
+									</div>
+									<!-- 아코디언 끝 -->
+								</div>
 							</div>
-							<div class="anw">
-								<span>This is first answer.</span>
-							</div>
-							<!--2아코디언 -->
-							<div class="que">
-								<span>This is second question.</span>
-							</div>
-							<div class="anw">
-								<span>This is second answer.</span>
-							</div>
-							<!-- 3아코디언 -->
-							<div class="que">
-								<span>This is third question.</span>
-							</div>
-							<div class="anw">
-								<span>This is third answer.</span>
-							</div>
-							<!-- 아코디언 끝 -->
 						</div>
 					</div>
 				</div>
+
+				<!-- Faq End -->
+
+				<!-- Classes Section Begin -->
+				<div class="container">
+					<h3>문의하기</h3>
+					<br>
+					<table class="table" style="text-align: center;">
+						<thead>
+							<tr style="background: #6d7ab0; color: white; font-size: 1.1em;">
+								<th scope="col">번호</th>
+								<th scope="col" colspan="3">제목</th>
+								<th scope="col">답변확인</th>
+								<th scope="col">작성일</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<c:forEach var="data" items="${data}" varStatus="status">
+								<c:if test="${data.inUserId eq sessionScope.memberId || '1' eq sessionScope.memberId}">
+									<tr>
+										<th scope="row">${status.count}</th>
+										<td colspan="3">
+											<a href="${path}qnaDetail.do?communitySeq=${data.communitySeq}" style="text-decoration: none; color: blue;"> ${data.commonTitle} </a>
+										</td>
+										<td>
+											<c:set var="cnt" value="${data.cnt}" />
+											<c:if test="${cnt == '0' }">
+												<c:out value="X" />
+											</c:if>
+											<c:if test="${cnt > '0' }">
+												<c:out value="O" />
+											</c:if>
+										</td>
+										<td>${data.inDate}</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</tbody>
+					</table>
+					<div class="classes__item__text" style="text-align: right;">
+						<a href="qnaAdd.do" class="class-btn">등록</a>
+					</div>
+
+				</div>
 			</div>
-		</div>
-	</div>
-	<!-- Faq End -->
-
-	<!-- Classes Section Begin -->
-	<section class="classes spad">
-		<div class="container">
-			<h3>문의하기</h3>
-			<br>
-			<table class="table table-hover" style="text-align: center;">
-				<thead>
-					<tr style="background: #E6E6E6;">
-						<th scope="col">번호</th>
-						<th scope="col" colspan="3">제목</th>
-						<th scope="col">답변확인</th>
-						<th scope="col">작성일</th>
-					</tr>
-				</thead>
-				<tbody>
-
-					<c:forEach var="data" items="${data}" varStatus="status">
-						<tr>
-							<th scope="row">${status.count}</th>
-							<td colspan="3"><a href="${path}qnaDetail.do?communitySeq=${data.communitySeq}" style="text-decoration: none; color: blue;"> ${data.commonTitle} </a></td>
-							<td><c:set var="cnt" value="${data.cnt}" /> <c:if test="${cnt == '0' }">
-									<c:out value="X" />
-								</c:if> <c:if test="${cnt > '0' }">
-									<c:out value="O" />
-								</c:if></td>
-							<td>${data.inDate}</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<div class="classes__item__text" style="text-align: right;">
-				<a href="qnaAdd.do" class="class-btn">등록</a>
-			</div>
-
 		</div>
 	</section>
 	<!-- Classes Section End -->
