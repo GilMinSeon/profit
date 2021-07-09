@@ -1,10 +1,65 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+function fn_refund(){
+	var buyLessonSeq = $("input:hidden[name=buyLessonSeq]").val();
+	var buyer = $("input:hidden[name=buyer]").val();
+	console.log("buyLessonSeq "+buyLessonSeq);
+	console.log("buyer "+ buyer);
+	
+	var param = "";
+	param += "dummy=" + Math.random();
+	param += "&buyLessonSeq=" + buyLessonSeq;
+	param += "&buyer=" + buyer;
+	console.log(param);
+	
+	$.ajax({
+		type : 'post',
+		url : 'checkRefundAjax.do',
+		data : param,
+		async:false,
+		dataType:"text",
+		success : function(data){
+		if(data=="ok"){
+			alert("등록이 정상적으로 완료되었습니다.");
+			location.href="lessonList.do";
+			window.loacation.reload();
+		}else if(data=="no"){
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
+		}else{
+			alert("등록이 실패하였습니다. 다시 시도해주세요");
+		}
+	},
+		error : function(error){
+			alert("등록이 실패하였습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+		
+		
+	})
+	
+	
+	
+	var msg = "ok";
+	if(msg=="ok"){
+		var save = confirm("정말 환불을 요청하시겠습니까?");
+		if(save == true){
+			alert("환불요청이 접수되었습니다. \n관리자 확인 후 결제하신 수단으로 환불이 진행됩니다. \n환불기간은 3~5일정도 소요됩니다.");
+		}
+		
+	}
+	
+}
+</script>
 </head>
 <body>
 
@@ -72,50 +127,110 @@
                 <div class="col-lg-8 order-lg-2 order-1">
                     <div class="row" style="display: inline-block;width: 100%;" >
                         	<!-- Appoinment Section Begin -->
-	<section class="appointment" style=" margin-bottom: 50px;">
-		<div class="container">
-			<div class="appointment__text" style="background-color: #9e9e9e0a; padding: 60px 10px;">
-				<form action="#" class="appointment__form">
-					<div class="text-center">
-						<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">마이 클래스</h4>
-						<br/>
-						<p style="font-family: DM Sans, sans-serif;font-size: 1.2em;color:#5768AD;">나의 결제상세 정보를 확인해 보세요.</p>
-						<br/><br/>
-							<table class="table table-hover">
-								<tr>
-									<th style="background: #E6E6E6;">결제번호</th>
-									<td>A294H90DWP</td>
-								</tr>
-								<tr>
-									<th style="background: #E6E6E6;">강의 명</th>
-									<td>예진쌤의 칼소폭 30일 완성</td>
-								</tr>
-								<tr>
-									<th style="background: #E6E6E6;">결제일시</th>
-									<td>2021/06/17</td>
-								</tr>
-								<tr>
-									<th style="background: #E6E6E6;">금액</th>
-									<td>250,000</td>
-								</tr>
-								<tr style="border-bottom: 1px solid #dee2e6;">
-									<th style="background: #E6E6E6;">유효기간</th>
-									<td>2021/06/17 ~ 2021/08/04</td>
-								</tr>
-							
-							</table>
-							<br/><br/>
-							<div 
-								style=" max-width: 100%; width: 500px; margin-left: auto;text-align: right;">
-	                             <button type="button" class="site-btn" style="font-size: 1em;color: white; background-color: #5768AD;margin-right: 7px;" onClick="location.href='listenList'">뒤로가기</button>
-	                             <button type="submit" class="site-btn" style="font-size: 1em;color: white; background-color: #5768AD;margin-right: 7px;">환불하기</button>
-                        	</div>
-
-					</div>
-				</form>
-			</div>
-		</div>
-	</section>
+					<section class="appointment"">
+						<div class="container">
+				            <div class="row">
+				                <div class="col-lg-12">
+				                    <div class="breadcrumb__text">
+				                    	<div style="background-color: #F6F6F9;padding: 40px 0px 40px 0px;">
+				                        <h2 style="color:#404041; font-weight: bold;">결제 상세 내역</h2><br>
+					                       <section class="content content_content" style="width: 70%; margin: auto;">
+				                    <section class="invoice">
+				                        <!-- title row -->
+				                        <div class="row">
+				                        </div>
+				                        <!-- info row -->
+				                        <div class="row invoice-info">
+				                            <div class="col-sm-4 invoice-col">
+				                                <address>
+				                                    <strong>
+				                                                                            </strong>
+				                                </address>
+				                            </div><!-- /.col -->
+				                            <div class="col-sm-4 invoice-col">
+				                                <address>
+				                                    <strong>
+				                                        #구매정보                                   </strong>
+				                                    <br>
+				                                      결제사이트 : PROFIT                                  <br>
+									   대표자 : JAYPARK<br>
+									                                      <br>
+				                                                                  </address>
+				                            </div><!-- /.col -->
+				                            <div class="col-sm-4 invoice-col">
+				                            </div><!-- /.col -->
+				                        </div><!-- /.row -->
+				
+				                        <!-- Table row -->
+				<!--                        <form id="payForm" method="POST" accept-charset="UTF-8"> -->
+				                        <div class="row">
+				                            <div class="col-xs-12 table-responsive">
+				                            <input type="hidden" name="buyLessonSeq" value="${payDetailList.buyLessonSeq}">
+				                            <input type="hidden" name="buyer" value="${payDetailList.buyer}">
+				                                <table class="table" style="margin-bottom: 0px;">
+				                                    <tr></tr>
+				                                    
+				                                    <tr>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">구매자</th>
+				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${payDetailList.buyer}</td>
+				                                    </tr>
+				                                    
+				                                    <tr>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">상품명</th>
+				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">
+															<img src="http://192.168.41.6:9999/upload/profit/${payDetailList.fileSaveName}" style="width:100px;height: 70px;object-fit: cover; ">&nbsp;&nbsp;&nbsp;
+				                                            	${payDetailList.lessonTitle}
+														</td>
+				                                    </tr>
+				                                    
+				                                    <tr>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">가격</th>
+				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${payDetailList.lessonPrice}원</td>
+				                                    </tr>
+				                                    
+				                                    <tr>
+				                                    	<th style="display:table-cell; vertical-align: middle;background-color:#FADCA5;">결제일</th>
+				                                    	<td colspan="2" style="display:table-cell; vertical-align: middle;">${fn:substring(payDetailList.paydate,0,10)}</td>
+				                                    </tr>
+				                                    
+				                                </table>
+				                            </div><!-- /.col -->
+				                        </div><!-- /.row -->
+				<!-- 						</form> -->
+				                        <div class="row">
+				                            <!-- accepted payments column -->
+				                            <div class="col-md-12">
+				                                <div class="table-responsive">
+				                                    <table class="table">
+				                                        <tbody>
+				                                            
+				                                            
+				                                            <tr style="text-align: right;">
+				                                                <td>총 합계 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: #FBEDB5;padding: 3px;">${payDetailList.lessonPrice}원(&#8361;)</span></td>
+				                                            </tr>
+				                                        </tbody>
+				                                        
+				                                    </table>
+				                                    <br/><br/>
+				                                     <div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
+													         <a class="class-btn_w" style="font-size: 1.1em;cursor:pointer;" onclick="fn_refund()">&nbsp;&nbsp;환불하기&nbsp;&nbsp;</a>
+													         <a href="myLessonList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
+				
+												    </div>
+				                                </div>
+				                            </div><!-- /.col -->
+				                        </div><!-- /.row -->
+				
+				                    </section>
+				                </section>
+				                        </div>
+				                    </div>
+				                </div>
+				            
+				            </div>
+				        </div>
+				        
+				    </section>
 	<!-- Appoinment Section End -->
                     </div>
                 </div>

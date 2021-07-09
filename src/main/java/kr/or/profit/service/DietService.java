@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ReplyVO;
 
 public interface DietService {
@@ -53,4 +54,10 @@ public interface DietService {
 	
 	//상담 프로필 활성화
 	public int updatePublic(String chatProfileSeq) throws Exception;
+	
+	//칼로리 정보 목록 조회
+	public List<Map<String, Object>> selectKcalList(Criteria cri) throws Exception;
+	
+	//페이징 - 칼로리 정보 목록 전체 글 개수
+	public int selectKcalCnt(Criteria cri) throws Exception;
 }

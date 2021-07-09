@@ -15,6 +15,7 @@ import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.CommunityVO;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.ReplyVO;
 
@@ -121,7 +122,19 @@ public class DietServiceImpl implements DietService {
 	public int updatePublic(String chatProfileSeq) throws Exception {
 		return dietDAO.updatePublic(chatProfileSeq);
 	}
+
 	
+	//칼로리 정보 목록 조회
+	@Override
+	public List<Map<String, Object>> selectKcalList(Criteria cri) throws Exception {
+		return dietDAO.selectKcalList(cri);
+	}
 
 
+	//페이징 - 칼로리 정보 목록 전체 글 개수
+	@Override
+	public int selectKcalCnt(Criteria cri) throws Exception {
+		return dietDAO.selectKcalCnt(cri);
+	}
+	
 }

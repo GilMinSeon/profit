@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.or.profit.mapper.AdminMemberMapper">
+
+    <!-- 관리자-트레이너승인, 숫자 보여주는 표 -->
+	<select id="selectProcessNumberList" resultType="ProcessVO">
+	    select status_a,status_b,status_c,today
+		from    
+		    (
+		    select  (select count(*) from process where process_status = 'A') as status_a,
+		            (select count(*) from process where process_status = 'B') as status_b,
+		            (select count(*) from process where process_status = 'C') as status_c,
+		            (select count(*) from process where to_char(up_date) = to_char(sysdate, 'YYYY/MM/DD')) as today,
+		            rownum as rm
+		    from process
+		    ) tbl
+		where rm = 1
+	</select>
+   	
+	
+	<!-- 관리자-트레이너승인, 리스트 부분 -->
+ 	<select id="selectProcessList" parameterType="Criteria" resultType="egovMap">
+ 	    
+ 	    select	tt.rm, tt.process_seq, tt.member_id,
+ 	    		tt.member_name,
+ 	    		tt.process_status, tt.process_finish_date,
+				tt.in_user_id, tt.in_date, tt.up_user_id, tt.up_date
+ 	    from
+ 	    	(
+	 	    select 	rownum as rm, tbl.process_seq, tbl.member_id,
+	 	    		tbl.member_name,
+	 	    		tbl.process_status, tbl.process_finish_date,
+					tbl.in_user_id, tbl.in_date, tbl.up_user_id, tbl.up_date
+	 	    from ( 
+		 	    select  process_seq, member_id,
+		 	    		(select member_name from member where process.member_id = member_id) as member_name, 
+				        process_status, process_finish_date,
+				        in_user_id, in_date, up_user_id, up_date
+				from    process
+				where	1=1
+						<if test="selStatus != null and selStatus != '' ">
+						    and process_status = #{selStatus}
+						</if>
+						<if test="selDate != null and selDate != '' ">
+						    <choose>
+						        <when test='selStatus.equals("신청")'>
+						            and to_char(in_date, 'YYYYMMDD') = #{selDate}
+						        </when>
+						        <otherwise>
+						            and to_char(up_date, 'YYYYMMDD') = #{selDate}
+						        </otherwise>
+						    </choose>
+						</if>
+						<if test="selIdentity != null and selIdentity != '' ">
+						    <choose>
+						        <when test='selIdentity.equals("이름")'>
+						            and member_id = #{searchKeyword}
+						        </when>
+						        <otherwise>
+						            and (select member_name from member where process.member_id = member_id) = #{searchKeyword}
+						        </otherwise>
+						    </choose>
+						</if>
+				order by in_date desc
+			) tbl
+		) tt
+		where tt.rm between #{rowStart} and #{rowEnd}
+		
+ 	</select>
+ 	
+ 	
+ 	<!-- 페이징용 전체 수 cnt -->
+ 	<select id="selectProcessListCnt" parameterType="Criteria" resultType="int">
+ 	    select count(*)
+   		from    process
+		where	1=1
+				<if test="selStatus != null and selStatus != '' ">
+				    and process_status = #{selStatus}
+				</if>
+				<if test="selDate != null and selDate != '' ">
+				    <choose>
+				        <when test='selStatus.equals("신청")'>
+				            and to_char(in_date, 'YYYYMMDD') = #{selDate}
+				        </when>
+				        <otherwise>
+				            and to_char(up_date, 'YYYYMMDD') = #{selDate}
+				        </otherwise>
+				    </choose>
+				</if>
+				<if test="selIdentity != null and selDate != '' ">
+				    <choose>
+				        <when test='selIdentity.equals("이름")'>
+				            and member_id = #{searchKeyword}
+				        </when>
+				        <otherwise>
+				            and (select member_name from member where process.member_id = member_id) = #{searchKeyword}
+				        </otherwise>
+				    </choose>
+				</if>
+		order by in_date desc
+ 	</select>
+ 	
+    
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+</mapper>

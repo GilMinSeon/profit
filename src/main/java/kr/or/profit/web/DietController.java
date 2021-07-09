@@ -15,8 +15,13 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +34,8 @@ import kr.or.profit.service.DietService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
+import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.PageMaker;
 //import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.ReplyVO;
 
@@ -382,14 +389,48 @@ public class DietController {
 		return "diet/chatting";
 	}
 	
-	@RequestMapping(value = "kcalList.do", method = RequestMethod.GET)
-	public String kcalList(Locale locale, Model model) {
+	@RequestMapping(value = "kcalList.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String kcalList(Model model, HttpServletRequest request, Criteria cri,
+			@RequestParam(value = "searchKeyword", required = false) String searchKeyword) throws Exception{
+		
+		System.out.println("searchKeyword : " + searchKeyword);
+		
+		cri.setPerPageNum(10);
+		cri.setSearchKeyword(searchKeyword);
+		
+		//칼로리 정보 목록 조회
+		List<Map<String, Object>> kcalList = dietService.selectKcalList(cri);
+		
+		model.addAttribute("kcalList", kcalList);
+		System.out.println("칼로리목록");
+		System.out.println(kcalList.toString());
+		
+		//페이징 처리
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		
+		//전체 글 개수 세팅
+		pageMaker.setTotalCount(dietService.selectKcalCnt(cri));
+		System.out.println(dietService.selectKcalCnt(cri) + "가져오는 개수!!!");
+		model.addAttribute("pageMaker",pageMaker);
+		
+		//입력한 검색어 유지시키기
+		model.addAttribute("searchKeyword", searchKeyword);
+		
+		System.out.println("최종 모델");
+		System.out.println(model);
+		
 		return "diet/kcalList";
 	}
 	
 	@RequestMapping(value = "kcalDetail.do", method = RequestMethod.GET)
 	public String kcalDetail(Locale locale, Model model) {
 		return "diet/kcalDetail";
+	}
+	
+	@RequestMapping(value = "test22.do", method = RequestMethod.GET)
+	public String test22(Locale locale, Model model) {
+		return "diet/test";
 	}
 	
 	

@@ -887,7 +887,7 @@
     <update id="updBuyLesson" parameterType="BuyLessonVO" >
 			UPDATE BUY_LESSON
 			SET LESSON_CLICK_FLAG = 'Y',
-				LESSON_CLICK_DATE = SYSDATE
+				LESSON_CLICK_DATE = to_char(sysdate,'YYYY/MM/DD')
             WHERE LESSON_SEQ = #{lessonSeq}
             AND IN_USER_ID = #{memberId}
             AND LESSON_REFUND_FLAG = 'N'

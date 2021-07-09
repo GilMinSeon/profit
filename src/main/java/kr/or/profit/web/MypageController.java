@@ -41,6 +41,7 @@ import kr.or.profit.service.MemberService;
 import kr.or.profit.service.MypageService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonPayVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.PageMaker;
@@ -129,19 +130,62 @@ public class MypageController {
 		return "mypage/bookmark";
 	}
 
+	
 	//3.마이클래스
 	@RequestMapping(value = "myLessonList.do", method = RequestMethod.GET)
-	public String myLessonList(Locale locale, Model model) {
-
+	public String myLessonList(Locale locale, Model model, HttpServletRequest request,  Criteria cri) throws Exception {
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		System.out.println("buy파람id " + memberId);
+		
+		cri.setMemberId(memberId);
+		cri.setPerPageNum(10);
+		
+		List<?> myBuyLessonList = mypageService.myBuyLessonList(cri);
+		System.out.println(cri.getRowStart());
+		System.out.println(cri.getRowEnd());
+		model.addAttribute("buyListResult", myBuyLessonList);
+		System.out.println("가랏 "+ model.toString());
+		
+		
+		//페이징처리
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		
+		//전체 글 개수 세팅
+		pageMaker.setTotalCount(mypageService.selectbuyLessonCnt(cri));
+		
+		System.out.println("전체글개수-----------");
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
 		return "mypage/myLessonList";
 	}
 	
+	
 	//3-1.마이클래스에서 상세결제내역
 	@RequestMapping(value = "myLessonPayDetail.do", method = RequestMethod.GET)
-	public String myLessonPayDetail(Locale locale, Model model) {
-
+	public String myLessonPayDetail(Locale locale, Model model,  HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		System.out.println("결제상세id " + memberId);
+		
+		
+		String buyLessonSeq =  request.getParameter("buyLessonSeq");
+		System.out.println("결제로보낼buyLessonSeq " + buyLessonSeq);
+		
+		BuyLessonPayVO vo = new BuyLessonPayVO();
+		vo.setMemberId(memberId);
+		vo.setBuyLessonSeq(buyLessonSeq);
+		
+		//마이페이지 결제상세내역 
+		Map<String, Object> payDetailList = mypageService.selectMyLessonPayDetail(vo);
+		model.addAttribute("payDetailList", payDetailList);
+		System.out.println("결제상세model "+model);
 		return "mypage/myLessonPayDetail";
 	}
+	
+	
 	
 	//4. 1:1상담내역
 	@RequestMapping(value = "myChatList.do", method = RequestMethod.GET)
@@ -156,7 +200,6 @@ public class MypageController {
 
 		return "mypage/myChatDetail";
 	}
-	
 	
 	
 	
@@ -465,4 +508,38 @@ public class MypageController {
 		return fileVOList;
 	}
 
+	
+		//민정
+		//환불가능여부 확인
+		@RequestMapping(value = "checkRefundAjax.do", method = RequestMethod.POST)
+		@ResponseBody
+		public String checkRefund(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception {
+		   
+			HttpSession session = request.getSession();
+			String memberId = (String) session.getAttribute("memberId");
+			System.out.println("환불확인Id " + memberId);
+			
+			String buyLessonSeq = request.getParameter("buyLessonSeq");
+			System.out.println("환불확인seq "+ buyLessonSeq);
+			
+			 //환불 할 수 있는 사람인지 확인
+		      Map<String, Object> refundMap = new HashMap<>();
+		      refundMap.put("memberId", memberId);
+		      refundMap.put("buyLessonSeq", buyLessonSeq);
+		      int checkRefundFlag = mypageService.selectcheckRefundFlag(refundMap);
+		      if(checkRefundFlag > 0) {
+		    	  model.addAttribute("buyer", "1");
+		      }else {
+		    	  model.addAttribute("buyer", "0");
+		      }
+			
+			
+			String msg = "ok";
+			
+
+			return msg;
+			
+		}
+	
+	
 }

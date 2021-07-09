@@ -142,10 +142,6 @@ public class CommunityController {
 			memberId = "";
 		}
 
-		selCate = request.getParameter("selCate");
-		selLev = request.getParameter("selLev");
-		keyword = request.getParameter("keyword");
-
 		cri.setMemberId(memberId);
 		cri.setSelCate(selCate);
 		cri.setSelLev(selLev);

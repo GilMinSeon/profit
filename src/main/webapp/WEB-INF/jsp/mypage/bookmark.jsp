@@ -93,18 +93,18 @@ function fn_param(seq){
 							<div style="display: inline-block;margin-left: 70px;">
 								<input type="radio" name="cate_type" id="exercise" value="1" autocomplete="off" style="opacity: 0;"
 									<c:if test="${commonSeq == null || commonSeq == '' }">checked</c:if> >
-								<label for="exercise" style="width: 120px;border: 1px solid; padding: 11px;" onclick="location.href='bookmark.do'">전체</label>
+									<label for="exercise" style="width: 120px;border: 1px solid; padding: 11px;" onclick="location.href='bookmark.do'">전체</label>
 								<input type="radio" name="cate_type" id="food" value="2" autocomplete="off" style="opacity: 0" 
 									<c:if test="${commonSeq == '4' }">checked</c:if> >
-								<label for="food" style="width: 120px;border: 1px solid;padding: 11px;" onclick="fn_param(4)">온라인클래스</label>
+									<label for="food" style="width: 120px;border: 1px solid;padding: 11px;" onclick="fn_param(4)">온라인클래스</label>
 							</div>
 							<div style="display: inline-block;">
 								<input type="radio" name="cate_type" id="motive" value="3" autocomplete="off" style="opacity: 0"
 									<c:if test="${commonSeq == '6' }">checked</c:if> >
-								<label for="motive" style="width: 120px;border: 1px solid;padding: 11px;" onclick="fn_param(6)">레시피</label>
+									<label for="motive" style="width: 120px;border: 1px solid;padding: 11px;" onclick="fn_param(6)">레시피</label>
 								<input type="radio" name="cate_type" id="habit" value="4" autocomplete="off" style="opacity: 0"
 									<c:if test="${commonSeq == '5' }">checked</c:if> >
-								<label for="habit" style="width: 120px;border: 1px solid;padding: 11px;" onclick="fn_param(5)">자유게시판</label>
+									<label for="habit" style="width: 120px;border: 1px solid;padding: 11px;" onclick="fn_param(5)">자유게시판</label>
 							</div>
 						</div>
 					</div>

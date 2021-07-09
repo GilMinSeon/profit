@@ -19,6 +19,45 @@ public class Criteria {
 	
 	//온라인클래스 상세
 	private String lessonSeq;
+	
+	//관리자 이용권 목록 조회
+	private String selStatus;
+	private String selIdentity;
+	private String selDate;
+	private String searchKeyword;
+	
+
+	public String getSelStatus() {
+		return selStatus;
+	}
+
+	public void setSelStatus(String selStatus) {
+		this.selStatus = selStatus;
+	}
+
+	public String getSelIdentity() {
+		return selIdentity;
+	}
+
+	public void setSelIdentity(String selIdentity) {
+		this.selIdentity = selIdentity;
+	}
+
+	public String getSelDate() {
+		return selDate;
+	}
+
+	public void setSelDate(String selDate) {
+		this.selDate = selDate;
+	}
+
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
 
 	public String getLessonSeq() {
 		return lessonSeq;

@@ -12,6 +12,7 @@ import kr.or.profit.mapper.MypageMapper;
 import kr.or.profit.service.MypageService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyLessonPayVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
@@ -82,6 +83,30 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 	@Override
 	public int selectBookmarkCnt(Criteria cri) throws Exception {
 		return mypageDAO.selectBookmarkCnt(cri);
+	}
+
+	//회원이 구매한 강의 list
+	@Override
+	public List<?> myBuyLessonList(Criteria cri) throws Exception {
+		return mypageDAO.myBuyLessonList(cri);
+	}
+
+	//구매강의 개수
+	@Override
+	public int selectbuyLessonCnt(Criteria cri) throws Exception {
+		return mypageDAO.selectbuyLessonCnt(cri);
+	}
+
+	//마이페이지 결제상세
+	@Override
+	public Map<String, Object> selectMyLessonPayDetail(BuyLessonPayVO vo) throws Exception {
+		return mypageDAO.selectMyLessonPayDetail(vo);
+	}
+
+	//마이페이지 환불가능 체킹
+	@Override
+	public int selectcheckRefundFlag(Map<String, Object> refundMap) throws Exception {
+		return mypageDAO.selectcheckRefundFlag(refundMap);
 	}
 
 	
