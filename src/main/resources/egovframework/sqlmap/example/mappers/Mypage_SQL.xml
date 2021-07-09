@@ -281,20 +281,32 @@
 	
 	
 	
-<!-- 	회원이 구매한 강의 list -->
+<!-- 민정 - 회원이 구매한 강의 list -->
 	<select id="myBuyLessonList" parameterType="Criteria" resultType="egovMap">
-		select a.lesson_title,
-        	   a.lesson_month,
-        	   a.lesson_seq,
-        	   b.buy_lesson_seq
-        from lesson a
-        	left join buy_lesson b
-        	on(a.lesson_seq = b.lesson_seq)
-   		where b.in_user_id= #{memberId}
+	    <![CDATA[
+		SELECT A.BUY_LESSON_SEQ,
+		       A.LESSON_SEQ,
+		       B.LESSON_MONTH,
+		       CASE WHEN LENGTH(B.LESSON_TITLE) > 20 THEN SUBSTR(B.LESSON_TITLE, 0, 20) || '...' ELSE B.LESSON_TITLE END AS lesson_TITLE,
+		       C.LESSON_CATEGORY_NAME,
+		       (case
+		        when LESSON_REFUND_FLAG = 'Y' then '환불완료'
+		        when SYSDATE - TO_DATE(lesson_finish_date)  > 0 and lesson_refund_flag = 'N' then '기간만료'
+		        when lesson_click_FLAG = 'Y' and SYSDATE - TO_DATE(lesson_finish_date)  < 0 and lesson_refund_flag='N' then '수강진행'
+		        when lesson_click_flag = 'N' and lesson_refund_flag = 'N' then '결제완료'
+		        END ) status
+		       FROM BUY_LESSON A
+		       LEFT JOIN LESSON B ON
+		       (A.LESSON_SEQ = B.LESSON_SEQ)
+		       LEFT JOIN LESSON_CATEGORY C ON
+		       (B.LESSON_CATEGORY_SEQ = C.LESSON_CATEGORY_SEQ)
+		    WHERE A.IN_USER_ID = #{memberId}
+		    ORDER BY A.IN_DATE DESC
+		    ]]>
 	</select>
 
 	
-	<!-- 페이징용구매강의 전체 개수 cnt -->
+	<!-- 민정 - 페이징용구매강의 전체 개수 cnt -->
     <select id="selectbuyLessonCnt" parameterType="Criteria" resultType="int">
         select count(*)
 		    from buy_lesson
@@ -304,10 +316,11 @@
     
     
     
-    <!-- 구매한강의 결제상세 -->
+    <!-- 민정 - 구매한강의 결제상세 -->
 	<select id="selectMyLessonPayDetail" parameterType="BuyLessonPayVO" resultType="egovMap">
 		select a.in_user_id buyer,
 		       a.buy_lesson_seq,
+		       a.lesson_seq,
 		       b.lesson_title,
 		       b.lesson_price,
 		       a.lesson_finish_date,
@@ -326,14 +339,28 @@
 	</select>
 	
 	
-<!-- 	환불가능한지 체킹 -->
+	<!-- 민정 - 환불가능한지 체킹 -->
 	<select id="selectcheckRefundFlag" resultType="int" parameterType="hashmap">
+		<![CDATA[
 	    SELECT COUNT(*)
 		FROM BUY_LESSON
 		WHERE IN_USER_ID = #{memberId}
+		 AND LESSON_SEQ= #{lessonSeq}
 		AND LESSON_REFUND_FLAG = 'N'
-		AND LESSON_SEQ = #{lessonSeq}
+		AND (lesson_click_date is null or (SYSDATE - TO_DATE(lesson_click_date,'YYYY/MM/DD') < 7)) 
+		]]>
 	</select>
 	
+	<!-- 민정 -  마이페이지 환불여부 변경 -->
+	<update id="updBuyLessonRefundFlag" parameterType="hashmap" >
+        update buy_lesson
+			set lesson_refund_flag = 'Y'
+		where buy_lesson_seq= #{buyLessonSeq}
+		and lesson_seq= #{lessonSeq}
+		and in_user_id =  #{memberId}
+
+	</update>
+
+
 
 </mapper>

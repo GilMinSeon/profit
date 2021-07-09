@@ -170,12 +170,15 @@ public class MypageController {
 		String memberId = (String) session.getAttribute("memberId");
 		System.out.println("결제상세id " + memberId);
 		
+		String lessonSeq = request.getParameter("lessonSeq");
+		System.out.println("제발시퀀와라 "+ lessonSeq);
 		
 		String buyLessonSeq =  request.getParameter("buyLessonSeq");
 		System.out.println("결제로보낼buyLessonSeq " + buyLessonSeq);
 		
 		BuyLessonPayVO vo = new BuyLessonPayVO();
 		vo.setMemberId(memberId);
+		vo.setLessonSeq(lessonSeq);
 		vo.setBuyLessonSeq(buyLessonSeq);
 		
 		//마이페이지 결제상세내역 
@@ -522,24 +525,70 @@ public class MypageController {
 			String buyLessonSeq = request.getParameter("buyLessonSeq");
 			System.out.println("환불확인seq "+ buyLessonSeq);
 			
+			String lessonSeq = request.getParameter("lessonSeq");
+			System.out.println("환불확인seq2 " + lessonSeq);
+			
 			 //환불 할 수 있는 사람인지 확인
 		      Map<String, Object> refundMap = new HashMap<>();
 		      refundMap.put("memberId", memberId);
+		      refundMap.put("lessonSeq", lessonSeq);
 		      refundMap.put("buyLessonSeq", buyLessonSeq);
 		      int checkRefundFlag = mypageService.selectcheckRefundFlag(refundMap);
+		      
+		      String msg="";
 		      if(checkRefundFlag > 0) {
-		    	  model.addAttribute("buyer", "1");
+		    	  model.addAttribute("refundOk", "1");
+		    	   msg="ok"; 
+		    	   Map<String, Object> refundFlagMap = new HashMap<>();
+		    	   refundFlagMap.put("memberId", memberId);
+		    	   refundFlagMap.put("lessonSeq", lessonSeq);
+		    	   refundFlagMap.put("buyLessonSeq", buyLessonSeq);
+		    	   int refundFlag = mypageService.updBuyLessonRefundFlag(refundFlagMap);
+		    	   System.out.println("refundFlag" + refundFlag);
+		    	   
 		      }else {
-		    	  model.addAttribute("buyer", "0");
+		    	  model.addAttribute("refundOk", "0");
+		    	   msg="no";
 		      }
-			
-			
-			String msg = "ok";
-			
-
+		      System.out.println("환불모델 " + model.toString());
 			return msg;
-			
 		}
 	
+		
+//		@RequestMapping(value = "updRefundFlagAjax.do", method = RequestMethod.GET)
+//		@ResponseBody
+//		public String updRefundFlag(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception {
+//		   
+//			HttpSession session = request.getSession();
+//			String memberId = (String) session.getAttribute("memberId");
+//			System.out.println("환불업드Id " + memberId);
+//			
+//			String buyLessonSeq = request.getParameter("buyLessonSeq");
+//			System.out.println("환불업드seq "+ buyLessonSeq);
+//			
+//			String lessonSeq = request.getParameter("lessonSeq");
+//			System.out.println("환불업드seq2 " + lessonSeq);
+//			
+//			 //환불 할 수 있는 사람인지 확인
+//		      Map<String, Object> refundFlagMap = new HashMap<>();
+//		      refundFlagMap.put("memberId", memberId);
+//		      refundFlagMap.put("lessonSeq", lessonSeq);
+//		      refundFlagMap.put("buyLessonSeq", buyLessonSeq);
+//		      int refundFlag = mypageService.updBuyLessonRefundFlag(refundFlagMap);
+//		      
+//		      String msg="";
+//		      if(checkRefundFlag > 0) {
+//		    	  model.addAttribute("refundOk", "1");
+//		    	   msg="ok"; 
+//		    	   mypageService.updBuyLessonRefundFlag();
+//		      }else {
+//		    	  model.addAttribute("refundOk", "0");
+//		    	   msg="no";
+//		      }
+//		      System.out.println("환불모델 " + model.toString());
+//			return msg;
+//		}
+		
+		
 	
 }
