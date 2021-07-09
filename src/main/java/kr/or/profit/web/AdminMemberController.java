@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.profit.service.AdminMemberService;
 import kr.or.profit.vo.Criteria;
@@ -48,6 +49,8 @@ public class AdminMemberController {
 		cri.setPerPageNum(10);
 		
 		ProcessVO todayNumberList = adminMemberService.selectProcessNumberList();
+		System.out.println(todayNumberList.toString());
+		System.out.println(todayNumberList.getStatusDate());
 		model.addAttribute("todayNumberList", todayNumberList);
 		
 		List<Map<String, Object>> processList = adminMemberService.selectProcessList(cri);
@@ -72,11 +75,31 @@ public class AdminMemberController {
 		return "adminMember/trainerPermitList";
 	}
 	
+	//신청->검토 단계로 업데이트
+	@RequestMapping("updateStatusBAjax.do")
+	public @ResponseBody String updateStatusB(String processSeq) throws Exception {
+		String message = "";
+		int cnt = adminMemberService.updateStatusB(processSeq);
+		if (cnt > 0) {
+			message = "ok";
+		}
+		return message;
+	}
 	
 	
+	//각 디테일 페이지
 	@RequestMapping(value = "trainerPermitDetail.do", method = RequestMethod.GET)
-	public String trainerPermitDetail(Locale locale, Model model) {
-
+	public String trainerPermitDetail(Model model,
+			@RequestParam(value = "processSeq", required = false) String processSeq
+			) throws Exception {
+		
+		ProcessVO detailVO = adminMemberService.selectProcessDetailBySeq(processSeq);
+		model.addAttribute("detailVO", detailVO);
+		
+		String fileSeq = detailVO.getFileSeq();
+		List<?> fileVO = adminMemberService.selectProcessFile(fileSeq);
+		model.addAttribute("fileVO", fileVO);
+		
 		return "adminMember/trainerPermitDetail";
 	}
 	
