@@ -61,11 +61,11 @@
 			</div>
 			<div class="row">
 				<div class="team__slider owl-carousel">
-					<c:forEach var="data" items="${data}" varStatus="status">
+					<c:forEach var="recipeTopList" items="${recipeTopList}" varStatus="status">
 						<div class="col-lg-6">
 							<div class="team__item" style="padding-top: 10px; padding-bottom: 10px;">
-								<div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${data.fileSeq}">
-									<span>${data.inDate}</span>
+								<div class="classes__item__pic set-bg" data-setbg="${recipeTopList.filePath}">
+									<span>${recipeTopList.inDate}</span>
 								</div>
 								<div class="classes__item__text" style="padding-top: 10px; padding-bottom: 10px; padding-left: 0; padding-right: 0;">
 									<div style="text-align: right;">
@@ -73,29 +73,29 @@
 											<img src="./resources/img/common/hit.png" style="width: 30px; height: 20px; opacity: 0.5;">
 										</div>
 										<div style="display: inline-block; vertical-align: sub;">
-											<p style="margin: 0;">${data.commonHit}&nbsp;&nbsp;</p>
+											<p style="margin: 0;">${recipeTopList.commonHit}&nbsp;&nbsp;</p>
 										</div>
 										<div style="display: inline-block; vertical-align: middle;">
 											<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
 										</div>
 										<div style="display: inline-block; vertical-align: sub;">
-											<p>${data.cnt}&nbsp;&nbsp;</p>
+											<p>조회수&nbsp;&nbsp;</p>
 										</div>
 										<div style="display: inline-block; vertical-align: middle;">
 											<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
 										</div>
 										<div style="display: inline-block; vertical-align: sub;">
-											<p>${data.lessonGood}좋아요&nbsp;&nbsp;</p>
+											<p>좋아요&nbsp;&nbsp;</p>
 										</div>
 										<div style="display: inline-block; vertical-align: middle;">
 											<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
 										</div>
 										<div style="display: inline-block; vertical-align: sub;">
-											<p>${data.lessonBook}북마크&nbsp;&nbsp;</p>
+											<p>북마크&nbsp;&nbsp;</p>
 										</div>
 									</div>
 									<h4 style="margin-bottom: 10px;">
-										<a style="font-size: 0.8em; font-weight: bold;">${data.commonTitle}</a>
+										<a style="font-size: 0.8em; font-weight: bold;">${recipeTopList.commonTitle}</a>
 									</h4>
 									<div>
 										<div style="display: inline-block; vertical-align: middle;">
@@ -103,10 +103,10 @@
 										</div>
 										&nbsp;
 										<div style="display: inline-block;">
-											<h6 style="margin-bottom: 25px; color: #535353">${data.inUserId}</h6>
+											<h6 style="margin-bottom: 25px; color: #535353">${recipeTopList.inUserId}</h6>
 										</div>
 									</div>
-									<a href="recipeDetail.do?communitySeq=${data.communitySeq}" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+									<a href="recipeDetail.do?communitySeq=${recipeTopList.communitySeq}" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
 								</div>
 							</div>
 						</div>
@@ -156,7 +156,7 @@
 				<c:forEach var="data" items="${data}" varStatus="status">
 					<div class="col-lg-4 col-md-6">
 						<div class="classes__item classes__item__page">
-							<div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${data.fileSeq}"></div>
+							<div class="classes__item__pic set-bg" data-setbg="${data.filePath}"></div>
 							<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
 								<div style="text-align: right;">
 									<div style="display: inline-block; vertical-align: middle;">

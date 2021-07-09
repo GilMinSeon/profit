@@ -1,7 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.profit.mapper.MypageMapper">
-
+	
+    <!-- myinfo 북마크 리스트 -->
+    <select id="selectBookmarkList" parameterType="Criteria" resultType="egovMap" >
+        
+        select	tt.rm, tt.bookgood_seq, tt.in_date,
+        		tt.common_title, 
+        		tt.community_seq, tt.c_date, tt.common_seq,
+        		tt.c_filpath,
+        		tt.lesson_title, 
+        		tt.l_filpath,
+        		tt.lesson_seq, tt.l_date
+        from
+        (
+        select  rownum as rm, tbl.bookgood_seq, tbl.in_date,
+        		tbl.common_title, 
+        		tbl.community_seq, tbl.c_date, tbl.common_seq,
+        		tbl.c_filpath,
+        		tbl.lesson_title, 
+        		tbl.l_filpath,
+        		tbl.lesson_seq, tbl.l_date
+        		
+        from(
+        select  b.bookgood_seq, b.in_date,
+		        case when length(c.common_title) > 19 then substr(c.common_title, 0, 19) || '...' else c.common_title end as common_title,
+		        c.community_seq, c.in_date as c_date, c.common_seq,
+		        (select a.file_path from attach_file a where a.file_seq = c.file_seq) as c_filpath,
+		        case when length(l.lesson_title) > 19 then substr(l.lesson_title, 0, 19) || '...' else l.lesson_title end as lesson_title,
+		        (select a.file_path from attach_file a where a.file_seq = l.file_seq) as l_filpath,
+		        l.lesson_seq,l.in_date as l_date 
+		from    bookgood b 
+		        left join community c
+		        on (b.community_seq = c.community_seq and c.common_del_flag = 'N')
+		        left join lesson l
+		        on (b.lesson_seq = l.lesson_seq and l.lesson_private_flag = 'N')
+		where   b.member_id = #{memberId} and b.bookgood_gubun = 'B' 
+		        and (c.community_seq is not null or l.lesson_seq is not null)
+	            <if test="commonSeq != null and commonSeq != '' ">
+		            <choose>
+			            <when test='commonSeq.equals("4")'>
+			                and l.common_seq = '4'
+			            </when>
+			            <when test='commonSeq.equals("5")'>
+			                and c.common_seq = '5'
+			            </when>
+			            <when test='commonSeq.equals("6")'>
+			                and c.common_seq = '6'
+			            </when>
+		            </choose>
+	            </if>
+		order by b.in_date desc
+		) tbl
+		) tt
+		where tt.rm between #{rowStart} and #{rowEnd}
+		
+    </select>
+    
+    <!-- 페이징용 북마크 전체 개수 cnt -->
+    <select id="selectBookmarkCnt" parameterType="Criteria" resultType="int">
+        select 	count(*)
+        from    bookgood b 
+		        left join community c
+		        on (b.community_seq = c.community_seq and c.common_del_flag = 'N')
+		        left join lesson l
+		        on (b.lesson_seq = l.lesson_seq and l.lesson_private_flag = 'N')
+		where   b.member_id = #{memberId} and b.bookgood_gubun = 'B' 
+		        and (c.community_seq is not null or l.lesson_seq is not null)
+	            <if test="commonSeq != null and commonSeq != '' ">
+		            <choose>
+			            <when test='commonSeq.equals("4")'>
+			                and l.common_seq = '4'
+			            </when>
+			            <when test='commonSeq.equals("5")'>
+			                and c.common_seq = '5'
+			            </when>
+			            <when test='commonSeq.equals("6")'>
+			                and c.common_seq = '6'
+			            </when>
+		            </choose>
+	            </if>
+        
+    </select>
+    
+    
+    
     <!-- 프로세스 정보 가져오기 -->
     <select id="selectProcessInfo" parameterType="String" resultType="ProcessVO">
         select a.member_name, a.member_gender, a.member_mobile,b.file_seq,b.process_status,

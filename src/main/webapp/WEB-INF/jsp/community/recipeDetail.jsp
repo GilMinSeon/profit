@@ -119,6 +119,39 @@
 		<c:set var="data" value="${data}" />
 		<div class="container">
 			<div class="row" style="justify-content: center">
+				<div style="display: left; width: 30%">
+					<div class="blog__sidebar">
+
+						<div class="blog__sidebar__recent">
+							<h4>최신글</h4>
+
+							<div class="blog__recent__item">
+								<div class="blog__recent__item__pic">
+									<img src="http://192.168.41.6:9999/upload/profit/5eac3229-1023-4234-97d2-03e21abcf8ba_wow.jpg" alt="" style="width: 90px; height: 70px;">
+								</div>
+								<div class="blog__recent__item__text">
+									<h6>WOW</h6>
+									<span>2021-07-06 18:59</span>
+								</div>
+							</div>
+
+						</div>
+						<div class="blog__sidebar__tags">
+							<h4>인기글</h4>
+
+							<div class="blog__recent__item">
+								<div class="blog__recent__item__pic">
+									<img src="http://192.168.41.6:9999/upload/profit/5eac3229-1023-4234-97d2-03e21abcf8ba_wow.jpg" alt="" style="width: 90px; height: 70px;">
+								</div>
+								<div class="blog__recent__item__text">
+									<h6>WOW</h6>
+									<span>2021-07-06 18:59</span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
 				<div class="col-lg-8 order-lg-2 order-1" style="background-color: white; padding: 30px; border: 1px solid #ebecef; border-radius: 10px; display: left;">
 					<div style="margin-bottom: 30px;">
 						<span style="font-size: 1.3em; font-weight: bold; color: #545454">${data.commonTitle}</span>

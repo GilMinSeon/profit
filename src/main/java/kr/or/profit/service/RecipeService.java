@@ -29,6 +29,12 @@ public interface RecipeService {
 
 	Map<String, Object> recipeDetailMember(Map<String, Object> map) throws Exception;
 
+	void imgFile(Object object) throws Exception;
+
+	String imgcnt() throws Exception;
+
+	List<?> recipeTopList() throws Exception;
+
 
 
 

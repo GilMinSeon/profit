@@ -35,9 +35,13 @@ public class RecipeController {
 	public String recipeList(@RequestParam Map<String, Object> map, Model model) throws Exception {
 		System.out.println("목록옴");
 		List<?> recipeList = recipeService.recipeList();
+		List<?> recipeTopList = recipeService.recipeTopList();
+
 		System.out.println("recipeList = " + recipeList);
+		System.out.println("인기글 돌아옴 = " + recipeTopList);
 
 		model.addAttribute("data", recipeList);
+		model.addAttribute("recipeTopList", recipeTopList);
 		return "community/recipeList";
 	}
 
@@ -58,7 +62,6 @@ public class RecipeController {
 		List<?> recipeDetailReply = recipeService.recipeDetailReply(map);
 		List<?> recipeDetailReplyList = recipeService.recipeDetailReplyList(map);
 		Map<String, Object> recipeDetailMember = recipeService.recipeDetailMember(map);
-
 
 		System.out.println("돌아옴 = " + recipeDetail);
 		System.out.println("댓글돌아옴 = " + recipeDetailReply);
@@ -101,9 +104,30 @@ public class RecipeController {
 	public void recipeAddInsert(@RequestParam Map<String, Object> map, HttpSession ssion, HttpServletResponse response,  Model model) throws Exception {
 		System.out.println("등록Insert옴" + map);
 		map.put("memberId", ssion.getAttribute("memberId"));
+		String imgFile = (String)map.get("tumnalil_img");
+		String commonTitle = (String)map.get("commonTitle");
+		String commonContent = (String)map.get("commonContent");
+		if(commonContent.equals("") || commonTitle.equals("")) {
+			System.out.println("정상이다1111111111");
 
-		map.put("fileSeq", "./resources/img/common/loading.gif");
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('내용을 확인해주세요'); location.href='recipeAdd.do';</script>");
+			out.flush();
+		}
+		if(imgFile.equals("./resources/img/common/loading.gif")) {
+			System.out.println("정상 =  " + imgFile);
+			map.put("tumnalil_img", "183");
+		}else {
+
+			recipeService.imgFile(imgFile);
+			System.out.println("여기는했다");
+			imgFile = (String)recipeService.imgcnt();
+			map.put("tumnalil_img", imgFile);
+			System.out.println("파일 번호 = " + imgFile);
+		}
 		System.out.println("map =  " + map);
+
 		int recipeAddInsert = recipeService.recipeAddInsert(map);
 		System.out.println("recipeAddInsert =  " + recipeAddInsert);
 
