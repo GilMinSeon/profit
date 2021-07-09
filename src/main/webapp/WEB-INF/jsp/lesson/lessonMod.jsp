@@ -198,6 +198,47 @@ function fn_submitMod(){
 		return false;
 	}
 	
+	var balance = $("#count1").val();
+	var num = parseInt(balance);
+	console.log("balance" +balance);
+	console.log(num);
+	
+	var flex = $("#count2").val();
+	var num2 = parseInt(flex);
+	console.log("flex" +flex);
+	console.log(num2);
+	
+	var strong = $("#count3").val();
+	var num3 = parseInt(strong);
+	console.log("strong" +strong);
+	console.log(num3);
+	
+	var core = $("#count4").val();
+	var num4 = parseInt(core);
+	console.log("core" +core);
+	console.log(num4);
+	
+	if(num >100){
+		alert("Balance 값은 100을 넘길 수 없습니다.");
+		$("#count1").focus();
+		return;
+	}
+	if(num2 > 100){
+		alert("flex 값은 100을 넘길 수 없습니다.");
+		$("#count2").focus();
+		return;
+	}
+	if(num3 > 100){
+		alert("strong 값은 100을 넘길 수 없습니다.");
+		$("#count3").focus();
+		return;
+	}
+	if(num4 > 100){
+		alert("core 값은 100을 넘길 수 없습니다.");
+		$("#count4").focus();
+		return;
+	}
+	
 	
 	var msg = "ok";
 	if(msg=="ok"){
