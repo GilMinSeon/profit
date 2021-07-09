@@ -40,6 +40,47 @@
 
 
 	<script type="text/javascript">
+		$(function() {
+
+			$('.summernote').summernote({
+				height : 300,
+				fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
+				fontNamesIgnoreCheck : [ '맑은고딕' ],
+				focus : true,
+
+				callbacks : {
+					onImageUpload : function(files, editor, welEditable) {
+						for (var i = files.length - 1; i >= 0; i--) {
+							sendFile(files[i], this);
+						}
+					}
+				}
+
+			});
+
+		})
+
+		function sendFile(file, el) {
+			var form_data = new FormData();
+			form_data.append('file', file);
+			$.ajax({
+				data : form_data,
+				type : "POST",
+				url : 'qnaProfileImage.do',
+				cache : false,
+				contentType : false,
+				enctype : 'multipart/form-data',
+				processData : false,
+				success : function(img_name) {
+					console.log(img_name);
+					setTimeout(function() {
+						alert("파일첨부");
+						$(el).summernote('editor.insertImage', img_name);
+					}, 5000);
+				}
+			});
+		}
+
 		window.onload = function() {
 			var str = document.getElementById("text");
 			str.innerHTML = "${data.commonContent}";
@@ -72,12 +113,9 @@
 			<input type="text" name="title" value="${data.commonTitle}" style="border-radius: 5px; width: 100%; padding: 5px;">
 			<div class="pt-1">
 				<textarea id="summernote" name="contents">
-					<p id="text">${data.commonContent}</p>
+					${data.commonContent}
 				</textarea>
 			</div>
-			<script>
-				$('#summernote').summernote({});
-			</script>
 			<div class="pt-1 text-right">
 				<button id="hover_btn" class="btn btn btn-success" type="button" style="width: 10%; padding: 5px;" onclick="location.href='noticeList.do'">목록</button>
 				<button id="hover_btn" class="btn btn btn-success" type="submit" style="width: 10%; padding: 5px;">수정</button>

@@ -17,6 +17,7 @@ public interface QnaMapper {
 
 	int qnaInsert(Map<String, Object>map) throws Exception;
 
+	//상세보기
 	Map<String, Object> qnaDetail(Map<String, Object> map) throws Exception;
 
 	int qnaUpdate(Map<String, Object> map) throws Exception;
@@ -33,6 +34,9 @@ public interface QnaMapper {
 
 	//댓글 삭제
 	int qnaReplyDelete(Map<String, Object> map) throws Exception;
+
+	Map<String, Object> qnaDetailMember(Map<String, Object> map) throws Exception;
+
 
 
 }

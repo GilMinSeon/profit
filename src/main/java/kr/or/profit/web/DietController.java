@@ -38,6 +38,7 @@ import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.PageMaker;
 //import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.ReplyVO;
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -421,6 +422,37 @@ public class DietController {
 		System.out.println(model);
 		
 		return "diet/kcalList";
+	}
+	
+	@RequestMapping(value = "kcalNumAjax.do", method = { RequestMethod.GET, RequestMethod.POST },produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String kcalNumAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		String kcalNum = request.getParameter("kcalNum");
+		System.out.println("칼로리시퀀스 : " + kcalNum);
+		Map<String, Object> kcalDetail = dietService.selectkcalDetail(kcalNum);
+		System.out.println("칼로리디테일");
+		System.out.println(kcalDetail.toString());
+		
+		JSONObject jsonObject = new JSONObject();
+		
+		if (kcalDetail.size() > 0) {
+			jsonObject.put("msg", "ok");
+			jsonObject.put("num", kcalDetail.get("num"));
+			jsonObject.put("descKor", kcalDetail.get("descKor"));
+			jsonObject.put("servingSize", kcalDetail.get("servingSize"));
+			jsonObject.put("nutrCont1", kcalDetail.get("nutrCont1"));
+			jsonObject.put("nutrCont2", kcalDetail.get("nutrCont2"));
+			jsonObject.put("nutrCont3", kcalDetail.get("nutrCont3"));
+			jsonObject.put("nutrCont4", kcalDetail.get("nutrCont4"));
+			jsonObject.put("nutrCont5", kcalDetail.get("nutrCont5"));
+			jsonObject.put("nutrCont6", kcalDetail.get("nutrCont6"));
+		} else {
+			jsonObject.put("msg", "ng");
+		}
+		String jsonInfo = jsonObject.toString();
+		return jsonInfo;
+		
 	}
 	
 	@RequestMapping(value = "kcalDetail.do", method = RequestMethod.GET)

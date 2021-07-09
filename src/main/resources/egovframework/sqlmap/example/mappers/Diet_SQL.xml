@@ -369,7 +369,7 @@
 	
 	<!-- 칼로리 정보 목록-->
 	<select id="selectKcalList" resultType="egovMap">
-	    select rm , num, desc_kor, maker_name, serving_size, nutr_cont1, nutr_cont2, nutr_cont3, nutr_cont4, nutr_cont5, nutr_cont6
+	    select rm , num, desc_kor, maker_name, serving_size, round(nutr_cont1) as nutr_cont1, nutr_cont2, nutr_cont3, nutr_cont4, nutr_cont5, nutr_cont6
 		from
 		(
 		select rownum as rm , num, desc_kor, maker_name, serving_size, nutr_cont1, nutr_cont2, nutr_cont3, nutr_cont4, nutr_cont5, nutr_cont6
@@ -394,5 +394,23 @@
 		<if test="searchKeyword != null and searchKeyword != ''">
 		and desc_kor like '%' || #{searchKeyword} || '%'
 		</if>
+		</select>
+		
+	<!-- 칼로리 정보 상세 조회 -->
+		<select id="selectkcalDetail" parameterType="String" resultType="egovMap">
+		    select 
+		    num,
+		    desc_kor, 
+		    maker_name, 
+		    serving_size, 
+		    round(nutr_cont1) as nutr_cont1, 
+			round(nutr_cont2) as nutr_cont2, 
+			round(nutr_cont3) as nutr_cont2, 
+			round(nutr_cont4) as nutr_cont4, 
+			round(nutr_cont5) as nutr_con5, 
+			round(nutr_cont6) as nutr_cont6
+			from food_ntr_irdnt_db
+			where num = #{kcalNum}
+		    
 		</select>
 </mapper>

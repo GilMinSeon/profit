@@ -61,14 +61,16 @@ public class QnaController {
 	public String qnaList(@RequestParam Map<String, Object> map, HttpSession ssion, ModelMap model) throws Exception {
 		String memberId = (String) ssion.getAttribute("memberId");
 		map.put("memberId", memberId);
-		//관리자 리스트빼기
+		//관리자 리스트
 		List<?> qnaList;
 		if (memberId.equals("1")) {
 			qnaList = listAll(map, ssion, model);
+			System.out.println("관리자로옴" + qnaList);
 			model.addAttribute("data", qnaList);
 			return "qna/qnaList";
 		}
 		qnaList = qnaService.qnaList(map);
+		System.out.println("회원으로옴" + qnaList);
 		model.addAttribute("data", qnaList);
 		return "qna/qnaList";
 	}
@@ -105,7 +107,9 @@ public class QnaController {
 	public void qnaInsert(@RequestParam Map<String, Object> map, ModelMap model, HttpSession ssion, HttpServletResponse response) throws Exception {
 		String memberId = (String) ssion.getAttribute("memberId");
 		map.put("memberId", memberId);
+		System.out.println("문의하 등록" + map);
 		int qnaInsert = qnaService.qnaInsert(map);
+		System.out.println("문의하기 등록하고 옴" + qnaInsert);
 
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
@@ -125,13 +129,21 @@ public class QnaController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "qnaDetail.do", method = RequestMethod.GET)
-	public String qnaDetail(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
+	public String qnaDetail(@RequestParam Map<String, Object> map, HttpSession ssion, ModelMap model) throws Exception {
+		map.put("memberId", ssion.getAttribute("memberId"));
+		System.out.println("문의하기 상세화면옴" + map);
+
 		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
 		List<?> qnaDetailReply = qnaService.qnaDetailReply(map);
+		Map<String, Object> qnaDetailMember = qnaService.qnaDetailMember(map);
+
+		System.out.println("문의하기 상세보기" + qnaDetail);
+		System.out.println("문의하기 댓글" + qnaDetailReply);
+		System.out.println("문의하기 로그인 중인사람" + qnaDetailMember);
 
 		model.addAttribute("data", qnaDetail);
 		model.addAttribute("qnaReply", qnaDetailReply);
-
+		model.addAttribute("qnaDetailMember", qnaDetailMember);
 		return "qna/qnaDetail";
 	}
 
@@ -219,7 +231,7 @@ public class QnaController {
 		System.out.println("uuid = " + uuid);
 		// 업로드할 파일 이름
 		String org_filename = file.getOriginalFilename();
-		String str_filename = uuid.toString() + "_psb_" + org_filename;
+		String str_filename = uuid.toString() +"_"+ org_filename;
 
 		System.out.println("원본 파일명 : " + org_filename);
 		System.out.println("저장할 파일명 : " + str_filename);

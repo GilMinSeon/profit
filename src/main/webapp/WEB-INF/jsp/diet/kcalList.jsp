@@ -74,16 +74,90 @@ height: 15px;
 </style>
 
 <script>
-function fn_modalOpen(){
-	$("#myModal").modal('show');
+
+var totalKcal = 0;
+function fn_modalOpen(kcalNum){
+	//ajax
+	var formData = new FormData($('#frm'+ kcalNum)[0]);
+	$.ajax({
+		type:"POST",
+		url:"kcalNumAjax.do",
+		data:formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+			var jsonInfo = JSON.parse(data);
+			if(jsonInfo.msg=="ok"){
+				alert(jsonInfo.descKor);
+				$('#food_name').text(jsonInfo.descKor);
+				$('#serving_size').text(jsonInfo.servingSize);
+				$("#myModal").modal('show');
+			}else if(jsonInfo.msg=="ng"){
+				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			}else{
+				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			}
+		},
+		error : function(error){
+			alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+	});
+	
 }
 
 function fn_calcAdd(foodName, kcalNum){
-	$(".box").append("<p class='ex'>🥨 제육덮밥&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + 
-					 "<span class='kcal_span'>500 Kcal&nbsp;&nbsp;&nbsp;" + 
-					 "<img class='kcal_img' src='./resources/img/common/delete2.png'></span></p>");
-    $(".ex").hide().fadeIn(700);
+	var cnt = $('.ex').length+1;
+	$(".box").append("<p id=cnt"+cnt+" class='ex'>🥨"+foodName+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='kcal_span'><span class='kcal_span_num'>"+kcalNum+"</span> Kcal&nbsp;&nbsp;&nbsp;<img class='kcal_img' src='./resources/img/common/delete2.png' onclick='fn_del("+cnt+")'></span></p>");
+	$(".ex").last().hide().fadeIn(600);
+    totalKcal += parseInt(kcalNum);
+    $(".choose-counter123").text(totalKcal);
+//     console.log($(".choose-counter").text());
 }
+
+function fn_del(cnt){
+	var removeKcal = parseInt($("#cnt" + cnt + " .kcal_span_num").text());
+// 	alert($("#cnt" + cnt + " .kcal_span_num").text());
+	totalKcal -= removeKcal;
+	$("#cnt" + cnt).show().fadeOut(600);
+	$("#cnt" + cnt).remove();
+    console.log($(".choose-counter123").text());
+	$(".choose-counter123").text(totalKcal);
+}
+
+function fn_kcal_clac(url){
+	
+	var clacContent = $('.box').html();
+	var clacTotal = $('.choose-counter123').text();
+	sessionStorage.setItem("clacContent",clacContent);
+	sessionStorage.setItem("clacTotal", clacTotal);
+	location.href=url;
+}
+
+$(function(){
+	totalKcal = 0;
+// 	sessionStorage.clear();
+	
+	
+	console.log("  dd : " + sessionStorage.getItem("clacContent"));
+	$(".box").html(sessionStorage.getItem("clacContent"));
+	var clacTotal = sessionStorage.getItem("clacTotal");
+	console.log(clacTotal);
+	
+	if(clacTotal != null){
+		totalKcal = parseInt(clacTotal);
+		console.log("total : " + totalKcal);
+		$(".choose-counter123").text(totalKcal);
+	}
+	
+
+})
+
+
+
 </script>
 </head>
 <body>
@@ -97,6 +171,7 @@ function fn_calcAdd(foodName, kcalNum){
 				<div class="col-lg-12">
 					<div class="breadcrumb__text">
 						<h2>칼로리 계산기</h2>
+						
 					</div>
 				</div>
 			</div>
@@ -106,7 +181,7 @@ function fn_calcAdd(foodName, kcalNum){
 
 	<!-- Blog Details Section Begin -->
 	<section class="blog-details spad">
-
+		<input id="save" name="calcContent" type="hidden" value=""> 
 		<div class="container">
 			<div class="classes__item__text"
 				style="text-align: center; padding-top: 0; padding-bottom: 0">
@@ -123,19 +198,16 @@ function fn_calcAdd(foodName, kcalNum){
 						</p>
 					</div>
 					<div>
+					<form id="frmBox" enctype="multipart/form-data" action="frmBoxSave.do">
 						<div class="box" style="overflow-y: scroll; height: 370px;padding-left: 30px;padding-right:15px;">
-							<!-- <p>
-								🥨 제육덮밥&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">500 Kcal&nbsp;&nbsp;&nbsp;<img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;"></span>
-							</p> -->
 							
 						</div>
+					</form>
+					
 						<hr>
 						<div style="text-align: right;margin-right: 20px;">
 							<p style="font-weight: bold; font-size: 1.2em; color: #5768AD">
-							총 칼로리 : 3050 Kcal</p>
+							총 칼로리 : <span class="choose-counter123">0</span>  Kcal</p>
 						</div>
 					</div><br>
 					<div style="width: 351px;height: 355px;padding:0;border: 1px solid #ebecef;border-radius: 10px;background-color: white;">
@@ -166,7 +238,7 @@ function fn_calcAdd(foodName, kcalNum){
 											id="keyword" name="searchKeyword" value="${searchKeyword}">
 									</div>
 									<div class="class__filter__btn">
-										<button type="submit" style="cursor: pointer;">
+										<button type="submit" style="cursor: pointer;" >
 											<i class="fa fa-search"></i>
 										</button>
 									</div>
@@ -192,15 +264,15 @@ function fn_calcAdd(foodName, kcalNum){
 					                <table style="border: 1px solid #d5d6d6;width: 600px;text-align: center;margin-left: auto;margin-right: auto;">
 					                	<tr style="border: 1px solid #d5d6d6;">
 						                	<th style="width: 30%;font-weight: bold;padding:10px;background-color: #fff1c6">식품이름</th>
-					                		<td style="width: 60%;">삶은 달걀</td>
+					                		<td style="width: 60%;"><span id="food_name"></span></td>
 					                	</tr>
 					                	<tr style="border: 1px solid #d5d6d6;">
-						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">총 내용량</th>
-					                		<td>1개(50g)</td>
+						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">메이커이름</th>
+					                		<td><span id="serving_size"></span></td>
 					                	</tr>
 					                	<tr style="border: 1px solid #d5d6d6;">
-						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">열량</th>
-					                		<td>68 Kcal</td>
+						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">총내용량</th>
+					                		<td>68 Kcal ( <span id="serving_size"></span> )</td>
 					                	</tr>
 					                </table>
 					                <div style="text-align: center">
@@ -252,25 +324,28 @@ function fn_calcAdd(foodName, kcalNum){
 					</div>
 
 					<div style="text-align: center;">
-						<table id="myTable" class="kcalList"
+						<table class="kcalList"
 							style="margin-right: 0; margin-left: auto; margin-right: auto;">
 							<tr>
 								<th
-									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 45%;font-size: 1.2em;">식품이름</th>
+									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 45%;font-size: 1.2em;">음식명</th>
 								<th
 									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 20%;font-size: 1.2em;">총
-									내용량</th>
+									내용량(g)</th>
 								<th
-									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 10%;font-size: 1.2em;">열량</th>
+									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 20%;font-size: 1.2em;">열량(kcal)</th>
 								<th
 									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 10%;"></th>
 							<tr>
 							<c:forEach var="result" items="${kcalList}" varStatus="status">
+							<form id="frm${result.num}">
+								<input type="hidden" name="kcalNum" value="${result.num}">
+							</form>
 							<tr>
-								<td onclick="fn_modalOpen()">${result.descKor}</td>
+								<td onclick="fn_modalOpen(${result.num})">${result.descKor}</td>
 								<td>${result.servingSize}</td>
 								<td>${result.nutrCont1}</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_calcAdd(${result.descKor},${result.nutrCont1})"></td>
+								<td><input class="class-btn" type="button" value="담기" onclick="fn_calcAdd('${result.descKor}','${result.nutrCont1}')"></td>
 							</tr>
 							</c:forEach>
 						</table>
@@ -287,11 +362,11 @@ function fn_calcAdd(foodName, kcalNum){
 					<c:set var="page" value="${pageMaker.cri.page}"/>
 					<c:set var="idx" value="${idx}"/>
 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-            			<a href="kcalList.do${pageMaker.makeQueryKal(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+            			<a onclick="fn_kcal_clac('kcalList.do${pageMaker.makeQueryKal(idx)}')" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
 					</c:forEach>
 					
 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-						<a href="kcalList.do${pageMaker.makeQueryKal(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+						<a onclick="fn_kcal_clac('kcalList.do${pageMaker.makeQueryKal(idx)}')"><span class="arrow_carrot-right"></span></a>
 					</c:if>
 					</div>
 				</div>

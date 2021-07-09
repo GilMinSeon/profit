@@ -38,11 +38,10 @@
 </style>
 
 <script type="text/javascript">
-
 	$(function() {
-
+		$('#loading').hide();
 		$('.summernote').summernote({
-			height : 600,
+			height : 300,
 			fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
 			fontNamesIgnoreCheck : [ '맑은고딕' ],
 			focus : true,
@@ -70,10 +69,14 @@
 			contentType : false,
 			enctype : 'multipart/form-data',
 			processData : false,
+			beforeSend : function() {
+				$('#loading').show();
+			},
 			success : function(img_name) {
 				console.log(img_name);
 				setTimeout(function() {
 					alert("파일첨부");
+					$('#loading').hide();
 					$(el).summernote('editor.insertImage', img_name);
 				}, 5000);
 			}
@@ -84,9 +87,7 @@
 <body style="padding-top: 5rem;">
 
 	<!-- Breadcrumb Begi -->
-	<section class="breadcrumb-option set-bg"
-		data-setbg="./resources/img/breadcrumb.jpg"
-		style="background-image: url(&quot;./resources/img/breadcrumb.jpg&quot;);">
+	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg" style="background-image: url(&quot;./resources/img/breadcrumb.jpg&quot;);">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -104,16 +105,22 @@
 		<main role="main" class="container">
 		<h3>👨‍🎓공지사항을 입력 해주세요</h3>
 		<br>
-		<form name="form" method="POST" action="/noticeAdd.do">
+		<form name="form" method="POST" action="/noticeAdd.do" enctype="multipart/form-data">
 			<div class="pt-1"></div>
-			<input type="text" name="title" placeholder="제목을 입력하세요"
-				style="border-radius: 5px; width: 100%; padding: 5px;">
+			<input type="text" name="title" placeholder="제목을 입력하세요" style="border-radius: 5px; width: 100%; padding: 5px;">
+
 			<div class="pt-1">
 				<textarea class="summernote" id="summernote" name="contents"></textarea>
+				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">
+					<img id="loading-image" src="./resources/img/common/loading.gif" alt="Loading..." />
+				</div>
+			</div>
+			<br>
+			<div>
+				<input type="file" id="file" name="file" value="파일첨부" >
 			</div>
 			<div class="pt-1 text-right">
-				<button id="hover_btn" class="btn btn btn-success" type="submit"
-					style="width: 10%; padding: 5px;">등록</button>
+				<button id="hover_btn" class="btn btn btn-success" type="submit" style="width: 10%; padding: 5px;">등록</button>
 			</div>
 		</form>
 		</main>

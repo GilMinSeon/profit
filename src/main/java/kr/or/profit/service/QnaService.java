@@ -27,5 +27,7 @@ public interface QnaService {
 	//댓글삭제
 	int qnaReplyDelete(Map<String, Object> map) throws Exception;
 
+	Map<String, Object> qnaDetailMember(Map<String, Object> map) throws Exception;
+
 
 }
