@@ -60,4 +60,7 @@ public interface DietService {
 	
 	//페이징 - 칼로리 정보 목록 전체 글 개수
 	public int selectKcalCnt(Criteria cri) throws Exception;
+	
+	//kcal 정보 상세 조회
+	public Map<String, Object> selectkcalDetail(String kcalNum) throws Exception;
 }

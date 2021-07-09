@@ -136,5 +136,12 @@ public class DietServiceImpl implements DietService {
 	public int selectKcalCnt(Criteria cri) throws Exception {
 		return dietDAO.selectKcalCnt(cri);
 	}
+
+	
+	//kcal 정보 상세 조회
+	@Override
+	public Map<String, Object> selectkcalDetail(String kcalNum) throws Exception{
+		return dietDAO.selectkcalDetail(kcalNum);
+	}
 	
 }
