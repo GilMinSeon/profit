@@ -7,6 +7,51 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="./resources/js/recipe.js"></script>
+<style>
+.classes__item__text .class-btn:hover {
+	background: #ffffff;
+	border: 1px solid #5768AD;
+	color: #5768AD;
+}
+
+.classes__item__text .class-btn {
+	font-size: 17px;
+	font-weight: 700;
+	color: #ffffff;
+	background: #5768AD;
+	display: inline-block;
+	border: 1px solid rgba(155, 158, 163, 0.2);
+	padding: 10px 20px 7px;
+	border-radius: 2px;
+	-webkit-transition: all 0.4s;
+	-moz-transition: all 0.4s;
+	-ms-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	transition: all 0.4s;
+	width: 140px;
+}
+
+#reply {
+	width: 90%;
+	font-size: 13px;
+	color: #6E7580;
+	padding-left: 30px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	background: #ffffff;
+	border-radius: 2px;
+	height: 50px;
+	margin-bottom: 35px;
+	resize: none;
+	padding-top: 14px;
+	margin-top: 15px;
+}
+
+.breadcrumb-option, .blog-hero {
+	padding-top: 215px;
+	padding-bottom: 170px;
+	margin-top: -75px;
+}
+</style>
 <script type="text/javascript">
 	//댓글 추가
 	function fn_reipeReplyAdd() {
@@ -36,7 +81,6 @@
 	//대댓글 등록 recipeReplyAdd
 	function fn_reipeReplyAdd_Add(replySeq) {
 		var formData = new FormData($('#replyfrmAdd'+replySeq)[0]);
-		alert("aaaaa = " + replySeq);
 		$.ajax({
 			type : 'post',
 			url : 'recipeReplyAdd.do',
@@ -83,7 +127,6 @@
 				}
 			})
 		}
-
 	}
 	//대댓글 창
 	function recipeDetailReplyAddAdd(replySeq) {
@@ -96,8 +139,7 @@
 
 
 </script>
-<style type="text/css">
-</style>
+
 </head>
 <body>
 	<!-- Blog Hero Begin -->
@@ -124,22 +166,23 @@
 
 						<div class="blog__sidebar__recent">
 							<h4>최신글</h4>
-
 							<div class="blog__recent__item">
-								<div class="blog__recent__item__pic">
-									<img src="http://192.168.41.6:9999/upload/profit/5eac3229-1023-4234-97d2-03e21abcf8ba_wow.jpg" alt="" style="width: 90px; height: 70px;">
-								</div>
-								<div class="blog__recent__item__text">
-									<h6>WOW</h6>
-									<span>2021-07-06 18:59</span>
-								</div>
+								<c:forEach var="recipeNewList" items="${recipeNewList}">
+									<div class="blog__recent__item__pic">
+										<img src="${recipeNewList.filePath }" alt="" style="width: 90px; height: 70px;">
+									</div>
+									<div class="blog__recent__item__text">
+										<h6>WOW</h6>
+										<span>${recipeNewList.inDate }</span>
+									</div>
+								</c:forEach>
 							</div>
 
 						</div>
 						<div class="blog__sidebar__tags">
 							<h4>인기글</h4>
-
 							<div class="blog__recent__item">
+								조아요글 목록 리스트 포문 자리
 								<div class="blog__recent__item__pic">
 									<img src="http://192.168.41.6:9999/upload/profit/5eac3229-1023-4234-97d2-03e21abcf8ba_wow.jpg" alt="" style="width: 90px; height: 70px;">
 								</div>
@@ -170,7 +213,7 @@
 							<img src="./resources/img/common/newreply.png" style="width: 17px; height: 17px; opacity: 0.5;">
 						</div>
 						<div style="display: inline-block; vertical-align: sub;">
-							<p>${data.cnt}댓글수&nbsp;&nbsp;</p>
+							<p>${data.cnt}&nbsp;&nbsp;</p>
 						</div>
 
 						<!-- 좋아요 이미지 찍히는 곳 -->
@@ -244,7 +287,7 @@
 											<div class="classes__sidebar__comment__text">
 												<h6>
 													${recipeDetailReply.IN_USER_ID}&nbsp;&nbsp;&nbsp;&nbsp;
-													<a onclick="recipeDetailReplyAddAdd(${recipeDetailReply.REPLY_SEQ})">
+													<a style="font-size: 0.8em; color: gray;" onclick="recipeDetailReplyAddAdd(${recipeDetailReply.REPLY_SEQ})">
 														답글달기
 														<c:out value="${recipeDetailReply.REPLY_SEQ}" />
 													</a>
@@ -284,14 +327,17 @@
 										</c:forEach>
 										<!-- 대댓글 달기 -->
 										<form class="replyfrmAdd${recipeDetailReply.REPLY_SEQ}" id="replyfrmAdd${recipeDetailReply.REPLY_SEQ}" style="display: none;">
+											<input type="hidden" name="replySeq" value="${recipeDetailReply.REPLY_SEQ}">
+											<input type="hidden" name="memberId" value="${memberId}">
+											<input type="hidden" name="communitySeq" value="${data.communitySeq}">
 											<div class="row">
-												<div class="col-lg-12">
-													<div style="margin-top: 15px; margin-left: 100px;">
-														<input type="hidden" name="communitySeq" value="${data.communitySeq}"> <input type="hidden" name="replySeq" value="${recipeDetailReply.REPLY_SEQ}"> <input type="hidden" name="memberId" value="${memberId}">
+												<div class="col-lg-12"></div>
+												<div class="col-lg-12" style="margin-top: 15px; margin-left: 100px;">
+													<div class="classes__sidebar__comment__pic">
 														<img src="${recipeDetailMember.FILE_PATH}" alt="" style="max-width: 70px; float: left;">
-														<textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 78%; float: left;"></textarea>
-														<input type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: left; margin-top: 3px; margin-left: 5px;" onclick="fn_reipeReplyAdd_Add(${recipeDetailReply.REPLY_SEQ})" value="답변 등록">
 													</div>
+													<textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%; float: left"></textarea>
+													<input type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: left; margin-top: 15px; margin-left: 5px;" onclick="fn_reipeReplyAdd_Add(${recipeDetailReply.REPLY_SEQ})" value="답글작성">
 												</div>
 											</div>
 										</form>
@@ -314,13 +360,16 @@
 
 							<c:set var="inUser" value="${sessionScope.memberId}" />
 							<form id="replyfrm">
+								<input type="hidden" name="communitySeq" value="${data.communitySeq}">
+								<input type="hidden" name="memberId" value="${sessionScope.memberId}">
 								<div class="row">
+									<div class="col-lg-12"></div>
 									<div class="col-lg-12">
-										<div class="classes__sidebar__comment__pic"></div>
-										<img src="${recipeDetailMember.FILE_PATH}" alt="" style="max-width: 70px; float: left;">
-										<input type="hidden" name="communitySeq" value="${data.communitySeq}"> <input type="hidden" name="memberId" value="${sessionScope.memberId}">
-										<textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 78%; float: left"></textarea>
-										<input type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: left; margin-top: 3px; margin-left: 5px;" onclick="fn_reipeReplyAdd()" value="댓글 등록">
+										<div class="classes__sidebar__comment__pic">
+											<img src="${recipeDetailMember.FILE_PATH}" alt="">
+										</div>
+										<textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 79%; float: left"></textarea>
+										<input type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: right; margin-top: 15px;" onclick="fn_reipeReplyAdd()" value="댓글등록">
 									</div>
 								</div>
 							</form>
@@ -330,7 +379,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- Js Plugins -->
 
 
 

@@ -109,7 +109,6 @@
 	</section>
 	<!-- Breadcrumb End -->
 
-
 	<section class="classes spad">
 		<main role="main" class="container">
 		<h3>🌮레시피를 입력 해주세요</h3>
@@ -119,7 +118,6 @@
 			<div class="pt-1"></div>
 			<input type="text" name="commonTitle" placeholder="제목을 입력하세요" style="border-radius: 5px; width: 100%; padding: 5px;">
 			<div class="container" style="margin-top: 10px; margin-bottom: 20px; padding: 0; position: relative;">
-
 				<textarea class="summernote" id="summernote" name="commonContent"></textarea>
 				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">
 					<img id="loading-image" src="./resources/img/common/loading.gif" alt="Loading..." />

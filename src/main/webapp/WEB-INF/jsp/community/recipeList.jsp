@@ -79,7 +79,7 @@
 											<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
 										</div>
 										<div style="display: inline-block; vertical-align: sub;">
-											<p>조회수&nbsp;&nbsp;</p>
+											<p>${recipeTopList.cnt}&nbsp;&nbsp;</p>
 										</div>
 										<div style="display: inline-block; vertical-align: middle;">
 											<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">

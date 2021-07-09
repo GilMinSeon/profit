@@ -32,11 +32,15 @@ public interface RecipeMapper {
 
 	Map<String, Object> recipeDetailMember(Map<String, Object> map) throws Exception;
 
-	int imgFile(Object object) throws Exception;
+	int imgFile(Map<String, Object> map) throws Exception;
 
 	String imgcnt() throws Exception;
 
 	List<?> recipeTopList() throws Exception;
+
+	List<?> recipeNewList() throws Exception;
+
+	List<?> recipeGoodList() throws Exception;
 
 
 }

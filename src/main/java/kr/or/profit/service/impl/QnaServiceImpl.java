@@ -56,14 +56,22 @@ public class QnaServiceImpl implements QnaService{
 	//댓글목록
 	@Override
 	public List<?> qnaDetailReply(Map<String, Object> map) throws Exception {
+		System.out.println("댓글목록서비스옴 = " + map);
 		return mapper.qnaDetailReply(map);
 	}
 
 	//댓글삭제
 	@Override
 	public int qnaReplyDelete(Map<String, Object> map) throws Exception {
-		System.out.println("서비스옴 = " + map);
+		System.out.println("댓글삭제서비스옴 = " + map);
 		return mapper.qnaReplyDelete(map);
+	}
+
+	//회원정보
+	@Override
+	public Map<String, Object> qnaDetailMember(Map<String, Object> map) throws Exception {
+		System.out.println("회원정보 서비스옴 = " + map);
+		return mapper.qnaDetailMember(map);
 	}
 
 
