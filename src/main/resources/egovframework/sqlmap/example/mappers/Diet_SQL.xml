@@ -380,7 +380,7 @@
 		<if test="searchKeyword != null and searchKeyword != ''">
 		and desc_kor like '%' || #{searchKeyword} || '%'
 		</if>
-        order by desc_kor asc
+        order by num asc
 		)
 		)
 		where rm between #{rowStart} and #{rowEnd}
@@ -399,18 +399,79 @@
 	<!-- 칼로리 정보 상세 조회 -->
 		<select id="selectkcalDetail" parameterType="String" resultType="egovMap">
 		    select 
-		    num,
-		    desc_kor, 
-		    maker_name, 
-		    serving_size, 
-		    round(nutr_cont1) as nutr_cont1, 
-			round(nutr_cont2) as nutr_cont2, 
-			round(nutr_cont3) as nutr_cont2, 
-			round(nutr_cont4) as nutr_cont4, 
-			round(nutr_cont5) as nutr_con5, 
-			round(nutr_cont6) as nutr_cont6
+			num,
+			desc_kor, 
+			maker_name, 
+			serving_size, 
+			nutr_cont2,
+			nutr_cont3,
+			nutr_cont4,
+			nutr_cont5,
+			nutr_cont6,
+			round(nutr_cont2 / per2 * 100) as cont2_rs,
+			round(nutr_cont3 / per3 * 100) as cont3_rs,
+			round(nutr_cont4 / per4 * 100) as cont4_rs,
+			round(nutr_cont5 / per5 * 100) as cont5_rs,
+			round(nutr_cont6 / per6 * 100) as cont6_rs
+			from
+			(
+			select 
+			num,
+			desc_kor, 
+			maker_name, 
+			serving_size, 
+			round(nvl(round(nutr_cont2),0)) as nutr_cont2, 
+			round(nvl(round(nutr_cont3),0)) as nutr_cont3, 
+			round(nvl(round(nutr_cont4),0)) as nutr_cont4, 
+			round(nvl(round(nutr_cont5),0)) as nutr_cont5, 
+			round(nvl(round(nutr_cont6),0)) as nutr_cont6,
+			(select round(avg(nutr_cont2)*2)
+			from food_ntr_irdnt_db
+			) as per2,
+			(select round(avg(nutr_cont3)*2)
+			from food_ntr_irdnt_db
+			) as per3,
+			(select round(avg(nutr_cont4)*2)
+			from food_ntr_irdnt_db
+			) as per4,
+			(select round(avg(nutr_cont5)*2)
+			from food_ntr_irdnt_db
+			) as per5,
+			(select round(avg(nutr_cont6)*2)
+			from food_ntr_irdnt_db
+			) as per6
 			from food_ntr_irdnt_db
 			where num = #{kcalNum}
+			)
 		    
 		</select>
+		
+		<!-- 인기검색어 조회수 증가 -->
+		<update id="updateKcalHit">
+
+			update food_ntr_irdnt_db 
+			SET hit = to_number(hit) + 1
+			where num = #{kcalNum}
+
+		</update>
+		
+		
+		<!-- 인기검색어 조회 -->
+		<select id="selectPopularSearch" resultType="egovMap">
+		    <![CDATA[
+		    select rn, desc_kor
+			from
+			(
+			select rownum as rn, desc_kor
+			from 
+			(
+			select desc_kor
+			from food_ntr_irdnt_db
+			order by hit desc
+			)
+			)
+			where rn <= 7
+			]]>
+		</select>
+	
 </mapper>

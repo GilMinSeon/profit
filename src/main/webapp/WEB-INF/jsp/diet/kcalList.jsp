@@ -90,9 +90,40 @@ function fn_modalOpen(kcalNum){
 		success : function(data){
 			var jsonInfo = JSON.parse(data);
 			if(jsonInfo.msg=="ok"){
-				alert(jsonInfo.descKor);
 				$('#food_name').text(jsonInfo.descKor);
-				$('#serving_size').text(jsonInfo.servingSize);
+				$('#makerName').text(jsonInfo.makerName);
+				$('#nutrCont1').text(jsonInfo.nutrCont1);
+				$('#servingSize').text(jsonInfo.servingSize);
+				$('#sp1').text("탄수화물( " + jsonInfo.nutrCont2 + " g )");
+				$('#sp2').text("단백질( " + jsonInfo.nutrCont3 + " g )");
+				$('#sp3').text("지방( " + jsonInfo.nutrCont4 + " g )");
+				$('#sp4').text("당류( " + jsonInfo.nutrCont5 + " g )");
+				$('#sp5').text("나트륨( " + jsonInfo.nutrCont6 + " g )");
+				if(jsonInfo.cont2Rs>100){
+					$("#carbo").css('width',"100%");
+				}else{
+					$("#carbo").css('width',jsonInfo.cont2Rs + "%");
+				}
+				if(jsonInfo.cont3Rs>100){
+					$("#protein").css('width',"100%");
+				}else{
+					$("#protein").css('width',jsonInfo.cont3Rs + "%");
+				}
+				if(jsonInfo.cont4Rs>100){
+					$("#fat").css('width',"100%");
+				}else{
+					$("#fat").css('width',jsonInfo.cont4Rs + "%");
+				}
+				if(jsonInfo.cont5Rs>100){
+					$("#sugars").css('width',"100%");
+				}else{
+					$("#sugars").css('width',jsonInfo.cont5Rs + "%");
+				}
+				if(jsonInfo.cont6Rs>100){
+					$("#salt").css('width',"100%");
+				}else{
+					$("#salt").css('width',jsonInfo.cont6Rs + "%");
+				}
 				$("#myModal").modal('show');
 			}else if(jsonInfo.msg=="ng"){
 				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
@@ -115,12 +146,10 @@ function fn_calcAdd(foodName, kcalNum){
 	$(".ex").last().hide().fadeIn(600);
     totalKcal += parseInt(kcalNum);
     $(".choose-counter123").text(totalKcal);
-//     console.log($(".choose-counter").text());
 }
 
 function fn_del(cnt){
 	var removeKcal = parseInt($("#cnt" + cnt + " .kcal_span_num").text());
-// 	alert($("#cnt" + cnt + " .kcal_span_num").text());
 	totalKcal -= removeKcal;
 	$("#cnt" + cnt).show().fadeOut(600);
 	$("#cnt" + cnt).remove();
@@ -139,7 +168,6 @@ function fn_kcal_clac(url){
 
 $(function(){
 	totalKcal = 0;
-// 	sessionStorage.clear();
 	
 	
 	console.log("  dd : " + sessionStorage.getItem("clacContent"));
@@ -152,9 +180,16 @@ $(function(){
 		console.log("total : " + totalKcal);
 		$(".choose-counter123").text(totalKcal);
 	}
-	
-
 })
+
+function fn_search(){
+	var clacContent = $('.box').html();
+	var clacTotal = $('.choose-counter123').text();
+	sessionStorage.setItem("clacContent",clacContent);
+	sessionStorage.setItem("clacTotal", clacTotal);
+	
+	location.href="kcalList.do#location123";
+}
 
 
 
@@ -215,13 +250,13 @@ $(function(){
 						<p style="font-size: 1.2em; font-weight: bold;margin-top: 20px;margin-bottom: 20px;">
 							<span style="background-color: #fee9b8;">&nbsp;인기 검색어&nbsp;</span>
 						</p>
-						<p style="font-weight: bold;">🥇 1위&nbsp;&nbsp;&nbsp;제육덮밥</p>
-						<p style="font-weight: bold;">🥈2위&nbsp;&nbsp;&nbsp;광어회</p>
-						<p style="font-weight: bold;">🥉3위&nbsp;&nbsp;&nbsp;순두부찌개</p>
-						<p style="font-weight: bold;">4위&nbsp;&nbsp;&nbsp;삼겹살</p>
-						<p style="font-weight: bold;">5위&nbsp;&nbsp;&nbsp;크림 파스타</p>
-						<p style="font-weight: bold;">6위&nbsp;&nbsp;&nbsp;순대국밥</p>
-						<p style="font-weight: bold;">7위&nbsp;&nbsp;&nbsp;돼지곱창</p>
+						<p style="font-weight: bold;">🥇 1위&nbsp;&nbsp;&nbsp;${popularSearch[0]['descKor']}</p>
+						<p style="font-weight: bold;">🥈2위&nbsp;&nbsp;&nbsp;${popularSearch[1]['descKor']}</p>
+						<p style="font-weight: bold;">🥉3위&nbsp;&nbsp;&nbsp;${popularSearch[2]['descKor']}</p>
+						<p style="font-weight: bold;">4위&nbsp;&nbsp;&nbsp;${popularSearch[3]['descKor']}</p>
+						<p style="font-weight: bold;">5위&nbsp;&nbsp;&nbsp;${popularSearch[4]['descKor']}</p>
+						<p style="font-weight: bold;">6위&nbsp;&nbsp;&nbsp;${popularSearch[5]['descKor']}</p>
+						<p style="font-weight: bold;">7위&nbsp;&nbsp;&nbsp;${popularSearch[6]['descKor']}</p>
 						
 					</div>
 					</div>
@@ -231,14 +266,14 @@ $(function(){
 					<div class="classes__filter">
 						<div class="row">
 							<div class="col-lg-12">
-								<form action="kcalList.do#location123">
+								<form id="searchForm">
 									<div class="class__filter__input">
 										<p>검색</p>
 										<input type="text" style="width: 470px;" placeholder="검색"
 											id="keyword" name="searchKeyword" value="${searchKeyword}">
 									</div>
 									<div class="class__filter__btn">
-										<button type="submit" style="cursor: pointer;" >
+										<button style="cursor: pointer;" onclick="fn_search()" >
 											<i class="fa fa-search"></i>
 										</button>
 									</div>
@@ -267,37 +302,37 @@ $(function(){
 					                		<td style="width: 60%;"><span id="food_name"></span></td>
 					                	</tr>
 					                	<tr style="border: 1px solid #d5d6d6;">
-						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">메이커이름</th>
-					                		<td><span id="serving_size"></span></td>
+						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">판매 기업</th>
+					                		<td><span id="makerName"></span></td>
 					                	</tr>
 					                	<tr style="border: 1px solid #d5d6d6;">
 						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">총내용량</th>
-					                		<td>68 Kcal ( <span id="serving_size"></span> )</td>
+					                		<td><span id="nutrCont1"></span> Kcal ( <span id="servingSize"></span> g )</td>
 					                	</tr>
 					                </table>
 					                <div style="text-align: center">
 						                <p style="font-size: 0.9em;"><span style="color: #fb4d00">[주의]</span>음식 칼로리는 사용되는 재료와 1인 분량 기준의 차이에 의해 다소 차이가 있을 수 있습니다.</p>
 					                </div>
 					                <br>
-					                  탄수화물
+					                  <span id="sp1"></span>
 					                <div class="progress" style="margin-bottom: 10px;">
-									 <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+									 <div id="carbo" class="progress-bar progress-bar-striped" role="progressbar" style="width: 100%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-							   단백질
+							  		<span id="sp2"></span>
 									<div class="progress" style="margin-bottom: 10px;">
-									  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+									  <div id="protein" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-							   지방
+									<span id="sp3"></span>
 									<div class="progress" style="margin-bottom: 10px;">
-									  <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+									  <div id="fat" class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-							   당류
+									<span id="sp4"></span>
 									<div class="progress" style="margin-bottom: 10px;">
-									  <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+									  <div id="sugars"  class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 100%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-							  나트륨
+									<span id="sp5"></span>
 									<div class="progress" style="margin-bottom: 10px;">
-									  <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+									  <div id="salt"  class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 									</div><br>
 							
 							<div style="text-align: center;">🚴‍♂삶은 달걀 칼로리와 동일한 운동을 확인해 보세요🚴</div>‍

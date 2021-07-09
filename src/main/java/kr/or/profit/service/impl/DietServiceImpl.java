@@ -143,5 +143,21 @@ public class DietServiceImpl implements DietService {
 	public Map<String, Object> selectkcalDetail(String kcalNum) throws Exception{
 		return dietDAO.selectkcalDetail(kcalNum);
 	}
+
+	//인기검색어 조회수 증가
+	@Override
+	public int updateKcalHit(String kcalNum) throws Exception {
+		return dietDAO.updateKcalHit(kcalNum);
+	}
+
+
+	//인기검색어 조회
+	@Override
+	public List<Map<String, Object>> selectPopularSearch() throws Exception {
+		return dietDAO.selectPopularSearch();
+	}
+	
+	
+
 	
 }

@@ -63,4 +63,11 @@ public interface DietService {
 	
 	//kcal 정보 상세 조회
 	public Map<String, Object> selectkcalDetail(String kcalNum) throws Exception;
+
+	//인기검색어 조회수 증가
+	public int updateKcalHit(String kcalNum) throws Exception;
+
+	//인기검색어 조회
+	public List<Map<String, Object>> selectPopularSearch() throws Exception;
+	
 }

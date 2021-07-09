@@ -31,7 +31,7 @@ function fn_login(){
       $("#memberPwd").focus();
       return false;
    }
-   
+   sessionStorage.clear();
    $.ajax({
       type : "POST",
       data : "memberId=" + memberId +"&memberPwd=" + memberPwd, //json
@@ -41,10 +41,6 @@ function fn_login(){
       //전송 후 세팅
       success : function(result) {
     	  var jsonInfo = JSON.parse(result);
-    	  //alert(jsonInfo);
-    	  //alert(JSON.stringify(jsonInfo));
-    	  //alert(jsonInfo.sts);
-    	  //alert(jsonInfo.returnUrl);
          if (jsonInfo.sts == "OK") {
         	 if(memberId == '1'){
         		 alert("관리자님 안녕하세요");
@@ -70,6 +66,7 @@ function fn_login(){
    
    
 }
+
 </script>
 <body>
    <!-- Breadcrumb Begin -->

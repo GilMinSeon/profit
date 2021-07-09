@@ -69,4 +69,9 @@ public interface DietMapper {
 	
 	//kcal 정보 상세 조회
 	Map<String, Object> selectkcalDetail(String kcalNum) throws Exception;
+	
+	//인기검색어
+	int updateKcalHit(String kcalNum) throws Exception;
+
+	List<Map<String, Object>> selectPopularSearch() throws Exception;
 }
