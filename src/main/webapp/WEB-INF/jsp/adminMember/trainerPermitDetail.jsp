@@ -1,330 +1,402 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-</head>
-<style>
+<link rel="stylesheet" href="./resources/datepicker/jquery-ui.css">
+<script src="./resources/datepicker/jquery-3.5.1.js"></script>
+<script src="./resources/datepicker/jquery-ui.js"></script>
+
+<style type="text/css">
 .classes__filter form .class__filter__btn_re {
-	padding-right: 120px;
+	padding-right: 125px;
 }
-.current{
-	color: black;
+
+.table tr:hover {
+	background-color: #f8f6ff;
 }
 </style>
 <script type="text/javascript">
-	function fn_update(){
-		$('.updateBtn').css({
-			'display' : 'block'
-		});
-		
-		
-		$('#updBtn').attr({
-			'value' : '수정완료'
-		});
-		$('.ta').prop('readonly', false);
+var arr = [];
 
-	}
+function fn_del(fileDetailSeq){
+	alert(fileDetailSeq)
+	arr.push(fileDetailSeq);
+	console.log(arr)
+}
+
+
+var cnt = 1;
+function fn_addFile(){
+    $("#d_file").append("<br>" + "<input type='file' id='file"+cnt+"' class='file_choice' name='file" + cnt + "'/>");
+    
+    cnt++;
+}
+
+function fn_delFile(){
+   cnt -= 1;
+   $("#file"+cnt).remove();
+   
+}
+
+
+
+function fn_submit(){
+   var msg = "ok";
+   
+   for(var i=1; i<cnt; i++){
+      var file_val = $("#file"+i).val();
+      if(!file_val){
+         msg = "ng";
+      }
+   }
+   
+   if(msg=="ok"){
+      var apply = confirm("신청서를 제출하시겠습니까?");
+      if(apply == true){
+         send_file();
+         
+      }
+      else{
+         alert("신청이 취소되었습니다.")
+      }
+   }else{
+      alert("첨부하지 않은 파일은 삭제해주세요");
+      
+   }
+}
+
+ function send_file(){
+    var formData = new FormData($('#frm')[0]);
+       $.ajax({
+          type : 'post',
+          url : 'uploadAjax.do',
+          data : formData,
+          processData : false,
+          contentType : false,
+          async:false,
+          dataType:"text",
+          success : function(data){
+          if(data=="ok"){
+             alert("신청이 정상적으로 완료되었습니다.");
+             location.href="trainerApplyList.do";
+          }else if(data=="no"){
+             alert("신청이 실패하였습니다. 다시 시도해주세요");
+          }else{
+             alert("신청이 실패하였습니다. 다시 시도해주세요");
+          }
+       },
+          error : function(error){
+             alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+             console.log(error);
+             console.log(error.status);
+          }
+          
+          
+       })
+ }
+
+
+//수정하기 눌렀을때 나타나는 효과들
+function fn_update() {
+	$('#file').css({'display' : 'block'});
+	$('#submit').css({'display' : 'block'});
+	$('#update').css({'display' : 'none'});
+	
+	$('#div_upload').css({'display' : 'block'});
+	$('.div_img').css({'display' : 'inline'});
+	
+	$('.orange').css({'background-color' : '#fee9b8'});
+	
+	
+	$('#memberName').prop('readonly', false); 
+	$('#memberNickname').prop('readonly', false); 
+	$('#memberMobile').prop('readonly', false); 
+	$('#memberWeight').prop('readonly', false); 
+	$('#memberHeight').prop('readonly', false); 
+
+}
+
+//수정완료 눌렀을때
+function fn_submit() {
+	
+   var formData = new FormData($('#frm')[0]);
+/*       $.ajax({
+         type : 'post',
+         url : 'updateMyInfoAjax.do',
+         data : formData,
+         processData : false,
+         contentType : false,
+         async:false,
+         dataType:"text",
+         success : function(data){
+         if(data=="ok"){
+        	 alert("내 정보가 수정되었습니다.");
+            //location.href="home.do";
+         }else if(data=="no"){
+            alert("신청이 실패하였습니다. 다시 시도해주세요");
+         }else{
+            alert("신청이 실패하였습니다. 다시 시도해주세요");
+         }
+      },
+         error : function(error){
+            alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+            console.log(error);
+            console.log(error.status);
+         }
+      }) */
+	
+	$('#file').css({'display' : 'none'});
+	$('#submit').css({'display' : 'none'});
+	$('#update').css({'display' : 'block'});
+	$('#memberName').prop('readonly', true); 
+	$('#memberNickname').prop('readonly', true); 
+	$('#memberMobile').prop('readonly', true); 
+	$('#memberWeight').prop('readonly', true); 
+	$('#memberHeight').prop('readonly', true); 
+	
+	
+	$('#div_upload').css({'display' : 'none'});
+	$('.div_img').css({'display' : 'none'});
+	
+	$('.orange').css({'background-color' : 'none'});
+	
+	
+}
 </script>
+
+
+</head>
 <body>
-
 	<!-- Breadcrumb Begin -->
-	<section class="breadcrumb-option set-bg"
-		data-setbg="./resources/img/breadcrumb.jpg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="breadcrumb__text">
-						<h2>트레이너 승인</h2>
-
-					</div>
-				</div>
-			</div>
-			
-		</div>
-	</section>
+	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/hero/hero-11.jpg"
+		style="padding-bottom: 0px; padding-top: 70px;"></section>
 	<!-- Breadcrumb End -->
 
-	<!-- Blog Section Begin -->
-	<section class="blog spad">
+
+	<!-- 본문 시작 -->
+	<section class="blog-details spad">
+
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-4 order-lg-1 order-2">
-					<div class="blog__sidebar">
-						<div class="blog__sidebar__categories">
-							<h4>카테고리</h4>
-							<ul>
-								<li><a href="trainerPermitList">트레이너승인</a></li>
-								<li><a href="adminMemberList">회원관리</a></li>
-								<li><a href="adminLessonList">온라인클래스 내역조회</a></li>
-								<li><a href="adminChatList">상담내역</a></li>
-								<li><a href="adminTicketPayList">이용권 구매내역</a></li>
-							</ul>
+			<h3 style="text-align: center; cursor: pointer; margin-bottom: 30px;" onclick="location.href='trainerPermitList.do'">트레이너 승인</h3>
+			<br>
+			<div class="row" style="justify-content: center">
+				
+				
+				<!-- 1번 div -->
+				<div style="display: left; margin-right: 20px; width: 30%; background-color: white; padding: 0px; border: 1px solid #ebecef; border-radius: 10px; height: auto;">
+					
+					<div style="text-align: center;">
+						<p style="font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 30px;">
+							<span style="background-color: #3f51b50d;">&nbsp;관리자 메모&nbsp;</span>
+						</p>
+					</div>
+					<div>
+						<div class="box" style="height: 370px; padding-left: 30px; padding-right: 15px;">
+							<textarea class="ta" style="border:none;background-color: #3f51b50d; color: black; margin-bottom: 20px; padding:10px 5px;
+							resize: none; width:290px; height: 350px;">${detailVO.adminMemo }
+                            </textarea>
+                            <input type="button" value="메모저장" class="site-btn" style="width : 290px;"/>
 						</div>
-						<div class="blog__sidebar__recent">
-							<h4>최신글</h4>
-							<div class="blog__recent__item">
-								<div class="blog__recent__item__pic">
-									<img src="./resources/img/blog/br-1.jpg" alt="">
-								</div>
-								<div class="blog__recent__item__text">
-									<h6>09 Kinds Of Vegetables Protect The Liver</h6>
-									<span>MAR 05, 2019</span>
-								</div>
-							</div>
-							<div class="blog__recent__item">
-								<div class="blog__recent__item__pic">
-									<img src="./resources/img/blog/br-2.jpg" alt="">
-								</div>
-								<div class="blog__recent__item__text">
-									<h6>Tips You To Balance Nutrition Meal Day</h6>
-									<span>MAR 05, 2019</span>
-								</div>
-							</div>
-							<div class="blog__recent__item">
-								<div class="blog__recent__item__pic">
-									<img src="./resources/img/blog/br-3.jpg" alt="">
-								</div>
-								<div class="blog__recent__item__text">
-									<h6>4 Principles Help You Lose Weight With Vegetables</h6>
-									<span>MAR 05, 2019</span>
-								</div>
-							</div>
+						<br><br><br>
+						<hr>
+					</div>
+					
+
+					<div style="text-align: center;">
+						<p style="font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 30px;">
+							<span style="background-color: #3f51b50d;">&nbsp;문자전송&nbsp;</span>
+						</p>
+					</div>
+					<div>
+						<div class="box" style="height: 370px; padding-left: 30px; padding-right: 15px;">
+							<textarea class="ta" style="border:none;background-color: #3f51b50d; color: black; margin-bottom: 20px; resize: none; width:290px; height: 350px;">
+안녕하세요. 프로핏입니다.
+
+                            </textarea>
+                            <input type="button" value="문자전송" class="site-btn" style="width : 290px;"/>
 						</div>
-						<div class="blog__sidebar__tags">
-							<h4>인기 검색어</h4>
-							<a href="#">Weight</a> <a href="#">Beauty</a> <a href="#">Yoga
-								Ball</a> <a href="#">Fruit</a> <a href="#">Healthy Food</a> <a
-								href="#">Lifestyle</a>
-						</div>
+						<br><br>
+						
 					</div>
 				</div>
-				<!-- 여기부터 달라짐 -->
-				<div class="col-lg-8 order-lg-2 order-1">
-				<h3> 트레이너 정보</h3><br>
-					<!-- Classes Section Begin -->
-					
-					<section >
-
-						<div class="appointment__text" style="background-color: #9e9e9e0a">
-							<!-- <div class="row">
-					<div class="col-lg-12">
-						<div class="section-title">
-							<h2></h2>
-						</div>
-					</div>
-				</div> -->
-							<form action="#" class="appointment__form">
-								<div class="text-center">
-
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">이름</h5>
-											&nbsp;
-										</div>
-										<input type="text" readonly="readonly"
-											style="background-color: #3f51b50d; color: black;"
-											value="마동석">
-									</div>
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-							style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-							<div style="margin-bottom: 2px;">
-								<h5 style="display: inline; float: left; color: black;">이메일</h5>
-								&nbsp;
-							</div>
-							<div class="input-group" style="margin-bottom: 20px;">
-								<input type="text" class="form-control" placeholder="Mobile" style="background-color: #3f51b50d;color: black;" value="010-4444-5555">
-					            <span class="input-group-addon" style="border:1px solid #5768AD; border-radius: 4px;">
-									<button type="button" onclick="location.href='adminSendMail'" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em;">이메일전송</button>
-					            </span>
-					        </div>
-						</div>
-									
-									
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">성별</h5>
-											&nbsp;
-										</div>
-										<input type="text" placeholder="Password" readonly="readonly"
-											style="background-color: #3f51b50d; color: black;" value="남성">
-									</div>
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">전화번호</h5>
-											&nbsp;
-										</div>
-										<input type="text" placeholder="Password" readonly="readonly"
-											style="background-color: #3f51b50d; color: black;"
-											value="010-1234-5678">
-									</div>
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">소속헬스장</h5>
-											&nbsp;
-										</div>
-										<input type="text" placeholder="Name" readonly="readonly"
-											style="background-color: #3f51b50d; color: black;"
-											value="헬스짐">
-									</div>
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">수상이력</h5>
-											&nbsp;
-										</div>
-										<div class="row">
-											<div class="col-lg-12"></div>
-											<div class="col-lg-12 text-center">
-												<textarea class="ta" readonly="readonly" 
-													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-
-                                    </textarea>
-
-											</div>
-										</div>
-									</div>
-									
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">경력</h5>
-											&nbsp;
-										</div>
-										<div class="row">
-											<div class="col-lg-12"></div>
-											<div class="col-lg-12 text-center">
-												<textarea class="ta" readonly="readonly"
-													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-
-                                    </textarea>
-
-											</div>
-										</div>
-									</div>
-									
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">첨부파일</h5>
-											&nbsp;
-											<div class="col-lg-12" style="text-align: right; float: left; padding: 0; margin: 0;">
-												<input type="button" value="첨부파일 추가" class="site-btn updateBtn" style="display:none; float:right; padding: 1px 6px ;font-size: 0.8em; color: white; background-color: #5768AD; width: 130px; height: 40px; margin-right: 7px;" onclick="fn_update()">
-											</div>
-										</div>
-										
-											
-										<div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="Password" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류">
-								            <span class="input-group-addon updateBtn" style="border:1px solid #5768AD; border-radius: 4px; display: none;">
-												<button type="button" onclick="location.href='pwdMod'" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em;">삭제</button>
-								            </span>
-								        </div>
-								        
-								        <div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="Password" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류">
-								            <span class="input-group-addon updateBtn" style="border:1px solid #5768AD; border-radius: 4px; display: none;">
-												<button type="button" onclick="location.href='pwdMod'" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em;">삭제</button>
-								            </span>
-								        </div>
-								        
-								        <div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="Password" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류">
-								            <span class="input-group-addon updateBtn" style="border:1px solid #5768AD; border-radius: 4px; display: none;">
-												<button type="button" onclick="location.href='pwdMod'" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em;">삭제</button>
-								            </span>
-								        </div>
-										
-										<div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="Password" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류">
-								            <span class="input-group-addon updateBtn" style="border:1px solid #5768AD; border-radius: 4px; display: none;">
-												<button type="button" onclick="location.href='pwdMod'" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em;">삭제</button>
-								            </span>
-								        </div>
-									</div>
-									
-									
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">관리자 메모</h5>
-											&nbsp;
-										</div>
-										<div class="row">
-											<div class="col-lg-12"></div>
-											<div class="col-lg-12 text-center">
-												<textarea class="ta" readonly="readonly"
-													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;">
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-
-                                    </textarea>
-
-											</div>
-										</div>
-									</div>
-									
-									
-									
-									
-									
-									
-									
-									<br>
-									<div class="col-lg-12" style="text-align: right;">
-										<input type="button" value="수정하기" id="updBtn" class="site-btn" style="padding: 1px 6px ;font-size: 1.1em; color: white; background-color: #5768AD; width: 150px; height: 48px; margin-right: 7px;" onclick="fn_update()">
-									</div><br>
-
-									<div class="col-lg-12" style="text-align: right; ">
-										<input type="button" value="승인" class="site-btn" style="display: inline-block; padding: 1px 6px ;font-size: 1.1em; color: white; background-color: #5768AD; width: 100px; height: 48px; margin-right: 7px;">
-										<input type="button" value="보완" class="site-btn" style="display: inline-block; padding: 1px 6px ;font-size: 1.1em; color: white; background-color: #5768AD; width: 100px; height: 48px; margin-right: 7px;">
-										<input type="button" value="반려" class="site-btn" style="display: inline-block; padding: 1px 6px ;font-size: 1.1em; color: white; background-color: #5768AD; width: 100px; height: 48px; margin-right: 7px;">
-										
-									</div>
-
+				<!-- 1번 div 끝 -->
+				
+				
+				
+				<!-- 2번 div -->
+				<div class="col-lg-8 order-lg-2 order-1" style="background-color: white; padding: 30px; border: 1px solid #ebecef; border-radius: 10px; display: left; height: auto;">
+					<!-- 수정 form 시작 -->
+					<form action="#" class="appointment__form">
+						<div class="text-center">
+							
+							<!-- 1.이름 -->
+							<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<div style="margin-bottom: 2px;">
+									<h5 style="display: inline; float: left; color: black;">이름</h5>
+									&nbsp;
 								</div>
+								<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;" 
+									value="${detailVO.memberName }" name="memberName" id="memberName">
+							</div>
+							
+							<!-- 2.핸드폰번호 -->
+							<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<div style="margin-bottom: 2px;">
+									<h5 style="display: inline; float: left; color: black;">핸드폰번호</h5>
+									&nbsp;
+								</div>
+								<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;" 
+									value="${detailVO.memberMobile }" name="memberMobile" id="memberMobile">
+							</div>
+	
+							<!-- 3.이메일 -->
+							<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<div style="margin-bottom: 2px;">
+									<h5 style="display: inline; float: left; color: black;">이메일</h5>
+									&nbsp;
+								</div>
+								<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;" 
+									value="${detailVO.memberEmail }" name="memberEmail" id="memberEmail">
+							</div>
+							
+							<!-- 4.성별 -->
+							<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<div style="margin-bottom: 2px;">
+									<h5 style="display: inline; float: left; color: black;">성별</h5>
+									&nbsp;
+								</div>
+								<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;" 
+									<c:if test="${ detailVO.memberGender eq 'F'}">
+									value="여성"
+									</c:if>
+									<c:if test="${ detailVO.memberGender eq 'M'}">
+									value="남성"
+									</c:if>
+									name="memberGender" id="memberGender">
+							</div>
+							
+							<!-- 5.소속헬스장 -->
+							<div class="col-lg-6 text-center mypage_myinfo"
+								style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<div style="margin-bottom: 2px;">
+									<h5 style="display: inline; float: left; color: black;"><span class="orange" style="background-color: none;">소속헬스장</span></h5>
+									&nbsp;
+								</div>
+								<input type="text" readonly="readonly" style="background-color: #3f51b50d; color: black;"
+									value="${detailVO.trainerGym }" name="trainerGym" id="trainerGym">
+							</div>
+							
+							<!-- 6.수상이력 -->							
+							<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<div style="margin-bottom: 2px;">
+									<h5 style="display: inline; float: left; color: black;"><span class="orange" style="background-color: none;">수상이력</span></h5>
+									&nbsp;
+								</div>
+								<div class="row">
+									<div class="col-lg-12"></div>
+									<div class="col-lg-12 text-center">
+										<textarea class="ta" readonly="readonly" style="background-color: #3f51b50d; color: black; margin-bottom: 20px; resize: none;"
+											name="trainerAward" id="trainerAward">${detailVO.trainerAward }
+	
+	                                    </textarea>
+										</div>
+									</div>
+								</div>
+	
+							<!-- 7.경력 -->
+							<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<div style="margin-bottom: 2px;">
+									<h5 style="display: inline; float: left; color: black;"><span class="orange" style="background-color: none;">경력</span></h5>
+									&nbsp;
+								</div>
+								<div class="row">
+									<div class="col-lg-12"></div>
+									<div class="col-lg-12 text-center">
+										<textarea class="ta" readonly="readonly" style="background-color: #3f51b50d; color: black; margin-bottom: 20px; resize: none;"
+											name="trainerCareer" id="trainerCareer">${detailVO.trainerCareer }
+	                                    </textarea>
+	
+										</div>
+									</div>
+								</div>
+							
+							
+							<!-- 첨부파일[기존파일들 보여주는 부분] -->
+							<div class="col-lg-6 text-center mypage_myinfo" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<div style="margin-bottom: 2px;">
+									<h5 style="display: inline; float: left; color: black;"><span class="orange" style="background-color: none;">첨부파일</span></h5>
+									&nbsp;
+									<div class="col-lg-12" style="text-align: left; float: left; padding: 20px; margin:0px; background-color: #3f51b50d;">
+										<c:forEach var="fileVO" items="${fileVO}" varStatus="status">
+										${fileVO.fileRealName }
+										<a href="${fileVO.filePath }">파일 열기</a>
+										<img src="./resources/img/common/delete.png" class="div_img" style="display:none; width: 15px; height: 15x;margin-left: 5px; margin-bottom: 3px;"onclick="fn_del(${fileVO.fileDetailSeq})">
+										<br>
+										</c:forEach>
+									</div>
+								</div>
+
+								<div class="input-group" style="margin-bottom: 30px;"></div>
+							</div>
+							
+							
+							<!-- 파일추가하는 부분[파일업로드] -->
+							<div class="col-lg-6 text-center mypage_myinfo" id="div_upload"
+                              	style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto; display: none;">
+                              <div style="margin-bottom: 2px;">
+                                 <h5 style="display: inline; float: left; color: black;"><span class="orange" style="background-color: none;">파일업로드</span></h5>
+                                 &nbsp;
+                                 <div class="col-lg-12" style="text-align: right; float: left; padding: 0; margin: 0;">
+                                      <input type="button" class="file_add" value="파일 추가" onClick="fn_addFile()">
+                                      <input type="button" class="file_add" value="파일 삭제" onClick="fn_delFile()">
+                                      <div id="d_file" style="text-align: left;">
+                                      
+                                      </div>
+                                 </div>
+                              </div>
+                                 
+                              <div class="input-group" style="margin-bottom: 5px;">
+                                </div>
+                           </div>
+							
+							
+									
+							<!-- 수정하기 버튼 -->	
+							<div class="col-lg-12" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+		                         <input id="update" type="button" class="file_add" value="수정하기" style="width: 470px; display: block;" onclick="fn_update()">
+		                         <input id="submit" type="button" class="file_add" value="수정완료" style="background:orange; width: 470px; display: none;" onclick="fn_submit()">
+		                    </div>
+							<br>
+							
+							
+							<!-- 승인/보완/반려 -->
+							<div class="col-lg-12" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+								<input type="button" value="승인" class="site-btn"
+									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
+								<input type="button" value="보완" class="site-btn"
+									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
+								<input type="button" value="반려" class="site-btn"
+									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 0px;">
+							</div>
 								
-							</form>
+								
 						</div>
-					</section>
-					<!-- Classes Section End -->
-					
-				</div>
-			</div>
-		</div>
+					</form>
+				</div><!-- 2번 div 끝 -->
+				
+				
+			</div><!-- row div 끝 -->
+		</div><!-- container div 끝 -->
 	</section>
-	<!-- Blog Section End -->
-
-
 
 
 	<!-- Js Plugins -->
-	<script src="./resources/js/jquery-3.3.1.min.js"></script>
 	<script src="./resources/js/bootstrap.min.js"></script>
 	<script src="./resources/js/jquery.nice-select.min.js"></script>
 	<script src="./resources/js/jquery.barfiller.js"></script>

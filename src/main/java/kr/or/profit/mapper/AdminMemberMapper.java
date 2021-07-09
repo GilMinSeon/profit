@@ -18,5 +18,14 @@ public interface AdminMemberMapper {
 	
 	//페이징용 전체 수 cnt
 	public int selectProcessListCnt(Criteria cri);
+	
+	//검토단계로 update
+	public int updateStatusB(String processSeq);
+	
+	//트레이너 프로세스 디테일
+	public ProcessVO selectProcessDetailBySeq(String processSeq);
+	
+	//첨부파일 가져오기
+	public List<?> selectProcessFile(String fileSeq);
 
 }
