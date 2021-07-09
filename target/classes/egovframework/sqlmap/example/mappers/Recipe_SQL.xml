@@ -20,31 +20,35 @@
 <!-- 	글목록 -->
 	<select id="recipeList" resultType="egovMap">
 		SELECT
-			(SELECT
-                COUNT(*)
-            FROM
-                REPLY B
-            WHERE
-                A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
-                ) CNT,
+		    (SELECT
+		        COUNT(*)
+		    FROM
+		        REPLY B
+		    WHERE
+		        A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+		        ) CNT,
 		    A.COMMUNITY_SEQ,
-			A.COMMON_SEQ,
-			A.COMMUNITY_CATEGORY_SEQ,
-			A.FILE_SEQ,
-			A.COMMON_TITLE,
-			TO_CHAR(A.COMMON_CONTENT) COMMON_CONTENT,
-			A.COMMON_HIT,
-			A.COMMON_DEL_FLAG,
-			A.IN_USER_ID,
-			TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
-			A.UP_USER_ID,
-			TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') IN_DATE
+		    A.COMMON_SEQ,
+		    A.COMMUNITY_CATEGORY_SEQ,
+		    C.FILE_PATH,
+		     CASE
+		    WHEN LENGTH(A.COMMON_TITLE) > 15 THEN SUBSTR(A.COMMON_TITLE, 0, 15) ||'...'
+		    ELSE A.COMMON_TITLE
+		    END AS COMMON_TITLE,
+		    TO_CHAR(A.COMMON_CONTENT) COMMON_CONTENT,
+		    A.COMMON_HIT,
+		    A.COMMON_DEL_FLAG,
+		    A.IN_USER_ID,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
+		    A.UP_USER_ID,
+		    TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') IN_DATE
 		FROM
 		    COMMUNITY A
+		    LEFT JOIN ATTACH_FILE C ON (A.FILE_SEQ = C.FILE_SEQ)
 		WHERE
 		    A.COMMON_SEQ = '6'
 		AND
-			A.COMMON_DEL_FLAG = 'N'
+		    A.COMMON_DEL_FLAG = 'N'
 	</select>
 
 <!-- 	글상세보기 -->
@@ -78,26 +82,26 @@
 <!-- 	글등록 -->
 	<insert id="recipeAddInsert" parameterType="hashMap">
 		INSERT INTO COMMUNITY
-			(
-				COMMUNITY_SEQ,
-                COMMON_SEQ,
-                FILE_SEQ,
-                COMMON_TITLE,
-                COMMON_CONTENT,
-                COMMON_HIT,
-                COMMON_DEL_FLAG,
-                IN_USER_ID,
-                IN_DATE,
-                UP_USER_ID,
-                UP_DATE	)
-		VALUES
+					(
+						COMMUNITY_SEQ,
+		                COMMON_SEQ,
+		                FILE_SEQ,
+		                COMMON_TITLE,
+		                COMMON_CONTENT,
+		                COMMON_HIT,
+		                COMMON_DEL_FLAG,
+		                IN_USER_ID,
+		                IN_DATE,
+		                UP_USER_ID,
+		                UP_DATE	)
+				VALUES
 			(
 				(SELECT
-                    COUNT(*)
-                FROM
-                    COMMUNITY)+1,
+		            NVL(MAX(TO_NUMBER(COMMUNITY_SEQ)),0) AS COMMUNITY_SEQ
+		        FROM
+		            COMMUNITY)+1,
 				'6',
-				#{fileSeq},
+				#{tumnalil_img},
 				#{commonTitle},
 				#{commonContent},
 				'0',
@@ -300,6 +304,147 @@
 		                ) b
 		WHERE
 		    A.member_id = #{memberId}
+	</select>
+
+<!-- 	파일업로드 -->
+	<insert id="imgFile" parameterType="hashMap">
+		INSERT INTO ATTACH_FILE
+		    (
+		    FILE_SEQ,
+			FILE_DETAIL_SEQ,
+			FILE_REAL_NAME,
+			FILE_SAVE_NAME,
+			FILE_PATH,
+		    IN_USER_ID,
+		    IN_DATE,
+		    UP_USER_ID,
+		    UP_DATE
+		    )
+		values
+		    (
+		    (SELECT
+		        NVL(MAX(TO_NUMBER(FILE_SEQ)),0) AS FILE_SEQ
+		    FROM
+		        ATTACH_FILE)+1,
+		    '1',
+		    #{fileRealName},
+		    #{filesavename},
+		    #{imgFile},
+		    #{memberId},
+		    SYSDATE,
+		    #{memberId},
+		    SYSDATE
+		    )
+
+	</insert>
+
+<!-- 	파일번호확인 -->
+	<select id="imgcnt" resultType="String">
+		SELECT
+		     NVL(MAX(TO_NUMBER(FILE_SEQ)),0) AS FILE_SEQ
+		FROM
+		    ATTACH_FILE
+
+	</select>
+
+<!-- 	조회순 글 -->
+	<select id="recipeTopList" resultType="egovMap">
+	    <![CDATA[
+		SELECT
+		    T.RNUM,
+		    (SELECT
+		        COUNT(*)
+		    FROM
+		        REPLY B
+		    WHERE
+		        T.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+		        ) CNT,
+		    T.COMMUNITY_SEQ,
+		    C.FILE_PATH,
+		    CASE
+		    WHEN LENGTH(T.COMMON_TITLE) > 15 THEN SUBSTR(T.COMMON_TITLE, 0, 15) ||'...'
+		    ELSE T.COMMON_TITLE
+		    END AS COMMON_TITLE,
+		    T.COMMON_CONTENT,
+		    T.COMMON_HIT,
+		    T.IN_USER_ID,
+		    TO_CHAR(T.IN_DATE, 'YYYY-MM-DD') IN_DATE
+		FROM
+
+		    (SELECT ROW_NUMBER() OVER(ORDER BY TO_NUMBER(COMMON_HIT) DESC) RNUM,
+		        COMMUNITY_SEQ,
+		        FILE_SEQ,
+		        COMMON_TITLE,
+		        COMMON_CONTENT,
+		        COMMON_HIT,
+		        IN_USER_ID,
+		        IN_DATE
+		    FROM
+		        COMMUNITY
+		    WHERE
+		        COMMON_SEQ = '6'
+		    AND
+		        COMMON_DEL_FLAG = 'N'
+		    ORDER BY
+		        TO_NUMBER(COMMON_HIT) DESC) T
+		    LEFT JOIN ATTACH_FILE C ON (T.FILE_SEQ = C.FILE_SEQ)
+		WHERE T.RNUM<=5
+		]]>
+	</select>
+
+<!-- 	최신글 -->
+	<select id="recipeNewList" resultType="egovMap">
+	    <![CDATA[
+	    SELECT A.RN, A.COMMUNITY_SEQ, A.FILE_SEQ,
+	    CASE
+	    WHEN LENGTH(A.COMMON_TITLE) > 20 THEN SUBSTR(A.COMMON_TITLE, 0, 20) ||'...'
+		ELSE A.COMMON_TITLE
+		END AS COMMON_TITLE,
+	    B.FILE_PATH, A.IN_DATE
+		FROM
+		(
+		SELECT ROWNUM AS RN, COMMUNITY_SEQ, FILE_SEQ, COMMON_TITLE, IN_DATE
+		FROM
+		(
+		SELECT COMMUNITY_SEQ, FILE_SEQ, COMMON_TITLE, IN_DATE
+		FROM COMMUNITY
+		WHERE COMMON_SEQ = 6 AND COMMON_DEL_FLAG = 'N'
+		ORDER BY IN_DATE DESC
+		)
+		WHERE ROWNUM <= 5
+		) A
+		LEFT JOIN
+		ATTACH_FILE B ON
+		(A.FILE_SEQ = B.FILE_SEQ)
+		ORDER BY RN ASC
+		]]>
+	</select>
+<!-- 	인기글(좋아요) -->
+	<select id="recipeGoodList" resultType="egovMap">
+	    <![CDATA[
+	    SELECT A.RN, A.COMMUNITY_SEQ, A.FILE_SEQ,
+	    CASE
+	    WHEN LENGTH(A.COMMON_TITLE) > 20 THEN SUBSTR(A.COMMON_TITLE, 0, 20) ||'...'
+		ELSE A.COMMON_TITLE
+		END AS COMMON_TITLE,
+	    B.FILE_PATH, A.IN_DATE
+		FROM
+		(
+		SELECT ROWNUM AS RN, COMMUNITY_SEQ, FILE_SEQ, COMMON_TITLE, IN_DATE
+		FROM
+		(
+		SELECT COMMUNITY_SEQ, FILE_SEQ, COMMON_TITLE, IN_DATE
+		FROM COMMUNITY
+		WHERE COMMON_SEQ = 6 AND COMMON_DEL_FLAG = 'N'
+		ORDER BY IN_DATE DESC
+		)
+		WHERE ROWNUM <= 5
+		) A
+		LEFT JOIN
+		ATTACH_FILE B ON
+		(A.FILE_SEQ = B.FILE_SEQ)
+		ORDER BY RN ASC
+		]]>
 	</select>
 
 </mapper>

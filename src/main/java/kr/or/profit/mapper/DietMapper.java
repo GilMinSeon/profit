@@ -66,4 +66,12 @@ public interface DietMapper {
 	
 	//페이징 - 칼로리 정보 목록 전체 글 개수
 	int selectKcalCnt(Criteria cri) throws Exception;
+	
+	//kcal 정보 상세 조회
+	Map<String, Object> selectkcalDetail(String kcalNum) throws Exception;
+	
+	//인기검색어
+	int updateKcalHit(String kcalNum) throws Exception;
+
+	List<Map<String, Object>> selectPopularSearch() throws Exception;
 }

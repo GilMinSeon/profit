@@ -32,56 +32,63 @@
 	color: #ffffff;
 }
 </style>
+<script type="text/javascript">
+	//섬머노트
+	$(function() {
+		$('#loading').hide();
+		$('.summernote').summernote({
+			height : 600,
+			fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
+			fontNamesIgnoreCheck : [ '맑은고딕' ],
+			focus : true,
 
-</head>
-<body style="padding-top: 5rem;">
-	<script type="text/javascript">
-		window.onload = function() {
-			var str = document.getElementById("text");
-			str.innerHTML = "${data.commonContent}";
-		};
-
-		$(function() {
-
-			$('.summernote').summernote({
-				height : 600,
-				fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
-				fontNamesIgnoreCheck : [ '맑은고딕' ],
-				focus : true,
-
-				callbacks : {
-					onImageUpload : function(files, editor, welEditable) {
-						for (var i = files.length - 1; i >= 0; i--) {
-							sendFile(files[i], this);
-						}
+			callbacks : {
+				onImageUpload : function(files, editor, welEditable) {
+					for (var i = files.length - 1; i >= 0; i--) {
+						sendFile(files[i], this);
 					}
 				}
+			}
 
-			});
+		});
 
+	})
+	//파일업로드
+	function sendFile(file, el) {
+		var form_data = new FormData();
+		form_data.append('file', file);
+		$.ajax({
+			data : form_data,
+			type : "POST",
+			url : 'qnaProfileImage.do',
+			cache : false,
+			contentType : false,
+			enctype : 'multipart/form-data',
+			processData : false,
+			beforeSend : function() {
+				$('#loading').show();
+			},
+			success : function(img_name) {
+				console.log(img_name);
+				setTimeout(function() {
+					alert("파일첨부");
+					$('#loading').hide();
+					$(el).summernote('editor.insertImage', img_name);
+				}, 5000);
+			}
+		});
+	}
+	//클릭시 파일 처음거 가지고가기
+	$(function() {
+		$('#hover_btn').click(function() {
+			var tumnail = $("form img").first().attr("src");
+			alert(tumnail);
+			$('#hidden').val(tumnail);
 		})
-
-		function sendFile(file, el) {
-			var form_data = new FormData();
-			form_data.append('file', file);
-			$.ajax({
-				data : form_data,
-				type : "POST",
-				url : 'qnaProfileImage.do',
-				cache : false,
-				contentType : false,
-				enctype : 'multipart/form-data',
-				processData : false,
-				success : function(img_name) {
-					console.log(img_name);
-					setTimeout(function() {
-						alert("파일첨부");
-						$(el).summernote('editor.insertImage', img_name);
-					}, 5000);
-				}
-			});
-		}
-	</script>
+	})
+</script>
+</head>
+<body style="padding-top: 5rem;">
 	<c:set var="data" value="${data}" />
 	<!-- Breadcrumb Begi -->
 	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg" style="background-image: url(&quot;./resources/img/breadcrumb.jpg&quot;);">
@@ -101,26 +108,29 @@
 
 
 	<section class="classes spad">
+		<main role="main" class="container">
+		<h3>📑 문의 수정해주세요</h3>
+		<br>
 		<form class="container" name="form" method="POST" action="/qnaMod.do?communitySeq=${data.communitySeq}">
-			<h3>📑 문의 수정해주세요</h3>
-			<br>
+			<input type="hidden" id="hidden" name="tumnalil_img" value="none" />
 			<div class="pt-1"></div>
-			<input type="text" name="title" value="${data.commonTitle}" style="border-radius: 5px; width: 100%; padding: 5px;">
-			<div class="pt-1">
-				<textarea id="summernote" name="contents">
+			<input type="text" name="commonTitle" value="${data.commonTitle}" style="border-radius: 5px; width: 100%; padding: 5px;">
+			<div class="container" style="margin-top: 10px; margin-bottom: 20px; padding: 0; position: relative;">
+				<textarea class="summernote" id="summernote" name="commonContent">
 					${data.commonContent}
 				</textarea>
+				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">
+					<img id="loading-image" src="./resources/img/common/loading.gif" alt="Loading..." />
+				</div>
 			</div>
-			<script>
-				$('#summernote').summernote({});
-			</script>
 			<div class="pt-1 text-right">
 				<button id="hover_btn" class="btn btn btn-success" type="button" style="width: 10%; padding: 5px;" onclick="location.href='qnaList.do'">목록</button>
-
 				<button id="hover_btn" class="btn btn btn-success" type="submit" style="width: 10%; padding: 5px;">수정</button>
 			</div>
 		</form>
+		</main>
 	</section>
 </body>
 </html>
+
 

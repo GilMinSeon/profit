@@ -74,16 +74,125 @@ height: 15px;
 </style>
 
 <script>
-function fn_modalOpen(){
-	$("#myModal").modal('show');
+
+var totalKcal = 0;
+function fn_modalOpen(kcalNum){
+	//ajax
+	var formData = new FormData($('#frm'+ kcalNum)[0]);
+	$.ajax({
+		type:"POST",
+		url:"kcalNumAjax.do",
+		data:formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+			var jsonInfo = JSON.parse(data);
+			if(jsonInfo.msg=="ok"){
+				$('#food_name').text(jsonInfo.descKor);
+				$('#makerName').text(jsonInfo.makerName);
+				$('#nutrCont1').text(jsonInfo.nutrCont1);
+				$('#servingSize').text(jsonInfo.servingSize);
+				$('#sp1').text("탄수화물( " + jsonInfo.nutrCont2 + " g )");
+				$('#sp2').text("단백질( " + jsonInfo.nutrCont3 + " g )");
+				$('#sp3').text("지방( " + jsonInfo.nutrCont4 + " g )");
+				$('#sp4').text("당류( " + jsonInfo.nutrCont5 + " g )");
+				$('#sp5').text("나트륨( " + jsonInfo.nutrCont6 + " g )");
+				if(jsonInfo.cont2Rs>100){
+					$("#carbo").css('width',"100%");
+				}else{
+					$("#carbo").css('width',jsonInfo.cont2Rs + "%");
+				}
+				if(jsonInfo.cont3Rs>100){
+					$("#protein").css('width',"100%");
+				}else{
+					$("#protein").css('width',jsonInfo.cont3Rs + "%");
+				}
+				if(jsonInfo.cont4Rs>100){
+					$("#fat").css('width',"100%");
+				}else{
+					$("#fat").css('width',jsonInfo.cont4Rs + "%");
+				}
+				if(jsonInfo.cont5Rs>100){
+					$("#sugars").css('width',"100%");
+				}else{
+					$("#sugars").css('width',jsonInfo.cont5Rs + "%");
+				}
+				if(jsonInfo.cont6Rs>100){
+					$("#salt").css('width',"100%");
+				}else{
+					$("#salt").css('width',jsonInfo.cont6Rs + "%");
+				}
+				$("#myModal").modal('show');
+			}else if(jsonInfo.msg=="ng"){
+				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			}else{
+				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			}
+		},
+		error : function(error){
+			alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+	});
+	
 }
 
 function fn_calcAdd(foodName, kcalNum){
-	$(".box").append("<p class='ex'>🥨 제육덮밥&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + 
-					 "<span class='kcal_span'>500 Kcal&nbsp;&nbsp;&nbsp;" + 
-					 "<img class='kcal_img' src='./resources/img/common/delete2.png'></span></p>");
-    $(".ex").hide().fadeIn(700);
+	var cnt = $('.ex').length+1;
+	$(".box").append("<p id=cnt"+cnt+" class='ex'>🥨"+foodName+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='kcal_span'><span class='kcal_span_num'>"+kcalNum+"</span> Kcal&nbsp;&nbsp;&nbsp;<img class='kcal_img' src='./resources/img/common/delete2.png' onclick='fn_del("+cnt+")'></span></p>");
+	$(".ex").last().hide().fadeIn(600);
+    totalKcal += parseInt(kcalNum);
+    $(".choose-counter123").text(totalKcal);
 }
+
+function fn_del(cnt){
+	var removeKcal = parseInt($("#cnt" + cnt + " .kcal_span_num").text());
+	totalKcal -= removeKcal;
+	$("#cnt" + cnt).show().fadeOut(600);
+	$("#cnt" + cnt).remove();
+    console.log($(".choose-counter123").text());
+	$(".choose-counter123").text(totalKcal);
+}
+
+function fn_kcal_clac(url){
+	
+	var clacContent = $('.box').html();
+	var clacTotal = $('.choose-counter123').text();
+	sessionStorage.setItem("clacContent",clacContent);
+	sessionStorage.setItem("clacTotal", clacTotal);
+	location.href=url;
+}
+
+$(function(){
+	totalKcal = 0;
+	
+	
+	console.log("  dd : " + sessionStorage.getItem("clacContent"));
+	$(".box").html(sessionStorage.getItem("clacContent"));
+	var clacTotal = sessionStorage.getItem("clacTotal");
+	console.log(clacTotal);
+	
+	if(clacTotal != null){
+		totalKcal = parseInt(clacTotal);
+		console.log("total : " + totalKcal);
+		$(".choose-counter123").text(totalKcal);
+	}
+})
+
+function fn_search(){
+	var clacContent = $('.box').html();
+	var clacTotal = $('.choose-counter123').text();
+	sessionStorage.setItem("clacContent",clacContent);
+	sessionStorage.setItem("clacTotal", clacTotal);
+	
+	location.href="kcalList.do#location123";
+}
+
+
+
 </script>
 </head>
 <body>
@@ -97,6 +206,7 @@ function fn_calcAdd(foodName, kcalNum){
 				<div class="col-lg-12">
 					<div class="breadcrumb__text">
 						<h2>칼로리 계산기</h2>
+						
 					</div>
 				</div>
 			</div>
@@ -106,7 +216,7 @@ function fn_calcAdd(foodName, kcalNum){
 
 	<!-- Blog Details Section Begin -->
 	<section class="blog-details spad">
-
+		<input id="save" name="calcContent" type="hidden" value=""> 
 		<div class="container">
 			<div class="classes__item__text"
 				style="text-align: center; padding-top: 0; padding-bottom: 0">
@@ -123,19 +233,16 @@ function fn_calcAdd(foodName, kcalNum){
 						</p>
 					</div>
 					<div>
+					<form id="frmBox" enctype="multipart/form-data" action="frmBoxSave.do">
 						<div class="box" style="overflow-y: scroll; height: 370px;padding-left: 30px;padding-right:15px;">
-							<!-- <p>
-								🥨 제육덮밥&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
-									style="font-weight: bold;">500 Kcal&nbsp;&nbsp;&nbsp;<img
-									src="./resources/img/common/delete2.png"
-									style="width: 15px; height: 15px;"></span>
-							</p> -->
 							
 						</div>
+					</form>
+					
 						<hr>
 						<div style="text-align: right;margin-right: 20px;">
 							<p style="font-weight: bold; font-size: 1.2em; color: #5768AD">
-							총 칼로리 : 3050 Kcal</p>
+							총 칼로리 : <span class="choose-counter123">0</span>  Kcal</p>
 						</div>
 					</div><br>
 					<div style="width: 351px;height: 355px;padding:0;border: 1px solid #ebecef;border-radius: 10px;background-color: white;">
@@ -143,13 +250,13 @@ function fn_calcAdd(foodName, kcalNum){
 						<p style="font-size: 1.2em; font-weight: bold;margin-top: 20px;margin-bottom: 20px;">
 							<span style="background-color: #fee9b8;">&nbsp;인기 검색어&nbsp;</span>
 						</p>
-						<p style="font-weight: bold;">🥇 1위&nbsp;&nbsp;&nbsp;제육덮밥</p>
-						<p style="font-weight: bold;">🥈2위&nbsp;&nbsp;&nbsp;광어회</p>
-						<p style="font-weight: bold;">🥉3위&nbsp;&nbsp;&nbsp;순두부찌개</p>
-						<p style="font-weight: bold;">4위&nbsp;&nbsp;&nbsp;삼겹살</p>
-						<p style="font-weight: bold;">5위&nbsp;&nbsp;&nbsp;크림 파스타</p>
-						<p style="font-weight: bold;">6위&nbsp;&nbsp;&nbsp;순대국밥</p>
-						<p style="font-weight: bold;">7위&nbsp;&nbsp;&nbsp;돼지곱창</p>
+						<p style="font-weight: bold;">🥇 1위&nbsp;&nbsp;&nbsp;${popularSearch[0]['descKor']}</p>
+						<p style="font-weight: bold;">🥈2위&nbsp;&nbsp;&nbsp;${popularSearch[1]['descKor']}</p>
+						<p style="font-weight: bold;">🥉3위&nbsp;&nbsp;&nbsp;${popularSearch[2]['descKor']}</p>
+						<p style="font-weight: bold;">4위&nbsp;&nbsp;&nbsp;${popularSearch[3]['descKor']}</p>
+						<p style="font-weight: bold;">5위&nbsp;&nbsp;&nbsp;${popularSearch[4]['descKor']}</p>
+						<p style="font-weight: bold;">6위&nbsp;&nbsp;&nbsp;${popularSearch[5]['descKor']}</p>
+						<p style="font-weight: bold;">7위&nbsp;&nbsp;&nbsp;${popularSearch[6]['descKor']}</p>
 						
 					</div>
 					</div>
@@ -159,14 +266,14 @@ function fn_calcAdd(foodName, kcalNum){
 					<div class="classes__filter">
 						<div class="row">
 							<div class="col-lg-12">
-								<form action="kcalList.do#location123">
+								<form id="searchForm">
 									<div class="class__filter__input">
 										<p>검색</p>
 										<input type="text" style="width: 470px;" placeholder="검색"
 											id="keyword" name="searchKeyword" value="${searchKeyword}">
 									</div>
 									<div class="class__filter__btn">
-										<button type="submit" style="cursor: pointer;">
+										<button style="cursor: pointer;" onclick="fn_search()" >
 											<i class="fa fa-search"></i>
 										</button>
 									</div>
@@ -192,40 +299,40 @@ function fn_calcAdd(foodName, kcalNum){
 					                <table style="border: 1px solid #d5d6d6;width: 600px;text-align: center;margin-left: auto;margin-right: auto;">
 					                	<tr style="border: 1px solid #d5d6d6;">
 						                	<th style="width: 30%;font-weight: bold;padding:10px;background-color: #fff1c6">식품이름</th>
-					                		<td style="width: 60%;">삶은 달걀</td>
+					                		<td style="width: 60%;"><span id="food_name"></span></td>
 					                	</tr>
 					                	<tr style="border: 1px solid #d5d6d6;">
-						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">총 내용량</th>
-					                		<td>1개(50g)</td>
+						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">판매 기업</th>
+					                		<td><span id="makerName"></span></td>
 					                	</tr>
 					                	<tr style="border: 1px solid #d5d6d6;">
-						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">열량</th>
-					                		<td>68 Kcal</td>
+						                	<th style="font-weight: bold;padding:10px;background-color: #fff1c6">총내용량</th>
+					                		<td><span id="nutrCont1"></span> Kcal ( <span id="servingSize"></span> g )</td>
 					                	</tr>
 					                </table>
 					                <div style="text-align: center">
 						                <p style="font-size: 0.9em;"><span style="color: #fb4d00">[주의]</span>음식 칼로리는 사용되는 재료와 1인 분량 기준의 차이에 의해 다소 차이가 있을 수 있습니다.</p>
 					                </div>
 					                <br>
-					                  탄수화물
+					                  <span id="sp1"></span>
 					                <div class="progress" style="margin-bottom: 10px;">
-									 <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+									 <div id="carbo" class="progress-bar progress-bar-striped" role="progressbar" style="width: 100%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-							   단백질
+							  		<span id="sp2"></span>
 									<div class="progress" style="margin-bottom: 10px;">
-									  <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+									  <div id="protein" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-							   지방
+									<span id="sp3"></span>
 									<div class="progress" style="margin-bottom: 10px;">
-									  <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+									  <div id="fat" class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-							   당류
+									<span id="sp4"></span>
 									<div class="progress" style="margin-bottom: 10px;">
-									  <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+									  <div id="sugars"  class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 100%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-							  나트륨
+									<span id="sp5"></span>
 									<div class="progress" style="margin-bottom: 10px;">
-									  <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+									  <div id="salt"  class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 									</div><br>
 							
 							<div style="text-align: center;">🚴‍♂삶은 달걀 칼로리와 동일한 운동을 확인해 보세요🚴</div>‍
@@ -252,25 +359,28 @@ function fn_calcAdd(foodName, kcalNum){
 					</div>
 
 					<div style="text-align: center;">
-						<table id="myTable" class="kcalList"
+						<table class="kcalList"
 							style="margin-right: 0; margin-left: auto; margin-right: auto;">
 							<tr>
 								<th
-									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 45%;font-size: 1.2em;">식품이름</th>
+									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 45%;font-size: 1.2em;">음식명</th>
 								<th
 									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 20%;font-size: 1.2em;">총
-									내용량</th>
+									내용량(g)</th>
 								<th
-									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 10%;font-size: 1.2em;">열량</th>
+									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 20%;font-size: 1.2em;">열량(kcal)</th>
 								<th
 									style="background-color: #6c7ae0e3; padding: 20px; color: white; font-size: 1.1em; width: 10%;"></th>
 							<tr>
 							<c:forEach var="result" items="${kcalList}" varStatus="status">
+							<form id="frm${result.num}">
+								<input type="hidden" name="kcalNum" value="${result.num}">
+							</form>
 							<tr>
-								<td onclick="fn_modalOpen()">${result.descKor}</td>
+								<td onclick="fn_modalOpen(${result.num})">${result.descKor}</td>
 								<td>${result.servingSize}</td>
 								<td>${result.nutrCont1}</td>
-								<td><input class="class-btn" type="button" value="담기" onclick="fn_calcAdd(${result.descKor},${result.nutrCont1})"></td>
+								<td><input class="class-btn" type="button" value="담기" onclick="fn_calcAdd('${result.descKor}','${result.nutrCont1}')"></td>
 							</tr>
 							</c:forEach>
 						</table>
@@ -287,11 +397,11 @@ function fn_calcAdd(foodName, kcalNum){
 					<c:set var="page" value="${pageMaker.cri.page}"/>
 					<c:set var="idx" value="${idx}"/>
 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-            			<a href="kcalList.do${pageMaker.makeQueryKal(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+            			<a onclick="fn_kcal_clac('kcalList.do${pageMaker.makeQueryKal(idx)}')" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
 					</c:forEach>
 					
 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-						<a href="kcalList.do${pageMaker.makeQueryKal(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+						<a onclick="fn_kcal_clac('kcalList.do${pageMaker.makeQueryKal(idx)}')"><span class="arrow_carrot-right"></span></a>
 					</c:if>
 					</div>
 				</div>

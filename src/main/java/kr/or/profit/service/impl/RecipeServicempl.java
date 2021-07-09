@@ -79,9 +79,42 @@ public class RecipeServicempl implements RecipeService {
 	public List<?> recipeDetailReplyList(Map<String, Object> map) throws Exception {
 		return mapper.recipeDetailReplyList(map);
 	}
+	//회원정보 확인
 	@Override
 	public Map<String, Object> recipeDetailMember(Map<String, Object> map) throws Exception {
 		return mapper.recipeDetailMember(map);
 	}
+	//파일저장
+	@Override
+	public void imgFile(Map<String, Object> map) throws Exception {
+		System.out.println("파일저장했다" + map);
+		 mapper.imgFile(map);
+
+	}
+	//파일이름 가지고옴
+	@Override
+	public String imgcnt() throws Exception {
+		System.out.println("파일번호 온다");
+		return mapper.imgcnt();
+	}
+	//인기글
+	@Override
+	public List<?> recipeTopList() throws Exception {
+		System.out.println("인기글 온다");
+		return mapper.recipeTopList();
+	}
+	//최신글
+	@Override
+	public List<?> recipeNewList() throws Exception {
+		System.out.println("최신글 온다");
+		return mapper.recipeNewList();
+	}
+	//인기글(좋아요)
+	@Override
+	public List<?> recipeGoodList() throws Exception {
+		System.out.println("인기글 온다");
+		return mapper.recipeGoodList();
+	}
+
 
 }

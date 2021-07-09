@@ -9,6 +9,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+.table tr:hover {
+	background-color: #f8f6ff;
+}
+</style>
 <body>
 
     <!-- Breadcrumb Begin -->
@@ -76,23 +81,23 @@
                     <div class="row" style="display: inline-block;width: 100%;" >
                         	<!-- Appoinment Section Begin -->
 	<section class="appointment" style=" margin-bottom: 50px;">
-		<div class="container">
+<!-- 		<div class="container"> -->
 			<div class="appointment__text" style="background-color: #9e9e9e0a; padding: 60px 10px;">
-				<form action="#" class="appointment__form">
+<%-- 				<form action="#" class="appointment__form"> --%>
 					<div class="text-center">
 						<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">마이 클래스</h4>
 						<br/>
-						<p style="font-family: DM Sans, sans-serif;font-size: 1.2em;color:#5768AD;">나의 구매 강좌를 확인하세요.</p>
+						<p style="font-family: DM Sans, sans-serif;font-size: 1.2em;color:#5768AD;">▶ 내가 구매한 강좌를 확인해 보세요.</p>
 						<br/><br/>
-							
-							
-							<table class="table table-hover" style="text-align: center;">
+					</div>
+					<div>	
+							<table class="table" style="text-align: center;">
 								<thead>
-									<tr style="background: #E6E6E6;">
+									<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
 										<th scope="col">번호</th>
-										<th scope="col" colspan="2">제목</th>
+										<th scope="col" colspan="2" title="제목을 클릭하여 강의 상세를 확인하세요">제목</th>
 										<th scope="col">기간<span style="font-size: 12px;">(개월)</span></th>
-										<th scope="col">상태</th>
+										<th scope="col" title="상태정보를 클릭하여 결제상세내역을 확인하세요">상태</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -100,11 +105,41 @@
 								<input type="hidden" name="lessonSeq" value="${result.lessonSeq}">
 								<input type="hidden" name="buyLessonSeq" value="${result.buyLessonSeq}">
 									<tr>
-										<th scope="row">${status.index+1}</th>
-										<td colspan="2"><a href="lessonDetail.do?buyLessonSeq=${result.buyLessonSeq}"
-											style="text-decoration: none; color: #5768AD;"> ${result.lessonTitle} </a></td>
+										<th scope="row" style="font-weight: normal;">${status.index+1}</th>
+										<td colspan="2">
+											<a href="lessonDetail.do?lessonSeq=${result.lessonSeq}" style="text-decoration: none; color: #4169e1;">
+												<span style="color:#4169e1;">[${result.lessonCategoryName}]</span>&nbsp; ${result.lessonTitle} 
+											</a>
+										</td>
 										<td>${result.lessonMonth}</td>
-										<td><a href="myLessonPayDetail.do?buyLessonSeq=${result.buyLessonSeq}" style="text-decoration: none; color: #2FBC49;">결제완료</a></td>
+										
+										<td>
+											<c:choose>
+												<c:when test="${result.status eq '환불완료'}">
+													<a href="myLessonPayDetail.do?buyLessonSeq=${result.buyLessonSeq}&lessonSeq=${result.lessonSeq}" style="text-decoration: none;">
+														<span style="background-color: #fa8072;color: white;font-weight: bold;padding: 7px;">${result.status}</span>
+													</a>
+												</c:when>
+												<c:when test="${result.status eq '수강진행'}">
+													<a href="myLessonPayDetail.do?buyLessonSeq=${result.buyLessonSeq}&lessonSeq=${result.lessonSeq}" style="text-decoration: none;">
+														<span style="background-color: #87ceeb;color: white;font-weight: bold;padding: 7px;">${result.status}</span>
+													</a>
+												</c:when>
+												<c:when test="${result.status eq '기간만료'}">
+													<a href="myLessonPayDetail.do?buyLessonSeq=${result.buyLessonSeq}&lessonSeq=${result.lessonSeq}" style="text-decoration: none;">
+														<span style="background-color: #778899;color: white;font-weight: bold;padding: 7px;">${result.status}</span>
+													</a>
+												</c:when>
+												<c:when test="${result.status eq '결제완료'}">
+													<a href="myLessonPayDetail.do?buyLessonSeq=${result.buyLessonSeq}&lessonSeq=${result.lessonSeq}" style="text-decoration: none;">
+														<span style="background-color: #3cb371;color: white;font-weight: bold;padding: 7px;">${result.status}</span>
+													</a>
+												</c:when>
+											</c:choose>
+<%-- 											<a href="myLessonPayDetail.do?buyLessonSeq=${result.buyLessonSeq}&lessonSeq=${result.lessonSeq}" style="text-decoration: none; color: #2FBC49;"> --%>
+<%-- 												<span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;">${result.status}</span> --%>
+<!-- 											</a> -->
+										</td>
 										
 									</tr>
 								</c:forEach>
@@ -136,9 +171,9 @@
 						
 
 					</div>
-				</form>
+<%-- 				</form> --%>
 			</div>
-		</div>
+<!-- 		</div> -->
 	</section>
 	<!-- Appoinment Section End -->
                     </div>

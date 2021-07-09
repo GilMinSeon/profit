@@ -33,9 +33,13 @@
 						<div style="text-align: right; margin-bottom: 5px;">
 							<span style="margin-left: 30px;">작성일&nbsp;&nbsp;&nbsp;<a>${data.inDate}</a></span>
 						</div>
+						<hr>
 						<div class="blog__details__text">
 							<p>${data.commonContent}</p>
 						</div>
+						<hr>
+						<input type="button" value="첨부파일" style="float: right;">
+
 						<div class="classes__item__text" style="text-align: center;">
 							<a href="noticeList.do" class="class-btn">목록</a>
 							<c:set var="inUser" value="${sessionScope.memberId}" />
@@ -52,7 +56,6 @@
 	<!-- Blog Details Section End -->
 
 	<!-- Js Plugins -->
-	<script src="./resources/js/jquery-3.3.1.min.js"></script>
 	<script src="./resources/js/bootstrap.min.js"></script>
 	<script src="./resources/js/jquery.nice-select.min.js"></script>
 	<script src="./resources/js/jquery.barfiller.js"></script>

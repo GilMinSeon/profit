@@ -109,6 +109,13 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 		return mypageDAO.selectcheckRefundFlag(refundMap);
 	}
 
+	//마이페이지 환불여부 변경
+	@Override
+	public int updBuyLessonRefundFlag(Map<String, Object> refundFlagMap) throws Exception {
+		return mypageDAO.updBuyLessonRefundFlag(refundFlagMap);
+	}
+
+
 	
 
 
