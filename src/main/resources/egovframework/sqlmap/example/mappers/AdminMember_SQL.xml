@@ -25,6 +25,53 @@
     
     
     
+    <!-- 관리자-트레이너 정보 수정 -->
+    <!-- 1.attach_file 테이블에 row 추가 -->
+    <insert id="insertProcessFile" parameterType="java.util.Map">
+		<foreach collection="list" item="item" index="index"
+			open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+
+			into
+			attach_file
+			(
+			file_seq,
+			file_detail_seq,
+			file_real_name,
+			file_save_name,
+			file_path,
+			in_user_id,
+			in_date,
+			up_user_id,
+			up_date
+			)
+			values
+
+			(
+			#{item.fileSeq},
+			#{item.fileDetailSeq},
+			#{item.fileRealName},
+			#{item.fileSaveName},
+			#{item.filePath},
+			#{item.inUserId},
+			sysdate,
+			#{item.upUserId, jdbcType=VARCHAR},
+			sysdate
+			)
+
+
+		</foreach>
+	</insert>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     <!-- 관리자-트레이너승인, 숫자 보여주는 표 -->
 	<select id="selectProcessNumberList" resultType="ProcessVO">
