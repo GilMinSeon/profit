@@ -405,6 +405,7 @@
 		C.IN_USER_ID, 
 		C.IN_DATE, 
 		C.MEMBER_NICKNAME, 
+		C.MEMBER_GUBUN,
 		C.FILE_SEQ, 
 		D.FILE_PATH
         FROM
@@ -421,6 +422,7 @@
         IN_USER_ID, 
         IN_DATE, 
         MEMBER_NICKNAME, 
+        MEMBER_GUBUN,
         FILE_SEQ
 		FROM
 		(
@@ -435,6 +437,7 @@
 		A.IN_USER_ID, 
 		A.IN_DATE, 
 		B.MEMBER_NICKNAME, 
+        B.MEMBER_GUBUN,
 		B.FILE_SEQ
 		FROM
 		(
