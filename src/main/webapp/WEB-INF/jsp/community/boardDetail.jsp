@@ -290,7 +290,7 @@ function fn_boardDel(seq){
 						<div class="blog__sidebar__recent">
 							<h4>최신글</h4>
 							<c:forEach var="result" items="${BoardDetail['recentBoardList']}" varStatus="status">
-							<div class="blog__recent__item">
+							<div class="blog__recent__item" onclick="location.href='boardDetail.do?communitySeq=${result.communitySeq}'">
 								<div class="blog__recent__item__pic">
 									<img src="${result.filePath}" alt="" style="width: 90px;height: 70px;">
 								</div>
@@ -302,10 +302,10 @@ function fn_boardDel(seq){
 							</div>
 							</c:forEach>
 						</div>
-						<div class="blog__sidebar__tags">
+						<div class="blog__sidebar__tags" >
 							<h4>인기글</h4>
 							<c:forEach var="result" items="${BoardDetail['bestBoardList']}" varStatus="status">
-							<div class="blog__recent__item">
+							<div class="blog__recent__item" onclick="location.href='boardDetail.do?communitySeq=${result.communitySeq}'">
 								<div class="blog__recent__item__pic">
 									<img src="${result.filePath}" alt="" style="width: 90px;height: 70px;">
 								</div>
@@ -431,8 +431,13 @@ function fn_boardDel(seq){
 	                                    <img src="${result.filePath}" alt="">
 	                                </div>
 	                                <div class="classes__sidebar__comment__text">
+	                                    
 	                                    <h6>
-	                                     	${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
+		                                    <c:if test="${result.memberGubun eq 'T'}">
+	                                    	<img src="./resources/img/common/trainer_icon.png" style="width: 25px; height: 25px;">
+	                                    	</c:if>
+	                                     	${result.memberNickname}&nbsp;
+	                                     	<c:if test="${result.memberGubun eq 'T'}">(트레이너)&nbsp;</c:if>
 	                                     	<c:if test="${result.replyDepth == 1}">
 	                                     	<a style="font-size:0.8em;color:gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
 	                                     	</c:if>

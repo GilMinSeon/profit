@@ -32,7 +32,7 @@ public interface DietMapper {
 	int selectRegisterProfile(String memberId) throws Exception;
 	
 	//상담 프로필 목록 가져오기
-	List<Map<String, Object>> selectChatProflieList() throws Exception;
+	List<Map<String, Object>> selectChatProflieList(Criteria cri) throws Exception;
 	
 	//상담 프로필 사진 추가
 	int insertProcessFile(Map<String, Object> filemap) throws Exception;
@@ -70,8 +70,12 @@ public interface DietMapper {
 	//kcal 정보 상세 조회
 	Map<String, Object> selectkcalDetail(String kcalNum) throws Exception;
 	
-	//인기검색어
+	//인기검색어 조회수 증가
 	int updateKcalHit(String kcalNum) throws Exception;
 
+	//인기 검색어 목록
 	List<Map<String, Object>> selectPopularSearch() throws Exception;
+	
+	//전체 글 개수 세팅
+	int selectChatListCnt(Criteria cri) throws Exception;
 }

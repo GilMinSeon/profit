@@ -57,12 +57,16 @@ public class DietController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "chatList.do", method = RequestMethod.GET)
-	public String chatList(HttpServletRequest request , Model model) throws Exception{
+	public String chatList(HttpServletRequest request , Model model, Criteria cri) throws Exception{
 		HttpSession session = request.getSession();
+		
 		String memberId = (String) session.getAttribute("memberId");
 		if(memberId == null) {
 			return "member/loginForm";
 		}
+		
+		cri.setMemberId(memberId);
+		
 		//이용권이 존재하면 구매 못하도록 막기
 		int ticketFlag = dietService.selectAvailableTicket(memberId);
 		if(ticketFlag > 0) {
@@ -81,7 +85,16 @@ public class DietController {
 		}
 		
 		//상담 프로필 목록 가져오기
-		List<Map<String, Object>> chatList = dietService.selectChatProflieList();
+		List<Map<String, Object>> chatList = dietService.selectChatProflieList(cri);
+		
+		//페이징 처리
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		
+		//전체 글 개수 세팅
+		pageMaker.setTotalCount(dietService.selectChatListCnt(cri));
+		System.out.println(dietService.selectChatListCnt(cri) + "가져오는 개수!!!");
+		model.addAttribute("pageMaker",pageMaker);
 		
 		model.addAttribute("chatList", chatList);
 		

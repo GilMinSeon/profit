@@ -91,6 +91,30 @@
                 </div>
                 </c:forEach>
                 
+                
+                <!-- 페이징처리 -->
+            	<div class="col-lg-12">
+					<div class="classes__pagination">
+					<c:if test="${pageMaker.prev}">
+						<a href="chatList.do${pageMaker.makeQueryChatProfile(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
+						</a>
+					</c:if> 
+					
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="chatList.do${pageMaker.makeQueryChatProfile(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
+					
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="chatList.do${pageMaker.makeQueryChatProfile(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
+					</div>
+				</div>
+                
+                
+                
                 </div><div class="col-lg-4 col-md-6" style="margin-bottom: 100px;">
                 </div><div class="col-lg-4 col-md-6" style="margin-bottom: 100px;">
             </div>

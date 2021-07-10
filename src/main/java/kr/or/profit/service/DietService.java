@@ -26,7 +26,7 @@ public interface DietService {
 	public int selectRegisterProfile(String memberId) throws Exception;
 	
 	//상담 프로필 목록 가져오기
-	public List<Map<String, Object>> selectChatProflieList() throws Exception;
+	public List<Map<String, Object>> selectChatProflieList(Criteria cri) throws Exception;
 	
 	//상담 프로필 사진 추가
 	public int insertProcessFile(Map<String, Object> filemap) throws Exception;
@@ -69,5 +69,7 @@ public interface DietService {
 
 	//인기검색어 조회
 	public List<Map<String, Object>> selectPopularSearch() throws Exception;
+
+	public int selectChatListCnt(Criteria cri) throws Exception;
 	
 }

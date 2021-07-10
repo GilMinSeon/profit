@@ -60,8 +60,8 @@ public class DietServiceImpl implements DietService {
 
 	//상담 프로필 목록 가져오기
 	@Override
-	public List<Map<String, Object>> selectChatProflieList() throws Exception {
-		return dietDAO.selectChatProflieList();
+	public List<Map<String, Object>> selectChatProflieList(Criteria cri) throws Exception {
+		return dietDAO.selectChatProflieList(cri);
 	}
 
 	//상담 프로필 사진 추가
@@ -155,6 +155,12 @@ public class DietServiceImpl implements DietService {
 	@Override
 	public List<Map<String, Object>> selectPopularSearch() throws Exception {
 		return dietDAO.selectPopularSearch();
+	}
+
+	//전체 글 개수 세팅
+	@Override
+	public int selectChatListCnt(Criteria cri) throws Exception {
+		return dietDAO.selectChatListCnt(cri);
 	}
 	
 	
