@@ -16,9 +16,10 @@ public class QnaServiceImpl implements QnaService{
 	@Resource(name = "qnaMapper")
 	private QnaMapper mapper;
 
+	//글 목록
 	@Override
-	public List<?> qnaList(Map<String, Object> map) throws Exception {
-		return mapper.qnaList(map);
+	public List<?> qnaList() throws Exception {
+		return mapper.qnaList();
 	}
 
 	@Override
@@ -74,8 +75,19 @@ public class QnaServiceImpl implements QnaService{
 		return mapper.qnaDetailMember(map);
 	}
 
+	//대 댓글목록
+	@Override
+	public List<?> qnaDetailReplyList(Map<String, Object> map) throws Exception {
+		System.out.println("회원정보 서비스옴 = " + map);
+		return mapper.qnaDetailReplyList(map);
+	}
 
-
+	//대 댓글 등록
+	@Override
+	public int qnaReplyAdd(Map<String, Object> map) throws Exception {
+		System.out.println("대 댓글 서비스옴 = " + map);
+		return mapper.qnaReplyAdd(map);
+	}
 
 
 }

@@ -13,7 +13,7 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 @Mapper("qnaMapper")
 public interface QnaMapper {
 
-	List<?> qnaList(Map<String, Object> map) throws Exception;
+	List<?> qnaList() throws Exception;
 
 	int qnaInsert(Map<String, Object>map) throws Exception;
 
@@ -35,7 +35,14 @@ public interface QnaMapper {
 	//댓글 삭제
 	int qnaReplyDelete(Map<String, Object> map) throws Exception;
 
+	//로그인중인사람 정보
 	Map<String, Object> qnaDetailMember(Map<String, Object> map) throws Exception;
+
+	//대 댓글 목록
+	List<?> qnaDetailReplyList(Map<String, Object> map) throws Exception;
+
+	//대 댓글 등록
+	int qnaReplyAdd(Map<String, Object> map) throws Exception;
 
 
 

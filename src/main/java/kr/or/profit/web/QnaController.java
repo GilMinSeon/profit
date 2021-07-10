@@ -12,13 +12,13 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import kr.or.profit.service.QnaService;
 
@@ -32,10 +32,7 @@ public class QnaController {
 	 * 관리자 목록(listAll)
 	 *
 	 * @author 박상빈
-	 * @param map, ssion, model
-	 * map 사용안함
-	 * memberId 로그인 아이디 가지고옴
-	 * model로 리턴
+	 * @param map, ssion, model map 사용안함 memberId 로그인 아이디 가지고옴 model로 리턴
 	 * @return "qna/qnaList"
 	 * @exception Exception
 	 */
@@ -48,30 +45,20 @@ public class QnaController {
 	 * 문의하기 목록(qnaList)
 	 *
 	 * @author 박상빈
-	 * @param ssion
-	 * memberId 로그인 아이디 가지고옴
-	 * @param map
-	 * 아이디를 가지고 Qna_SQL.xml 간다
-	 * @param model
-	 * data변수명에 qnaList를 가지고 html으로간다
+	 * @param ssion memberId 로그인 아이디 가지고옴
+	 * @param map   아이디를 가지고 Qna_SQL.xml 간다
+	 * @param model data변수명에 qnaList를 가지고 html으로간다
 	 * @return "qna/qnaList"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "qnaList.do", method = RequestMethod.GET)
-	public String qnaList(@RequestParam Map<String, Object> map, HttpSession ssion, ModelMap model) throws Exception {
-		String memberId = (String) ssion.getAttribute("memberId");
-		map.put("memberId", memberId);
-		//관리자 리스트
-		List<?> qnaList;
-		if (memberId.equals("1")) {
-			qnaList = listAll(map, ssion, model);
-			System.out.println("관리자로옴" + qnaList);
-			model.addAttribute("data", qnaList);
-			return "qna/qnaList";
-		}
-		qnaList = qnaService.qnaList(map);
-		System.out.println("회원으로옴" + qnaList);
+	public String qnaList(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
+		System.out.println("문의하기 목록옴 " + map);
+
+		List<?> qnaList = qnaService.qnaList();
+		System.out.println("문의하기 목록돌아옴" + qnaList);
 		model.addAttribute("data", qnaList);
+
 		return "qna/qnaList";
 	}
 
@@ -92,14 +79,10 @@ public class QnaController {
 	 * 문의하기 등록(qnaInsert)
 	 *
 	 * @author 박상빈
-	 * @param ssion
-	 * 로그인중인 아이디 가지고옴
-	 * @param map
-	 * Qna_SQL.xml로 아이디 가지고감
-	 * @param response
-	 * html을 java에서 실행하기위해 사용
-	 * @param model
-	 * data변수명에 qnaList를 가지고 html으로간다
+	 * @param ssion    로그인중인 아이디 가지고옴
+	 * @param map      Qna_SQL.xml로 아이디 가지고감
+	 * @param response html을 java에서 실행하기위해 사용
+	 * @param model    data변수명에 qnaList를 가지고 html으로간다
 	 * @return "qna/qnaList"
 	 * @exception Exception
 	 */
@@ -118,13 +101,11 @@ public class QnaController {
 	}
 
 	/**
-	 * 문의하기 상세보기/문의하기 답변(qnaDetail)
+	 * 문의하기 상세보기/답변 목록(qnaDetail)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * Qna_SQL.xml로 communitySeq가지고간다
-	 * @param model
-	 * data변수명에 qnaDetail를 가지고 html으로간다
+	 * @param map, ssion
+	 * @param data, qnaReply, qnaDetailReplyList, qnaDetailMember
 	 * @return "qna/qnaDetail"
 	 * @exception Exception
 	 */
@@ -135,14 +116,17 @@ public class QnaController {
 
 		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
 		List<?> qnaDetailReply = qnaService.qnaDetailReply(map);
+		List<?> qnaDetailReplyList = qnaService.qnaDetailReplyList(map);
 		Map<String, Object> qnaDetailMember = qnaService.qnaDetailMember(map);
 
 		System.out.println("문의하기 상세보기" + qnaDetail);
-		System.out.println("문의하기 댓글" + qnaDetailReply);
-		System.out.println("문의하기 로그인 중인사람" + qnaDetailMember);
+		System.out.println("댓글돌아 옴 = " + qnaDetailReply);
+		System.out.println("대  댓글돌아옴 = " + qnaDetailReplyList);
+		System.out.println("멤버 돌아옴 = " + qnaDetailMember);
 
 		model.addAttribute("data", qnaDetail);
-		model.addAttribute("qnaReply", qnaDetailReply);
+		model.addAttribute("qnaDetailReply", qnaDetailReply);
+		model.addAttribute("qnaDetailReplyList", qnaDetailReplyList);
 		model.addAttribute("qnaDetailMember", qnaDetailMember);
 		return "qna/qnaDetail";
 	}
@@ -151,10 +135,8 @@ public class QnaController {
 	 * 문의하기 수정 화면(qnaMod)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * Qna_SQL.xml로 communitySeq 가지고감
-	 * @param model
-	 * data변수명에 qnaDetail를 가지고 html으로간다
+	 * @param map   Qna_SQL.xml로 communitySeq 가지고감
+	 * @param model data변수명에 qnaDetail를 가지고 html으로간다
 	 * @return "qna/qnaMod"
 	 * @exception Exception
 	 */
@@ -169,11 +151,8 @@ public class QnaController {
 	 * 문의하기 수정(qnaUpdate)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * Qna_SQL.xml로 communitySeq 가지고감
-	 * @param model
-	 * data변수명에 qnaDetail를 가지고 html으로간다
-	 * qnaDetail 화면 새로고침을 위해 파라미터로 communitySeq가지고 qnaDetail.do로 간다 redirect:"(새로고칠 화면.jsp) 화면이름 이름"
+	 * @param map   Qna_SQL.xml로 communitySeq 가지고감
+	 * @param model data변수명에 qnaDetail를 가지고 html으로간다 qnaDetail 화면 새로고침을 위해 파라미터로 communitySeq가지고 qnaDetail.do로 간다 redirect:"(새로고칠 화면.jsp) 화면이름 이름"
 	 * @return "redirect:qnaDetail.do?communitySeq="+map.get("communitySeq");
 	 * @exception Exception
 	 */
@@ -221,17 +200,18 @@ public class QnaController {
 
 	@RequestMapping(value = "qnaProfileImage.do", method = RequestMethod.POST)
 	@ResponseBody
-	public void qnaProfileImage(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void qnaProfileImage(MultipartFile file, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		response.setContentType("text/html;charset=utf-8");
+		System.out.println("휴...");
 		PrintWriter out = response.getWriter();
 		// 업로드할 폴더 경로
 		String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
-
 		UUID uuid = UUID.randomUUID();
-		System.out.println("uuid = " + uuid);
+
 		// 업로드할 파일 이름
 		String org_filename = file.getOriginalFilename();
-		String str_filename = uuid.toString() +"_"+ org_filename;
+		String str_filename = uuid.toString() + "_" + org_filename;
 
 		System.out.println("원본 파일명 : " + org_filename);
 		System.out.println("저장할 파일명 : " + str_filename);
@@ -252,13 +232,11 @@ public class QnaController {
 	//==================================================================================================================================
 	//댓글부분
 
-
 	/**
 	 * 댓글 등록(qnaReplyInsert)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * qnaReplyInsert 를 Qna_SQL.xml로 보낸다
+	 * @param map qnaReplyInsert 를 Qna_SQL.xml로 보낸다
 	 * @return "msg"
 	 * @exception Exception
 	 */
@@ -267,22 +245,19 @@ public class QnaController {
 	public String qnaReplyInsert(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
 		int qnaReplyInsert = qnaService.qnaReplyInsert(map);
 
-	    String msg="ng";
+		String msg = "ng";
 
-		if(qnaReplyInsert > 0) {
+		if (qnaReplyInsert > 0) {
 			msg = "ok";
 		}
 		return msg;
 	}
 
-
-
 	/**
 	 * 댓글 삭제(qnaReplyDelete)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * qnaReplyInsert 를 Qna_SQL.xml로 보낸다
+	 * @param map qnaReplyInsert 를 Qna_SQL.xml로 보낸다
 	 * @return "msg"
 	 * @exception Exception
 	 */
@@ -292,12 +267,34 @@ public class QnaController {
 
 		int qnaReplyDelete = qnaService.qnaReplyDelete(map);
 
-	    String msg="ng";
-		if(qnaReplyDelete > 0) {
+		String msg = "ng";
+		if (qnaReplyDelete > 0) {
 			msg = "ok";
 		}
 		return msg;
 	}
 
+	/**
+	 * 문의하기 대 댓글 등록(qnaReply)
+	 * @author 박상빈
+	 * @param map
+	 * @return msg
+	 * @throws Exception
+	 */
+
+	@RequestMapping(value = "qnaReplyAdd.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String qnaReplyAdd(@RequestParam Map<String, Object> map,Model model) throws Exception {
+
+		System.out.println("대댓글 옴" + map);
+		int qnaReplyAdd = qnaService.qnaReplyAdd(map);
+
+		String msg = "ng";
+		if(qnaReplyAdd > 0) {
+			msg = "ok";
+		}
+
+		return msg;
+	}
 
 }

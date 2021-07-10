@@ -3,15 +3,38 @@
 
 <mapper namespace="kr.or.profit.mapper.AdminMemberMapper">
 
+    <!-- 트레이너 프로세스 디테일 -->
+    <select id="selectProcessDetailBySeq" parameterType="String" resultType="ProcessVO">
+        select  p.process_seq, p.member_id, p.file_seq, p.trainer_award, p.trainer_career, 
+		        p.trainer_gym, p.process_status, p.process_finish_date, p.admin_memo,
+		        p.in_date, p.up_date,
+		        m.member_name, m.member_mobile, m.member_email, m.member_gender
+		from process p
+		inner join member m
+		on (p.member_id = m.member_id)
+		where p.process_seq = #{memberId}
+    </select>
+    
+	<!-- 트레이너 프로세스 디테일-첨부파일 가져오기-->
+    <select id="selectProcessFile" parameterType="String" resultType="egovMap">
+	    select file_seq, file_detail_seq, file_real_name, file_path 
+		from attach_file
+		where file_seq = #{fileSeq}
+	</select>
+    
+    
+    
+    
+    
     <!-- 관리자-트레이너승인, 숫자 보여주는 표 -->
 	<select id="selectProcessNumberList" resultType="ProcessVO">
-	    select status_a,status_b,status_c,today
+	    select status_a,status_b,status_c, status_date
 		from    
 		    (
 		    select  (select count(*) from process where process_status = 'A') as status_a,
 		            (select count(*) from process where process_status = 'B') as status_b,
 		            (select count(*) from process where process_status = 'C') as status_c,
-		            (select count(*) from process where to_char(up_date) = to_char(sysdate, 'YYYY/MM/DD')) as today,
+		            (select count(*) from process where to_char(up_date, 'YYYY/MM/DD') = to_char(sysdate, 'YYYY/MM/DD')) status_date,
 		            rownum as rm
 		    from process
 		    ) tbl
@@ -44,7 +67,7 @@
 						</if>
 						<if test="selDate != null and selDate != '' ">
 						    <choose>
-						        <when test='selStatus.equals("신청")'>
+						        <when test='selStatus.equals("A")'>
 						            and to_char(in_date, 'YYYYMMDD') = #{selDate}
 						        </when>
 						        <otherwise>
@@ -101,7 +124,13 @@
 		order by in_date desc
  	</select>
  	
-    
+    <!-- 관라지-신청서 검토로 update -->
+    <update id="updateStatusB" parameterType="String">
+        update process
+		set process_status = 'B',
+		    up_date = sysdate
+		where process_seq = #{processSeq}
+    </update>
  	
  	
  	

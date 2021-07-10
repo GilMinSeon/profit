@@ -21,13 +21,27 @@ public class ProcessVO {
 	private String memberName;
 	private String memberGender;
 	private String memberMobile;
+	private String memberEmail;
 	
 	//민선추가-관리자 프로세스 리스트
 	private String statusA;
 	private String statusB;
 	private String statusC;
-	private String today;
+	private String statusDate;
 	
+
+	public String getMemberEmail() {
+		return memberEmail;
+	}
+	public void setMemberEmail(String memberEmail) {
+		this.memberEmail = memberEmail;
+	}
+	public String getStatusDate() {
+		return statusDate;
+	}
+	public void setStatusDate(String statusDate) {
+		this.statusDate = statusDate;
+	}
 	public String getStatusA() {
 		return statusA;
 	}
@@ -45,12 +59,6 @@ public class ProcessVO {
 	}
 	public void setStatusC(String statusC) {
 		this.statusC = statusC;
-	}
-	public String getToday() {
-		return today;
-	}
-	public void setToday(String today) {
-		this.today = today;
 	}
 	public String getMemberName() {
 		return memberName;
