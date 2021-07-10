@@ -18,5 +18,6 @@
 		<typeAlias alias="chatProfileVO" type="kr.or.profit.vo.ChatProfileVO"/>
 		<typeAlias alias="Criteria" type="kr.or.profit.vo.Criteria"/>
 		<typeAlias alias="buyLessonVO" type="kr.or.profit.vo.BuyLessonVO"/>
+		<typeAlias alias="buyLessonPayVO" type="kr.or.profit.vo.BuyLessonPayVO"/>
     </typeAliases>
 </configuration>

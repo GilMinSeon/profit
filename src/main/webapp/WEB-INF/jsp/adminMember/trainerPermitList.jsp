@@ -66,9 +66,34 @@
 .classes__filter form .class__filter__btn_re {
 	padding-right: 125px;
 }
-
+.table tr:hover {
+	background-color: #f8f6ff;
+}
 </style>
 <script type="text/javascript">
+function fn_change(processSeq){
+	if (confirm("신청서를 검토하시겠습니까?") == true){
+		$.ajax({
+			type : "POST",
+			data : "processSeq=" + processSeq,
+			url : "updateStatusBAjax.do",
+			dataType : "text", 
+			success : function(result) {
+				if (result == "ok") {
+					location.href="trainerPermitDetail.do?processSeq="+processSeq+" "
+				} else {
+					alert("문제가 발생하였습니다. 잠시 후 다시 시도해주세요")
+				}
+			},
+			error : function() {
+				alert("오류발생");
+			}
+		})
+	} else{  
+	    return;
+	}
+}
+
 $(document).ready(function() {
 	$("#mydate").datepicker({
 		changeYear : true,
@@ -80,23 +105,19 @@ $(document).ready(function() {
 	});
 });
 
-/* $(document).ready(function() {
-	$('.counter').each(function() {
-		$(this).prop('Counter', 0).animate({
-			Counter : $(this).text()
-		}, {
-			duration : 500,
-			easing : 'swing',
-			step : function(now) {
-				$(this).text(Math.ceil(now));
-			}
-		});
-	});
+function fn_today(){
+	var today = getCurrentDate();
+	location.href="trainerPermitList.do?selStatus=&selIdentity=&selDate="+today+"&searchKeyword=";
+}
 
-}); */
-
-function fn_status(){
-	alert("ddd")
+function getCurrentDate(){
+    var date = new Date();
+    var year = date.getFullYear().toString();
+    var month = date.getMonth() + 1;
+    month = month < 10 ? '0' + month.toString() : month.toString();
+    var day = date.getDate();
+    day = day < 10 ? '0' + day.toString() : day.toString();
+    return year + month + day ;
 }
 
 </script>
@@ -113,14 +134,15 @@ function fn_status(){
 	<!-- 본문 시작 -->
 	<section class="classes spad" style="visibility: visible; animation-name: fadeIn;">
 		<div class="container">
-			<h3 style="text-align: center;">트레이너 승인</h3>
+			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerPermitList.do'" >트레이너 승인</h3>
 			<br>
-        <div class="row" style="margin-bottom: 30px;margin-top: 30px;">
+        	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> 
 	            <i class="fa fa-user medium-icon"></i> 
 	            <span id="anim-number-pizza" class="counter-number"></span> 
-	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000" onclick="fn_status()" style="cursor: pointer">${todayNumberList.statusA }</span>
+	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000" 
+	            	onclick="location.href='trainerPermitList.do?selStatus=A&selIdentity=&selDate=&searchKeyword=' " style="cursor: pointer">${todayNumberList.statusA }</span>
 	            <p class="counter-title">승인요청</p>
             </div> 
             <!-- end counter -->
@@ -128,7 +150,9 @@ function fn_status(){
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="600ms" style="visibility: visible; animation-duration: 600ms; animation-name: fadeInUp;"> 
 	            <i class="fa fa-user medium-icon"></i> 
-	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000">${todayNumberList.statusB }</span> 
+	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000"
+	            	onclick="location.href='trainerPermitList.do?selStatus=B&selIdentity=&selDate=&searchKeyword=' "
+	            	style="cursor: pointer">${todayNumberList.statusB }</span> 
 	            <span class="counter-title">검토단계</span> 
 	        </div> 
 	        <!-- end counter -->
@@ -136,7 +160,9 @@ function fn_status(){
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin-small text-center counter-section wow fadeInUp xs-margin-bottom-ten animated" data-wow-duration="900ms" style="visibility: visible; animation-duration: 900ms; animation-name: fadeInUp;"> 
             	<i class="fa fa-user medium-icon"></i> 
-            	<span class="timer counter alt-font appear" data-to="810" data-speed="7000">${todayNumberList.statusC }</span> 
+            	<span class="timer counter alt-font appear" data-to="810" data-speed="7000" 
+    	        	onclick="location.href='trainerPermitList.do?selStatus=C&selIdentity=&selDate=&searchKeyword=' " 
+	            	style="cursor: pointer">${todayNumberList.statusC }</span> 
             	<span class="counter-title">보완단계</span> 
             </div> 
             <!-- end counter -->
@@ -144,7 +170,7 @@ function fn_status(){
             <!-- counter -->
             <div class="col-md-3 col-sm-6 text-center counter-section wow fadeInUp animated" data-wow-duration="1200ms" style="visibility: visible; animation-duration: 1200ms; animation-name: fadeInUp;"> 
             	<i class="fa fa-heart medium-icon"></i> 
-            	<span class="timer counter alt-font appear" data-to="600" data-speed="7000">${todayNumberList.today }</span> 
+            	<span class="timer counter alt-font appear" data-to="600" data-speed="7000" onclick="fn_today()" style="cursor: pointer">${todayNumberList.statusDate }</span> 
             	<span class="counter-title">오늘처리건수</span> 
             </div> 
             <!-- end counter -->
@@ -162,29 +188,33 @@ function fn_status(){
                                <p>상태</p>
                                <select name="selStatus" id="selStatus">
                                    <option value="">전체</option>
-                                   <option value="A">신청</option>
-                                   <option value="B">검토</option>
-                                   <option value="C">보완</option>
-                                   <option value="D">반려</option>
-                                   <option value="E">승인</option>
+                                   <option value="A" <c:if test="${selStatus eq 'A'}">selected</c:if>	>신청</option>
+                                   <option value="B" <c:if test="${selStatus eq 'B'}">selected</c:if>	>검토</option>
+                                   <option value="C" <c:if test="${selStatus eq 'C'}">selected</c:if>	>보완</option>
+                                   <option value="D" <c:if test="${selStatus eq 'D'}">selected</c:if>	>반려</option>
+                                   <option value="E" <c:if test="${selStatus eq 'E'}">selected</c:if>	>승인</option>
                                </select>
                            </div>
                            <div class="class__filter__select" style="width: 150px;">
                                <p>검색조건</p>
                                <select name="selIdentity">
                                    <option value="">전체</option>
-                                   <option value="이름">이름</option>
-                                   <option value="아이디">아이디</option>
+                                   <option value="이름"  <c:if test="${selIdentity eq '이름'}">selected</c:if>		>이름</option>
+                                   <option value="아이디"	<c:if test="${selIdentity eq '아이디'}">selected</c:if>	>아이디</option>
                                </select>
                            </div>
                            <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
-							<p>날짜</p>
-							<input type="text" placeholder="검색" id="mydate" style="width: 100%;">
+							<p>처리일자</p>
+							<input type="text" placeholder="검색" id="mydate" style="width: 100%;" 
+								<c:if test="${not empty selDate}">value=${selDate }</c:if>
+								name="selDate" id="selDate">
 						</div>
 						
 						<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
 							<p>검색어</p>
-							<input type="text" placeholder="검색" style="width: 100%;" name="searchKeyword" id="searchKeyword">
+							<input type="text" placeholder="검색" style="width: 100%;" 
+								<c:if test="${not empty searchKeyword}">value=${searchKeyword }</c:if>
+								name="searchKeyword" id="searchKeyword">
 							<div class="class__filter__btn">
                                <button><i class="fa fa-search"></i></button>
                            </div>
@@ -208,13 +238,25 @@ function fn_status(){
 				</thead>
 				<tbody>
 					<c:forEach var="list" items="${processList}" varStatus="status">
-					<tr>
+					<tr <c:if test="${list.processStatus eq 'A' }">onclick="fn_change(${list.processSeq })"</c:if>
+						onclick="location.href='trainerPermitDetail.do?processSeq=${list.processSeq}' ">
 						<td>${list.processSeq }</td>
 						<td>${list.memberId }</td>
 						<td>${list.memberName }</td>
 						<td>${fn:substring(list.inDate,0,10)}</td>
-						<td>${fn:substring(list.upDate,0,10)}</td>
-						<td>${list.processStatus }</td>
+						<c:if test="${empty list.upDate}">
+							<td>-</td>
+						</c:if>
+						<c:if test="${not empty list.upDate}">
+							<td>${fn:substring(list.upDate,0,10)}</td>
+						</c:if>
+						<td>
+							<c:if test="${list.processStatus eq 'A'}"><span style="background-color: #007bff;color: white;font-weight: bold;padding: 7px;">신청</span></c:if>
+							<c:if test="${list.processStatus eq 'B'}"><span style="background-color: #17a2b8;color: white;font-weight: bold;padding: 7px;">검토</span></c:if>
+							<c:if test="${list.processStatus eq 'C'}"><span style="background-color: #ffc107;color: darkslategray;font-weight: bold;padding: 7px;">보완</span></c:if>
+							<c:if test="${list.processStatus eq 'D'}"><span style="background-color: #c82333;color: white; font-weight: bold;padding: 7px;">반려</span></c:if>
+							<c:if test="${list.processStatus eq 'E'}"><span style="background-color: #28a745;color: white;font-weight: bold;padding: 7px;">승인</span></c:if>
+						</td>
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -223,7 +265,7 @@ function fn_status(){
 			
 			
 			
-						<!-- 페이징처리 -->
+				<!-- 페이징처리 -->
             	<div class="col-lg-12">
 					<div class="classes__pagination">
 					<c:if test="${pageMaker.prev}">

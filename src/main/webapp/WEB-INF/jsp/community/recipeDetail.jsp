@@ -49,11 +49,11 @@
 .breadcrumb-option, .blog-hero {
 	padding-top: 215px;
 	padding-bottom: 170px;
-	margin-top: -75px;
+	margin-top: -50px;
 }
 </style>
 <script type="text/javascript">
-	//댓글 추가
+	//댓글 등록
 	function fn_reipeReplyAdd() {
 		var formData = new FormData($('#replyfrm')[0]);
 		$.ajax({
@@ -78,7 +78,7 @@
 		})
 
 	}
-	//대댓글 등록 recipeReplyAdd
+	//대 댓글 등록 recipeReplyAdd
 	function fn_reipeReplyAdd_Add(replySeq) {
 		var formData = new FormData($('#replyfrmAdd'+replySeq)[0]);
 		$.ajax({
@@ -259,6 +259,7 @@
 	<!-- Blog Details Section End -->
 
 	<!-- Leave Comment Begin -->
+<!-- 	댓글부분 -->
 	<div class="leave-comment spad">
 		<div class="container">
 			<div class="row">

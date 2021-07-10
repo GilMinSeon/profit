@@ -214,7 +214,7 @@
 		    REPLY_SEQ = #{replySeq}
 	</update>
 
-	<!-- 	대댓 글등록 -->
+	<!-- 	대 댓 글등록 -->
 	<insert id="recipeReplyAdd" parameterType="hashMap">
 		INSERT INTO REPLY
 			(

@@ -32,6 +32,21 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	public int selectProcessListCnt(Criteria cri) throws Exception {
 		return adminMemberMapper.selectProcessListCnt(cri);
 	}
+
+	@Override
+	public int updateStatusB(String processSeq) throws Exception {
+		return adminMemberMapper.updateStatusB(processSeq);
+	}
+
+	@Override
+	public ProcessVO selectProcessDetailBySeq(String processSeq) throws Exception {
+		return adminMemberMapper.selectProcessDetailBySeq(processSeq);
+	}
+
+	@Override
+	public List<?> selectProcessFile(String fileSeq) throws Exception {
+		return adminMemberMapper.selectProcessFile(fileSeq);
+	}
 	
 
 
