@@ -34,6 +34,7 @@ import kr.or.profit.service.DietService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
+import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.PageMaker;
 //import kr.or.profit.vo.ChatProfileVO;
@@ -153,8 +154,15 @@ public class DietController {
 		String myprofile = dietService.selectMyProfile(memberId);
 		System.out.println("기본이미지 : " + myprofile);
 		chatDetail.put("MyProfileImage", myprofile);
-		
 		model.addAttribute("chatDetail", chatDetail);
+		
+		//이용권 있는지 없는지 확인 
+		String ticketAvailable = "N";
+		int flag = dietService.selectMyticketFlag(memberId);
+		if(flag > 0) {
+			ticketAvailable = "Y";
+		}
+		model.addAttribute("ticketAvailable",ticketAvailable);
 		System.out.println(model.toString());
 		return "diet/chatDetail";
 	}
@@ -398,8 +406,21 @@ public class DietController {
 	}
 	
 		
-	@RequestMapping(value = "chatting", method = RequestMethod.GET)
-	public String chatting(Locale locale, Model model) {
+	@RequestMapping(value = "chatting.do", method = RequestMethod.GET)
+	public String chatting(@RequestParam String chatProfileSeq,HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		
+		//이용권 차감
+		dietService.updateTicketRemain(memberId);
+		
+		//chatting Table에 Insert
+		ChattingVO chattingVO = new ChattingVO();
+		chattingVO.setChatProfileSeq(chatProfileSeq);
+		chattingVO.setChattingMemberId(memberId);
+		chattingVO.setInUserId(memberId);
+		chattingVO.setUpUserId(memberId);
+		int insertResult = dietService.insertChatting(chattingVO);
 		return "diet/chatting";
 	}
 	

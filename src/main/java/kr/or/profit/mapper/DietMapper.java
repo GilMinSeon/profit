@@ -78,4 +78,10 @@ public interface DietMapper {
 	
 	//전체 글 개수 세팅
 	int selectChatListCnt(Criteria cri) throws Exception;
+	
+	//사용가능한 이용권이 있는 지 확인
+	int selectMyticketFlag(String memberId) throws Exception;
+	
+	//이용권 개수 차감
+	int updateTicketRemain(String memberId) throws Exception;
 }

@@ -14,6 +14,7 @@ import kr.or.profit.service.DietService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
+import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
@@ -162,6 +163,32 @@ public class DietServiceImpl implements DietService {
 	public int selectChatListCnt(Criteria cri) throws Exception {
 		return dietDAO.selectChatListCnt(cri);
 	}
+	
+	//사용가능한 이용권이 있는 지 확인
+	@Override
+	public int selectMyticketFlag(String memberId) throws Exception {
+		return dietDAO.selectMyticketFlag(memberId);
+	}
+
+	//이용권 개수 차감
+	@Override
+	public int updateTicketRemain(String memberId) throws Exception {
+		return dietDAO.updateTicketRemain(memberId);
+	}
+
+
+	@Override
+	public int insertChatting(ChattingVO chattingVO) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
+	//채팅 테이블에 데이터 추가
+//	@Override
+//	public int insertChatting(ChattingVO chattingVO) throws Exception {
+//		return dietDAO.insertChatting(chattingVO);
+//	}
 	
 	
 
