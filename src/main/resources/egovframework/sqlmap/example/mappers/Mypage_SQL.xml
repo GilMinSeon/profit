@@ -151,12 +151,10 @@
 	            trainer_career,
 	            trainer_gym,
 	            process_status,
-	            process_finish_date,
 	            admin_memo,
 	            in_user_id,
 	            in_date,
-	            up_user_id,
-	            up_date
+	            result_reason
            )
          values(
             (
@@ -170,13 +168,11 @@
             #{trainerCareer}, 
             #{trainerGym},
             'A',
-            sysdate+14,
               null, 
               #{inUserId}, 
-              sysdate, 
-              #{upUserId}, 
               sysdate
-              )
+              ),
+              null
         ]]>
 
 	</insert>

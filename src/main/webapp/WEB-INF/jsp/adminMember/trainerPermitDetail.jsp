@@ -25,9 +25,16 @@
 var arr = [];
 
 function fn_del(fileDetailSeq){
-	alert(fileDetailSeq)
-	arr.push(fileDetailSeq);
-	console.log(arr)
+	if (confirm("파일을 삭제하시겠습니까?") == true){
+		arr.push(fileDetailSeq);
+		console.log(arr)
+		$("div").remove("#"+fileDetailSeq+"");
+		$("#del_file").append("<br>" + "<input type='text' name='delFile' value=" + fileDetailSeq + ">");
+		
+	}else{  
+	    return;
+	}
+
 }
 
 
@@ -71,95 +78,69 @@ function fn_submit(){
    }
 }
 
- function send_file(){
-    var formData = new FormData($('#frm')[0]);
-       $.ajax({
-          type : 'post',
-          url : 'uploadAjax.do',
-          data : formData,
-          processData : false,
-          contentType : false,
-          async:false,
-          dataType:"text",
-          success : function(data){
-          if(data=="ok"){
-             alert("신청이 정상적으로 완료되었습니다.");
-             location.href="trainerApplyList.do";
-          }else if(data=="no"){
-             alert("신청이 실패하였습니다. 다시 시도해주세요");
-          }else{
-             alert("신청이 실패하였습니다. 다시 시도해주세요");
-          }
-       },
-          error : function(error){
-             alert("신청이 실패하였습니다. 다시 시도해 주세요.");
-             console.log(error);
-             console.log(error.status);
-          }
-          
-          
-       })
- }
-
-
 //수정하기 눌렀을때 나타나는 효과들
 function fn_update() {
 	$('#file').css({'display' : 'block'});
 	$('#submit').css({'display' : 'block'});
 	$('#update').css({'display' : 'none'});
+	$('#last_div').css({'display' : 'none'});
 	
 	$('#div_upload').css({'display' : 'block'});
 	$('.div_img').css({'display' : 'inline'});
 	
 	$('.orange').css({'background-color' : '#fee9b8'});
 	
-	
-	$('#memberName').prop('readonly', false); 
-	$('#memberNickname').prop('readonly', false); 
-	$('#memberMobile').prop('readonly', false); 
-	$('#memberWeight').prop('readonly', false); 
-	$('#memberHeight').prop('readonly', false); 
+	$('#trainerGym').prop('readonly', false); 
+	$('#trainerAward').prop('readonly', false); 
+	$('#trainerCareer').prop('readonly', false); 
 
 }
 
-//수정완료 눌렀을때
-function fn_submit() {
+
+
+
+
+function send_file(){
+	var formData = new FormData($('#frm')[0]);
 	
-   var formData = new FormData($('#frm')[0]);
-/*       $.ajax({
-         type : 'post',
-         url : 'updateMyInfoAjax.do',
-         data : formData,
-         processData : false,
-         contentType : false,
-         async:false,
-         dataType:"text",
-         success : function(data){
-         if(data=="ok"){
-        	 alert("내 정보가 수정되었습니다.");
-            //location.href="home.do";
-         }else if(data=="no"){
-            alert("신청이 실패하였습니다. 다시 시도해주세요");
-         }else{
-            alert("신청이 실패하였습니다. 다시 시도해주세요");
-         }
-      },
-         error : function(error){
-            alert("신청이 실패하였습니다. 다시 시도해 주세요.");
-            console.log(error);
-            console.log(error.status);
-         }
-      }) */
+	console.log(formData)
+	
+	$.ajax({
+		
+	   	type : 'post',
+	   	url : 'updateAdminPermitDetailAjax.do',
+	   	data : formData,
+	   	processData : false,
+	   	contentType : false,
+	   	async:false,
+	   	dataType:"text",
+	   	success : function(data){
+		   if(data=="ok"){
+		      alert("신청이 정상적으로 완료되었습니다.");
+		      location.href="trainerApplyList.do";
+		   }else if(data=="no"){
+		      alert("신청이 실패하였습니다. 다시 시도해주세요");
+		   }else{
+		      alert("신청이 실패하였습니다. 다시 시도해주세요");
+		   }
+		},
+	   	error : function(error){
+	      alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+	      console.log(error);
+	      console.log(error.status);
+	   	}
+	   
+	   
+	})
 	
 	$('#file').css({'display' : 'none'});
 	$('#submit').css({'display' : 'none'});
 	$('#update').css({'display' : 'block'});
-	$('#memberName').prop('readonly', true); 
-	$('#memberNickname').prop('readonly', true); 
-	$('#memberMobile').prop('readonly', true); 
-	$('#memberWeight').prop('readonly', true); 
-	$('#memberHeight').prop('readonly', true); 
+	$('#last_div').css({'display' : 'block'});
 	
+	$('#trainerGym').prop('readonly', true); 
+	$('#trainerAward').prop('readonly', true); 
+	$('#trainerCareer').prop('readonly', true); 
 	
 	$('#div_upload').css({'display' : 'none'});
 	$('.div_img').css({'display' : 'none'});
@@ -167,7 +148,12 @@ function fn_submit() {
 	$('.orange').css({'background-color' : 'none'});
 	
 	
-}
+	
+ }
+
+
+
+
 </script>
 
 
@@ -232,7 +218,7 @@ function fn_submit() {
 				<!-- 2번 div -->
 				<div class="col-lg-8 order-lg-2 order-1" style="background-color: white; padding: 30px; border: 1px solid #ebecef; border-radius: 10px; display: left; height: auto;">
 					<!-- 수정 form 시작 -->
-					<form action="#" class="appointment__form">
+					<form class="appointment__form" id="frm" method="post" enctype="multipart/form-data">
 						<div class="text-center">
 							
 							<!-- 1.이름 -->
@@ -281,6 +267,8 @@ function fn_submit() {
 									name="memberGender" id="memberGender">
 							</div>
 							
+							
+							<!-- 여기부터 데이터 수정 가능 -->
 							<!-- 5.소속헬스장 -->
 							<div class="col-lg-6 text-center mypage_myinfo"
 								style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
@@ -332,18 +320,31 @@ function fn_submit() {
 								<div style="margin-bottom: 2px;">
 									<h5 style="display: inline; float: left; color: black;"><span class="orange" style="background-color: none;">첨부파일</span></h5>
 									&nbsp;
+									
 									<div class="col-lg-12" style="text-align: left; float: left; padding: 20px; margin:0px; background-color: #3f51b50d;">
 										<c:forEach var="fileVO" items="${fileVO}" varStatus="status">
+										<div style="margin-bottom: 10px;" id="${fileVO.fileDetailSeq}">
 										${fileVO.fileRealName }
 										<a href="${fileVO.filePath }">파일 열기</a>
-										<img src="./resources/img/common/delete.png" class="div_img" style="display:none; width: 15px; height: 15x;margin-left: 5px; margin-bottom: 3px;"onclick="fn_del(${fileVO.fileDetailSeq})">
-										<br>
+										<img src="./resources/img/common/delete.png" class="div_img" style="display:none; width: 15px; height: 15x;margin-left: 5px; margin-bottom: 3px;"
+										onclick="fn_del(${fileVO.fileDetailSeq})">
+										</div>
+										
 										</c:forEach>
 									</div>
 								</div>
 
 								<div class="input-group" style="margin-bottom: 30px;"></div>
 							</div>
+							
+							
+							<!-- 파일삭제리스트 hidden -->
+							<div id="del_file" style="display: none;">
+							
+							</div>
+							
+							<!-- 파일시퀀스 큰거 hidden -->
+							<input type="hidden" name="fileSeq" value="${fileVO[0].fileSeq}">
 							
 							
 							<!-- 파일추가하는 부분[파일업로드] -->
@@ -362,7 +363,7 @@ function fn_submit() {
                               </div>
                                  
                               <div class="input-group" style="margin-bottom: 5px;">
-                                </div>
+                              </div>
                            </div>
 							
 							
@@ -376,7 +377,7 @@ function fn_submit() {
 							
 							
 							<!-- 승인/보완/반려 -->
-							<div class="col-lg-12" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+							<div class="col-lg-12" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;display: blcok" id="last_div">
 								<input type="button" value="승인" class="site-btn"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
 								<input type="button" value="보완" class="site-btn"

@@ -87,7 +87,7 @@
                     	
 	                    <c:if test="${memberGubun == 'T' }">	
                     	<img src="./resources/img/header/check-mark.png" width="16px" height="18px" style="padding-bottom: 3px;">
-	                    <a style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 10px;">${sessionScope.memberNickname }님 (트레이너)</a>&nbsp;
+	                    <a href="myTrainerInfo.do" style="color: gray;font-size: 0.9em;padding-left: 0px; padding-right: 10px;">${sessionScope.memberNickname }님 (트레이너)</a>&nbsp;
 	                    
 	                    <img src="./resources/img/header/lock.png" width="16px" height="19px" style="padding-bottom: 3px;">
 	                    <a href="myinfo.do" style="color: gray;font-size: 0.9em;padding-left: 0px;">마이페이지</a>
