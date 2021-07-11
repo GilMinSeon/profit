@@ -28,10 +28,17 @@
 }
 </style>
 <script type="text/javascript">
-	function fn_numberAlert(){
+
+	function fn_numberAlert(flag, seq){
+		
+		if(flag == 'N'){
+			alert("보유하신 이용권이 존재하지 않습니다.");
+			location.href="buyTicket.do";
+			return;
+		}
 		 if(confirm("상담을 진행하면 이용권 하나가 차감됩니다. 계속 진행하시겠습니까?"))
-		 {
-		  	location.href="chatting";
+		 {	
+		  	location.href="chatting.do?chatProfileSeq=" + seq;
 		 }
 	}
 	
@@ -168,9 +175,7 @@
 <!-- Breadcrumb End -->
 <section class="about spad">
         <div class="container">
-            <div class="about__services">
-                
-            </div>
+            
             <div class="row">
                 <div class="col-lg-7 p-0">
                     <div class="about__pic" style="text-align: center;margin-top: 50px;">
@@ -214,7 +219,7 @@ ${chatDetail['chatProfileMemo']}</textarea>
                 </div>
 	                <div class="classes__item__text"  style="text-align: center;padding-top: 10px;">
 	                	<c:if test="${memberGubun eq 'U'}">
-				         <a class="class-btn_w" style="font-size: 1.05em;width:110px;" onclick="fn_numberAlert()">1:1 상담</a>
+				         <a class="class-btn_w" style="font-size: 1.05em;width:110px;" onclick="fn_numberAlert('${ticketAvailable}','${chatDetail['chatProfileSeq']}')">1:1 상담</a>
 				         </c:if>
 				         <c:if test="${memberId eq chatDetail['chatProfileId']}">
 				         <a href="chatProfileMod.do?chatProfileSeq=${chatDetail['chatProfileSeq']}" class="class-btn_w" style="font-size: 1.05em;width: 110px;" >수정</a>

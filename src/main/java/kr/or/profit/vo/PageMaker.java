@@ -177,5 +177,13 @@ public class PageMaker {
 
 		return uriComponents.toUriString();
 	}
+	
+	// 상담 프로필 목록
+	public String makeQueryChatProfile(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+				.build();
+
+		return uriComponents.toUriString();
+	}
 
 }

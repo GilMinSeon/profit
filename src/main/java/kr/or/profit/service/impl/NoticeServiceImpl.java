@@ -47,5 +47,22 @@ public class NoticeServiceImpl implements NoticeService{
 		return mapper.noticeCommonHit(map);
 	}
 
+	//파일 저장
+	@Override
+	public int noticeFileUpload(Map<String, Object> map) throws Exception {
+		System.out.println("파일 저장 서비스옴" + map);
+		return mapper.noticeFileUpload(map);
+
+	}
+
+	//파일 번호
+	@Override
+	public String noticeFileCnt() throws Exception {
+		System.out.println("파일 번호 서비스옴");
+		return mapper.noticeFileCnt();
+	}
+
+
+
 
 }

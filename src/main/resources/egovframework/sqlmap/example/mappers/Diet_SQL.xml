@@ -108,8 +108,14 @@
 	</select>
 	
 	<!-- 상담 프로필 목록 조회 -->
-	<select id="selectChatProflieList" resultType="egovMap">
-	    SELECT CHAT_PROFILE_SEQ, CHAT_PROFILE_ID, MEMBER_NAME, A.FILE_SEQ, CHAT_PROFILE_INTRO, FILE_PATH, A.UP_DATE
+	<select id="selectChatProflieList" parameterType="Criteria" resultType="egovMap">
+	    select rm,CHAT_PROFILE_SEQ, CHAT_PROFILE_ID, MEMBER_NAME,FILE_SEQ, CHAT_PROFILE_INTRO, FILE_PATH, UP_DATE
+		from
+		(
+		select rownum as rm, CHAT_PROFILE_SEQ, CHAT_PROFILE_ID, MEMBER_NAME,FILE_SEQ, CHAT_PROFILE_INTRO, FILE_PATH, UP_DATE
+		from
+		(
+		SELECT CHAT_PROFILE_SEQ, CHAT_PROFILE_ID, MEMBER_NAME, A.FILE_SEQ, CHAT_PROFILE_INTRO, FILE_PATH, A.UP_DATE
 		FROM CHAT_PROFILE A
 		LEFT JOIN MEMBER B ON
 		(A.CHAT_PROFILE_ID = B.MEMBER_ID)
@@ -117,6 +123,9 @@
 		(A.FILE_SEQ = C.FILE_SEQ)
 		WHERE CHAT_PROFILE_PRIVATE = 'N'
 		ORDER BY A.UP_DATE DESC
+		)
+		)
+		where rm between #{rowStart} and #{rowEnd}
 	</select>
 	
 	
@@ -473,5 +482,38 @@
 			where rn <= 7
 			]]>
 		</select>
+		
+		<!-- 채팅 목록 페이징 처리 -->
+		<select id="selectChatListCnt" parameterType="Criteria" resultType="int">
+		    select count(*)
+			from chat_profile
+			where chat_profile_private= 'N'
+		</select>	
+		
+	<!-- 사용가능한 이용권 여부 알아보기 -->
+	<select id="selectMyticketFlag" resultType="int">
+	    select count(*)
+		from buy_ticket
+		where in_user_id = #{memberId}
+		and ticket_avail_flag = 'Y'
+	</select>
+	
+	
+	<!-- 이용권 개수 차감 -->
+	<update id="updateTicketRemain" parameterType="String">
+	   	UPDATE BUY_TICKET
+	   	SET
+	   	TICKET_AVAIL_FLAG =
+		                CASE 
+		                WHEN TICKET_REMAIN = '1' THEN 
+		                     'N' 
+		                ELSE
+		                     'Y'
+		                END,
+		TICKET_REMAIN = TICKET_REMAIN-1
+		WHERE
+		IN_USER_ID = #{memberId} and TICKET_AVAIL_FLAG='Y'
+	      
+	</update>
 	
 </mapper>

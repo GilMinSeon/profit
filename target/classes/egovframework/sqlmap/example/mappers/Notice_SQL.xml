@@ -129,5 +129,45 @@
 		    COMMUNITY_SEQ = #{communitySeq}
 	</update>
 
+<!-- 	파일업로드 -->
+	<insert id="noticeFileUpload" parameterType="hashMap">
+		INSERT INTO ATTACH_FILE
+		    (
+		    FILE_SEQ,
+			FILE_DETAIL_SEQ,
+			FILE_REAL_NAME,
+			FILE_SAVE_NAME,
+			FILE_PATH,
+		    IN_USER_ID,
+		    IN_DATE,
+		    UP_USER_ID,
+		    UP_DATE
+		    )
+		values
+		    (
+		    (SELECT
+		        NVL(MAX(TO_NUMBER(FILE_SEQ)),0) AS FILE_SEQ
+		    FROM
+		        ATTACH_FILE)+1,
+		    '1',
+		    #{fileRealName},
+		    #{filesavename},
+		    #{imgFile},
+		    #{memberId},
+		    SYSDATE,
+		    #{memberId},
+		    SYSDATE
+		    )
+
+	</insert>
+
+<!-- 	파일번호확인 -->
+	<select id="noticeFileCnt" resultType="String">
+		SELECT
+		     NVL(MAX(TO_NUMBER(FILE_SEQ)),0) AS FILE_SEQ
+		FROM
+		    ATTACH_FILE
+
+	</select>
 
 </mapper>

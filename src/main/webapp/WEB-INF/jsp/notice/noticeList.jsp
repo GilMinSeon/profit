@@ -6,10 +6,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
-
+<c:if test="{!empty message}" >
+	alert("${message}");
+</c:if>
 </script>
 </head>
 <body>
+
 	<!-- Breadcrumb Begi -->
 	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg" style="background-image: url(&quot;./resources/img/breadcrumb.jpg&quot;);">
 		<div class="container">
@@ -60,6 +63,7 @@
 			</div>
 		</div>
 	</section>
+
 	<!-- Classes Section End -->
 </body>
 </html>

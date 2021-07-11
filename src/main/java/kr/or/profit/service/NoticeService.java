@@ -17,5 +17,10 @@ public interface NoticeService {
 
 	int noticeDelete(Map<String, Object> map) throws Exception;
 
+	int noticeFileUpload(Map<String, Object> map) throws Exception;
+
+	String noticeFileCnt() throws Exception;
+
+
 
 }

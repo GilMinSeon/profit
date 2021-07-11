@@ -91,7 +91,7 @@
 	             success : function(data){
 	             if(data=="ok"){
 	                alert("프로필이 정상적으로 등록되었습니다.");
-	                location.href="trainerApplyList.do";
+	                location.href="chatList.do";
 	             }else if(data=="no"){
 	                alert("프로필 등록에 실패하였습니다. 다시 시도해주세요");
 	             }else{

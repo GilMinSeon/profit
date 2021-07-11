@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
+import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ReplyVO;
 
@@ -26,7 +27,7 @@ public interface DietService {
 	public int selectRegisterProfile(String memberId) throws Exception;
 	
 	//상담 프로필 목록 가져오기
-	public List<Map<String, Object>> selectChatProflieList() throws Exception;
+	public List<Map<String, Object>> selectChatProflieList(Criteria cri) throws Exception;
 	
 	//상담 프로필 사진 추가
 	public int insertProcessFile(Map<String, Object> filemap) throws Exception;
@@ -69,5 +70,17 @@ public interface DietService {
 
 	//인기검색어 조회
 	public List<Map<String, Object>> selectPopularSearch() throws Exception;
+
+	//1:1 상담 프로필 목록 페이징
+	public int selectChatListCnt(Criteria cri) throws Exception;
+
+	//사용가능한 이용권이 있는 지 확인
+	public int selectMyticketFlag(String memberId) throws Exception;
+	
+	//이용권 개수 차감(1개면 0으로 바꾸고 flag N 으로 바꾸기)
+	public int updateTicketRemain(String memberId) throws Exception;
+	
+	//채팅 테이블에 데이터 추가
+	public int insertChatting(ChattingVO chattingVO) throws Exception;
 	
 }
