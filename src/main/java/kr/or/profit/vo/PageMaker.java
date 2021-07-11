@@ -125,7 +125,12 @@ public class PageMaker {
 	}
 
 	
-	
+	//관리자 온라인클래스 목록 페이징
+	public String makeQueryAdminLessonList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page).build();
+
+		return uriComponents.toUriString();
+	}
 	
 	
 	

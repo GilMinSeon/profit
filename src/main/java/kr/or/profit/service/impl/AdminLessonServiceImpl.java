@@ -1,0 +1,40 @@
+package kr.or.profit.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import kr.or.profit.mapper.AdminLessonMapper;
+import kr.or.profit.mapper.AdminMemberMapper;
+import kr.or.profit.service.AdminLessonService;
+import kr.or.profit.service.AdminMemberService;
+import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.ProcessVO;
+
+@Service("adminLessonService")
+public class AdminLessonServiceImpl implements AdminLessonService {
+
+	@Resource(name = "adminLessonMapper")
+	private AdminLessonMapper adminLessonDAO;
+
+	//관리자 - 온라인클래스 강좌 리스트
+	@Override
+	public List<?> selectAdminLessonList(Criteria cri) throws Exception {
+		return adminLessonDAO.selectAdminLessonList(cri);
+	}
+
+	//페이징 - 온라인클래스 목록 개수
+	@Override
+	public int selectAdminLessonCnt(Criteria cri) throws Exception {
+		return adminLessonDAO.selectAdminLessonCnt(cri);
+	}
+
+	
+	
+	
+
+
+}

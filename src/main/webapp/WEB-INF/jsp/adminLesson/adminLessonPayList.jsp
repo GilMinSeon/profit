@@ -57,7 +57,7 @@ $(document).ready(function(){
 				
 	<section class="classes spad">
 		<div class="container">
-			<h3 style="text-align: center;">온라인클래스  강좌 리스트</h3>
+			<h3 style="text-align: center;">온라인클래스 결제 / 환불 내역</h3>
 			<br>
 			    <div class="classes__filter" style="margin-bottom: 0px;">
 				<br>
@@ -68,8 +68,8 @@ $(document).ready(function(){
                                 <p>상태</p>
                                 <select name="selStatus">
                                     <option <c:if test="${selStatus eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selStatus eq '활성화'}">selected</c:if>>활성화</option>
-                                    <option <c:if test="${selStatus eq '비활성화'}">selected</c:if>>비활성화</option>
+                                    <option <c:if test="${selStatus eq '결제'}">selected</c:if>>결제</option>
+                                    <option <c:if test="${selStatus eq '환불'}">selected</c:if>>환불</option>
                                 </select>
                                 
                             </div>
@@ -104,66 +104,48 @@ $(document).ready(function(){
 						<th scope="col">번호</th>
 						<th scope="col">아이디</th>
 						<th scope="col">이름</th>
-						<th scope="col" >강의명</th>
-						<th scope="col">활성화</th>
+						<th scope="col" colspan="2">강의명</th>
+						<th scope="col">결제일</th>
+						<th scope="col">상태</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="result" items="${adminLessonList}" varStatus="status">
+<%-- 					<c:forEach var="result" items="${chatList}" varStatus="status"> --%>
 					<tr>
-						<td>${status.count}</td>
-						<td>${result.memberId}</td>
-						<td>${result.memberName}</td>
-						<td >
-							<sapn>${result.lessonCategoryName}</sapn>
-							${result.lessonTitle}
-						</td>
+						<td>dd</td>
+						<td>dd</td>
+						<td>dd</td>
+						<td colspan="2">dd</td>
+						<td>dd</td>
 						<td>
-							<c:if test="${result.lessonPrivateFlag eq 'N'}">
-								<div class="toggle-switch">
-							    	<input type="checkbox" id="chkTog1" checked>
-							    		<label for="chkTog1">
-							     			<span class="toggle-track"></span>
-							    		</label>
-							  	</div>
-							</c:if>
-							
-							<c:if test="${result.lessonPrivateFlag eq 'Y'}">
-								<div class="toggle-switch">
-							    	<input type="checkbox" id="chkTog1">
-							    		<label for="chkTog1">
-							     			<span class="toggle-track"></span>
-							    		</label>
-							  	</div>
-							</c:if>
-							
+							dd
 <%-- 						<c:if test="${result.ticketRefundFlag eq 'N'}"><span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;">결제</span></c:if> --%>
 <%-- 						<c:if test="${result.ticketRefundFlag eq 'Y'}"><span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">환불</span></c:if> --%>
 						</td>
 					</tr>
-					</c:forEach>
+<%-- 					</c:forEach> --%>
 				</tbody>
 			</table>
 			<!-- 페이징처리 -->
-            	<div class="col-lg-12">
-					<div class="classes__pagination">
-					<c:if test="${pageMaker.prev}">
-						<a href="adminLessonList.do${pageMaker.makeQueryAdminLessonList(pageMaker.startPage - 1)}">
-							<span class="arrow_carrot-left"></span>
-						</a>
-					</c:if> 
+<!--             	<div class="col-lg-12"> -->
+<!-- 					<div class="classes__pagination"> -->
+<%-- 					<c:if test="${pageMaker.prev}"> --%>
+<%-- 						<a href="adminChatList.do${pageMaker.makeQueryAdminChat(pageMaker.startPage - 1)}"> --%>
+<!-- 							<span class="arrow_carrot-left"></span> -->
+<!-- 						</a> -->
+<%-- 					</c:if>  --%>
 					
-					<c:set var="page" value="${pageMaker.cri.page}"/>
-					<c:set var="idx" value="${idx}"/>
-					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-            			<a href="adminLessonList.do${pageMaker.makeQueryAdminLessonList(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
-					</c:forEach>
+<%-- 					<c:set var="page" value="${pageMaker.cri.page}"/> --%>
+<%-- 					<c:set var="idx" value="${idx}"/> --%>
+<%-- 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> --%>
+<%--             			<a href="adminChatList.do${pageMaker.makeQueryAdminChat(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a> --%>
+<%-- 					</c:forEach> --%>
 					
-					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-						<a href="adminLessonList.do${pageMaker.makeQueryAdminLessonList(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
-					</c:if>
-					</div>
-				</div>
+<%-- 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}"> --%>
+<%-- 						<a href="adminChatList.do${pageMaker.makeQueryAdminChat(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a> --%>
+<%-- 					</c:if> --%>
+<!-- 					</div> -->
+<!-- 				</div> -->
 			
 			</div>
 		</div>
