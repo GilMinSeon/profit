@@ -102,4 +102,35 @@
 		order by in_date desc
 	    
 	</select>
+	
+	
+	<!-- 강의 수정하기 -->
+    <update id="updAdminLesson" parameterType="LessonVO">
+			UPDATE LESSON
+			SET LESSON_PRIVATE_FLAG = #{lessonPrivateFlag},
+				UP_USER_ID = #{memberId},
+                UP_DATE = SYSDATE
+            WHERE LESSON_SEQ = #{lessonSeq}
+	</update>
+	
+<!--     <select id="selectList" resultType="egovMap" parameterType="String"> -->
+<!--     	select *  -->
+<!--     	from buy_lesson  -->
+<!--     	where lesson_seq= #{lessonSeq}  -->
+<!--     	and lesson_refund_flag = 'N' -->
+<!--     </select> -->
+    
+    
+<!--     관리자 비활성화 환불 -->
+    <update id="updAdminRefund" parameterType="BuyLessonVO">
+            update buy_lesson
+			set lesson_refund_flag = 'Y',
+			    up_user_id= #{memberId},
+			    up_date= sysdate
+			where lesson_seq =  #{lessonSeq}
+			and lesson_refund_flag = 'N'
+	</update>
+    
+    
+	
 </mapper>

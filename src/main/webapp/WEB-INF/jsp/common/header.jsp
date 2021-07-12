@@ -152,7 +152,7 @@
                                 <li><a href="#">강좌관리</a>
                                     <ul class="dropdown">
                                         <li><a href="adminLessonList.do">강좌리스트</a></li>
-                                        <li><a href="">결제/환불내역</a></li>
+                                        <li><a href="adminLessonPayList.do">결제/환불내역</a></li>
                                         <li><a href="#">강좌통계</a></li>
                                     </ul>
                                 </li>

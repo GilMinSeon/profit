@@ -159,7 +159,8 @@ public class LessonController {
       
       lessonVO.setMemberId(memberId);
       Map<String, Object> lessonDetailList = lessonService.selectLessonDetail(lessonVO);
-      String lessonSeq = (String) lessonDetailList.get("lessonSeq");
+      String lessonSeq = request.getParameter("lessonSeq");
+//      String lessonSeq = (String) lessonDetailList.get("lessonSeq");
       lessonDetailList.put("lessonSeq", lessonSeq);
       System.out.println("레슨시퀀은 뭐냐ㅕ "+lessonSeq);
       System.out.println("제발찍혀라" + model);

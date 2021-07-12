@@ -25,6 +25,66 @@ $(document).ready(function(){
     });
 });
 
+function fn_switch(ele){
+	
+
+	
+	var msg = "ok";
+	
+	if(msg=="ok"){
+		var save = confirm("해당강의의 상태를 바꾸시겠습니까?");
+		if(save == true){
+			
+			vtr = $(ele).parents('tr');
+			lessonSeq = $(vtr).find('.lessonSeq').val();
+			lessonPrivateFlag = $(vtr).find('.lessonPrivateFlag').val();
+			console.log(lessonSeq)
+			console.log(lessonPrivateFlag)
+		
+			
+
+			
+			
+			var param = "";
+				param += "dummy=" + Math.random();
+				param += "&lessonSeq=" + lessonSeq;
+				param += "&lessonPrivateFlag=" + lessonPrivateFlag;
+				
+			console.log("param " + param);
+				
+			$.ajax({
+				type : 'get',
+				url : 'updAdminLessonAjax.do',
+				data : param,
+				async:false,
+				dataType:"text",
+				success : function(data){
+					if(data=="ok"){
+						alert("수정이 정상적으로 완료되었습니다.");
+						location.reload();
+					}else if(data=="no"){
+						alert("수정에 실패하였습니다. 다시 시도해주세요");
+						
+					}
+			    },
+				error : function(error){
+					alert("수정에 실패하였습니다. 다시 시도해 주세요.");
+					console.log(error);
+					console.log(error.status);
+				}
+				
+				
+			}); //ajax
+			
+		}//if save 
+		else{
+			alert("수정이 취소되었습니다.");
+		}
+	}  //if msg
+	
+ }//function
+
+
 </script>
 </head>
 <style>
@@ -63,7 +123,7 @@ $(document).ready(function(){
 				<br>
                 <div class="row">
                     <div class="col-lg-12">
-                        <form action="adminChatList.do">
+                        <form action="adminLessonList.do">
                             <div class="class__filter__select" style="width: 150px;">
                                 <p>상태</p>
                                 <select name="selStatus">
@@ -110,19 +170,29 @@ $(document).ready(function(){
 				</thead>
 				<tbody>
 					<c:forEach var="result" items="${adminLessonList}" varStatus="status">
+					
 					<tr>
-						<td>${status.count}</td>
+					 
+						<td>${status.count}
+						
+						 <input type="hidden" class="lessonSeq" name="lessonSeq${status.index}" value="${result.lessonSeq}">
+					    <input type="hidden" name="chkTog${status.index}" value="chkTog${status.index}">
+					     <input type="hidden" class="lessonPrivateFlag" name="lessonPrivateFlag${status.index}" value="${result.lessonPrivateFlag}">
+						
+						</td>
 						<td>${result.memberId}</td>
 						<td>${result.memberName}</td>
 						<td >
-							<sapn>${result.lessonCategoryName}</sapn>
-							${result.lessonTitle}
+							<a href="lessonDetail.do?lessonSeq=${result.lessonSeq}" style="color:#0064CD;">
+								<sapn>[${result.lessonCategoryName}]</sapn>
+								${result.lessonTitle}
+							</a>
 						</td>
 						<td>
 							<c:if test="${result.lessonPrivateFlag eq 'N'}">
 								<div class="toggle-switch">
-							    	<input type="checkbox" id="chkTog1" checked>
-							    		<label for="chkTog1">
+							    	<input type="checkbox" name="chk" id="chkTog${status.index}" value="chkTog${status.index}" checked onclick="fn_switch(this)">
+							    		<label id="chkTog" for="chkTog${status.index}">
 							     			<span class="toggle-track"></span>
 							    		</label>
 							  	</div>
@@ -130,8 +200,8 @@ $(document).ready(function(){
 							
 							<c:if test="${result.lessonPrivateFlag eq 'Y'}">
 								<div class="toggle-switch">
-							    	<input type="checkbox" id="chkTog1">
-							    		<label for="chkTog1">
+							    	<input type="checkbox" name="chk" id="chkTog${status.index}" value="chkTog${status.index}" onclick="fn_switch(this)">
+							    		<label id="chkTog" for="chkTog${status.index}">
 							     			<span class="toggle-track"></span>
 							    		</label>
 							  	</div>
