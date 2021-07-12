@@ -41,5 +41,7 @@ public interface AdminMemberMapper {
 	
 	//3. process테이블에 정보 업데이트
 	public int updateProcessInfo(ProcessVO vo);
-
+	
+	//승인 보완 취소 processStatus update
+	public int updateProcessStatus(ProcessVO vo);
 }

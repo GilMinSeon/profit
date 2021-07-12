@@ -23,6 +23,62 @@
 }
 </style>
 <script type="text/javascript">
+//승인, 보완, 취소 버튼
+function fn_updStatus(processStatus){
+	
+	var resultReason = "";
+	var processSeq = $("#processSeq").val();
+	var memberName = $("#memberName").val();
+	var memberMobile = $("#memberMobile").val();
+	
+	if(processStatus == 'E'){
+		if(confirm("신청서를 승인하시겠습니까?") == true){
+				
+		}else{
+			return;
+		}
+	}else if(processStatus == 'C'){
+		if(confirm("신청서를 보완처리하시겠습니까?") == true){
+			resultReason = prompt('보완사유를 입력해주세요');
+		}else{
+			return;
+		}
+	}else{
+		if(confirm("신청서를 취소처리하시겠습니까?") == true){
+			resultReason = prompt('취소사유를 입력해주세요');
+		}else{
+			return;
+		}
+	}
+	
+	//ajax
+	$.ajax({
+		type : "POST",
+		data : "resultReason=" + resultReason +"&processSeq=" + processSeq + "&processStatus=" + processStatus + "&memberName=" + memberName + "&memberMobile=" + memberMobile, 
+		url : "updateStatusAjax.do",
+		dataType : "text", 
+	
+		success : function(result) {
+			if (result == "ok") {
+				$("#msgEmail").html("사용가능한 이메일입니다");
+				$("input[name=checked_email]").val('y');
+			} else {
+				$("#msgEmail").html("사용중인 이메일입니다");
+				$("input[name=checked_email]").val('n');
+			}
+		},
+		error : function() {
+			alert("오류발생");
+		}
+
+	})
+	
+	
+
+}
+
+
+//첨부파일
 var cnt = 1;
 function fn_addFile(){
     $("#d_file").append("<br>" + "<input type='file' id='file"+cnt+"' class='file_choice' name='file" + cnt + "'/>");
@@ -61,12 +117,12 @@ function fn_submit(){
    }
    
    if(msg=="ok"){
-      var apply = confirm("신청서를 제출하시겠습니까?");
+      var apply = confirm("정보를 수정하시겠습니까?");
       if(apply == true){
          send_file();
       }
       else{
-         alert("신청이 취소되었습니다.")
+         alert("수정이 취소되었습니다.")
       }
    }else{
       alert("첨부하지 않은 파일은 삭제해주세요");
@@ -92,16 +148,16 @@ function send_file(){
 	   	dataType:"text",
 	   	success : function(data){
 		   if(data=="ok"){
-		      alert("신청이 정상적으로 완료되었습니다.");
-		      location.href="trainerApplyList.do";
+		      alert("정보가 수정되었습니다.");
+		      location.reload();
 		   }else if(data=="no"){
-		      alert("신청이 실패하였습니다. 다시 시도해주세요");
+		      alert("실패하였습니다. 다시 시도해주세요");
 		   }else{
-		      alert("신청이 실패하였습니다. 다시 시도해주세요");
+		      alert("실패하였습니다. 다시 시도해주세요");
 		   }
 		},
 	   	error : function(error){
-	      alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+	      alert("실패하였습니다. 다시 시도해 주세요.");
 	      console.log(error);
 	      console.log(error.status);
 	   	}
@@ -194,11 +250,13 @@ function fn_update() {
 								</p>
 							</div>
 							<br>
+							
 							<!-- 보완일경우 -->
 							<c:if test="${detailVO.processStatus eq 'C'}">
 							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
 								<p style="font-weight: bold; font-size: 1.1em; color: #5768AD; margin-bottom: 5px; margin-top: 5px;">
-								보완마감일자 : 2021-07-12</p>
+								보완마감일자 : 
+								<fmt:formatDate pattern='yyyy-MM-dd' value='${detailVO.processFinishDate }'/></p>
 							</div>
 							<br>
 							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
@@ -214,7 +272,7 @@ function fn_update() {
 							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
 								<p style="font-weight: bold; font-size: 1.1em; color: #5768AD; margin-bottom: 5px; margin-top: 5px;">
 								취소사유 : <br>
-								어쩌구 저쩌구 어쩌구 저ㅓㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</p><br>
+								${detailVO.resultReason }</p><br>
 							</div>
 							</c:if>
 							
@@ -235,12 +293,11 @@ function fn_update() {
 					<div>
 						<div class="box" style="height: 370px; padding-left: 30px; padding-right: 15px;">
 							<textarea class="ta" style="border:none;background-color: #3f51b50d; color: black; margin-bottom: 20px; padding:10px 5px;
-							resize: none; width:290px; height: 350px;">${detailVO.adminMemo }
-                            </textarea>
+							resize: none; width:290px; height: 350px;">${detailVO.adminMemo }</textarea>
                             <input type="button" value="메모저장" class="site-btn" style="width : 290px;"/>
 						</div>
 						<br><br><br>
-						<hr>
+						
 					</div>
 				</div>
 				<!-- 1번 div 끝 -->
@@ -382,7 +439,7 @@ function fn_update() {
 							<input type="hidden" name="memberId" value="${detailVO.memberId }">
 							
 							<!-- 프로세스 시퀀스 hidden -->
-							<input type="hidden" name="processSeq" value="${detailVO.processSeq }">
+							<input type="hidden" id="processSeq" name="processSeq" value="${detailVO.processSeq }">
 							
 							<!-- 파일추가하는 부분[파일업로드] -->
 							<div class="col-lg-6 text-center mypage_myinfo" id="div_upload"
@@ -415,11 +472,11 @@ function fn_update() {
 							
 							<!-- 승인/보완/반려 -->
 							<div class="col-lg-12" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;display: blcok" id="last_div">
-								<input type="button" value="승인" class="site-btn"
+								<input type="button" value="승인" class="site-btn" onclick="fn_updStatus('E')"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
-								<input type="button" value="보완" class="site-btn"
+								<input type="button" value="보완" class="site-btn" onclick="fn_updStatus('C')"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
-								<input type="button" value="취소" class="site-btn"
+								<input type="button" value="취소" class="site-btn" onclick="fn_updStatus('D')"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 0px;">
 							</div>
 								

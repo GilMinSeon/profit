@@ -15,6 +15,20 @@
 		where p.process_seq = #{memberId}
     </select>
     
+    <!-- 최종상태변경-승인,보완,취소 -->
+	<update id="updateProcessStatus" parameterType="ProcessVO">
+	    update process
+	    set result_reason = #{resultReason, jdbcType=VARCHAR},
+	    	process_status = #{processStatus},
+	    	up_date = sysdate
+	    <if test='processStatus == "C" '>
+			, process_finish_date = sysdate + 14
+		</if>
+	    
+	    where process_seq = #{processSeq}
+	</update>    
+    
+    
 	<!-- 트레이너 프로세스 디테일-첨부파일 가져오기-->
     <select id="selectProcessFile" parameterType="String" resultType="egovMap">
 	    select file_seq, file_detail_seq, file_real_name, file_path 

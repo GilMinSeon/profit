@@ -68,5 +68,10 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	public String selectFileDetailSeq(String fileSeq) throws Exception {
 		return adminMemberMapper.selectFileDetailSeq(fileSeq);
 	}
+
+	@Override
+	public int updateProcessStatus(ProcessVO vo) throws Exception {
+		return adminMemberMapper.updateProcessStatus(vo);
+	}
 	
 }
