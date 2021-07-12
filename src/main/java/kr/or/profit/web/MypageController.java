@@ -315,10 +315,6 @@ public class MypageController {
 		String msg = "";
 		System.out.println("originalFileName : "+originalFileName);
 		
-//		if(originalFileName == null) {
-//			System.out.println("제발제발제발");
-//		}
-		
 		if(originalFileName == "") {
 			System.out.println("제발제발22222");
 			String memberName = multipartRequest.getParameter("memberName");
