@@ -9,6 +9,7 @@ import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.ChatProfileVO;
+import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ReplyVO;
@@ -84,4 +85,7 @@ public interface DietMapper {
 	
 	//이용권 개수 차감
 	int updateTicketRemain(String memberId) throws Exception;
+	
+	//채팅 테이블에 데이터 추가
+	int insertChatting(ChattingVO chattingVO) throws Exception;
 }

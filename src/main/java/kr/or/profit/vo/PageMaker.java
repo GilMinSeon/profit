@@ -185,5 +185,14 @@ public class PageMaker {
 
 		return uriComponents.toUriString();
 	}
+	
+	// 트레이너 페이지 상담 목록
+	public String makeQueryChatList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+				.queryParam("selStatus", cri.getSelStatus()).queryParam("selDate", cri.getSelDate())
+				.build();
+
+		return uriComponents.toUriString();
+	}
 
 }
