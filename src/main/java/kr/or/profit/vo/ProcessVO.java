@@ -10,11 +10,24 @@ public class ProcessVO {
 	private String trainerGym;
 	private String trainerCareer;
 	private String processStatus;
-	private String processFinishDate;
+	private Date processFinishDate;
 	private String adminMemo;
+	private String resultReason;
 	private String inUserId;
 	private Date inDate;
 	private String upUserId;
+	public Date getProcessFinishDate() {
+		return processFinishDate;
+	}
+	public void setProcessFinishDate(Date processFinishDate) {
+		this.processFinishDate = processFinishDate;
+	}
+	public String getResultReason() {
+		return resultReason;
+	}
+	public void setResultReason(String resultReason) {
+		this.resultReason = resultReason;
+	}
 	private Date upDate;
 	
 	//민선 추가-내정보 탭
@@ -28,7 +41,6 @@ public class ProcessVO {
 	private String statusB;
 	private String statusC;
 	private String statusDate;
-	
 
 	public String getMemberEmail() {
 		return memberEmail;
@@ -119,12 +131,6 @@ public class ProcessVO {
 	}
 	public void setProcessStatus(String processStatus) {
 		this.processStatus = processStatus;
-	}
-	public String getProcessFinishDate() {
-		return processFinishDate;
-	}
-	public void setProcessFinishDate(String processFinishDate) {
-		this.processFinishDate = processFinishDate;
 	}
 	public String getAdminMemo() {
 		return adminMemo;

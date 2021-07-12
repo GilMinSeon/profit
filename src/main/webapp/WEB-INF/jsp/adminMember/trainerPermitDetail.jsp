@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,25 +23,66 @@
 }
 </style>
 <script type="text/javascript">
-var arr = [];
-
-function fn_del(fileDetailSeq){
-	if (confirm("파일을 삭제하시겠습니까?") == true){
-		arr.push(fileDetailSeq);
-		console.log(arr)
-		$("div").remove("#"+fileDetailSeq+"");
-		$("#del_file").append("<br>" + "<input type='text' name='delFile' value=" + fileDetailSeq + ">");
-		
-	}else{  
-	    return;
+//승인, 보완, 취소 버튼
+function fn_updStatus(processStatus){
+	
+	var resultReason = "";
+	var processSeq = $("#processSeq").val();
+	var memberName = $("#memberName").val();
+	var memberMobile = $("#memberMobile").val();
+	
+	if(processStatus == 'E'){
+		if(confirm("신청서를 승인하시겠습니까?") == true){
+				
+		}else{
+			return;
+		}
+	}else if(processStatus == 'C'){
+		if(confirm("신청서를 보완처리하시겠습니까?") == true){
+			resultReason = prompt('보완사유를 입력해주세요');
+		}else{
+			return;
+		}
+	}else{
+		if(confirm("신청서를 취소처리하시겠습니까?") == true){
+			resultReason = prompt('취소사유를 입력해주세요');
+		}else{
+			return;
+		}
 	}
+	
+	//ajax
+	$.ajax({
+		type : "POST",
+		data : "resultReason=" + resultReason +"&processSeq=" + processSeq + "&processStatus=" + processStatus + "&memberName=" + memberName + "&memberMobile=" + memberMobile, 
+		url : "updateStatusAjax.do",
+		dataType : "text", 
+	
+		success : function(result) {
+			if (result == "ok") {
+				$("#msgEmail").html("사용가능한 이메일입니다");
+				$("input[name=checked_email]").val('y');
+			} else {
+				$("#msgEmail").html("사용중인 이메일입니다");
+				$("input[name=checked_email]").val('n');
+			}
+		},
+		error : function() {
+			alert("오류발생");
+		}
+
+	})
+	
+	
 
 }
 
 
+//첨부파일
 var cnt = 1;
 function fn_addFile(){
     $("#d_file").append("<br>" + "<input type='file' id='file"+cnt+"' class='file_choice' name='file" + cnt + "'/>");
+    $("#d_file").append("<input type='hidden' id='text"+cnt+"' class='file_choice' name='text'/>");
     
     cnt++;
 }
@@ -51,8 +93,19 @@ function fn_delFile(){
    
 }
 
+//관리자가 파일 직접 삭제=>input text
+function fn_del(fileDetailSeq){
+	if (confirm("파일을 삭제하시겠습니까?") == true){
+		$("div").remove("#"+fileDetailSeq+"");
+		$("#del_file").append("<br>" + "<input type='text' name='delFile' value=" + fileDetailSeq + ">");
+	}else{  
+	    return;
+	}
+
+}
 
 
+//주황-수정완료 버튼
 function fn_submit(){
    var msg = "ok";
    
@@ -64,13 +117,12 @@ function fn_submit(){
    }
    
    if(msg=="ok"){
-      var apply = confirm("신청서를 제출하시겠습니까?");
+      var apply = confirm("정보를 수정하시겠습니까?");
       if(apply == true){
          send_file();
-         
       }
       else{
-         alert("신청이 취소되었습니다.")
+         alert("수정이 취소되었습니다.")
       }
    }else{
       alert("첨부하지 않은 파일은 삭제해주세요");
@@ -78,28 +130,8 @@ function fn_submit(){
    }
 }
 
-//수정하기 눌렀을때 나타나는 효과들
-function fn_update() {
-	$('#file').css({'display' : 'block'});
-	$('#submit').css({'display' : 'block'});
-	$('#update').css({'display' : 'none'});
-	$('#last_div').css({'display' : 'none'});
-	
-	$('#div_upload').css({'display' : 'block'});
-	$('.div_img').css({'display' : 'inline'});
-	
-	$('.orange').css({'background-color' : '#fee9b8'});
-	
-	$('#trainerGym').prop('readonly', false); 
-	$('#trainerAward').prop('readonly', false); 
-	$('#trainerCareer').prop('readonly', false); 
 
-}
-
-
-
-
-
+//실제 컨트롤러 ajax
 function send_file(){
 	var formData = new FormData($('#frm')[0]);
 	
@@ -116,16 +148,16 @@ function send_file(){
 	   	dataType:"text",
 	   	success : function(data){
 		   if(data=="ok"){
-		      alert("신청이 정상적으로 완료되었습니다.");
-		      location.href="trainerApplyList.do";
+		      alert("정보가 수정되었습니다.");
+		      location.reload();
 		   }else if(data=="no"){
-		      alert("신청이 실패하였습니다. 다시 시도해주세요");
+		      alert("실패하였습니다. 다시 시도해주세요");
 		   }else{
-		      alert("신청이 실패하였습니다. 다시 시도해주세요");
+		      alert("실패하였습니다. 다시 시도해주세요");
 		   }
 		},
 	   	error : function(error){
-	      alert("신청이 실패하였습니다. 다시 시도해 주세요.");
+	      alert("실패하였습니다. 다시 시도해 주세요.");
 	      console.log(error);
 	      console.log(error.status);
 	   	}
@@ -151,7 +183,23 @@ function send_file(){
 	
  }
 
+//수정하기 클릭
+function fn_update() {
+	$('#file').css({'display' : 'block'});
+	$('#submit').css({'display' : 'block'});
+	$('#update').css({'display' : 'none'});
+	$('#last_div').css({'display' : 'none'});
+	
+	$('#div_upload').css({'display' : 'block'});
+	$('.div_img').css({'display' : 'inline'});
+	
+	$('.orange').css({'background-color' : '#fee9b8'});
+	
+	$('#trainerGym').prop('readonly', false); 
+	$('#trainerAward').prop('readonly', false); 
+	$('#trainerCareer').prop('readonly', false); 
 
+}
 
 
 </script>
@@ -173,9 +221,69 @@ function send_file(){
 			<br>
 			<div class="row" style="justify-content: center">
 				
-				
 				<!-- 1번 div -->
 				<div style="display: left; margin-right: 20px; width: 30%; background-color: white; padding: 0px; border: 1px solid #ebecef; border-radius: 10px; height: auto;">
+					
+					<div style="text-align: center;">
+						<p style="font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 30px;">
+							<span style="background-color: #3f51b50d;">&nbsp;접수상세정보&nbsp;</span>
+						</p>
+					</div>
+					<div>
+						<div class="box" style="height: 400px; padding-left: 30px; padding-right: 15px;">
+							
+							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
+								<p style="font-weight: bold; font-size: 1.1em; color: #5768AD; margin-bottom: 5px; margin-top: 5px;">
+								신청일 : <fmt:formatDate pattern='yyyy-MM-dd' value='${detailVO.inDate }'/>
+								</p>
+							</div>
+							
+							<br>
+							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
+								<p style="font-weight: bold; font-size: 1.1em; color: #5768AD; margin-bottom: 5px; margin-top: 5px;">
+								진행상태 : 
+								<c:if test="${detailVO.processStatus eq 'B'}">검토</c:if>
+								<c:if test="${detailVO.processStatus eq 'C'}">보완</c:if>
+								<c:if test="${detailVO.processStatus eq 'D'}">취소</c:if>
+								<c:if test="${detailVO.processStatus eq 'E'}">승인</c:if>
+								(<fmt:formatDate pattern='yyyy-MM-dd' value='${detailVO.upDate }'/>)
+								</p>
+							</div>
+							<br>
+							
+							<!-- 보완일경우 -->
+							<c:if test="${detailVO.processStatus eq 'C'}">
+							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
+								<p style="font-weight: bold; font-size: 1.1em; color: #5768AD; margin-bottom: 5px; margin-top: 5px;">
+								보완마감일자 : 
+								<fmt:formatDate pattern='yyyy-MM-dd' value='${detailVO.processFinishDate }'/></p>
+							</div>
+							<br>
+							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
+								<p style="font-weight: bold; font-size: 1.1em; color: #5768AD; margin-bottom: 5px; margin-top: 5px;">
+								보완사유 : <br>
+								${detailVO.resultReason }</p><br>
+							</div>
+							</c:if>
+							
+							<!-- 취소일경우 -->
+							<c:if test="${detailVO.processStatus eq 'D'}">
+							<br>
+							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
+								<p style="font-weight: bold; font-size: 1.1em; color: #5768AD; margin-bottom: 5px; margin-top: 5px;">
+								취소사유 : <br>
+								${detailVO.resultReason }</p><br>
+							</div>
+							</c:if>
+							
+							<br>
+							
+                        </div>
+						<br>
+						<hr>
+					</div>
+					
+					
 					
 					<div style="text-align: center;">
 						<p style="font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 30px;">
@@ -185,29 +293,10 @@ function send_file(){
 					<div>
 						<div class="box" style="height: 370px; padding-left: 30px; padding-right: 15px;">
 							<textarea class="ta" style="border:none;background-color: #3f51b50d; color: black; margin-bottom: 20px; padding:10px 5px;
-							resize: none; width:290px; height: 350px;">${detailVO.adminMemo }
-                            </textarea>
+							resize: none; width:290px; height: 350px;">${detailVO.adminMemo }</textarea>
                             <input type="button" value="메모저장" class="site-btn" style="width : 290px;"/>
 						</div>
 						<br><br><br>
-						<hr>
-					</div>
-					
-
-					<div style="text-align: center;">
-						<p style="font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 30px;">
-							<span style="background-color: #3f51b50d;">&nbsp;문자전송&nbsp;</span>
-						</p>
-					</div>
-					<div>
-						<div class="box" style="height: 370px; padding-left: 30px; padding-right: 15px;">
-							<textarea class="ta" style="border:none;background-color: #3f51b50d; color: black; margin-bottom: 20px; resize: none; width:290px; height: 350px;">
-안녕하세요. 프로핏입니다.
-
-                            </textarea>
-                            <input type="button" value="문자전송" class="site-btn" style="width : 290px;"/>
-						</div>
-						<br><br>
 						
 					</div>
 				</div>
@@ -338,14 +427,19 @@ function send_file(){
 							</div>
 							
 							
-							<!-- 파일삭제리스트 hidden -->
+							<!-- 파일상세고유번호 hidden -->
 							<div id="del_file" style="display: none;">
 							
 							</div>
 							
-							<!-- 파일시퀀스 큰거 hidden -->
+							<!-- 파일고유번호 hidden -->
 							<input type="hidden" name="fileSeq" value="${fileVO[0].fileSeq}">
 							
+							<!-- 아이디 hidden -->
+							<input type="hidden" name="memberId" value="${detailVO.memberId }">
+							
+							<!-- 프로세스 시퀀스 hidden -->
+							<input type="hidden" id="processSeq" name="processSeq" value="${detailVO.processSeq }">
 							
 							<!-- 파일추가하는 부분[파일업로드] -->
 							<div class="col-lg-6 text-center mypage_myinfo" id="div_upload"
@@ -378,11 +472,11 @@ function send_file(){
 							
 							<!-- 승인/보완/반려 -->
 							<div class="col-lg-12" style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;display: blcok" id="last_div">
-								<input type="button" value="승인" class="site-btn"
+								<input type="button" value="승인" class="site-btn" onclick="fn_updStatus('E')"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
-								<input type="button" value="보완" class="site-btn"
+								<input type="button" value="보완" class="site-btn" onclick="fn_updStatus('C')"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
-								<input type="button" value="반려" class="site-btn"
+								<input type="button" value="취소" class="site-btn" onclick="fn_updStatus('D')"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 0px;">
 							</div>
 								

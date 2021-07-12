@@ -516,4 +516,37 @@
 	      
 	</update>
 	
+	<!-- 채팅 테이블에 정보 추가 -->
+	<insert id="insertChatting">
+		<selectKey order="BEFORE" keyProperty="chattingSeq"
+			resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(CHATTING_SEQ)),0)+1
+			FROM CHATTING
+		</selectKey>
+		<![CDATA[
+		INSERT INTO 
+		CHATTING
+		(
+		CHATTING_SEQ,
+		CHAT_PROFILE_SEQ, 
+		CHATTING_MEMBER_ID,
+		IN_USER_ID, 
+		IN_DATE, 
+		UP_USER_ID, 
+		UP_DATE,
+		CHATTING_ACCOUNT_FLAG
+		) 
+		VALUES 
+		(
+		#{chattingSeq},
+		#{chatProfileSeq},
+		#{chattingMemberId},
+		#{inUserId},
+		sysdate,
+		#{upUserId}, 
+		sysdate, 
+		'N')
+		]]>
+	</insert>
+	
 </mapper>

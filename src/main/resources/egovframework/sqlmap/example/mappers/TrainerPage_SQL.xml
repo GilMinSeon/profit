@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.or.profit.mapper.TrainerPageMapper">
+
+	<!-- 상담 목록 조회 -->
+	<select id="selectChatAccountList" parameterType="Criteria" resultType="egovMap">
+	    SELECT RN, CHATTING_SEQ, CHAT_PROFILE_SEQ ,CHAT_PROFILE_ID,
+		CHATTING_MEMBER_ID,CHAT_DATE, CHAT_TIME,CHATTING_ACCOUNT_FLAG
+		FROM
+		(
+		SELECT ROWNUM AS RN, CHATTING_SEQ, CHAT_PROFILE_SEQ ,CHAT_PROFILE_ID,
+		CHATTING_MEMBER_ID,CHAT_DATE, CHAT_TIME,CHATTING_ACCOUNT_FLAG
+		FROM
+		(
+		SELECT A.CHATTING_SEQ, A.CHAT_PROFILE_SEQ, B.CHAT_PROFILE_ID,
+		A.CHATTING_MEMBER_ID, TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') AS CHAT_DATE, 
+		TO_CHAR(A.IN_DATE, 'HH:MM:SS') AS CHAT_TIME, A.CHATTING_ACCOUNT_FLAG
+		FROM CHATTING A, CHAT_PROFILE B
+		WHERE
+		CHAT_PROFILE_ID = #{memberId} AND
+		1=1
+		<if test="selDate != null and selDate !=''">
+		    and TO_CHAR(A.IN_DATE, 'YYYYMM') = #{selDate}
+		</if>
+		AND
+		A.CHAT_PROFILE_SEQ = B.CHAT_PROFILE_SEQ(+)
+		)
+		)
+		WHERE RN BETWEEN #{rowStart} AND #{rowEnd}
+		ORDER BY CHAT_TIME DESC
+	</select>	
+	
+	<select id="selectChatCnt" parameterType="Criteria" resultType="int">
+		SELECT COUNT(*)
+		FROM CHATTING A, CHAT_PROFILE B
+		WHERE
+		CHAT_PROFILE_ID = #{memberId} AND
+		1=1
+		<if test="selDate != null and selDate !=''">
+		    and TO_CHAR(A.IN_DATE, 'YYYYMM') = #{selDate}
+		</if>
+		AND
+		A.CHAT_PROFILE_SEQ = B.CHAT_PROFILE_SEQ(+)
+	
+	</select>
+	
+	<select id="selectChartInfo" resultType="egovMap">
+	    select
+		(
+		select count(*) 
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='M'
+		and to_char(a.in_date,'yyyymm') = to_char(sysdate,'yyyymm')
+		) as nowCountM,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='F'
+		and to_char(a.in_date,'yyyymm') = to_char(sysdate,'yyyymm')
+		)as nowCountF,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -1),'yyyymm')
+		) as prevCount1M,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -1),'yyyymm')
+		) as prevCount1F,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -2),'yyyymm')
+		) as prevCount2M,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -2),'yyyymm')
+		) as prevCount2F,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -3),'yyyymm')
+		) as prevCount3M,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -3),'yyyymm')
+		) as prevCount3F,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -4),'yyyymm')
+		) as prevCount4M,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -4),'yyyymm')
+		) as prevCount4F,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -5),'yyyymm')
+		) as prevCount5M,
+		(
+		select count(*)
+		from chatting a, member b, chat_profile c
+		where a.chatting_member_id = b.member_id(+)
+		and a.chat_profile_seq = c.chat_profile_seq
+		and c.chat_profile_id = #{memberId}
+		and b.member_gender='F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate, -5),'yyyymm')
+		) as prevCount5F
+		from dual
+	</select>
+	
+</mapper>

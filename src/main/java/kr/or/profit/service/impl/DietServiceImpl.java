@@ -176,21 +176,11 @@ public class DietServiceImpl implements DietService {
 		return dietDAO.updateTicketRemain(memberId);
 	}
 
-
-	@Override
-	public int insertChatting(ChattingVO chattingVO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	
 	//채팅 테이블에 데이터 추가
-//	@Override
-//	public int insertChatting(ChattingVO chattingVO) throws Exception {
-//		return dietDAO.insertChatting(chattingVO);
-//	}
-	
-	
+	@Override
+	public int insertChatting(ChattingVO chattingVO) throws Exception {
+		return dietDAO.insertChatting(chattingVO);
+	}
 
-	
 }

@@ -421,6 +421,11 @@ public class DietController {
 		chattingVO.setInUserId(memberId);
 		chattingVO.setUpUserId(memberId);
 		int insertResult = dietService.insertChatting(chattingVO);
+		if(insertResult > 0) {
+			System.out.println("정상적으로 추가됨");
+		}else {
+			System.out.println("비정상적인 결과");
+		}
 		return "diet/chatting";
 	}
 	
