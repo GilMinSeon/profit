@@ -3,6 +3,7 @@ package kr.or.profit.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ProcessVO;
 
@@ -24,5 +25,17 @@ public interface AdminMemberService {
 	
 	//첨부파일 가져오기
 	public List<?> selectProcessFile(String fileSeq) throws Exception;
+	
+	//1. 관리자가 선택한 파일 삭제
+	public int deleteFileDetailSeq(AttachFileVO vo) throws Exception;
+	
+	//
+	public String selectFileDetailSeq(String fileSeq) throws Exception;
+	
+	//2. 관리자 파일테이블에 정보 insert
+	public int insertFilebyAdmin(Map map) throws Exception;
+	
+	//3. process테이블에 정보 업데이트
+	public int updateProcessInfo(ProcessVO vo) throws Exception;
 	
 }

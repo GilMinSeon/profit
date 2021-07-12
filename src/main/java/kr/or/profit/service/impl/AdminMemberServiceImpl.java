@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.profit.mapper.AdminMemberMapper;
 import kr.or.profit.service.AdminMemberService;
+import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.ProcessVO;
 
@@ -47,7 +48,25 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	public List<?> selectProcessFile(String fileSeq) throws Exception {
 		return adminMemberMapper.selectProcessFile(fileSeq);
 	}
+
+	@Override
+	public int deleteFileDetailSeq(AttachFileVO vo) throws Exception {
+		return adminMemberMapper.deleteFileDetailSeq(vo);
+	}
+
+	@Override
+	public int insertFilebyAdmin(Map map) throws Exception {
+		return adminMemberMapper.insertFilebyAdmin(map);
+	}
+
+	@Override
+	public int updateProcessInfo(ProcessVO vo) throws Exception {
+		return adminMemberMapper.updateProcessInfo(vo);
+	}
+
+	@Override
+	public String selectFileDetailSeq(String fileSeq) throws Exception {
+		return adminMemberMapper.selectFileDetailSeq(fileSeq);
+	}
 	
-
-
 }

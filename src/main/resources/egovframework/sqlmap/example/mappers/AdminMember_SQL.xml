@@ -6,7 +6,7 @@
     <!-- 트레이너 프로세스 디테일 -->
     <select id="selectProcessDetailBySeq" parameterType="String" resultType="ProcessVO">
         select  p.process_seq, p.member_id, p.file_seq, p.trainer_award, p.trainer_career, 
-		        p.trainer_gym, p.process_status, p.process_finish_date, p.admin_memo,
+		        p.trainer_gym, p.process_status, p.process_finish_date, p.admin_memo, p.result_reason,
 		        p.in_date, p.up_date,
 		        m.member_name, m.member_mobile, m.member_email, m.member_gender
 		from process p
@@ -22,56 +22,64 @@
 		where file_seq = #{fileSeq}
 	</select>
     
+    <!--1. 관리자가 선택한 파일 삭제 --> 
+    <delete id="deleteFileDetailSeq" parameterType="FileVO">
+       delete attach_file
+       where file_seq = #{fileSeq} and file_detail_seq = #{fileDetailSeq}
+    </delete>
+	
+    <!-- 파일상세고유번호 조회 -->
+	<select id="selectFileDetailSeq" parameterType="String" resultType="String">
+	    select NVL(max(to_number(file_detail_seq)),0)
+	    from attach_file
+	    where file_seq = #{fileSeq}
+	    
+	</select>    
     
-    
-    
-    <!-- 관리자-트레이너 정보 수정 -->
-    <!-- 1.attach_file 테이블에 row 추가 -->
-    <insert id="insertProcessFile" parameterType="java.util.Map">
+    <!--2. 관리자 파일테이블에 정보 insert --> 
+	<insert id="insertFilebyAdmin" parameterType="java.util.Map">
 		<foreach collection="list" item="item" index="index"
 			open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
-
 			into
 			attach_file
 			(
-			file_seq,
-			file_detail_seq,
-			file_real_name,
-			file_save_name,
-			file_path,
-			in_user_id,
-			in_date,
-			up_user_id,
-			up_date
+				file_seq,
+				file_detail_seq,
+				file_real_name,
+				file_save_name,
+				file_path,
+				in_user_id,
+				in_date,
+				up_user_id,
+				up_date
 			)
 			values
 
 			(
-			#{item.fileSeq},
-			#{item.fileDetailSeq},
-			#{item.fileRealName},
-			#{item.fileSaveName},
-			#{item.filePath},
-			#{item.inUserId},
-			sysdate,
-			#{item.upUserId, jdbcType=VARCHAR},
-			sysdate
+				#{item.fileSeq},
+				#{item.fileDetailSeq},
+				#{item.fileRealName},
+				#{item.fileSaveName},
+				#{item.filePath},
+				#{item.inUserId},
+				sysdate,
+				#{item.upUserId, jdbcType=VARCHAR},
+				sysdate
 			)
 
 
 		</foreach>
 	</insert>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+	<!-- 3.process테이블에 정보 업데이트 -->
+	<update id="updateProcessInfo" parameterType="ProcessVO">
+	    update process
+	    set trainer_gym = #{trainerGym},
+	    	trainer_award = #{trainerAward},
+	    	trainer_career = #{trainerCareer}
+	    where process_seq = #{processSeq}
+	</update>
+   
     
     <!-- 관리자-트레이너승인, 숫자 보여주는 표 -->
 	<select id="selectProcessNumberList" resultType="ProcessVO">

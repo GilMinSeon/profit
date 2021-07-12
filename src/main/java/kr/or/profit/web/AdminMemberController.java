@@ -2,6 +2,7 @@ package kr.or.profit.web;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -115,57 +116,69 @@ public class AdminMemberController {
 	}
 	
 	
-	//관리자가 트레이너 정보 수정할경우
+	//관리자가 트레이너 정보 수정
 	@RequestMapping(value = "updateAdminPermitDetailAjax.do", method = RequestMethod.POST)
 	public @ResponseBody String updateAdminPermitDetail(MultipartHttpServletRequest multipartRequest, 
-			HttpServletResponse response, HttpServletRequest request, ProcessVO vo) throws Exception {
-		
+			HttpServletResponse response, HttpServletRequest request, ProcessVO processVO) throws Exception {
 		multipartRequest.setCharacterEncoding("utf-8");
 		
-		System.out.println(vo.getTrainerAward());
-		String fileSeq = multipartRequest.getParameter("fileSeq");
-		
-		System.out.println(fileSeq);
+		//1. 관리자가 선택한 파일 삭제
+		AttachFileVO deleteVO = new AttachFileVO();
+		deleteVO.setFileSeq(processVO.getFileSeq());
 		String[] arrayParam = multipartRequest.getParameterValues("delFile");
-		for (int i = 0; i < arrayParam.length; i++) {
-			System.out.println(arrayParam[i]);
-			//여기서 삭제
+		if(arrayParam != null) {
+			for (int i = 0; i < arrayParam.length; i++) {
+				System.out.println(arrayParam[i]);
+				deleteVO.setFileDetailSeq(arrayParam[i]);
+				adminMemberService.deleteFileDetailSeq(deleteVO);
+			}
 		}
 		
-		// 파일업로드
-		//List<AttachFileVO> fileVOList = fileProcess(multipartRequest, request, fileSeq);
+		//업로드할 파일 있는지 없는지 분기
+		String fileDetailSeq = adminMemberService.selectFileDetailSeq(processVO.getFileSeq());
+		String[] arrayText = multipartRequest.getParameterValues("text");
 		
-		// 파일 DB 저장
-		//Map<String, Object> filemap = new HashMap<String, Object>();
-		//filemap.put("list", fileVOList);
-		//int insertResult = mypageService.insertProcessFile(filemap);
-		
-		
-		
+		if(arrayText != null) {
+			System.out.println("널이 아니다");
+			//파일업로드
+			List<AttachFileVO> fileVOList = fileProcess(multipartRequest, request, processVO, fileDetailSeq);
+			
+			//2.attach_file 테이블에 insert
+			Map<String, Object> filemap = new HashMap<String, Object>();
+			filemap.put("list", fileVOList);
+			int insCnt = adminMemberService.insertFilebyAdmin(filemap);
+			System.out.println(insCnt);
+			
+			//3.process 테이블에 트레이너 정보 update
+			int updCnt = adminMemberService.updateProcessInfo(processVO);
+			System.out.println(updCnt);
+			
+		}else {
+			System.out.println("널이다");
+			//3.process 테이블에 트레이너 정보 update
+			int updCnt = adminMemberService.updateProcessInfo(processVO);
+			System.out.println(updCnt);
+			
+		}
 		
 		return "";
 	}
 	
 	
 	//uploadAjax 안에서 사용하는 메서드
-	public List<AttachFileVO> fileProcess(MultipartHttpServletRequest multipartRequest, HttpServletRequest request, String fileSeq)
+	public List<AttachFileVO> fileProcess(MultipartHttpServletRequest multipartRequest, HttpServletRequest request, ProcessVO processVO, String fileDetailSeq)
 			throws Exception {
-		HttpSession session = request.getSession();
-
+		
 		List<AttachFileVO> fileVOList = new ArrayList<AttachFileVO>();
 		Iterator<String> fileNames = multipartRequest.getFileNames();
 		
-		int cnt = 1;
+		int detailSeq = Integer.parseInt(fileDetailSeq)+1;
 		while (fileNames.hasNext()) {
-
 			UUID uuid = UUID.randomUUID();
-
-			System.out.println("uuid : " + uuid);
 			String fileName = fileNames.next();
-			System.out.println("fileName : " + fileName);
 			MultipartFile mFile = multipartRequest.getFile(fileName);
 			String originalFileName = mFile.getOriginalFilename();
-			//
+			
 			File file = new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName);
 			if (mFile.getSize() != 0) {
 				if (!file.exists()) {
@@ -173,34 +186,22 @@ public class AdminMemberController {
 						file.createNewFile();
 					}
 				}
-
 				mFile.transferTo(new File(CURR_IMAGE_REPO_PATH + "\\" + uuid.toString() + "_" + originalFileName));
 			}
-
-			String memberId = (String) session.getAttribute("memberId");
-			// attach_file 테이블에 저장할 vo list
 			AttachFileVO attachvo = new AttachFileVO();
-			attachvo.setFileSeq(fileSeq);
-			attachvo.setFileDetailSeq(Integer.toString(cnt));
+			attachvo.setFileSeq(processVO.getFileSeq());
+			attachvo.setFileDetailSeq(Integer.toString(detailSeq));
 			attachvo.setFileRealName(originalFileName);
-			//여기가 str_filename
 			attachvo.setFileSaveName(uuid.toString() + "_" + originalFileName);
-			
 			attachvo.setFilePath("http://192.168.41.6:9999/upload/profit/" + uuid.toString() + "_" + originalFileName);
-			
-			attachvo.setInUserId(memberId);
-			attachvo.setUpUserId(memberId);
+			attachvo.setInUserId(processVO.getMemberId());
+			attachvo.setUpUserId(processVO.getMemberId());
 			fileVOList.add(attachvo);
-			cnt++;
+			detailSeq++;
 		}
 		
 		return fileVOList;
 	}
-	
-	
-	
-	
-	
 	
 	
 	@RequestMapping(value = "adminMemberList.do", method = RequestMethod.GET)
