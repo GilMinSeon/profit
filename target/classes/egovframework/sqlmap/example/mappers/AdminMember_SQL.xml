@@ -3,15 +3,137 @@
 
 <mapper namespace="kr.or.profit.mapper.AdminMemberMapper">
 
+    <!-- 트레이너 프로세스 디테일 -->
+    <select id="selectProcessDetailBySeq" parameterType="String" resultType="ProcessVO">
+        select  p.process_seq, p.member_id, p.file_seq, p.trainer_award, p.trainer_career, 
+		        p.trainer_gym, p.process_status, p.process_finish_date, p.admin_memo, p.result_reason,
+		        p.in_date, p.up_date,
+		        m.member_name, m.member_mobile, m.member_email, m.member_gender
+		from process p
+		inner join member m
+		on (p.member_id = m.member_id)
+		where p.process_seq = #{memberId}
+    </select>
+    
+    <!-- 관리자 메모 update -->
+    <update id="updateAdminMemo" parameterType="ProcessVO">
+        update process
+        set admin_memo = #{adminMemo}
+        where process_seq = #{processSeq}
+    </update>
+    
+    <!-- 최종상태변경-승인,보완,취소 -->
+	<update id="updateProcessStatus" parameterType="ProcessVO">
+	    update process
+	    set result_reason = #{resultReason, jdbcType=VARCHAR},
+	    	process_status = #{processStatus},
+	    	up_date = sysdate
+	    <if test='processStatus == "C" '>
+			, process_finish_date = sysdate + 14
+		</if>
+	    
+	    where process_seq = #{processSeq}
+	</update>    
+    
+	<!-- 승인단계, trainer 테이블에 insert -->
+	<insert id="insertTrainerInfo" parameterType="ProcessVO">
+	    insert into trainer(trainer_seq, process_seq, trainer_gym, trainer_award, trainer_career, in_user_id, in_date, up_user_id, up_date)
+		values (
+		        (SELECT NVL(MAX(TO_NUMBER(trainer_seq)),0)+1 FROM trainer),
+		        #{processSeq},
+		        #{trainerGym},
+		        #{trainerAward},
+		        #{trainerCareer},
+		        #{memberId},
+		        sysdate,
+		        #{memberId},
+		        sysdate
+		        )
+	</insert>
+	
+	<!-- 승인단계 member 테이블 구분 T로 업데이트 -->
+	<update id="updateGubunTrainer" parameterType="ProcessVO">
+	    update member
+	    set member_gubun = 'T'
+	    where member_id = #{memberId}
+	</update>
+	
+    
+	<!-- 트레이너 프로세스 디테일-첨부파일 가져오기-->
+    <select id="selectProcessFile" parameterType="String" resultType="egovMap">
+	    select file_seq, file_detail_seq, file_real_name, file_path 
+		from attach_file
+		where file_seq = #{fileSeq}
+	</select>
+    
+    <!--1. 관리자가 선택한 파일 삭제 --> 
+    <delete id="deleteFileDetailSeq" parameterType="FileVO">
+       delete attach_file
+       where file_seq = #{fileSeq} and file_detail_seq = #{fileDetailSeq}
+    </delete>
+	
+    <!-- 파일상세고유번호 조회 -->
+	<select id="selectFileDetailSeq" parameterType="String" resultType="String">
+	    select NVL(max(to_number(file_detail_seq)),0)
+	    from attach_file
+	    where file_seq = #{fileSeq}
+	    
+	</select>    
+    
+    <!--2. 관리자 파일테이블에 정보 insert --> 
+	<insert id="insertFilebyAdmin" parameterType="java.util.Map">
+		<foreach collection="list" item="item" index="index"
+			open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+			into
+			attach_file
+			(
+				file_seq,
+				file_detail_seq,
+				file_real_name,
+				file_save_name,
+				file_path,
+				in_user_id,
+				in_date,
+				up_user_id,
+				up_date
+			)
+			values
+
+			(
+				#{item.fileSeq},
+				#{item.fileDetailSeq},
+				#{item.fileRealName},
+				#{item.fileSaveName},
+				#{item.filePath},
+				#{item.inUserId},
+				sysdate,
+				#{item.upUserId, jdbcType=VARCHAR},
+				sysdate
+			)
+
+
+		</foreach>
+	</insert>
+    
+	<!-- 3.process테이블에 정보 업데이트 -->
+	<update id="updateProcessInfo" parameterType="ProcessVO">
+	    update process
+	    set trainer_gym = #{trainerGym},
+	    	trainer_award = #{trainerAward},
+	    	trainer_career = #{trainerCareer}
+	    where process_seq = #{processSeq}
+	</update>
+   
+    
     <!-- 관리자-트레이너승인, 숫자 보여주는 표 -->
 	<select id="selectProcessNumberList" resultType="ProcessVO">
-	    select status_a,status_b,status_c,today
+	    select status_a,status_b,status_c, status_date
 		from    
 		    (
 		    select  (select count(*) from process where process_status = 'A') as status_a,
 		            (select count(*) from process where process_status = 'B') as status_b,
 		            (select count(*) from process where process_status = 'C') as status_c,
-		            (select count(*) from process where to_char(up_date) = to_char(sysdate, 'YYYY/MM/DD')) as today,
+		            (select count(*) from process where to_char(up_date, 'YYYY/MM/DD') = to_char(sysdate, 'YYYY/MM/DD')) status_date,
 		            rownum as rm
 		    from process
 		    ) tbl
@@ -34,8 +156,12 @@
 					tbl.in_user_id, tbl.in_date, tbl.up_user_id, tbl.up_date
 	 	    from ( 
 		 	    select  process_seq, member_id,
-		 	    		(select member_name from member where process.member_id = member_id) as member_name, 
-				        process_status, process_finish_date,
+				        (select member_name from member where process.member_id = member_id) as member_name, 
+				        process_status, 
+				        <![CDATA[
+				        case when process_finish_date < (select sysdate-1 from dual) then null
+				        else process_finish_date end as process_finish_date,
+				        ]]>
 				        in_user_id, in_date, up_user_id, up_date
 				from    process
 				where	1=1
@@ -44,7 +170,7 @@
 						</if>
 						<if test="selDate != null and selDate != '' ">
 						    <choose>
-						        <when test='selStatus.equals("신청")'>
+						        <when test='selStatus.equals("A")'>
 						            and to_char(in_date, 'YYYYMMDD') = #{selDate}
 						        </when>
 						        <otherwise>
@@ -101,7 +227,13 @@
 		order by in_date desc
  	</select>
  	
-    
+    <!-- 관라지-신청서 검토로 update -->
+    <update id="updateStatusB" parameterType="String">
+        update process
+		set process_status = 'B',
+		    up_date = sysdate
+		where process_seq = #{processSeq}
+    </update>
  	
  	
  	

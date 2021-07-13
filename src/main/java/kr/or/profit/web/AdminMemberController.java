@@ -2,7 +2,6 @@ package kr.or.profit.web;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +25,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.or.profit.service.AdminMemberService;
 import kr.or.profit.vo.AttachFileVO;
-import kr.or.profit.vo.Coolsms;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.PageMaker;
 import kr.or.profit.vo.ProcessVO;
@@ -67,7 +64,8 @@ public class AdminMemberController {
 
 		List<Map<String, Object>> processList = adminMemberService.selectProcessList(cri);
 		model.addAttribute("processList", processList);
-
+		System.out.println("00000000000000");
+		System.out.println(processList.toString());
 		// 페이징처리
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
@@ -96,76 +94,94 @@ public class AdminMemberController {
 		}
 		return message;
 	}
-
+	
+	//관리자 메모 업데이트
+	@RequestMapping(value = "adminMemoAjax.do", method = RequestMethod.POST)
+	public @ResponseBody String adminMemo(ProcessVO vo, HttpServletRequest request) throws Exception {
+		int cnt = adminMemberService.updateAdminMemo(vo);
+		String msg = "";
+		if(cnt > 0) {
+			msg = "ok";
+		}
+		return msg;
+	}
+	
+	
+	
 	// 관리자가 승인,보완,반려 선택 업데이트
 	@RequestMapping(value = "updateStatusAjax.do", method = RequestMethod.POST)
-	public @ResponseBody String updateProcessStatus(ProcessVO vo, HttpServletRequest request) throws Exception {
+	public @ResponseBody String updateProcessStatus(HttpServletResponse response, HttpServletRequest request, ProcessVO vo) throws Exception {
 		// 1. process 테이블에 정보 update
 		int cnt = adminMemberService.updateProcessStatus(vo);
+		String msg = "";
+		if(cnt > 0) {
+			msg = "ok";
+		}
+		String processStatus = vo.getProcessStatus();
+		
+		// 2. 승인이었으면 trainer 테이블로 insert
+		if(processStatus.equals("E")) {
+			adminMemberService.insertTrainerInfo(vo);
+			//member 테이블에서 gubun T 로 업데이트
+			adminMemberService.updateGubunTrainer(vo);
+			
+		}
 		
 		
-		// 2. 신청인한테 문자보내기
-		//Coolsms 돈때문에 일단 주석!! 정상 작동 됩니다
-//		System.out.println(vo.getProcessStatus());
-//		
-//		String processStatus = vo.getProcessStatus();
-//		String memberName = vo.getMemberName();
-//		String memberMobile = vo.getMemberMobile();
-//		String text = "";
-//		if(processStatus.equals("E")) {
-//			text = "안녕하세요 PROFIT입니다." + memberName + "회원님께서는 PROFIT의 트레이너로 승인되었습니다. 앞으로 저희 PROFIT에서 다양한 활동 부탁드립니다.";
-//		}else if(processStatus.equals("C")){
-//			text = "안녕하세요 PROFIT입니다." + memberName + "회원님의 신청이 보완요청 처리되었습니다. 자세한 사항은 홈페이지의 신청내역의 결과사유를 참고하시길 바랍니다.";
-//		}else if(processStatus.equals("D")) {
-//			text = "안녕하세요 PROFIT입니다." + memberName + "회원님의 신청이 반려 처리되었습니다. 자세한 사항은 홈페이지의 신청내역의 결과사유를 참고하시길 바랍니다.";
-//		}
-//		
-//		System.out.println(memberName);
-//		System.out.println(memberMobile);
-//		System.out.println(text);
-//		
-//		
-//		String api_key = "NCSVDVNCRIIHWTR1";
-//		String api_secret = "WVU0LBZ7JQUZXQECBRQ7OCHPZHVSZWPJ";
-//
-//		Coolsms coolsms = new Coolsms(api_key, api_secret);
-//
-//		HashMap<String, String> set = new HashMap<String, String>();
-//		set.put("to", memberMobile); // 수신번호
-//		set.put("from", "01040487642"); // 발신번호
-//		set.put("text", text); // 문자내용
-//		set.put("type", "sms"); // 문자 타입
-//
-//		System.out.println(set);
-//
-//		JSONObject result = coolsms.send(set); // 보내기&전송결과받기
-//		System.out.println();
-//
-//		if ((boolean) result.get("status") == true) {
-//			// 메시지 보내기 성공 및 전송결과 출력
-//			System.out.println("성공");
-//			System.out.println(result.get("group_id")); // 그룹아이디
-//			System.out.println(result.get("result_code")); // 결과코드
-//			System.out.println(result.get("result_message")); // 결과 메시지
-//			System.out.println(result.get("success_count")); // 메시지아이디
-//			System.out.println(result.get("error_count")); // 여러개 보낼시 오류난 메시지 수
-//		} else {
-//			// 메시지 보내기 실패
-//			System.out.println("실패");
-//			System.out.println(result.get("code")); // REST API 에러코드
-//			System.out.println(result.get("message")); // 에러메시지
-//		}
+		// 3. 신청인한테 문자보내기 <Coolsms 요금때문에 일단 주석!! 정상 작동 됩니다>
+/*		String memberName = vo.getMemberName();
+		String memberMobile = vo.getMemberMobile();
+		String text = "";
+		if(processStatus.equals("E")) {
+			text = "안녕하세요 PROFIT입니다." + memberName + "회원님께서는 PROFIT의 트레이너로 승인되었습니다. 앞으로 저희 PROFIT에서 다양한 활동 부탁드립니다.";
+		}else if(processStatus.equals("C")){
+			text = "안녕하세요 PROFIT입니다." + memberName + "회원님의 신청이 보완요청 처리되었습니다. 자세한 사항은 홈페이지의 신청내역의 결과사유를 참고하시길 바랍니다.";
+		}else if(processStatus.equals("D")) {
+			text = "안녕하세요 PROFIT입니다." + memberName + "회원님의 신청이 반려 처리되었습니다. 자세한 사항은 홈페이지의 신청내역의 결과사유를 참고하시길 바랍니다.";
+		}
+		
+		System.out.println(memberName);
+		System.out.println(memberMobile);
+		System.out.println(text);
+		
+		
+		String api_key = "NCSVDVNCRIIHWTR1";
+		String api_secret = "WVU0LBZ7JQUZXQECBRQ7OCHPZHVSZWPJ";
 
-		return null;
+		Coolsms coolsms = new Coolsms(api_key, api_secret);
+
+		HashMap<String, String> set = new HashMap<String, String>();
+		set.put("to", memberMobile); // 수신번호
+		set.put("from", "01040487642"); // 발신번호
+		set.put("text", text); // 문자내용
+		set.put("type", "sms"); // 문자 타입
+
+		System.out.println(set);
+
+		JSONObject result = coolsms.send(set); // 보내기&전송결과받기
+		System.out.println();
+
+		if ((boolean) result.get("status") == true) {
+			// 메시지 보내기 성공 및 전송결과 출력
+			System.out.println("성공");
+			System.out.println(result.get("group_id")); // 그룹아이디
+			System.out.println(result.get("result_code")); // 결과코드
+			System.out.println(result.get("result_message")); // 결과 메시지
+			System.out.println(result.get("success_count")); // 메시지아이디
+			System.out.println(result.get("error_count")); // 여러개 보낼시 오류난 메시지 수
+		} else {
+			// 메시지 보내기 실패
+			System.out.println("실패");
+			System.out.println(result.get("code")); // REST API 에러코드
+			System.out.println(result.get("message")); // 에러메시지
+		}*/
+		System.out.println(msg);
+		return msg;
 	}
 
-	public String sendSms(HttpServletRequest request) throws Exception {
-
-
-
-		return "sms/smsapi";
-	}
-
+	
+	
+	
 	// 각 디테일 페이지
 	@RequestMapping(value = "trainerPermitDetail.do", method = RequestMethod.GET)
 	public String trainerPermitDetail(Model model,

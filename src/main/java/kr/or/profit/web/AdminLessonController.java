@@ -11,9 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.profit.service.AdminLessonService;
+import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.PageMaker;
 
 @Controller
@@ -59,10 +62,72 @@ public class AdminLessonController {
 		return "adminLesson/adminLessonList";
 	}
 	
-	@RequestMapping(value = "adminLessonPayList.do", method = RequestMethod.GET)
+	
+	/**
+	 * 관리자 강의 활성화 업데이트
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+   @RequestMapping(value = "updAdminLessonAjax.do")
+   @ResponseBody
+   public String updAdminLesson(HttpServletRequest request, Model model) throws Exception {
+	   HttpSession session = request.getSession();
+	   String memberId = (String) session.getAttribute("memberId");
+	   System.out.println("memberId업데이트하게나와랏 " + memberId);
+	   if (memberId == null) {
+		   memberId = "";
+	   }
+	   
+      String lessonSeq = request.getParameter("lessonSeq");
+      System.out.println("lessonSeq가져오삼= " + lessonSeq);
+      
+//      List<?> selectBuyLesson = adminLessonService.selectList(lessonSeq);
+//      model.addAttribute("selectBuyLesson", selectBuyLesson);
+//      System.out.println("모델 "+ model.toString());
+//      String lessonRefundFlag = request.getParameter("lessonRefundFlag");
+//      System.out.println("lessonRefundFlag : " +lessonRefundFlag);
+      
+      //관리자비활성화 시 구매테이블 refund_flag 업데이트
+      BuyLessonVO buyvo = new BuyLessonVO();
+      buyvo.setMemberId(memberId);
+      buyvo.setLessonSeq(lessonSeq);
+      int cnt1 = adminLessonService.updAdminRefund(buyvo);
+      
+      //관리자비활성화 시 강의 테이블 private_flag 업데이트
+      String lessonPrivateFlag = request.getParameter("lessonPrivateFlag");
+      System.out.println("lessonPrivateFlag가져오삼 " + lessonPrivateFlag);
+      
+      if(("N").equals(lessonPrivateFlag)) {
+    	  lessonPrivateFlag = "Y";
+      }else {
+    	  lessonPrivateFlag = "N";
+      }
+      System.out.println("바뀐lessonPrivateFlag " + lessonPrivateFlag);
+      
+      LessonVO vo = new LessonVO();
+      vo.setMemberId(memberId);
+      vo.setLessonSeq(lessonSeq);
+      vo.setLessonPrivateFlag(lessonPrivateFlag);
+      System.out.println("여기1");
+      
+	  int cnt = adminLessonService.updAdminLesson(vo);
+	  System.out.println("여기2");
+      String msg = "ng";
+      
+      if(cnt > 0 && cnt1>0) {
+         msg = "ok";
+      }
+      System.out.println("얌마"+msg);
+       return msg;
+   }
+
+   @RequestMapping(value = "adminLessonPayList.do", method = RequestMethod.GET)
 	public String adminLessonPayList(Locale locale, Model model) {
 
 		return "adminLesson/adminLessonPayList";
-	}
+	}	
+	
 	
 }

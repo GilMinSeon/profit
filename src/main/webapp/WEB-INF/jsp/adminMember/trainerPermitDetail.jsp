@@ -23,13 +23,45 @@
 }
 </style>
 <script type="text/javascript">
+//관리자 메모
+function fn_memo(){
+	var adminMemo = $("textarea#adminMemo").val();
+	var processSeq = $("#processSeq").val();
+	//ajax
+	$.ajax({
+		type : "POST",
+		data : "adminMemo=" + adminMemo +"&processSeq=" + processSeq, 
+		url : "adminMemoAjax.do",
+		dataType : "text", 
+	
+		success : function(result) {
+			console.log(result)
+			if (result == "ok") {
+				location.reload();
+			} else {
+				alert("문제가 발생했습니다");
+			}
+		},
+		error : function() {
+			alert("오류발생");
+		}
+
+	});
+	
+}
+
+
 //승인, 보완, 취소 버튼
 function fn_updStatus(processStatus){
 	
 	var resultReason = "";
 	var processSeq = $("#processSeq").val();
 	var memberName = $("#memberName").val();
+	var memberId = $("#memberId").val();
 	var memberMobile = $("#memberMobile").val();
+	var trainerGym = $("#trainerGym").val();
+	var trainerCareer = $("textarea#trainerCareer").val();
+	var trainerAward = $("textarea#trainerAward").val();
 	
 	if(processStatus == 'E'){
 		if(confirm("신청서를 승인하시겠습니까?") == true){
@@ -44,8 +76,8 @@ function fn_updStatus(processStatus){
 			return;
 		}
 	}else{
-		if(confirm("신청서를 취소처리하시겠습니까?") == true){
-			resultReason = prompt('취소사유를 입력해주세요');
+		if(confirm("신청서를 반려처리하시겠습니까?") == true){
+			resultReason = prompt('반려사유를 입력해주세요');
 		}else{
 			return;
 		}
@@ -54,24 +86,35 @@ function fn_updStatus(processStatus){
 	//ajax
 	$.ajax({
 		type : "POST",
-		data : "resultReason=" + resultReason +"&processSeq=" + processSeq + "&processStatus=" + processStatus + "&memberName=" + memberName + "&memberMobile=" + memberMobile, 
+		data : "resultReason=" + resultReason +"&processSeq=" + processSeq + 
+				"&processStatus=" + processStatus + "&memberName=" + memberName + 
+				"&trainerGym=" + trainerGym + "&trainerCareer=" + trainerCareer + 
+				"&trainerAward=" + trainerAward +
+				"&memberId=" + memberId +
+				"&memberMobile=" + memberMobile, 
 		url : "updateStatusAjax.do",
 		dataType : "text", 
 	
 		success : function(result) {
+			console.log(result)
 			if (result == "ok") {
-				$("#msgEmail").html("사용가능한 이메일입니다");
-				$("input[name=checked_email]").val('y');
+				if(processStatus == 'E'){
+					alert("승인처리가 완료되었습니다.");
+				}else if(processStatus == 'C'){
+					alert("보완처리가 완료되었습니다.");
+				}else if(processStatus == 'D'){
+					alert("반려처리가 완료되었습니다.");
+				}
+				location.reload();
 			} else {
-				$("#msgEmail").html("사용중인 이메일입니다");
-				$("input[name=checked_email]").val('n');
+				alert("문제가 발생했습니다");
 			}
 		},
 		error : function() {
 			alert("오류발생");
 		}
 
-	})
+	});
 	
 	
 
@@ -244,7 +287,7 @@ function fn_update() {
 								진행상태 : 
 								<c:if test="${detailVO.processStatus eq 'B'}">검토</c:if>
 								<c:if test="${detailVO.processStatus eq 'C'}">보완</c:if>
-								<c:if test="${detailVO.processStatus eq 'D'}">취소</c:if>
+								<c:if test="${detailVO.processStatus eq 'D'}">반려</c:if>
 								<c:if test="${detailVO.processStatus eq 'E'}">승인</c:if>
 								(<fmt:formatDate pattern='yyyy-MM-dd' value='${detailVO.upDate }'/>)
 								</p>
@@ -266,25 +309,22 @@ function fn_update() {
 							</div>
 							</c:if>
 							
-							<!-- 취소일경우 -->
+							<!-- 반려일경우 -->
 							<c:if test="${detailVO.processStatus eq 'D'}">
-							<br>
 							<div style="text-align: left;margin-right: 10px;border:none;background-color: #3f51b50d; color: black; padding:5px;">
 								<p style="font-weight: bold; font-size: 1.1em; color: #5768AD; margin-bottom: 5px; margin-top: 5px;">
-								취소사유 : <br>
+								반려사유 : <br>
 								${detailVO.resultReason }</p><br>
 							</div>
 							</c:if>
-							
 							<br>
-							
                         </div>
 						<br>
 						<hr>
 					</div>
 					
 					
-					
+					<!-- 관리자 메모 -->
 					<div style="text-align: center;">
 						<p style="font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 30px;">
 							<span style="background-color: #3f51b50d;">&nbsp;관리자 메모&nbsp;</span>
@@ -292,15 +332,16 @@ function fn_update() {
 					</div>
 					<div>
 						<div class="box" style="height: 370px; padding-left: 30px; padding-right: 15px;">
-							<textarea class="ta" style="border:none;background-color: #3f51b50d; color: black; margin-bottom: 20px; padding:10px 5px;
+							<textarea name="adminMemo" id="adminMemo" class="ta" style="border:none;background-color: #3f51b50d; color: black; margin-bottom: 20px; padding:10px 5px;
 							resize: none; width:290px; height: 350px;">${detailVO.adminMemo }</textarea>
-                            <input type="button" value="메모저장" class="site-btn" style="width : 290px;"/>
+                            <input type="button" onclick="fn_memo()" value="메모저장" class="site-btn" style="width : 290px;"/>
 						</div>
 						<br><br><br>
-						
 					</div>
-				</div>
+				
 				<!-- 1번 div 끝 -->
+				</div>
+				
 				
 				
 				
@@ -436,7 +477,7 @@ function fn_update() {
 							<input type="hidden" name="fileSeq" value="${fileVO[0].fileSeq}">
 							
 							<!-- 아이디 hidden -->
-							<input type="hidden" name="memberId" value="${detailVO.memberId }">
+							<input type="hidden" id="memberId" name="memberId" value="${detailVO.memberId }">
 							
 							<!-- 프로세스 시퀀스 hidden -->
 							<input type="hidden" id="processSeq" name="processSeq" value="${detailVO.processSeq }">
@@ -476,7 +517,7 @@ function fn_update() {
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
 								<input type="button" value="보완" class="site-btn" onclick="fn_updStatus('C')"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 7px;">
-								<input type="button" value="취소" class="site-btn" onclick="fn_updStatus('D')"
+								<input type="button" value="반려" class="site-btn" onclick="fn_updStatus('D')"
 									style="display: inline-block; padding: 1px 6px; font-size: 1.1em; color: white; background-color: #5768AD; width: 31.5%; height: 48px; margin-right: 0px;">
 							</div>
 								
