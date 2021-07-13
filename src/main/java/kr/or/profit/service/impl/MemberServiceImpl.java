@@ -1,11 +1,14 @@
 package kr.or.profit.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import kr.or.profit.mapper.MemberMapper;
 import kr.or.profit.service.MemberService;
+import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 
 @Service("memberService")
@@ -64,6 +67,7 @@ public class MemberServiceImpl implements MemberService{
 	public void updateTempPwd(MemberVO vo) throws Exception {
 		memberMapper.updateTempPwd(vo);
 	}
+
 
 
 

@@ -3,6 +3,61 @@
 
 <mapper namespace="kr.or.profit.mapper.AdminMemberMapper">
 
+    <!-- 회원관리 리스트 -->
+    <select id="selectAdminMemberList" parameterType="Criteria" resultType="MemberVO">
+        select	tt.*
+        from
+        (
+        select  rownum as rm, tbl.*
+        from
+        (
+		select  member_id, 
+		        member_name, 
+		        case when member_gender = 'F' then '여' else '남' end as member_gender, 
+		        member_gubun, 
+		        in_date,
+		        case when member_id in (select member_id from blacklist) then '블랙리스트' else '정상회원' end as blacklist_flag
+		from member
+		where member_gubun != 'A'
+			<if test="selGubun != null and selGubun != '' ">
+	            <choose>
+		            <when test='selGubun.equals("U")'>
+		                and member_gubun = 'U'
+		            </when>
+		            <when test='commonSeq.equals("T")'>
+		                and member_gubun = 'T'
+		            </when>
+	            </choose>
+            </if>
+            <if test="selStatus != null and selStatus != '' ">
+	            <choose>
+		            <when test='selStatus.equals("B")'>
+		                and member_id in (select member_id from blacklist)
+		            </when>
+		            <when test='selStatus.equals("N")'>
+		                and member_id not in (select member_id from blacklist)
+		            </when>
+	            </choose>
+            </if>
+            <if test="selIdentity != null and selIdentity != '' ">
+			    <choose>
+			        <when test='selIdentity.equals("이름")'>
+			            and member_id = #{searchKeyword}
+			        </when>
+			        <otherwise>
+			            and member_name = #{searchKeyword}
+			        </otherwise>
+			    </choose>
+			</if>
+		order by in_date desc
+		) tbl
+		) tt
+		where tt.rm between #{rowStart} and #{rowEnd}
+    </select>
+
+    
+    
+    
     <!-- 트레이너 프로세스 디테일 -->
     <select id="selectProcessDetailBySeq" parameterType="String" resultType="ProcessVO">
         select  p.process_seq, p.member_id, p.file_seq, p.trainer_award, p.trainer_career, 
@@ -234,22 +289,6 @@
 		    up_date = sysdate
 		where process_seq = #{processSeq}
     </update>
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
- 	
  	
  	
 </mapper>
