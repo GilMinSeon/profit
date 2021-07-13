@@ -62,6 +62,19 @@ public class NoticeServiceImpl implements NoticeService{
 		return mapper.noticeFileCnt();
 	}
 
+	//파일 다운로드
+	@Override
+	public Map<String, Object> qnaProfileDownload(Map<String, Object> map) throws Exception {
+		return mapper.qnaProfileDownload(map);
+	}
+
+	//파일 삭제
+	@Override
+	public int noticeModDelFile(Map<String, Object> map) throws Exception {
+		System.out.println("서비스 파일 삭제옴");
+		return mapper.noticeModDelFile(map);
+	}
+
 
 
 

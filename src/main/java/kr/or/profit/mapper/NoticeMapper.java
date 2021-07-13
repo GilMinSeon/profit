@@ -3,6 +3,7 @@ package kr.or.profit.mapper;
 import java.util.List;
 import java.util.Map;
 
+
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
 @Mapper("noticeMapper")
@@ -23,4 +24,8 @@ public interface NoticeMapper {
 	int noticeFileUpload(Map<String, Object> map) throws Exception;
 
 	String noticeFileCnt() throws Exception;
+
+	Map<String, Object> qnaProfileDownload(Map<String, Object> map) throws Exception;
+
+	int noticeModDelFile(Map<String, Object> map) throws Exception;
 }

@@ -44,4 +44,13 @@ public interface AdminMemberMapper {
 	
 	//승인 보완 취소 processStatus update
 	public int updateProcessStatus(ProcessVO vo);
+	
+	//승인시 trainer 테이블에 insert
+	public void insertTrainerInfo(ProcessVO vo);
+	
+	//멤버구분 업데이트
+	public void updateGubunTrainer(ProcessVO vo);
+	
+	//관리자 메모 update
+	public int updateAdminMemo(ProcessVO vo);
 }

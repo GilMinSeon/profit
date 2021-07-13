@@ -15,6 +15,13 @@
 		where p.process_seq = #{memberId}
     </select>
     
+    <!-- 관리자 메모 update -->
+    <update id="updateAdminMemo" parameterType="ProcessVO">
+        update process
+        set admin_memo = #{adminMemo}
+        where process_seq = #{processSeq}
+    </update>
+    
     <!-- 최종상태변경-승인,보완,취소 -->
 	<update id="updateProcessStatus" parameterType="ProcessVO">
 	    update process
@@ -28,6 +35,29 @@
 	    where process_seq = #{processSeq}
 	</update>    
     
+	<!-- 승인단계, trainer 테이블에 insert -->
+	<insert id="insertTrainerInfo" parameterType="ProcessVO">
+	    insert into trainer(trainer_seq, process_seq, trainer_gym, trainer_award, trainer_career, in_user_id, in_date, up_user_id, up_date)
+		values (
+		        (SELECT NVL(MAX(TO_NUMBER(trainer_seq)),0)+1 FROM trainer),
+		        #{processSeq},
+		        #{trainerGym},
+		        #{trainerAward},
+		        #{trainerCareer},
+		        #{memberId},
+		        sysdate,
+		        #{memberId},
+		        sysdate
+		        )
+	</insert>
+	
+	<!-- 승인단계 member 테이블 구분 T로 업데이트 -->
+	<update id="updateGubunTrainer" parameterType="ProcessVO">
+	    update member
+	    set member_gubun = 'T'
+	    where member_id = #{memberId}
+	</update>
+	
     
 	<!-- 트레이너 프로세스 디테일-첨부파일 가져오기-->
     <select id="selectProcessFile" parameterType="String" resultType="egovMap">
@@ -126,8 +156,12 @@
 					tbl.in_user_id, tbl.in_date, tbl.up_user_id, tbl.up_date
 	 	    from ( 
 		 	    select  process_seq, member_id,
-		 	    		(select member_name from member where process.member_id = member_id) as member_name, 
-				        process_status, process_finish_date,
+				        (select member_name from member where process.member_id = member_id) as member_name, 
+				        process_status, 
+				        <![CDATA[
+				        case when process_finish_date < (select sysdate-1 from dual) then null
+				        else process_finish_date end as process_finish_date,
+				        ]]>
 				        in_user_id, in_date, up_user_id, up_date
 				from    process
 				where	1=1

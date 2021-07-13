@@ -24,23 +24,52 @@ public class TrainerPageServiceImpl implements TrainerPageService {
 	@Resource(name = "trainerPageMapper")
 	private TrainerPageMapper trainerPageDAO;
 	
-	//상담목록 조회
+	//상담 정산 리스트 조회
 	@Override
 	public List<Map<String, Object>> selectChatAccountList(Criteria cri) throws Exception {
 		return trainerPageDAO.selectChatAccountList(cri);
 	}
 	
-	//상담 목록 전체 글 개수 조회
+	//상담 정산 목록 전체 글 개수 조회
 	@Override
 	public int selectChatCnt(Criteria cri) throws Exception{
 		return trainerPageDAO.selectChatCnt(cri);
 	}
 
-	//차트
+	//이용권 정산 차트
 	@Override
 	public Map<String, Object> selectChartInfo(String memberId) throws Exception {
 		return trainerPageDAO.selectChartInfo(memberId);
 	}
 	
+	//온라인 클래스 정산 리스트 조회
+	@Override
+	public List<Map<String, Object>> selectClassAccountList(Criteria cri) throws Exception {
+		return trainerPageDAO.selectClassAccountList(cri);
+	}
+	
+	//온라인클래스 정산 목록 전체 글 개수 조회
+	@Override
+	public int selectClassCnt(Criteria cri) throws Exception {
+		return trainerPageDAO.selectClassCnt(cri);
+	}
+
+	//이용권 정산 차트
+	@Override
+	public Map<String, Object> selectChart2Info(String memberId) throws Exception {
+		return trainerPageDAO.selectChart2Info(memberId);
+	}
+
+	//트레이너 자신의 클래스 목록 조회
+	@Override
+	public List<Map<String, Object>> selectTrainerClassList(Criteria cri) throws Exception {
+		return trainerPageDAO.selectTrainerClassList(cri);
+	}
+	
+	//트레이너 자신의 클래스 목록 글 전체 개수
+	@Override
+	public int selectTrainerClassCnt(Criteria cri) throws Exception {
+		return trainerPageDAO.selectTrainerClassCnt(cri);
+	}
 	
 }

@@ -253,7 +253,8 @@ function getCurrentDate(){
 						<td>
 							<c:if test="${list.processStatus eq 'A'}"><span style="background-color: #007bff;color: white;font-weight: bold;padding: 7px;">신청</span></c:if>
 							<c:if test="${list.processStatus eq 'B'}"><span style="background-color: #17a2b8;color: white;font-weight: bold;padding: 7px;">검토</span></c:if>
-							<c:if test="${list.processStatus eq 'C'}"><span style="background-color: #ffc107;color: darkslategray;font-weight: bold;padding: 7px;">보완</span></c:if>
+							<c:if test="${list.processStatus eq 'C' && list.processFinishDate ne null}"><span style="background-color: #ffc107;color: darkslategray;font-weight: bold;padding: 7px;">보완</span></c:if>
+							<c:if test="${list.processStatus eq 'C' && list.processFinishDate eq null}"><span style="background-color: #c82333;color: white; font-weight: bold;padding: 7px;">만료</span></c:if>
 							<c:if test="${list.processStatus eq 'D'}"><span style="background-color: #c82333;color: white; font-weight: bold;padding: 7px;">반려</span></c:if>
 							<c:if test="${list.processStatus eq 'E'}"><span style="background-color: #28a745;color: white;font-weight: bold;padding: 7px;">승인</span></c:if>
 						</td>

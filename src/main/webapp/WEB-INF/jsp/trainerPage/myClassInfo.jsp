@@ -3,6 +3,7 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,7 @@
 <link rel="stylesheet" href="./resources/datepicker/jquery-ui.css">
 <script src="./resources/datepicker/jquery-3.5.1.js"></script>
 <script src="./resources/datepicker/jquery-ui.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <style type="text/css">
 .counter-section i {
     display: block;
@@ -69,6 +70,9 @@
 .table tr:hover {
 	background-color: #f8f6ff;
 }
+.ui-datepicker-calendar {
+    display: none;
+}    ​
 </style>
 <script type="text/javascript">
 function fn_change(processSeq){
@@ -95,14 +99,135 @@ function fn_change(processSeq){
 }
 
 $(document).ready(function() {
-	$("#mydate").datepicker({
-		changeYear : true,
-		changeMonth : true,
-		dayNamesMin : [ '일', '월', '화', '수', '목','금', '토' ],
-		monthNamesShort : [ '1월', '2월', '3월', '4월','5월', '6월', '7월', '8월', '9월','10월', '11월', '12월' ],
-		yearRange : 'c-100:c+10',
-		dateFormat : 'yymmdd'
-	});
+	var now = new Date();
+    var month = now.getMonth() + 1; 
+//     var month = 1; 
+    var month1 = month - 1;
+    if(month1 == 0){
+    	month1 = 12;
+    }
+    var month2 = month1 -1;
+    if(month2 == 0){
+    	month2 = 12;
+    }
+    var month3 = month2 -1;
+    if(month3 == 0){
+    	month3 = 12;
+    }
+    var month4 = month3 -1;
+    if(month4 == 0){
+    	month4 = 12;
+    }
+    var month5 = month4 -1;
+    if(month5 == 0){
+    	month5 = 12;
+    }
+	
+    console.log(month);
+    console.log(month1);
+    console.log(month2);
+	 $('#mydate').datepicker( {
+	        changeMonth: true,
+	        changeYear: true,
+	        showButtonPanel: true,
+	        monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+	        dateFormat: 'yymm',
+	        onClose: function(dateText, inst) { 
+	            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+	            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+	            $(this).datepicker('setDate', new Date(year, month, 1));
+	        }
+	    });
+	 
+	 var context = document
+     .getElementById('myChart')
+     .getContext('2d');
+ var myChart = new Chart(context, {
+     type: 'line', // 차트의 형태
+     data: { // 차트에 들어갈 데이터
+         labels: [
+             //x 축
+            month5 + "월", month4 + "월", month3 + "월", month2 + "월", month1 + "월", month + "월"
+         ],
+         datasets: [
+             { //데이터
+                 label: '여자 회원', //차트 제목
+                 fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+                 data: [
+                     ${chartResult['prevcount5f']},
+                     ${chartResult['prevcount4f']},
+                     ${chartResult['prevcount3f']},
+                     ${chartResult['prevcount2f']},
+                     ${chartResult['prevcount1f']},
+                     ${chartResult['nowcountf']}
+                     //x축 label에 대응되는 데이터 값
+                 ],
+                 backgroundColor: [
+                     //색상
+                     'rgba(255, 99, 132, 0.2)',
+                     'rgba(54, 162, 235, 0.2)',
+                     'rgba(255, 206, 86, 0.2)',
+                     'rgba(75, 192, 192, 0.2)',
+                     'rgba(153, 102, 255, 0.2)',
+                     'rgba(255, 159, 64, 0.2)'
+                 ],
+                 borderColor: [
+                     //경계선 색상
+                     'rgba(255, 99, 132, 1)',
+                     'rgba(54, 162, 235, 1)',
+                     'rgba(255, 206, 86, 1)',
+                     'rgba(75, 192, 192, 1)',
+                     'rgba(153, 102, 255, 1)',
+                     'rgba(255, 159, 64, 1)'
+                 ],
+                 borderWidth: 1 //경계선 굵기
+             } ,
+             { //데이터
+                 label: '남자 회원', //차트 제목
+                 fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+                 data: [
+                     ${chartResult['prevcount5m']},
+                     ${chartResult['prevcount4m']},
+                     ${chartResult['prevcount3m']},
+                     ${chartResult['prevcount2m']},
+                     ${chartResult['prevcount1m']},
+                     ${chartResult['nowcountm']}
+                	 //x축 label에 대응되는 데이터 값
+                 ],
+                 backgroundColor: [
+                     //색상
+                     'rgba(102, 204, 255, 0.2)',
+                     'rgba(54, 162, 235, 0.2)',
+                     'rgba(255, 206, 86, 0.2)',
+                     'rgba(75, 192, 192, 0.2)',
+                     'rgba(153, 102, 255, 0.2)',
+                     'rgba(255, 159, 64, 0.2)'
+                 ],
+                 borderColor: [
+                     //경계선 색상
+                     'rgba(102, 204, 255, 1)',
+                     'rgba(54, 162, 235, 1)',
+                     'rgba(255, 206, 86, 1)',
+                     'rgba(75, 192, 192, 1)',
+                     'rgba(153, 102, 255, 1)',
+                     'rgba(255, 159, 64, 1)'
+                 ],
+                 borderWidth: 1 //경계선 굵기
+             } 
+         ]
+     },
+     options: {
+         scales: {
+             yAxes: [
+                 {
+                     ticks: {
+                         beginAtZero: true
+                     }
+                 }
+             ]
+         }
+     }
+ });
 });
 
 function fn_today(){
@@ -133,13 +258,14 @@ function getCurrentDate(){
 	
 	<!-- 본문 시작 -->
 	<section class="classes spad" style="visibility: visible; animation-name: fadeIn;">
+		
 		<div class="container">
-			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerPermitList.do'" >김김김 트레이너</h3>
+			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerPermitList.do'" >나의 트레이너 정보</h3>
 			<br>
         	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> 
-				<img src="./resources/img/common/onlineclass.png" style="width: 40px;height: 40px;">
+				<img src="./resources/img/common/onlineclass.png" style="width: 40px;height: 40px;" onclick="location.href='myClassInfo.do'">
 	            <span id="anim-number-pizza" class="counter-number"></span> 
 	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000" 
 	            	onclick="location.href='trainerPermitList.do?selStatus=A&selIdentity=&selDate=&searchKeyword=' " style="cursor: pointer">${todayNumberList.statusA }</span>
@@ -159,7 +285,7 @@ function getCurrentDate(){
             
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin-small text-center counter-section wow fadeInUp xs-margin-bottom-ten animated" data-wow-duration="900ms" style="visibility: visible; animation-duration: 900ms; animation-name: fadeInUp;"> 
-            	<img src="./resources/img/common/money1.png" style="width: 40px;height: 40px;">
+            	<img src="./resources/img/common/money1.png" style="width: 40px;height: 40px;" onclick="location.href='classAccountInfo.do'">
             	<span class="timer counter alt-font appear" data-to="810" data-speed="7000" 
     	        	onclick="location.href='trainerPermitList.do?selStatus=C&selIdentity=&selDate=&searchKeyword=' " 
 	            	style="cursor: pointer">${todayNumberList.statusC }</span> 
@@ -169,7 +295,7 @@ function getCurrentDate(){
             
             <!-- counter -->
             <div class="col-md-3 col-sm-6 text-center counter-section wow fadeInUp animated" data-wow-duration="1200ms" style="visibility: visible; animation-duration: 1200ms; animation-name: fadeInUp;"> 
-            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;" onclick="location.href='chatAccountInfo.do'">
+            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;">
             	<span class="timer counter alt-font appear" data-to="600" data-speed="7000" onclick="fn_today()" style="cursor: pointer">${todayNumberList.statusDate }</span> 
             	<p class="counter-title" style="margin-top: 10px;">상담 정산 내역</p>
             </div> 
@@ -178,98 +304,103 @@ function getCurrentDate(){
 
 						
 			<!-- 2 -->
-		    <div class="classes__filter" style="margin-bottom: 0px;">
+		    <div class="classes__filter" style="margin-bottom: 0px;padding-bottom:0px">
 			<br>
                <div class="row">
+               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">최근 6개월 간 구매 현황</span>
                    <div class="col-lg-12">
+                   		<div style="width: 900px; height: 550px;">
+							<!--차트가 그려질 부분-->
+						<canvas id="myChart"></canvas>
+						</div>
+		
+                   		
                    		<!-- 검색조건 form 시작 -->
-                       <form action="trainerPermitList.do" method="get">
-                           <div class="class__filter__select" style="width: 150px;">
-                               <p>상태</p>
-                               <select name="selStatus" id="selStatus">
-                                   <option value="">전체</option>
-                                   <option value="A" <c:if test="${selStatus eq 'A'}">selected</c:if>	>신청</option>
-                                   <option value="B" <c:if test="${selStatus eq 'B'}">selected</c:if>	>검토</option>
-                                   <option value="C" <c:if test="${selStatus eq 'C'}">selected</c:if>	>보완</option>
-                                   <option value="D" <c:if test="${selStatus eq 'D'}">selected</c:if>	>반려</option>
-                                   <option value="E" <c:if test="${selStatus eq 'E'}">selected</c:if>	>승인</option>
-                               </select>
-                           </div>
-                           <div class="class__filter__select" style="width: 150px;">
-                               <p>검색조건</p>
-                               <select name="selIdentity">
-                                   <option value="">전체</option>
-                                   <option value="이름"  <c:if test="${selIdentity eq '이름'}">selected</c:if>		>이름</option>
-                                   <option value="아이디"	<c:if test="${selIdentity eq '아이디'}">selected</c:if>	>아이디</option>
-                               </select>
-                           </div>
-                           <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
-							<p>처리일자</p>
-							<input type="text" placeholder="검색" id="mydate" style="width: 100%;" 
-								<c:if test="${not empty selDate}">value=${selDate }</c:if>
-								name="selDate" id="selDate">
-						</div>
-						
-						<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
-							<p>검색어</p>
-							<input type="text" placeholder="검색" style="width: 100%;" 
-								<c:if test="${not empty searchKeyword}">value=${searchKeyword }</c:if>
-								name="searchKeyword" id="searchKeyword">
+                   		
+                       <form method="get" id="frm" action="myClassInfo.do#location123">
+							<div class="class__filter__select">
+								<p>Categories:</p>
+								<select name="selCate" id="selCate">
+									<option value="">카테고리</option>
+									<option value="헬스" 
+										<c:if test="${selCate eq '헬스'}">selected</c:if>>헬스</option>
+									<option value="필라테스"
+										<c:if test="${selCate eq '필라테스'}">selected</c:if>>필라테스</option>
+									<option value="요가"
+										<c:if test="${selCate eq '요가'}">selected</c:if>>요가</option>
+									<option value="맨몸운동"
+										<c:if test="${selCate eq '맨몸운동'}">selected</c:if>>맨몸운동</option>
+								</select>
+							</div>
+							<div class="class__filter__select">
+								<p>Level:</p>
+								<select name="selLev" id="selLev"> 
+									<option value="">전체</option>
+									<option value="조회순"
+										<c:if test="${selLev eq '조회순'}">selected</c:if>>조회순</option>
+									<option value="좋아요순"
+										<c:if test="${selLev eq '좋아요순'}">selected</c:if>>좋아요순</option>
+									<option value="댓글순"
+										<c:if test="${selLev eq '댓글순'}">selected</c:if>>댓글순</option>
+								</select>
+							</div>
+							<div class="class__filter__input">
+								<p>Search:</p>
+								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${option.keyword}">
+							</div>
 							<div class="class__filter__btn">
-                               <button><i class="fa fa-search"></i></button>
-                           </div>
-						</div>
-                       	</form>
+								<button type="submit" style="cursor:pointer;">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+							<span id="location123"></span>
+						</form>
                    	</div>
                	</div>
             </div>
-			
 		    <div class="classes__filter">
+			<span style="font-weight: bold; font-size: 1.1em;">총 ${totalCount}건</span>
 			<table class="table" style="text-align: center;">
 			<thead>
 				<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
 						<th scope="col">번호</th>
-						<th scope="col">아이디</th>
-						<th scope="col">이름</th>
-						<th scope="col">신청일자</th>
-						<th scope="col">처리일자</th>
-						<th scope="col">상태</th>
+						<th scope="col">강의사진</th>
+						<th scope="col">강의명</th>
+						<th scope="col">가격</th>
+						<th scope="col">등록일</th>
+						<th scope="col">활성화여부</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="list" items="${processList}" varStatus="status">
-					<tr <c:if test="${list.processStatus eq 'A' }">onclick="fn_change(${list.processSeq })"</c:if>
-						onclick="location.href='trainerPermitDetail.do?processSeq=${list.processSeq}' ">
-						<td>${list.processSeq }</td>
-						<td>${list.memberId }</td>
-						<td>${list.memberName }</td>
-						<td>${fn:substring(list.inDate,0,10)}</td>
-						<c:if test="${empty list.upDate}">
-							<td>-</td>
-						</c:if>
-						<c:if test="${not empty list.upDate}">
-							<td>${fn:substring(list.upDate,0,10)}</td>
-						</c:if>
+					<c:forEach var="result" items="${classList}" varStatus="status">
+					<tr>
+						<td>${result.rn}</td>
+						<td><img src="${result.filePath}" style="width: 20px; height: 20px"></td>
+						<td>${result.lessonTitle}</td>
+						<td>${result.lessonPrice}원</td>
+						<td>${result.inDate}</td>
 						<td>
-							<c:if test="${list.processStatus eq 'A'}"><span style="background-color: #007bff;color: white;font-weight: bold;padding: 7px;">신청</span></c:if>
-							<c:if test="${list.processStatus eq 'B'}"><span style="background-color: #17a2b8;color: white;font-weight: bold;padding: 7px;">검토</span></c:if>
-							<c:if test="${list.processStatus eq 'C'}"><span style="background-color: #ffc107;color: darkslategray;font-weight: bold;padding: 7px;">보완</span></c:if>
-							<c:if test="${list.processStatus eq 'D'}"><span style="background-color: #c82333;color: white; font-weight: bold;padding: 7px;">반려</span></c:if>
-							<c:if test="${list.processStatus eq 'E'}"><span style="background-color: #28a745;color: white;font-weight: bold;padding: 7px;">승인</span></c:if>
+						
 						</td>
 					</tr>
 					</c:forEach>
 				</tbody>
 			</table>
+			<br>
+			<div style="width: 100%;text-align: right;padding-right: 20px;font-weight: bold;">
 			
+			<c:set var="total" value="${totalCount * 3200}" />
+			<fmt:formatNumber value="${totalCount}" type="number" var="numberType" />
 			
-			
+			<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 총 상담 건수 : ${totalCount}건<br></span>
+			<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 정산금액(예정) : ${total}원</span>
+			</div>
 			
 				<!-- 페이징처리 -->
             	<div class="col-lg-12">
 					<div class="classes__pagination">
 					<c:if test="${pageMaker.prev}">
-						<a href="trainerPermitList.do${pageMaker.makeQueryAdminChat(pageMaker.startPage - 1)}">
+						<a href="myClassInfo.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">
 							<span class="arrow_carrot-left"></span>
 						</a>
 					</c:if> 
@@ -277,17 +408,14 @@ function getCurrentDate(){
 					<c:set var="page" value="${pageMaker.cri.page}"/>
 					<c:set var="idx" value="${idx}"/>
 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-            			<a href="trainerPermitList.do${pageMaker.makeQueryAdminChat(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+            			<a href="myClassInfo.do${pageMaker.makeQuery(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
 					</c:forEach>
 					
 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-						<a href="trainerPermitList.do${pageMaker.makeQueryAdminChat(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+						<a href="myClassInfo.do${pageMaker.makeQuery(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
 					</c:if>
 					</div>
 				</div>
-			
-			
-			
 			
 			
 			</div>
