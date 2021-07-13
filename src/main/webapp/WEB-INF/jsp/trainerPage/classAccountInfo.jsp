@@ -13,6 +13,8 @@
 <script src="./resources/datepicker/jquery-3.5.1.js"></script>
 <script src="./resources/datepicker/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <style type="text/css">
 .counter-section i {
     display: block;
@@ -72,7 +74,12 @@
 }
 .ui-datepicker-calendar {
     display: none;
-}    ​
+}    
+  .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+  .toggle.ios .toggle-handle { border-radius: 20px; }
+
+  .toggle.android { border-radius: 0px;}
+  .toggle.android .toggle-handle { border-radius: 0px; }
 </style>
 <script type="text/javascript">
 function fn_change(processSeq){
@@ -295,7 +302,7 @@ function getCurrentDate(){
             
             <!-- counter -->
             <div class="col-md-3 col-sm-6 text-center counter-section wow fadeInUp animated" data-wow-duration="1200ms" style="visibility: visible; animation-duration: 1200ms; animation-name: fadeInUp;"> 
-            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;">
+            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;" onclick="location.href='chatAccountInfo.do'">
             	<span class="timer counter alt-font appear" data-to="600" data-speed="7000" onclick="fn_today()" style="cursor: pointer">${todayNumberList.statusDate }</span> 
             	<p class="counter-title" style="margin-top: 10px;">상담 정산 내역</p>
             </div> 
@@ -317,70 +324,52 @@ function getCurrentDate(){
                    		
                    		<!-- 검색조건 form 시작 -->
                    		
-                       <form method="get" id="frm" action="myClassInfo.do#location123">
-							<div class="class__filter__select">
-								<p>Categories:</p>
-								<select name="selCate" id="selCate">
-									<option value="">카테고리</option>
-									<option value="헬스" 
-										<c:if test="${selCate eq '헬스'}">selected</c:if>>헬스</option>
-									<option value="필라테스"
-										<c:if test="${selCate eq '필라테스'}">selected</c:if>>필라테스</option>
-									<option value="요가"
-										<c:if test="${selCate eq '요가'}">selected</c:if>>요가</option>
-									<option value="맨몸운동"
-										<c:if test="${selCate eq '맨몸운동'}">selected</c:if>>맨몸운동</option>
-								</select>
-							</div>
-							<div class="class__filter__select">
-								<p>Level:</p>
-								<select name="selLev" id="selLev"> 
-									<option value="">전체</option>
-									<option value="조회순"
-										<c:if test="${selLev eq '조회순'}">selected</c:if>>조회순</option>
-									<option value="좋아요순"
-										<c:if test="${selLev eq '좋아요순'}">selected</c:if>>좋아요순</option>
-									<option value="댓글순"
-										<c:if test="${selLev eq '댓글순'}">selected</c:if>>댓글순</option>
-								</select>
-							</div>
-							<div class="class__filter__input">
-								<p>Search:</p>
-								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${option.keyword}">
-							</div>
-							<div class="class__filter__btn">
-								<button type="submit" style="cursor:pointer;">
-									<i class="fa fa-search"></i>
-								</button>
-							</div>
-							<span id="location123"></span>
-						</form>
+                       <form action="classAccountInfo.do" method="get">
+                           <div id="searchDiv" class="class__filter__input" style="width: 300px;text-align: left;">
+							<p style="margin-right: 140px;">날짜 검색</p>
+							<input type="text" placeholder="검색" id="mydate" style="width: 200px;display: left;margin-right: 10px;" 
+								<c:if test="${not empty selDate}">value=${selDate}</c:if>
+								name="selDate" id="selDate">
+							<div class="class__filter__btn" style="display: left;width: 50px;margin-right: 680px;">
+                               <button><i class="fa fa-search"></i></button>
+                           </div>
+						</div>
+						
+                       	</form>
                    	</div>
                	</div>
             </div>
 		    <div class="classes__filter">
 			<span style="font-weight: bold; font-size: 1.1em;">총 ${totalCount}건</span>
+			
+			
+			<!-- 테스트 --> 
+<!-- 			<input type="checkbox" checked data-toggle="toggle" data-style="ios">			 -->
+			
+			
+			
 			<table class="table" style="text-align: center;">
 			<thead>
 				<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
 						<th scope="col">번호</th>
-						<th scope="col">강의사진</th>
+						<th scope="col">고객아이디</th>
 						<th scope="col">강의명</th>
 						<th scope="col">가격</th>
-						<th scope="col">등록일</th>
-						<th scope="col">활성화여부</th>
+						<th scope="col">구매일</th>
+						<th scope="col">정산여부</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="result" items="${classList}" varStatus="status">
+					<c:forEach var="result" items="${classAccountList}" varStatus="status">
 					<tr>
 						<td>${result.rn}</td>
-						<td><img src="${result.filePath}" style="width: 20px; height: 20px"></td>
+						<td>${result.inUserId}</td>
 						<td>${result.lessonTitle}</td>
-						<td>${result.lessonPrice}원</td>
+						<td>${result.lessonPrice}</td>
 						<td>${result.inDate}</td>
 						<td>
-						
+						<c:if test="${result.classAccountFlag eq 'N'}"><span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">미정산</span></c:if>
+						<c:if test="${result.classAccountFlag eq 'Y'}"><span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;padding-left:8px;">&nbsp;&nbsp;정산&nbsp;&nbsp;</span></c:if>
 						</td>
 					</tr>
 					</c:forEach>
@@ -400,7 +389,7 @@ function getCurrentDate(){
             	<div class="col-lg-12">
 					<div class="classes__pagination">
 					<c:if test="${pageMaker.prev}">
-						<a href="myClassInfo.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">
+						<a href="classAccountInfo.do${pageMaker.makeQueryChatList(pageMaker.startPage - 1)}">
 							<span class="arrow_carrot-left"></span>
 						</a>
 					</c:if> 
@@ -408,11 +397,11 @@ function getCurrentDate(){
 					<c:set var="page" value="${pageMaker.cri.page}"/>
 					<c:set var="idx" value="${idx}"/>
 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-            			<a href="myClassInfo.do${pageMaker.makeQuery(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+            			<a href="classAccountInfo.do${pageMaker.makeQueryChatList(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
 					</c:forEach>
 					
 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-						<a href="myClassInfo.do${pageMaker.makeQuery(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+						<a href="classAccountInfo.do${pageMaker.makeQueryChatList(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
 					</c:if>
 					</div>
 				</div>
