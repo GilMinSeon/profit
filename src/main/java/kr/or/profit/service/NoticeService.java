@@ -21,6 +21,10 @@ public interface NoticeService {
 
 	String noticeFileCnt() throws Exception;
 
+	Map<String, Object> qnaProfileDownload(Map<String, Object> map) throws Exception;
+
+	int noticeModDelFile(Map<String, Object> map) throws Exception;
+
 
 
 }

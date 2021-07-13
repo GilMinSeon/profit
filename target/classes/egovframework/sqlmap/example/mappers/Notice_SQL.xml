@@ -44,21 +44,22 @@
 <!-- 	글 상세보기 -->
 	<select id="noticeDetail" resultType="egovMap">
 		SELECT
-		    COMMUNITY_SEQ,
-		    COMMON_SEQ,
-		    COMMUNITY_CATEGORY_SEQ,
-		    FILE_SEQ,
-		    TO_CHAR(COMMON_CONTENT) COMMON_CONTENT,
-		    COMMON_TITLE,
-		    COMMON_HIT,
-		    COMMON_DEL_FLAG,
-		    IN_USER_ID,
-		    TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE,
-		    UP_USER_ID,
-		    TO_CHAR(UP_DATE, 'YYYY-MM-DD') IN_DATE
+		    A.COMMUNITY_SEQ,
+		    A.COMMON_SEQ,
+		    C.FILE_REAL_NAME,
+		    C.FILE_SEQ,
+		    TO_CHAR(A.COMMON_CONTENT) COMMON_CONTENT,
+		    A.COMMON_TITLE,
+		    A.COMMON_HIT,
+		    A.COMMON_DEL_FLAG,
+		    A.IN_USER_ID,
+		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
+		    A.UP_USER_ID,
+		    TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') IN_DATE
 
 		FROM
-		    COMMUNITY
+		    COMMUNITY A
+            LEFT JOIN ATTACH_FILE C ON (A.FILE_SEQ = C.FILE_SEQ)
 		WHERE
 		    COMMON_SEQ = '7'
 		AND
@@ -82,17 +83,17 @@
 		VALUES
 			(
 				(SELECT
-                    COUNT(*)
-                FROM
-                    COMMUNITY)+1,
+			        NVL(MAX(TO_NUMBER(COMMUNITY_SEQ)),0) AS COMMUNITY_SEQ
+			    FROM
+			        COMMUNITY)+1,
 				'7',
-				#{title},
+				#{tumnalil_img},
 				#{contents},
 				'N',
 				'0',
-				'1',
+				#{memberId},
 				SYSDATE,
-				'1',
+				#{memberId},
 				SYSDATE
 						)
 	</insert>
@@ -102,6 +103,7 @@
 		UPDATE
 		    COMMUNITY
 		SET
+			FILE_SEQ 		= #{fileSeq},
 		    COMMON_TITLE    = #{title},
 		    COMMON_CONTENT  = #{contents},
 		    UP_DATE         = SYSDATE
@@ -170,4 +172,29 @@
 
 	</select>
 
+
+	<!-- 	파일 다운로드 -->
+	<select id="qnaProfileDownload" resultType="egovMap">
+		SELECT
+		    B.FILE_REAL_NAME,
+			b.FILE_SAVE_NAME,
+		    B.FILE_PATH
+		FROM
+		    COMMUNITY A
+		    LEFT JOIN ATTACH_FILE B ON (A.FILE_SEQ = B.FILE_SEQ)
+		WHERE
+		    A.COMMUNITY_SEQ = #{communitySeq}
+	</select>
+
+<!-- 	파일 삭제 -->
+	<update id="noticeModDelFile" parameterType="hashMap">
+		UPDATE
+		    ATTACH_FILE
+		SET
+		    FILE_SAVE_NAME = '파일없음',
+		    FILE_REAL_NAME = '파일없음',
+		    FILE_PATH = '파일없음'
+		WHERE
+		    FILE_SEQ = #{fileSeq}
+	</update>
 </mapper>
