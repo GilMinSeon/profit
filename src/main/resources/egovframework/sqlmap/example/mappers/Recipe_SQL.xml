@@ -292,16 +292,16 @@
 		    A.UP_USER_ID,
 		    A.UP_DATE
 		FROM
-		    member a, (
+	   	 MEMBER A, (
 		                SELECT
 		                    A.FILE_PATH
 		                FROM
-		                    ATTACH_FILE A, member B
+		                    ATTACH_FILE A, MEMBER B
 		                WHERE
 		                    A.FILE_SEQ = B.FILE_SEQ
 		                AND
 		                   B.member_ID = #{memberId}
-		                ) b
+		                ) B
 		WHERE
 		    A.member_id = #{memberId}
 	</select>

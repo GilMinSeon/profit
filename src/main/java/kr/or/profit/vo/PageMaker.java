@@ -132,6 +132,20 @@ public class PageMaker {
 		return uriComponents.toUriString();
 	}
 	
+	//관리자 온라인클래스 결제/환물 목록 페이징
+		public String makeQueryAdminLessonPayList(int page) {
+			UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page).build();
+
+			return uriComponents.toUriString();
+	}
+		
+	//관리자 온라인클래스 결제/환물 목록 페이징
+			public String makeQueryAdminTicketPayList(int page) {
+				UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page).build();
+
+				return uriComponents.toUriString();
+	}
+	
 	
 	
 	

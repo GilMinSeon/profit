@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="en">
 <head>
-<!-- include libraries(jQuery, bootstrap) -->
+<title>bulletin_write</title>
+
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -17,7 +22,7 @@
 <link rel="stylesheet" href="./resources/summernote/summernote-lite.css">
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-<title>bulletin_write</title>
+
 <style type="text/css">
 #hover_btn {
 	font-size: 14px;
@@ -38,6 +43,7 @@
 </style>
 
 <script type="text/javascript">
+	//섬머노트
 	$(function() {
 		$('#loading').hide();
 		$('.summernote').summernote({
@@ -53,11 +59,9 @@
 					}
 				}
 			}
-
 		});
-
 	})
-
+	//파일업로드
 	function sendFile(file, el) {
 		var form_data = new FormData();
 		form_data.append('file', file);
@@ -67,7 +71,7 @@
 			url : 'qnaProfileImage.do',
 			cache : false,
 			contentType : false,
-			enctype : 'multipart/form-data',
+			enctype : 'text',
 			processData : false,
 			beforeSend : function() {
 				$('#loading').show();
@@ -81,6 +85,48 @@
 				}, 5000);
 			}
 		});
+	}
+
+	//글 등록
+	function fn_boardAdd() {
+		var title = $("input[name='title']").val();
+		var contents = $("textarea[name='contents']").val();
+		var file = $("input[name='file']").val();
+
+		if (!title) {
+			alert("제목을 입력해주세요");
+			return;
+		}
+		if (!contents) {
+			alert("내용을 입력해주세요");
+			return;
+		}
+
+		var formData = new FormData($('#form')[0]);
+
+		$.ajax({
+			type : 'post',
+			url : 'noticeAdd.do',
+			data : formData,
+			processData : false,
+			contentType : false,
+			async : false,
+			dataType : "text",
+			success : function(data) {
+				if (data == "ok") {
+					alert("글이 정상적으로 등록되었습니다.");
+					location.href = 'noticeList.do';
+				} else if (data == "ng") {
+					alert("등록이 실패하였습니다. 다시 시도해주세요");
+				} else {
+					alert("등록이 실패하였습니다. 다시 시도해주세요");
+				}
+			},
+			error : function(error) {
+				alert("등록이 실패하였습니다. 다시 시도해 주세요.");
+			}
+
+		})
 	}
 </script>
 </head>
@@ -105,11 +151,17 @@
 		<main role="main" class="container">
 		<h3>👨‍🎓공지사항을 입력 해주세요</h3>
 		<br>
-		<form name="form" method="POST" action="/noticeAdd.do" enctype="multipart/form-data">
+		<form id="form" name="form" enctype="multipart/form-data">
+			<!-- 		<form id="form" name="form" enctype="multipart/form-data" action="/noticeAdd.do"> -->
 			<div class="pt-1"></div>
-			<input type="text" name="title" placeholder="제목을 입력하세요" style="border-radius: 5px; width: 100%; padding: 5px;">
-
+			<label>
+				<p style="font-weight: bold; margin-bottom: 0">
+					제목<span style="color: red;"> *</span>
+				</p>
+			</label>
+			<input type="text" name="title" placeholder="제목을 입력하세요" style="width: 99%; border: none; border-bottom: 1px solid #D5D4D4; height: 54px; font-size: 15px;">
 			<div class="pt-1">
+				<br>
 				<textarea class="summernote" id="summernote" name="contents"></textarea>
 				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">
 					<img id="loading-image" src="./resources/img/common/loading.gif" alt="Loading..." />
@@ -117,14 +169,23 @@
 			</div>
 			<br>
 			<div>
-				<input type="file" id="file" name="file" value="파일첨부" >
+				<input type="file" id="file" name="file" value="파일첨부">
 			</div>
 			<div class="pt-1 text-right">
-				<button id="hover_btn" class="btn btn btn-success" type="submit" style="width: 10%; padding: 5px;">등록</button>
+				<button id="hover_btn" class="btn btn btn-success" type="button" style="width: 10%; padding: 5px;" onclick="fn_boardAdd()">등록</button>
+				<!-- 				<button id="hover_btn" class="btn btn btn-success" type="submit" style="width: 10%; padding: 5px;">등록</button> -->
 			</div>
 		</form>
 		</main>
 	</section>
+
+	<!-- Js Plugins -->
+<!-- 	<script src="./resources/js/jquery-3.3.1.min.js"></script> -->
+<!-- 	<script src="./resources/js/bootstrap.min.js"></script> -->
+<!-- 	<script src="./resources/js/jquery.nice-select.min.js"></script> -->
+<!-- 	<script src="./resources/js/jquery.barfiller.js"></script> -->
+<!-- 	<script src="./resources/js/jquery.slicknav.js"></script> -->
+<!-- 	<script src="./resources/js/owl.carousel.min.js"></script> -->
+<!-- 	<script src="./resources/js/main.js"></script> -->
 </body>
 </html>
-

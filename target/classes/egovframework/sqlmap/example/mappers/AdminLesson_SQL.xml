@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="kr.or.profit.mapper.AdminLessonMapper">
+
+    <select id="selectAdminLessonList" resultType="egovMap" parameterType="Criteria">
+    	select rm, lesson_seq, lesson_title, lesson_private_flag,
+		lesson_category_name, member_id, member_name, member_gubun,
+		 in_date, buy_lesson_seq
+		from
+		(
+		select rownum as rm, lesson_seq, lesson_title, lesson_private_flag,
+		lesson_category_name, member_id, member_name, member_gubun, in_date, buy_lesson_seq
+		from
+		(
+		select a.lesson_seq,
+               case when length(a.lesson_title) > 20 then substr(a.lesson_title, 0, 15) || '...' else a.lesson_title end as lesson_title,
+               a.lesson_private_flag,
+               b.lesson_category_name,
+               c.member_id,
+               c.member_name,
+               c.member_gubun,
+               a.in_date,
+               d.buy_lesson_seq
+            from lesson a
+            left join lesson_category b on
+            (a.lesson_category_seq = b.lesson_category_seq)
+            left join member c on
+            (a.in_user_id = c.member_id)
+            left join buy_lesson d on
+            (a.lesson_seq = d.lesson_seq)
+		where 1=1 
+		<if test="selStatus == '활성화'">
+		    and a.lesson_private_flag = 'N'
+		</if>
+		<if test="selStatus == '비활성화'">
+		    and a.lesson_private_flag = 'Y'
+		</if>
+		<if test="selDate != null and selDate !=''">
+		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selIdentity == '아이디'">
+		    and a.in_user_id like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '이름'">
+		    and c.member_name like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '전체'">
+		    and (c.member_name like '%' || #{searchKeyword} || '%' or
+		    a.in_user_id like '%' || #{searchKeyword} || '%'
+		    )
+		</if>
+		)
+		)
+		where rm between #{rowStart} and #{rowEnd}
+		order by in_date desc
+    </select>
+    
+	<select id="selectAdminLessonCnt" parameterType="Criteria" resultType="int">
+	  	select 
+		count(*)
+		from
+		(
+		select a.lesson_seq,
+               a.lesson_title,
+               a.lesson_private_flag,
+               b.lesson_category_name,
+               c.member_id,
+               c.member_name,
+               c.member_gubun,
+               a.in_date,
+               d.buy_lesson_seq
+            from lesson a
+            left join lesson_category b on
+            (a.lesson_category_seq = b.lesson_category_seq)
+            left join member c on
+            (a.in_user_id = c.member_id)
+            left join buy_lesson d on
+            (a.lesson_seq = d.lesson_seq)
+		where 1=1 
+		<if test="selStatus == '활성화'">
+		    and a.Lesson_Private_Flag = 'N'
+		</if>
+		<if test="selStatus == '비활성화'">
+		    and a.Lesson_Private_Flag = 'Y'
+		</if>
+		<if test="selDate != null and selDate !=''">
+		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selIdentity == '아이디'">
+		    and a.in_user_id like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '이름'">
+		    and c.member_name like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '전체'">
+		    and (c.member_name like '%' || #{searchKeyword} || '%' or
+		    a.in_user_id like '%' || #{searchKeyword} || '%'
+		    )
+		</if>
+		)
+		order by in_date desc
+	    
+	</select>
+	
+	
+	<!-- 강의 수정하기 -->
+    <update id="updAdminLesson" parameterType="LessonVO">
+			UPDATE LESSON
+			SET LESSON_PRIVATE_FLAG = #{lessonPrivateFlag},
+				UP_USER_ID = #{memberId},
+                UP_DATE = SYSDATE
+            WHERE LESSON_SEQ = #{lessonSeq}
+	</update>
+	
+<!--     <select id="selectList" resultType="egovMap" parameterType="String"> -->
+<!--     	select *  -->
+<!--     	from buy_lesson  -->
+<!--     	where lesson_seq= #{lessonSeq}  -->
+<!--     	and lesson_refund_flag = 'N' -->
+<!--     </select> -->
+    
+    
+<!--     관리자 비활성화 환불 -->
+    <update id="updAdminRefund" parameterType="BuyLessonVO">
+            update buy_lesson
+			set lesson_refund_flag = 'Y',
+			    up_user_id= #{memberId},
+			    up_date= sysdate
+			where lesson_seq =  #{lessonSeq}
+			and lesson_refund_flag = 'N'
+	</update>
+    
+    
+	
+</mapper>

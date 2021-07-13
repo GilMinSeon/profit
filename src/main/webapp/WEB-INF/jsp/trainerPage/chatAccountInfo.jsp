@@ -265,7 +265,7 @@ function getCurrentDate(){
         	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> 
-				<img src="./resources/img/common/onlineclass.png" style="width: 40px;height: 40px;">
+				<img src="./resources/img/common/onlineclass.png" style="width: 40px;height: 40px;" onclick="location.href='myClassInfo.do'">
 	            <span id="anim-number-pizza" class="counter-number"></span> 
 	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000" 
 	            	onclick="location.href='trainerPermitList.do?selStatus=A&selIdentity=&selDate=&searchKeyword=' " style="cursor: pointer">${todayNumberList.statusA }</span>
@@ -285,7 +285,7 @@ function getCurrentDate(){
             
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin-small text-center counter-section wow fadeInUp xs-margin-bottom-ten animated" data-wow-duration="900ms" style="visibility: visible; animation-duration: 900ms; animation-name: fadeInUp;"> 
-            	<img src="./resources/img/common/money1.png" style="width: 40px;height: 40px;">
+            	<img src="./resources/img/common/money1.png" style="width: 40px;height: 40px;" onclick="location.href='classAccountInfo.do'">
             	<span class="timer counter alt-font appear" data-to="810" data-speed="7000" 
     	        	onclick="location.href='trainerPermitList.do?selStatus=C&selIdentity=&selDate=&searchKeyword=' " 
 	            	style="cursor: pointer">${todayNumberList.statusC }</span> 
@@ -307,7 +307,7 @@ function getCurrentDate(){
 		    <div class="classes__filter" style="margin-bottom: 0px;padding-bottom:0px">
 			<br>
                <div class="row">
-               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">최근 7개월 간 수익 현황</span>
+               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">최근 6개월 간 구매 현황</span>
                    <div class="col-lg-12">
                    		<div style="width: 900px; height: 550px;">
 							<!--차트가 그려질 부분-->
@@ -347,7 +347,7 @@ function getCurrentDate(){
 				<tbody>
 					<c:forEach var="result" items="${chatAccountList}" varStatus="status">
 					<tr>
-						<td>${status.count}</td>
+						<td>${result.rn}</td>
 						<td>${result.chattingMemberId}</td>
 						<td>${result.chatDate}</td>
 						<td>${result.chatTime}</td>
