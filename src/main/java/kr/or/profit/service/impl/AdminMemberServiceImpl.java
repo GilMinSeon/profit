@@ -73,5 +73,21 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	public int updateProcessStatus(ProcessVO vo) throws Exception {
 		return adminMemberMapper.updateProcessStatus(vo);
 	}
+
+	@Override
+	public int updateAdminMemo(ProcessVO vo) throws Exception {
+		return adminMemberMapper.updateAdminMemo(vo);
+	}
+
+	@Override
+	public void insertTrainerInfo(ProcessVO vo) throws Exception {
+		adminMemberMapper.insertTrainerInfo(vo);
+	}
+
+	@Override
+	public void updateGubunTrainer(ProcessVO vo) throws Exception {
+		adminMemberMapper.updateGubunTrainer(vo);
+		
+	}
 	
 }

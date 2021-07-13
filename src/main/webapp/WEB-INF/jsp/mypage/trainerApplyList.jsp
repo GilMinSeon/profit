@@ -177,7 +177,7 @@ input:-webkit-autofill {
 							
 							
 							
-							<c:if test="${msg == 'yes' }">
+							<c:if test="${msg == 'yes' }" >
 							<!-- 여기부터가 신청 정보 있으면 보이는 곳 -->
 								
 
@@ -216,6 +216,7 @@ input:-webkit-autofill {
 																		</c:if>
 																	</div>
 																</li>
+																<c:if test="${status != 'D' }">
 																<li class="list-inline-item event-list">
 																	<div class="px-4">
 																		<div class="event-date bg-soft-danger text-danger" style="font-size: 16px;font-weight: 900">보완요청</div>
@@ -228,6 +229,24 @@ input:-webkit-autofill {
 																		</c:if>
 																	</div>
 																</li>
+																</c:if>
+																
+																<!-- 반려 -->
+																<c:if test="${status == 'D' }">
+																<li class="list-inline-item event-list">
+																	<div class="px-4">
+																		<div class="event-date bg-soft-danger text-danger" style="font-size: 16px;font-weight: 900">반려</div>
+																		<!-- <h5 class="font-size-16">Event Three</h5> -->
+																		<p class="text-muted"></p>
+																		<c:if test="${status == 'D' }">
+																		<div>
+																			<a href="#" class="btn btn-primary btn-sm">NOW</a>
+																		</div>
+																		</c:if>
+																	</div>
+																</li>
+																</c:if>
+																
 																<li class="list-inline-item event-list">
 																	<div class="px-4">
 																		<div class="event-date bg-soft-warning text-warning" style="font-size: 16px;font-weight: 900;">승인완료</div>
@@ -346,7 +365,29 @@ input:-webkit-autofill {
 													</div>
 												</div>
 											</div>
-
+											
+											<c:if test="${vo.processStatus eq 'C' || vo.processStatus eq 'D' }">
+											<!-- 결과사유 -->
+											<div class="col-lg-6 text-center mypage_myinfo"
+												style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
+												<div style="margin-bottom: 2px;">
+													<h5 style="display: inline; float: left; color: black;">결과사유</h5>
+													&nbsp;
+												</div>
+												<div class="row">
+													<div class="col-lg-12"></div>
+													<div class="col-lg-12 text-center">
+													
+														<textarea id="trainerCareer" name="trainerCareer"
+															style="background-color: #3f51b50d; color: black; margin-bottom: 20px; resize: none;"
+															placeholder="경력을 입력하세요">${vo.resultReason }
+															
+															</textarea>
+														
+													</div>
+												</div>
+											</div>
+											</c:if>
 
 
 											<div class="col-lg-6 text-center mypage_myinfo"
@@ -372,9 +413,9 @@ input:-webkit-autofill {
 										</form>
 
 									</div>
+								</c:if>
 								</div>
 								<!-- 여기부터가 신청 정보 있으면 보이는 곳  끝-->
-								</c:if>
 								
 								
 							</div>

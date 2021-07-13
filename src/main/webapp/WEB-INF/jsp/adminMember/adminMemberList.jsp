@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,17 +31,22 @@ $(document).ready(function(){
 .classes__filter form .class__filter__btn_re {
 	padding-right: 125px;
 }
+
+.table tr:hover {
+	background-color: #f8f6ff;
+}
+
 </style>
 <body>
 
 	<!-- Breadcrumb Begin -->
 	<section class="breadcrumb-option set-bg"
-		data-setbg="./resources/img/breadcrumb.jpg">
+		data-setbg="./resources/img/hero/hero-11.jpg" style="padding-bottom: 0px; padding-top: 70px;">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="breadcrumb__text">
-						<h2>회원관리</h2>
+						<!-- <h2>트레이너 승인</h2> -->
 
 					</div>
 				</div>
@@ -45,213 +54,109 @@ $(document).ready(function(){
 		</div>
 	</section>
 	<!-- Breadcrumb End -->
-
-	<!-- Blog Section Begin -->
-	<section class="blog spad">
+				
+	<section class="classes spad">
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-4 order-lg-1 order-2">
-					<div class="blog__sidebar">
-						<div class="blog__sidebar__categories">
-							<h4>카테고리</h4>
-							<ul>
-								<li><a href="trainerPermitList">회원조회</a></li>
-								<li><a href="adminMemberList">블랙리스트조회</a></li>
-							</ul>
-						</div>
-						<div class="blog__sidebar__recent">
-							<h4>최신글</h4>
-							<div class="blog__recent__item">
-								<div class="blog__recent__item__pic">
-									<img src="./resources/img/blog/br-1.jpg" alt="">
-								</div>
-								<div class="blog__recent__item__text">
-									<h6>09 Kinds Of Vegetables Protect The Liver</h6>
-									<span>MAR 05, 2019</span>
-								</div>
+			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='adminMemberList.do'">회원조회</h3>
+			<br>
+			    <div class="classes__filter" style="margin-bottom: 0px;">
+				<br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form action="adminChatList.do">
+                            <div class="class__filter__select" style="width: 150px;">
+                                <p>회원구분</p>
+                                <select name="selStatus">
+                                    <option <c:if test="${selStatus eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${selStatus eq '결제'}">selected</c:if>>일반회원</option>
+                                    <option <c:if test="${selStatus eq '환불'}">selected</c:if>>트레이너</option>
+                                    <option <c:if test="${selStatus eq '환불'}">selected</c:if>>블랙리스트</option>
+                                </select>
+                                
+                            </div>
+                            <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
+								<p>가입일</p>
+								<input type="text" name="selDate" value="${selDate}" placeholder="검색" id="mydate" style="width: 100%;">
 							</div>
-							<div class="blog__recent__item">
-								<div class="blog__recent__item__pic">
-									<img src="./resources/img/blog/br-2.jpg" alt="">
-								</div>
-								<div class="blog__recent__item__text">
-									<h6>Tips You To Balance Nutrition Meal Day</h6>
-									<span>MAR 05, 2019</span>
-								</div>
+							<div class="class__filter__select" style="width: 150px;">
+                                <p>검색조건</p>
+                                <select name="selIdentity">
+                                    <option <c:if test="${selIdentity eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${selIdentity eq '이름'}">selected</c:if> >이름</option>
+                                    <option <c:if test="${selIdentity eq '아이디'}">selected</c:if>>아이디</option>
+                                </select>
+                            </div>
+							<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
+								<p>검색어</p>
+								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;" value="${searchKeyword}">
+								<div class="class__filter__btn">
+                                <button><i class="fa fa-search"></i></button>
+                            </div>
 							</div>
-							<div class="blog__recent__item">
-								<div class="blog__recent__item__pic">
-									<img src="./resources/img/blog/br-3.jpg" alt="">
-								</div>
-								<div class="blog__recent__item__text">
-									<h6>4 Principles Help You Lose Weight With Vegetables</h6>
-									<span>MAR 05, 2019</span>
-								</div>
-							</div>
-						</div>
-						<div class="blog__sidebar__tags">
-							<h4>인기 검색어</h4>
-							<a href="#">Weight</a> <a href="#">Beauty</a> <a href="#">Yoga
-								Ball</a> <a href="#">Fruit</a> <a href="#">Healthy Food</a> <a
-								href="#">Lifestyle</a>
-						</div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+			<div class="classes__filter">
+			<table class="table" style="text-align: center;">
+				<thead>
+					<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
+						<th scope="col">번호</th>
+						<th scope="col">아이디</th>
+						<th scope="col">이름</th>
+						<th scope="col">성별</th>
+						<th scope="col">구분</th>
+						<th scope="col">닉네임</th>
+						<th scope="col">핸드폰번호</th>
+						<th scope="col">이메일</th>
+						<th scope="col">가입일</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%-- <c:forEach var="result" items="${chatList}" varStatus="status"> --%>
+					<tr>
+						<td>1</td>
+						<td>grac12313212</td>
+						<td>길민선</td>
+						<td>여</td>
+						<td>트레이너</td>
+						<td>뭐라라라라라라라라</td>
+						<td>01011112222</td>
+						<td>gaawaewgrae@naver.com</td>
+						<td>2021-01-01</td>
+					</tr>
+					<%-- </c:forEach> --%>
+				</tbody>
+			</table>
+			<!-- 페이징처리 -->
+            	<div class="col-lg-12">
+					<div class="classes__pagination">
+					<c:if test="${pageMaker.prev}">
+						<a href="adminChatList.do${pageMaker.makeQueryAdminChat(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
+						</a>
+					</c:if> 
+					
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="adminChatList.do${pageMaker.makeQueryAdminChat(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
+					
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="adminChatList.do${pageMaker.makeQueryAdminChat(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
 					</div>
 				</div>
-				
-				
-				
-				
-				<!-- 여기부터 달라짐 -->
-				<div class="col-lg-8 order-lg-2 order-1">
-					<div class="row" style="display: inline-block; width: 100%;">
-						<!-- Classes Section Begin -->
-						<section class="classes spad" style="margin-top: 0px; padding-top: 0px;">
-							<div class="classes__filter" style="background-color: #9e9e9e0a; padding : 60px 10px;">
-								<div class="row">
-									<div class="col-lg-12">
-										<form action="#">
-
-											<div class="class__filter__select">
-												<p>회원구분:</p>
-												<select>
-													<option>전체</option>
-													<option>일반회원</option>
-													<option>트레이너</option>
-												</select>
-											</div>
-
-											<div class="class__filter__select">
-												<p>검색조건:</p>
-												<select>
-													<option>전체</option>
-													<option>이름</option>
-													<option>아이디</option>
-												</select>
-	<!-- <input type="text" id="mydate"/>	 -->									</div>
-											
-											<div id="searchBtn" class="class__filter__input" style="margin-right: 20px;">
-												<p>날짜:</p>
-												<input type="text" placeholder="검색" id="mydate" style="width: 100%;">
-											</div>
-											
-											<div id="searchBtn" class="class__filter__input">
-												<p>Search:</p>
-												<input type="text" placeholder="검색" style="width: 100%;">
-											</div>
-											<div id="search1" class="class__filter__btn_re">
-												<button>
-													<i class="fa fa-search"></i>
-												</button>
-											</div>
-
-										</form>
-									</div>
-								</div>
-								<br>
-
-								<table class="table table-hover" style="text-align: center;">
-									<thead>
-										<tr style="background: #E6E6E6;">
-											<th scope="col">번호</th>
-											<th scope="col">이름</th>
-											<th scope="col">아이디</th>
-											<th scope="col">회원구분</th>
-											<th scope="col">블랙리스트</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th scope="row">1</th>
-											<td><a href="adminMemberDetail" style="text-decoration: none; color: blue;"> 마동석 </a></td>
-											<td>abcd1234</td>
-											<td>일반회원</td>
-											<td>O</td>
-										</tr>
-										
-										<tr>
-											<th scope="row">1</th>
-											<td><a href="adminMemberDetail" style="text-decoration: none; color: blue;"> 마동석 </a></td>
-											<td>abcd1234</td>
-											<td>일반회원</td>
-											<td>X</td>
-										</tr>
-										
-										<tr>
-											<th scope="row">1</th>
-											<td><a href="adminMemberDetail" style="text-decoration: none; color: blue;"> 마동석 </a></td>
-											<td>abcd1234</td>
-											<td>트레이너</td>
-											<td>O</td>
-										</tr>
-										
-										<tr>
-											<th scope="row">1</th>
-											<td><a href="adminMemberDetail" style="text-decoration: none; color: blue;"> 마동석 </a></td>
-											<td>abcd1234</td>
-											<td>트레이너</td>
-											<td>X</td>
-										</tr>
-										
-										<tr>
-											<th scope="row">1</th>
-											<td><a href="adminMemberDetail" style="text-decoration: none; color: blue;"> 마동석 </a></td>
-											<td>abcd1234</td>
-											<td>트레이너</td>
-											<td>X</td>
-										</tr>
-										
-										<tr>
-											<th scope="row">1</th>
-											<td><a href="adminMemberDetail" style="text-decoration: none; color: blue;"> 마동석 </a></td>
-											<td>abcd1234</td>
-											<td>트레이너</td>
-											<td>X</td>
-										</tr>
-										
-										<tr>
-											<th scope="row">1</th>
-											<td><a href="adminMemberDetail" style="text-decoration: none; color: blue;"> 마동석 </a></td>
-											<td>abcd1234</td>
-											<td>트레이너</td>
-											<td>X</td>
-										</tr>
-										
-										<tr>
-											<th scope="row">1</th>
-											<td><a href="adminMemberDetail" style="text-decoration: none; color: blue;"> 마동석 </a></td>
-											<td>abcd1234</td>
-											<td>트레이너</td>
-											<td>X</td>
-										</tr>
-										
-									</tbody>
-								</table>
-								<br><br>
-								<div class="col-lg-12" style="text-align: right;">
-										<input type="button" value="블랙리스트 조회" id="updBtn" class="site-btn" style="padding: 1px 6px ;font-size: 1.1em; color: white; background-color: #5768AD; height: 48px; margin-right: 7px;" onclick="fn_update()">
-								</div><br>
-								
-								
-								
-							</div>
-						</section>
-						<!-- Classes Section End -->
-					</div>
-				</div>
+			
 			</div>
 		</div>
-
 	</section>
-	<!-- Blog Section End -->
-
-
-
+				
 
 	<!-- Js Plugins -->
-
-
-
-	<!-- <script src="./resources/js/jquery-3.3.1.min.js"></script> -->
+				
 	<script src="./resources/js/bootstrap.min.js"></script>
 	<script src="./resources/js/jquery.nice-select.min.js"></script>
 	<script src="./resources/js/jquery.barfiller.js"></script>

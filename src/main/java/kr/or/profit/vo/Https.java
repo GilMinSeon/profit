@@ -19,6 +19,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+//민선 Coolsms 
 public class Https {
 
 	  public JSONObject postRequest(String url_string, HashMap<String, String> params) {
