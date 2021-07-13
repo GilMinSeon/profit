@@ -280,34 +280,71 @@
 <!-- 민정 - 회원이 구매한 강의 list -->
 	<select id="myBuyLessonList" parameterType="Criteria" resultType="egovMap">
 	    <![CDATA[
-		SELECT A.BUY_LESSON_SEQ,
-		       A.LESSON_SEQ,
-		       B.LESSON_MONTH,
-		       CASE WHEN LENGTH(B.LESSON_TITLE) > 20 THEN SUBSTR(B.LESSON_TITLE, 0, 20) || '...' ELSE B.LESSON_TITLE END AS lesson_TITLE,
-		       C.LESSON_CATEGORY_NAME,
-		       (case
-		        when LESSON_REFUND_FLAG = 'Y' then '환불완료'
-		        when SYSDATE - TO_DATE(lesson_finish_date)  > 0 and lesson_refund_flag = 'N' then '기간만료'
-		        when lesson_click_FLAG = 'Y' and SYSDATE - TO_DATE(lesson_finish_date)  < 0 and lesson_refund_flag='N' then '수강진행'
-		        when lesson_click_flag = 'N' and lesson_refund_flag = 'N' then '결제완료'
-		        END ) status
-		       FROM BUY_LESSON A
-		       LEFT JOIN LESSON B ON
-		       (A.LESSON_SEQ = B.LESSON_SEQ)
-		       LEFT JOIN LESSON_CATEGORY C ON
-		       (B.LESSON_CATEGORY_SEQ = C.LESSON_CATEGORY_SEQ)
-		    WHERE A.IN_USER_ID = #{memberId}
-		    ORDER BY A.IN_DATE DESC
+		    select rm, rm, BUY_LESSON_SEQ, LESSON_SEQ, LESSON_MONTH,
+				REMAINMONTH, lesson_TITLE, LESSON_CATEGORY_NAME, status, in_date
+				from
+				(
+				select rownum as rm, BUY_LESSON_SEQ, LESSON_SEQ, LESSON_MONTH,
+				REMAINMONTH, lesson_TITLE, LESSON_CATEGORY_NAME, status, in_date
+				from
+				(
+				select A.BUY_LESSON_SEQ,
+				       A.LESSON_SEQ,
+		               a.in_date,
+		               B.LESSON_MONTH,
+		               TRUNC(TO_DATE(A.LESSON_FINISH_DATE) - SYSDATE)  REMAINMONTH,
+				       CASE WHEN LENGTH(B.LESSON_TITLE) > 20 THEN SUBSTR(B.LESSON_TITLE, 0, 20) || '...' ELSE B.LESSON_TITLE END AS lesson_TITLE,
+				       C.LESSON_CATEGORY_NAME,
+				       (case
+				        when LESSON_REFUND_FLAG = 'Y' then '환불완료'
+				        when SYSDATE - TO_DATE(lesson_finish_date)  > 0 and lesson_refund_flag = 'N' then '기간만료'
+				        when lesson_click_FLAG = 'Y' and SYSDATE - TO_DATE(lesson_finish_date)  < 0 and lesson_refund_flag='N' then '수강진행'
+				        when lesson_click_flag = 'N' and lesson_refund_flag = 'N' then '결제완료'
+				        END ) status
+				       FROM BUY_LESSON A
+				       LEFT JOIN LESSON B ON
+				       (A.LESSON_SEQ = B.LESSON_SEQ)
+				       LEFT JOIN LESSON_CATEGORY C ON
+				       (B.LESSON_CATEGORY_SEQ = C.LESSON_CATEGORY_SEQ)
+				WHERE A.IN_USER_ID = #{memberId}
+				)
+				)
+				where rm between #{rowStart} and #{rowEnd}
+				order by in_date desc
+		    
 		    ]]>
 	</select>
 
 	
 	<!-- 민정 - 페이징용구매강의 전체 개수 cnt -->
     <select id="selectbuyLessonCnt" parameterType="Criteria" resultType="int">
-        select count(*)
-		    from buy_lesson
-		where in_user_id= #{memberId}
-        
+        <![CDATA[
+        select 
+		count(*)
+		from
+		(
+		select A.BUY_LESSON_SEQ,
+				       A.LESSON_SEQ,
+		               a.in_date,
+		               B.LESSON_MONTH,
+		               TRUNC(TO_DATE(A.LESSON_FINISH_DATE) - SYSDATE)  REMAINMONTH,
+				       CASE WHEN LENGTH(B.LESSON_TITLE) > 20 THEN SUBSTR(B.LESSON_TITLE, 0, 20) || '...' ELSE B.LESSON_TITLE END AS lesson_TITLE,
+				       C.LESSON_CATEGORY_NAME,
+				       (case
+				        when LESSON_REFUND_FLAG = 'Y' then '환불완료'
+				        when SYSDATE - TO_DATE(lesson_finish_date)  > 0 and lesson_refund_flag = 'N' then '기간만료'
+				        when lesson_click_FLAG = 'Y' and SYSDATE - TO_DATE(lesson_finish_date)  < 0 and lesson_refund_flag='N' then '수강진행'
+				        when lesson_click_flag = 'N' and lesson_refund_flag = 'N' then '결제완료'
+				        END ) status
+				       FROM BUY_LESSON A
+				       LEFT JOIN LESSON B ON
+				       (A.LESSON_SEQ = B.LESSON_SEQ)
+				       LEFT JOIN LESSON_CATEGORY C ON
+				       (B.LESSON_CATEGORY_SEQ = C.LESSON_CATEGORY_SEQ)
+				WHERE A.IN_USER_ID = #{memberId}
+		)
+		order by in_date desc
+        ]]>
     </select>
     
     

@@ -13,6 +13,8 @@
 .table tr:hover {
 	background-color: #f8f6ff;
 }
+
+
 </style>
 <body>
 
@@ -89,6 +91,7 @@
 						<br/>
 						<p style="font-family: DM Sans, sans-serif;font-size: 1.2em;color:#5768AD;">▶ 내가 구매한 강좌를 확인해 보세요.</p>
 						<br/><br/>
+						
 					</div>
 					<div>	
 							<table class="table" style="text-align: center;">
@@ -96,7 +99,7 @@
 									<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
 										<th scope="col">번호</th>
 										<th scope="col" colspan="2" title="제목을 클릭하여 강의 상세를 확인하세요">제목</th>
-										<th scope="col">기간<span style="font-size: 12px;">(개월)</span></th>
+										<th scope="col">남은기간<span style="font-size: 12px;">(일)</span></th>
 										<th scope="col" title="상태정보를 클릭하여 결제상세내역을 확인하세요">상태</th>
 									</tr>
 								</thead>
@@ -111,8 +114,19 @@
 												<span style="color:#4169e1;">[${result.lessonCategoryName}]</span>&nbsp; ${result.lessonTitle} 
 											</a>
 										</td>
-										<td>${result.lessonMonth}</td>
-										
+										<td>
+											<c:choose>
+												<c:when test="${result.status eq '환불완료'}">
+													--
+												</c:when>
+												<c:when test="${result.status eq '기간만료'}">
+													--
+												</c:when>
+												<c:otherwise>
+													${result.remainmonth} 일</td>
+												</c:otherwise>
+											</c:choose>
+											
 										<td>
 											<c:choose>
 												<c:when test="${result.status eq '환불완료'}">

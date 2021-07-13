@@ -10,37 +10,9 @@
 <title>Insert title here</title>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
-// $(document).ready(function(){
-// 	var link = document.location.href; //현재 접속url
-// 	var tab = link.split('/').pop(); //배열의 맨 마지막 요소를 삭제하고 삭제한 해당값반환
-// 	$('a[href$='+tab+']').trigger("show");
-// });
 
 
 $(function(){
-// 	var link = document.location.href; //현재 접속url
-// 	var tab = link.split('/').pop(); //배열의 맨 마지막 요소를 삭제하고 삭제한 해당값반환
-// 	$('a[href$='+tab+']').trigger("click");
-	
-// 	$("#tab_list").tabs({
-
-// 	       select: function(event, ui) {                   
-
-// 	      window.location.replace(ui.tab.hash);
-
-// 	   //  위 두줄을 추가를 하면 새로고침을 해도 선택된 탭에서 계속 유지가 된다.
-
-// 	   }
-
-// 	});
-
-
-// #gnb의 자식 엘리먼트(li)가 몇번째인지 확인한 후 a요소를 찾은 후 on이라는 클래스 추가
-
-
-
-
-	
 	//좋아요북마크 취소
 	$(document).on("click",".remove",function(){
 		var memberId = $("#sessionId").val(); 
@@ -260,6 +232,71 @@ function fn_reply_del(seq){
 	
 }
 
+
+
+function fn_modalOpen(){
+	//ajax
+	
+	$.ajax({
+		type:"POST",
+		url:"kcalNumAjax.do",
+		data:formData,
+		processData : false,
+		contentType : false,
+		async:false,
+		dataType:"text",
+		success : function(data){
+			var jsonInfo = JSON.parse(data);
+			if(jsonInfo.msg=="ok"){
+				$('#food_name').text(jsonInfo.descKor);
+				$('#makerName').text(jsonInfo.makerName);
+				$('#nutrCont1').text(jsonInfo.nutrCont1);
+				$('#servingSize').text(jsonInfo.servingSize);
+				$('#sp1').text("탄수화물( " + jsonInfo.nutrCont2 + " g )");
+				$('#sp2').text("단백질( " + jsonInfo.nutrCont3 + " g )");
+				$('#sp3').text("지방( " + jsonInfo.nutrCont4 + " g )");
+				$('#sp4').text("당류( " + jsonInfo.nutrCont5 + " g )");
+				$('#sp5').text("나트륨( " + jsonInfo.nutrCont6 + " g )");
+				if(jsonInfo.cont2Rs>100){
+					$("#carbo").css('width',"100%");
+				}else{
+					$("#carbo").css('width',jsonInfo.cont2Rs + "%");
+				}
+				if(jsonInfo.cont3Rs>100){
+					$("#protein").css('width',"100%");
+				}else{
+					$("#protein").css('width',jsonInfo.cont3Rs + "%");
+				}
+				if(jsonInfo.cont4Rs>100){
+					$("#fat").css('width',"100%");
+				}else{
+					$("#fat").css('width',jsonInfo.cont4Rs + "%");
+				}
+				if(jsonInfo.cont5Rs>100){
+					$("#sugars").css('width',"100%");
+				}else{
+					$("#sugars").css('width',jsonInfo.cont5Rs + "%");
+				}
+				if(jsonInfo.cont6Rs>100){
+					$("#salt").css('width',"100%");
+				}else{
+					$("#salt").css('width',jsonInfo.cont6Rs + "%");
+				}
+				$("#myModal").modal('show');
+			}else if(jsonInfo.msg=="ng"){
+				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			}else{
+				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			}
+		},
+		error : function(error){
+			alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
+			console.log(error);
+			console.log(error.status);
+		}
+	});
+	
+}
 </script>
 <style type="text/css">
 .btn div {
@@ -398,7 +435,45 @@ function fn_reply_del(seq){
 				<div class="col-lg-5 p-0">
 					<div class="about__text" style="padding-left:20px;">
 						<div class="section-title">
-							<span style="font-size: 1.4em; font-weight: bold;color: #545454">◾ ${resultList.lessonTitle}</span><br/><br/>
+							<span style="font-size: 1.4em; font-weight: bold;color: #545454"> ${resultList.lessonTitle}</span><br/><br/>
+							<div>
+								<div style="display: inline-block;"><p># 강사 이름 : </p></div>&nbsp;
+								<div style="display: inline-block;"><p style="color:#304060">
+									<a onclick="fn_modalOpen()">${resultList.memberName}</a> </p>
+								</div>
+							</div>
+							
+<!-- 							모달 -->
+							<div class="modal" id="myModal" tabindex="-1" role="dialog">
+							    <div class="modal-dialog" role="document">
+							        <div class="modal-content" style="margin-top: 0px;margin-left:50px;width: 770px;height:900px;">
+							            <div class="modal-header">
+							                <h3 class="modal-title">🏋️‍♂️트레이너 소개</h3>
+							                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                    <span aria-hidden="true">&times;</span>
+							                </button>
+							            </div>
+							            <div class="modal-body">
+							            	<div style="display: inline-block;">
+							            		<div>
+							            			<img src="">ㅇㅇㅇ
+							            		</div>
+							            	</div>
+							            	
+							            	<div style="display: inline-block;">
+							            		<div>
+							            			<span>트레이너이름</span>
+							            			<span>간단소개</span>
+							            		</div>
+							            	</div>
+							        	</div>
+							            <div class="modal-footer">
+							                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+							
 							<div>
 								<div style="display: inline-block; float:left;"><p># 한줄 소개 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>
@@ -624,7 +699,7 @@ function fn_reply_del(seq){
 	                                     			<c:if test="${result.replyDepth == 1}">
 	                                     				<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
 	                                     			</c:if>
-	                                    		<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family: 'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
+	                                    		<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family:'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
 	                                    		</c:when>
 	                                    		
 	                                    		<c:when test="${(result.replySecretFlag == 'Y' && result.inUserId eq memberId) || (result.replySecretFlag == 'Y' && resultList.inUserId eq memberId)}">
