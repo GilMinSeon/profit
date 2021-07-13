@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.or.profit.service.AdminMemberService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.PageMaker;
 import kr.or.profit.vo.ProcessVO;
 
@@ -286,8 +287,19 @@ public class AdminMemberController {
 	}
 
 	@RequestMapping(value = "adminMemberList.do", method = RequestMethod.GET)
-	public String adminMemberList(Locale locale, Model model) {
-
+	public String adminMemberList(Model model, HttpServletRequest request, Criteria cri) throws Exception {
+		cri.setPerPageNum(10);
+		
+		List<MemberVO> memberList = adminMemberService.selectAdminMemberList(cri);
+		model.addAttribute("memberList", memberList);
+		
+		System.out.println("55555555555555555");
+		System.out.println(memberList.get(0).getBlacklistFlag());
+		System.out.println(memberList.get(0).getMemberGubun());
+		System.out.println(memberList.get(0).getMemberName());
+		System.out.println(model.toString());
+		System.out.println(memberList.size());
+		
 		return "adminMember/adminMemberList";
 	}
 

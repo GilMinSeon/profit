@@ -31,5 +31,7 @@ public interface MemberService {
 	public int selectByFindPwd(MemberVO vo) throws Exception;
 	
 	//임시 비밀번호로 update
-	public void updateTempPwd(MemberVO vo)throws Exception;
+	public void updateTempPwd(MemberVO vo) throws Exception;
+	
+
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
 
 @Mapper("adminMemberMapper")
@@ -53,4 +54,9 @@ public interface AdminMemberMapper {
 	
 	//관리자 메모 update
 	public int updateAdminMemo(ProcessVO vo);
+	
+	
+	//회원관리탭
+	//회원관리 리스트
+	public List<MemberVO> selectAdminMemberList(Criteria cri);
 }

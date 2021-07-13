@@ -17,6 +17,14 @@ public class MemberVO {
 	private String upUserId;
 	private String upDate;
 	
+	private String blacklistFlag;
+	
+	public String getBlacklistFlag() {
+		return blacklistFlag;
+	}
+	public void setBlacklistFlag(String blacklistFlag) {
+		this.blacklistFlag = blacklistFlag;
+	}
 	//필요한 컬럼 추가
 	private String filePath;
 	
