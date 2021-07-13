@@ -123,9 +123,48 @@ public class AdminLessonController {
        return msg;
    }
 
+   /**
+    * 민정
+    * 관리자 강의 결제 환불내역
+    * @param request
+    * @param cri
+    * @param locale
+    * @param model
+    * @return
+    * @throws Exception
+    */
    @RequestMapping(value = "adminLessonPayList.do", method = RequestMethod.GET)
-	public String adminLessonPayList(Locale locale, Model model) {
+	public String adminLessonPayList(HttpServletRequest request, Criteria cri, Locale locale, Model model) throws Exception {
 
+	   HttpSession session = request.getSession();
+	   String memberId = (String) session.getAttribute("memberId");
+	   System.out.println("memberId는뭥미? " + memberId);
+	   if (memberId == null) {
+		   memberId = "";
+	   }
+	   
+	   cri.setPerPageNum(10);
+	   
+	 //관리자가보는 온라인클래스 결제/환불 리스트
+		List<?> adminLessonPayList = adminLessonService.adminLessonPayList(cri);
+		System.out.println("adminLessonPayList " + adminLessonPayList);
+		model.addAttribute("adminLessonPayList", adminLessonPayList);
+		System.out.println("adminLessonPayList " + model.toString());
+		
+		//페이징처리
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		System.out.println("뭔데");
+		System.out.println(pageMaker.getCri().getPage());
+		System.out.println(pageMaker.getCri().getPageStart());
+		System.out.println(pageMaker.getCri().getPerPageNum());
+		
+		//전체 글 개수 세팅
+		pageMaker.setTotalCount(adminLessonService.adminLessonPayListCnt(cri));
+		System.out.println(adminLessonService.adminLessonPayListCnt(cri) + "가져오는 개수뭐니?!");
+		
+		model.addAttribute("pageMaker", pageMaker);
+	   
 		return "adminLesson/adminLessonPayList";
 	}	
 	

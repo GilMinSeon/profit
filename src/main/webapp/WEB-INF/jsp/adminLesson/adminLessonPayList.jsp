@@ -7,8 +7,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 <link rel="stylesheet" href="./resources/datepicker/jquery-ui.css">
 <script src="./resources/datepicker/jquery-3.5.1.js"></script>
 <script src="./resources/datepicker/jquery-ui.js"></script>
@@ -63,7 +61,7 @@ $(document).ready(function(){
 				<br>
                 <div class="row">
                     <div class="col-lg-12">
-                        <form action="adminChatList.do">
+                        <form action="adminLessonPayList.do">
                             <div class="class__filter__select" style="width: 150px;">
                                 <p>상태</p>
                                 <select name="selStatus">
@@ -75,7 +73,7 @@ $(document).ready(function(){
                             </div>
                             <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
 								<p>날짜</p>
-								<input type="text" name="selDate" value="${selDate}" placeholder="검색" id="mydate" style="width: 100%;">
+								<input type="text" name="selDate" value="${selDate}" placeholder="검색" id="mydate" style="width: 100%;cursor: pointer;">
 							</div>
 							<div class="class__filter__select" style="width: 150px;">
                                 <p>검색조건</p>
@@ -87,9 +85,9 @@ $(document).ready(function(){
                             </div>
 							<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
 								<p>검색어</p>
-								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;" value="${searchKeyword}">
+								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;cursor: pointer;" value="${searchKeyword}">
 								<div class="class__filter__btn">
-                                <button><i class="fa fa-search"></i></button>
+                                <button style="cursor: pointer;"><i class="fa fa-search"></i></button>
                             </div>
 							</div>
                             
@@ -110,42 +108,48 @@ $(document).ready(function(){
 					</tr>
 				</thead>
 				<tbody>
-<%-- 					<c:forEach var="result" items="${chatList}" varStatus="status"> --%>
+					<c:forEach var="result" items="${adminLessonPayList}" varStatus="status">
 					<tr>
-						<td>dd</td>
-						<td>dd</td>
-						<td>dd</td>
-						<td colspan="2">dd</td>
-						<td>dd</td>
+						<td>${status.count}</td>
+						<td>${result.memberId}</td>
+						<td>${result.memberName}</td>
+						<td colspan="2">
+							<span>[${result.lessonCategoryName}]</span>&nbsp;
+							${result.lessonTitle}
+						</td>
+						<td>${fn:substring(result.inDate,0,10)}</td>
 						<td>
-							dd
-<%-- 						<c:if test="${result.ticketRefundFlag eq 'N'}"><span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;">결제</span></c:if> --%>
-<%-- 						<c:if test="${result.ticketRefundFlag eq 'Y'}"><span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">환불</span></c:if> --%>
+						<c:if test="${result.status eq '결제'}">
+							<span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;">결제</span>
+						</c:if>
+						<c:if test="${result.status eq '환불'}">
+							<span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">환불</span>
+						</c:if>
 						</td>
 					</tr>
-<%-- 					</c:forEach> --%>
+					</c:forEach>
 				</tbody>
 			</table>
 			<!-- 페이징처리 -->
-<!--             	<div class="col-lg-12"> -->
-<!-- 					<div class="classes__pagination"> -->
-<%-- 					<c:if test="${pageMaker.prev}"> --%>
-<%-- 						<a href="adminChatList.do${pageMaker.makeQueryAdminChat(pageMaker.startPage - 1)}"> --%>
-<!-- 							<span class="arrow_carrot-left"></span> -->
-<!-- 						</a> -->
-<%-- 					</c:if>  --%>
+            	<div class="col-lg-12">
+					<div class="classes__pagination">
+					<c:if test="${pageMaker.prev}">
+						<a href="adminLessonPayList.do${pageMaker.makeQueryAdminLessonPayList(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
+						</a>
+					</c:if> 
 					
-<%-- 					<c:set var="page" value="${pageMaker.cri.page}"/> --%>
-<%-- 					<c:set var="idx" value="${idx}"/> --%>
-<%-- 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> --%>
-<%--             			<a href="adminChatList.do${pageMaker.makeQueryAdminChat(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a> --%>
-<%-- 					</c:forEach> --%>
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="adminLessonPayList.do${pageMaker.makeQueryAdminLessonPayList(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
 					
-<%-- 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}"> --%>
-<%-- 						<a href="adminChatList.do${pageMaker.makeQueryAdminChat(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a> --%>
-<%-- 					</c:if> --%>
-<!-- 					</div> -->
-<!-- 				</div> -->
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="adminLessonPayList.do${pageMaker.makeQueryAdminLessonPayList(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
+					</div>
+				</div>
 			
 			</div>
 		</div>

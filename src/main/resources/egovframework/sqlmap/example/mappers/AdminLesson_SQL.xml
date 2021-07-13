@@ -131,6 +131,116 @@
 			and lesson_refund_flag = 'N'
 	</update>
     
+<!--     관리자가보는 온라인클래스 결제/환불 리스트 -->
+    <select id="adminLessonPayList" resultType="egovMap" parameterType="Criteria">
+    	select rm, buy_lesson_seq,lesson_seq, lesson_refund_flag, in_user_id,
+		in_date, member_id, member_name, member_gubun, lesson_title, lesson_category_name,status
+		from
+		(
+		select rownum as rm, buy_lesson_seq,lesson_seq, lesson_refund_flag, in_user_id,
+		in_date, member_id, member_name, member_gubun, lesson_title, lesson_category_name,status
+		from
+		(
+		select a.buy_lesson_seq,
+               a.lesson_seq,
+               a.lesson_refund_flag,
+               a.in_user_id,
+               a.in_date, 
+               b.member_id,
+               b.member_name,
+               b.member_gubun,
+                case when length(c.lesson_title) > 15 then substr(c.lesson_title, 0, 15) || '...' else c.lesson_title end as lesson_title,
+               d.lesson_category_name,
+               (case
+                when a.lesson_refund_flag = 'Y' then '환불'
+                when a.lesson_refund_flag = 'N' then '결제'
+                END ) status
+            from buy_lesson a
+            left join member b on
+            (a.in_user_id = b. member_id)
+            left join lesson c on
+            (a.lesson_seq = c.lesson_seq)
+            left join lesson_category d on
+            (c.lesson_category_seq = d.lesson_category_seq)
+		where 1=1 
+		<if test="selStatus == '환불'">
+		    and a.lesson_refund_flag = 'Y'
+		</if>
+		<if test="selStatus == '결제'">
+		    and a.lesson_refund_flag = 'N'
+		</if>
+		<if test="selDate != null and selDate !=''">
+		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selIdentity == '아이디'">
+		    and a.in_user_id like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '이름'">
+		    and  b.member_name like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '전체'">
+		    and ( b.member_name like '%' || #{searchKeyword} || '%' or
+		    a.in_user_id like '%' || #{searchKeyword} || '%'
+		    )
+		</if>
+		)
+		)
+		where rm between #{rowStart} and #{rowEnd}
+		order by in_date desc
+    </select>
+    
+<!--     온라인클래스 결제/환불내역 전체 글개수 -->
+    <select id="adminLessonPayListCnt" parameterType="Criteria" resultType="int">
+	  	select 
+		count(*)
+		from
+		(
+		select  a.buy_lesson_seq,
+               a.lesson_seq,
+               a.lesson_refund_flag,
+               a.in_user_id,
+               a.in_date, 
+               b.member_id,
+               b.member_name,
+               b.member_gubun,
+               case when length(c.lesson_title) > 15 then substr(c.lesson_title, 0, 15) || '...' else c.lesson_title end as lesson_title,
+               d.lesson_category_name,
+               (case
+                when a.lesson_refund_flag = 'Y' then '환불'
+                when a.lesson_refund_flag = 'N' then '결제'
+                END ) status
+            from buy_lesson a
+            left join member b on
+            (a.in_user_id = b. member_id)
+            left join lesson c on
+            (a.lesson_seq = c.lesson_seq)
+            left join lesson_category d on
+            (c.lesson_category_seq = d.lesson_category_seq)
+		where 1=1 
+		<if test="selStatus == '환불'">
+		    and a.lesson_refund_flag = 'Y'
+		</if>
+		<if test="selStatus == '결제'">
+		    and a.lesson_refund_flag = 'N'
+		</if>
+		<if test="selDate != null and selDate !=''">
+		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selIdentity == '아이디'">
+		    and a.in_user_id like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '이름'">
+		    and  b.member_name like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '전체'">
+		    and ( b.member_name like '%' || #{searchKeyword} || '%' or
+		    a.in_user_id like '%' || #{searchKeyword} || '%'
+		    )
+		</if>
+		)
+		order by in_date desc
+	    
+	</select>
     
 	
 </mapper>

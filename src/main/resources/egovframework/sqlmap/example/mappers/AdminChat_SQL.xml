@@ -98,4 +98,127 @@
 		order by in_date desc
 	    
 	</select>
+	
+	
+<!-- 	관리자 이용권조회리스트 -->
+		<select id="adminTicketPayList" resultType="egovMap" parameterType="Criteria">	
+		select rm, buy_ticket_seq, ticket_category_seq, ticket_remain, ticket_refund_flag,
+		in_user_id, in_date, ticket_avail_flag, member_id, member_name, ticket_name, ticket_price,ticket_cnt
+		from
+		(
+		select rownum as rm, buy_ticket_seq, ticket_category_seq,ticket_remain, ticket_refund_flag,
+		in_user_id, in_date, ticket_avail_flag, member_id, member_name, ticket_name, ticket_price,ticket_cnt
+		from
+		(
+		select 
+                a.buy_ticket_seq,
+               a.ticket_category_seq,
+               a.ticket_remain,
+               a.ticket_refund_flag,
+               a.in_user_id,
+               a.in_date,
+               a.ticket_avail_flag,
+               b.member_id,
+               b.member_name,
+               c.ticket_name,
+               c.ticket_price,
+               c.ticket_cnt
+            from buy_ticket a
+            left join member b on
+            (a.in_user_id = b.member_id)
+            left join ticket_category c on
+            (a.ticket_category_seq = c.ticket_category_seq)
+		where 1=1 
+		<if test="selStatus == '1회권'">
+		    and c.ticket_name = '1회권'
+		</if>
+		<if test="selStatus == '3회권'">
+		    and c.ticket_name = '3회권'
+		</if>
+        <if test="selStatus == '5회권'">
+		    and c.ticket_name = '5회권'
+		</if>
+		<if test="selDate != null and selDate !=''">
+		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selIdentity == '아이디'">
+		    and a.in_user_id like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '이름'">
+		    and b.member_name like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '전체'">
+		    and (b.member_name like '%' || #{searchKeyword} || '%' or
+		    a.in_user_id like '%' || #{searchKeyword} || '%'
+		    )
+		</if>
+		)
+		)
+		where rm between #{rowStart} and #{rowEnd}
+		order by in_date desc
+	</select>
+	
+<!-- 		관리자 이용권조회리스트 전체 글 개수 -->
+	<select id="adminTicketPayListCnt" parameterType="Criteria" resultType="int">
+	  	select 
+		count(*)
+		from
+		(
+		select 
+                a.buy_ticket_seq,
+               a.ticket_category_seq,
+               a.ticket_remain,
+               a.ticket_refund_flag,
+               a.in_user_id,
+               a.in_date,
+               a.ticket_avail_flag,
+               b.member_id,
+               b.member_name,
+               c.ticket_name,
+               c.ticket_price,
+               c.ticket_cnt
+            from buy_ticket a
+            left join member b on
+            (a.in_user_id = b.member_id)
+            left join ticket_category c on
+            (a.ticket_category_seq = c.ticket_category_seq)
+		where 1=1 
+		<if test="selStatus == '1회권'">
+		    and c.ticket_name = '1회권'
+		</if>
+		<if test="selStatus == '3회권'">
+		    and c.ticket_name = '3회권'
+		</if>
+        <if test="selStatus == '5회권'">
+		    and c.ticket_name = '5회권'
+		</if>
+		<if test="selDate != null and selDate !=''">
+		    and to_char(a.in_date, 'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selIdentity == '아이디'">
+		    and a.in_user_id like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '이름'">
+		    and b.member_name like '%' || #{searchKeyword} || '%' 
+		</if>
+		<if test="selIdentity == '전체'">
+		    and (b.member_name like '%' || #{searchKeyword} || '%' or
+		    a.in_user_id like '%' || #{searchKeyword} || '%'
+		    )
+		</if>
+		)
+		order by in_date desc
+	    
+	</select>
+	
+<!-- 	관리자 이용권개수 수정 -->
+	<update id="updTicketCnt" parameterType="buyTicketVO">
+			update buy_ticket
+			    set ticket_remain = #{ticketRemain},
+			        up_user_id = #{memberId},
+			        ticket_avail_flag =#{ticketAvailFlag}
+			where buy_ticket_seq = #{buyTicketSeq}
+			and ticket_refund_flag = 'N'
+	</update>
+	
 </mapper>
