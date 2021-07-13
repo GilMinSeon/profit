@@ -72,4 +72,28 @@ public class TrainerPageServiceImpl implements TrainerPageService {
 		return trainerPageDAO.selectTrainerClassCnt(cri);
 	}
 	
+	//upUserId가 관리자인지 알아보기
+	@Override
+	public Map<String, Object> selectAdminFlag(String upUserId) throws Exception {
+		return trainerPageDAO.selectAdminFlag(upUserId);
+	}
+	
+	//강의 공개 상태 바꾸기
+	@Override
+	public int updateLessonPrivate(LessonVO vo) throws Exception {
+		return trainerPageDAO.updateLessonPrivate(vo);
+	}
+	
+	//구매 많은 순 차트 정보 (남자)
+	@Override
+	public List<Map<String,Object>> selectBestClassMaleInfo(String memberId) throws Exception {
+		return trainerPageDAO.selectBestClassMaleInfo(memberId);
+	}
+	
+	//구매 많은 순 차트 정보 (여자)
+	@Override
+	public List<Map<String,Object>> selectBestClassFemaleInfo(String memberId) throws Exception {
+		return trainerPageDAO.selectBestClassFemaleInfo(memberId);
+	}
+	
 }

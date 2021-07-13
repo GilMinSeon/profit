@@ -72,9 +72,75 @@
 }
 .ui-datepicker-calendar {
     display: none;
-}    ​
+}   
+.table td, .table th {
+	vertical-align: middle;
+} ​
 </style>
+
 <script type="text/javascript">
+
+function fn_switch(ele){
+	
+	var msg = "ok";
+	
+	if(msg=="ok"){
+		var save = confirm("해당강의의 상태를 바꾸시겠습니까?");
+		if(save == true){
+			
+			vtr = $(ele).parents('tr');
+			lessonSeq = $(vtr).find('.lessonSeq').val();
+			lessonPrivateFlag = $(vtr).find('.lessonPrivateFlag').val();
+			upUserId = $(vtr).find('.upUserId').val();
+			console.log(lessonSeq)
+			console.log(lessonPrivateFlag)
+			console.log(upUserId);
+			
+			var param = "";
+				param += "dummy=" + Math.random();
+				param += "&lessonSeq=" + lessonSeq;
+				param += "&lessonPrivateFlag=" + lessonPrivateFlag;
+				param += "&upUserId=" + upUserId;
+				
+			console.log("param " + param);
+				
+			$.ajax({
+				type : 'post',
+				url : 'updTrainerLessonAjax.do',
+				data : param,
+				async:false,
+				dataType:"text",
+				success : function(data){
+					if(data=="ok"){
+						alert("수정이 정상적으로 완료되었습니다.");
+						location.reload();
+					}else if(data=="ng"){
+						alert("수정에 실패하였습니다. 다시 시도해주세요");
+						location.reload();
+					}else if(data=="A"){
+						alert("관리자가 해당 강의를 비활성화 하였습니다. 관리자에게 문의하세요.");
+						location.reload();
+					}
+			    },
+				error : function(error){
+					alert("수정에 실패하였습니다. 다시 시도해 주세요.");
+					location.reload();
+					console.log(error);
+					console.log(error.status);
+				}
+				
+				
+			}); //ajax
+			
+		}//if save 
+		else{
+			alert("수정이 취소되었습니다.");
+			location.reload();
+		}
+	}  //if msg
+	
+ }//function
+
 function fn_change(processSeq){
 	if (confirm("신청서를 검토하시겠습니까?") == true){
 		$.ajax({
@@ -99,67 +165,32 @@ function fn_change(processSeq){
 }
 
 $(document).ready(function() {
-	var now = new Date();
-    var month = now.getMonth() + 1; 
-//     var month = 1; 
-    var month1 = month - 1;
-    if(month1 == 0){
-    	month1 = 12;
-    }
-    var month2 = month1 -1;
-    if(month2 == 0){
-    	month2 = 12;
-    }
-    var month3 = month2 -1;
-    if(month3 == 0){
-    	month3 = 12;
-    }
-    var month4 = month3 -1;
-    if(month4 == 0){
-    	month4 = 12;
-    }
-    var month5 = month4 -1;
-    if(month5 == 0){
-    	month5 = 12;
-    }
-	
-    console.log(month);
-    console.log(month1);
-    console.log(month2);
-	 $('#mydate').datepicker( {
-	        changeMonth: true,
-	        changeYear: true,
-	        showButtonPanel: true,
-	        monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-	        dateFormat: 'yymm',
-	        onClose: function(dateText, inst) { 
-	            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-	            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-	            $(this).datepicker('setDate', new Date(year, month, 1));
-	        }
-	    });
-	 
 	 var context = document
      .getElementById('myChart')
      .getContext('2d');
  var myChart = new Chart(context, {
-     type: 'line', // 차트의 형태
+     type: 'bar', // 차트의 형태
      data: { // 차트에 들어갈 데이터
          labels: [
              //x 축
-            month5 + "월", month4 + "월", month3 + "월", month2 + "월", month1 + "월", month + "월"
+            "${chartFemaleResult[0]['lessonTitle']}",
+            "${chartFemaleResult[1]['lessonTitle']}",
+            "${chartFemaleResult[2]['lessonTitle']}",
+            "${chartFemaleResult[3]['lessonTitle']}",
+            "${chartFemaleResult[4]['lessonTitle']}",
+            "${chartFemaleResult[5]['lessonTitle']}"
          ],
          datasets: [
              { //데이터
                  label: '여자 회원', //차트 제목
                  fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
                  data: [
-                     ${chartResult['prevcount5f']},
-                     ${chartResult['prevcount4f']},
-                     ${chartResult['prevcount3f']},
-                     ${chartResult['prevcount2f']},
-                     ${chartResult['prevcount1f']},
-                     ${chartResult['nowcountf']}
+                     ${chartFemaleResult[0]['cnt']},
+                     ${chartFemaleResult[1]['cnt']},
+                     ${chartFemaleResult[2]['cnt']},
+                     ${chartFemaleResult[3]['cnt']},
+                     ${chartFemaleResult[4]['cnt']},
+                     ${chartFemaleResult[5]['cnt']}
                      //x축 label에 대응되는 데이터 값
                  ],
                  backgroundColor: [
@@ -181,39 +212,8 @@ $(document).ready(function() {
                      'rgba(255, 159, 64, 1)'
                  ],
                  borderWidth: 1 //경계선 굵기
-             } ,
-             { //데이터
-                 label: '남자 회원', //차트 제목
-                 fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-                 data: [
-                     ${chartResult['prevcount5m']},
-                     ${chartResult['prevcount4m']},
-                     ${chartResult['prevcount3m']},
-                     ${chartResult['prevcount2m']},
-                     ${chartResult['prevcount1m']},
-                     ${chartResult['nowcountm']}
-                	 //x축 label에 대응되는 데이터 값
-                 ],
-                 backgroundColor: [
-                     //색상
-                     'rgba(102, 204, 255, 0.2)',
-                     'rgba(54, 162, 235, 0.2)',
-                     'rgba(255, 206, 86, 0.2)',
-                     'rgba(75, 192, 192, 0.2)',
-                     'rgba(153, 102, 255, 0.2)',
-                     'rgba(255, 159, 64, 0.2)'
-                 ],
-                 borderColor: [
-                     //경계선 색상
-                     'rgba(102, 204, 255, 1)',
-                     'rgba(54, 162, 235, 1)',
-                     'rgba(255, 206, 86, 1)',
-                     'rgba(75, 192, 192, 1)',
-                     'rgba(153, 102, 255, 1)',
-                     'rgba(255, 159, 64, 1)'
-                 ],
-                 borderWidth: 1 //경계선 굵기
-             } 
+             }
+            
          ]
      },
      options: {
@@ -228,22 +228,76 @@ $(document).ready(function() {
          }
      }
  });
+ 
+ 
+ 
+ 
+ 
+ var context = document
+ .getElementById('myChart2')
+ .getContext('2d');
+var myChart = new Chart(context, {
+ type: 'bar', // 차트의 형태
+ data: { // 차트에 들어갈 데이터
+     labels: [
+         //x 축
+        "${chartMaleResult[0]['lessonTitle']}",
+        "${chartMaleResult[1]['lessonTitle']}",
+        "${chartMaleResult[2]['lessonTitle']}",
+        "${chartMaleResult[3]['lessonTitle']}",
+        "${chartMaleResult[4]['lessonTitle']}",
+        "${chartMaleResult[5]['lessonTitle']}"
+     ],
+     datasets: [
+         { //데이터
+             label: '남자 회원', //차트 제목
+             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+             data: [
+                 ${chartMaleResult[0]['cnt']},
+                 ${chartMaleResult[1]['cnt']},
+                 ${chartMaleResult[2]['cnt']},
+                 ${chartMaleResult[3]['cnt']},
+                 ${chartMaleResult[4]['cnt']},
+                 ${chartMaleResult[5]['cnt']}
+                 //x축 label에 대응되는 데이터 값
+             ],
+             backgroundColor: [
+                 //색상
+            	 'rgba(102, 204, 255, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)'
+             ],
+             borderColor: [
+                 //경계선 색상
+            	 'rgba(102, 204, 255, 1)',
+                 'rgba(54, 162, 235, 1)',
+                 'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                 'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)'
+             ],
+             borderWidth: 1 //경계선 굵기
+         }
+        
+     ]
+ },
+ options: {
+     scales: {
+         yAxes: [
+             {
+                 ticks: {
+                     beginAtZero: true
+                 }
+             }
+         ]
+     }
+ }
+});
 });
 
-function fn_today(){
-	var today = getCurrentDate();
-	location.href="trainerPermitList.do?selStatus=&selIdentity=&selDate="+today+"&searchKeyword=";
-}
-
-function getCurrentDate(){
-    var date = new Date();
-    var year = date.getFullYear().toString();
-    var month = date.getMonth() + 1;
-    month = month < 10 ? '0' + month.toString() : month.toString();
-    var day = date.getDate();
-    day = day < 10 ? '0' + day.toString() : day.toString();
-    return year + month + day ;
-}
 
 </script>
 
@@ -307,11 +361,12 @@ function getCurrentDate(){
 		    <div class="classes__filter" style="margin-bottom: 0px;padding-bottom:0px">
 			<br>
                <div class="row">
-               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">최근 6개월 간 구매 현황</span>
+               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">누적 판매 순위 (여자 / 남자)</span><br>
                    <div class="col-lg-12">
-                   		<div style="width: 900px; height: 550px;">
+                   		<div style="width: 900px; height: 1000px;">
 							<!--차트가 그려질 부분-->
-						<canvas id="myChart"></canvas>
+						<canvas id="myChart"></canvas><br>
+						<canvas id="myChart2"></canvas>
 						</div>
 		
                    		
@@ -373,14 +428,35 @@ function getCurrentDate(){
 				</thead>
 				<tbody>
 					<c:forEach var="result" items="${classList}" varStatus="status">
+					     
 					<tr>
-						<td>${result.rn}</td>
-						<td><img src="${result.filePath}" style="width: 20px; height: 20px"></td>
+						<td>${result.rn}
+						<input type="hidden" class="lessonSeq" name="lessonSeq${status.index}" value="${result.lessonSeq}">
+					    <input type="hidden" name="chkTog${status.index}" value="chkTog${status.index}">
+					     <input type="hidden" class="lessonPrivateFlag" name="lessonPrivateFlag${status.index}" value="${result.lessonPrivateFlag}">
+					     <input type="hidden" class="upUserId" name="upUserId${status.index}" value="${result.upUserId}">
+						</td>
+						<td><img src="${result.filePath}" style="width: 50px; height: 50px"></td>
 						<td>${result.lessonTitle}</td>
 						<td>${result.lessonPrice}원</td>
 						<td>${result.inDate}</td>
 						<td>
-						
+						<c:if test="${result.lessonPrivateFlag eq 'Y'}">
+							<div class="toggle-switch">
+						    	<input type="checkbox" name="chk" id="chkTog${status.index}" value="chkTog${status.index}" onclick="fn_switch(this)">
+						    		<label id="chkTog" for="chkTog${status.index}">
+						     			<span class="toggle-track"></span>
+						    		</label>
+						  	</div>
+						</c:if>
+						<c:if test="${result.lessonPrivateFlag eq 'N'}">
+								<div class="toggle-switch">
+							    	<input type="checkbox" name="chk" id="chkTog${status.index}" value="chkTog${status.index}" checked onclick="fn_switch(this)">
+							    		<label id="chkTog" for="chkTog${status.index}">
+							     			<span class="toggle-track"></span>
+							    		</label>
+							  	</div>
+							</c:if>
 						</td>
 					</tr>
 					</c:forEach>

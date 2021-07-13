@@ -7,6 +7,7 @@ import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.LessonVO;
 
 @Mapper("trainerPageMapper")
 public interface TrainerPageMapper {
@@ -34,5 +35,17 @@ public interface TrainerPageMapper {
 	
 	//트레이너 자신의 클래스 목록 글 전체 개수
 	int selectTrainerClassCnt(Criteria cri) throws Exception;
+	
+	//upUserId가 관리자인지 알아보기
+	Map<String, Object> selectAdminFlag(String upUserId) throws Exception;
+	
+	//강의 공개 상태 바꾸기
+	int updateLessonPrivate(LessonVO vo) throws Exception;
+	
+	//구매 많은 순 차트 정보 (남자)
+	List<Map<String,Object>> selectBestClassMaleInfo(String memberId) throws Exception;
+	
+	//구매 많은 순 차트 정보 (여자)
+	List<Map<String,Object>> selectBestClassFemaleInfo(String memberId) throws Exception;
 	
 }

@@ -11,6 +11,7 @@ import kr.or.profit.mapper.AdminMemberMapper;
 import kr.or.profit.service.AdminMemberService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
 
 @Service("adminMemberService")
@@ -88,6 +89,11 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	public void updateGubunTrainer(ProcessVO vo) throws Exception {
 		adminMemberMapper.updateGubunTrainer(vo);
 		
+	}
+
+	@Override
+	public List<MemberVO> selectAdminMemberList(Criteria cri) throws Exception {
+		return adminMemberMapper.selectAdminMemberList(cri);
 	}
 	
 }

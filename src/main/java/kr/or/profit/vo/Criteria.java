@@ -26,6 +26,16 @@ public class Criteria {
 	private String selDate;
 	private String searchKeyword;
 	
+	//민선
+	private String selGubun;
+
+	public String getSelGubun() {
+		return selGubun;
+	}
+
+	public void setSelGubun(String selGubun) {
+		this.selGubun = selGubun;
+	}
 
 	public String getSelStatus() {
 		return selStatus;
