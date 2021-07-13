@@ -441,6 +441,68 @@
 			and lesson_title like '%' || #{keyword} || '%'
 		</if>
 	</select>
-		
+	
+	<select id="selectAdminFlag" resultType="egovmap">
+		select * from member
+		where member_id = #{upUserId}
+	</select>
+	
+	<update id="updateLessonPrivate" parameterType="LessonVO">
+	  update lesson
+	  <trim prefix="SET" suffixOverrides=",">
+      	<if test='lessonPrivateFlag == "N"'>lesson_private_flag = 'Y',</if>
+      	<if test='lessonPrivateFlag == "Y"'>lesson_private_flag = 'N',</if>
+   	  </trim>
+   	  where lesson_seq = #{lessonSeq}
+	  
+	</update>
+	
+	<select id="selectBestClassMaleInfo" resultType="egovmap">
+		<![CDATA[
+	    select *
+		from
+		(
+		select rownum as rn, lesson_seq, 
+		CASE WHEN LENGTH(lesson_title) > 7 THEN SUBSTR(lesson_title, 0, 7) || '...' ELSE lesson_title END AS lesson_title, 
+		cnt
+		from
+		(
+		select a.lesson_seq, b.lesson_title,count(*) as cnt
+		from buy_lesson a, lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and b.in_user_id = #{memberId}
+		and a.in_user_id = c.member_id(+)
+		and c.member_gender='M'
+		group by(a.lesson_seq, b.lesson_title)
+		order by cnt desc
+		)
+		)
+		where rn <= 6
+		]]>
+	</select>
+	
+	<select id="selectBestClassFemaleInfo" resultType="egovmap">
+		<![CDATA[
+	    select *
+		from
+		(
+		select rownum as rn, lesson_seq,
+		CASE WHEN LENGTH(lesson_title) > 7 THEN SUBSTR(lesson_title, 0, 7) || '...' ELSE lesson_title END AS lesson_title
+		, cnt
+		from
+		(
+		select a.lesson_seq, b.lesson_title,count(*) as cnt
+		from buy_lesson a, lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and b.in_user_id = #{memberId}
+		and a.in_user_id = c.member_id(+)
+		and c.member_gender='F'
+		group by(a.lesson_seq, b.lesson_title)
+		order by cnt desc
+		)
+		)
+		where rn <= 6
+		]]>
+	</select>
 	
 </mapper>

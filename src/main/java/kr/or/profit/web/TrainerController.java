@@ -5,12 +5,14 @@ import java.io.FileOutputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.stringtemplate.v4.compiler.CodeGenerator.list_return;
 
 //import com.itextpdf.text.Document;
@@ -119,15 +123,55 @@ public class TrainerController {
 		model.addAttribute("selCate", selCate);
 	   	model.addAttribute("selLev", selLev);
 	   	model.addAttribute("keyword", keyword);
-//		
-//		//차트 정보 
-//		Map<String,Object> chartResult = trainerPageService.selectChartInfo(memberId);
-//		model.addAttribute("chartResult", chartResult);
-//		System.out.println("모델");
-//		
+		
+		//구매 많은 순 차트 정보 (남자)
+		List<Map<String,Object>> chartMaleResult = trainerPageService.selectBestClassMaleInfo(memberId);
+		List<Map<String,Object>> chartFemaleResult = trainerPageService.selectBestClassFemaleInfo(memberId);
+		model.addAttribute("chartMaleResult", chartMaleResult);
+		model.addAttribute("chartFemaleResult", chartFemaleResult);
+		System.out.println("모델");
+		
 		System.out.println(model.toString());
 		return "trainerPage/myClassInfo";
 	}
+	
+	 @RequestMapping(value = "updTrainerLessonAjax.do", method = RequestMethod.POST)
+	 @ResponseBody
+	 public String lessonModFinish(HttpServletRequest request) throws Exception{
+		 HttpSession session = request.getSession();
+			String memberId = (String) session.getAttribute("memberId");
+			if (memberId == null) {
+				memberId = "";
+			}
+			
+		 String lessonSeq = request.getParameter("lessonSeq");
+		 String upUserId = request.getParameter("upUserId");
+		 String lessonPrivateFlag = request.getParameter("lessonPrivateFlag");
+		 
+		 //upUserId가 관리자인지 알아보기
+		 Map<String,Object> adminFlag = trainerPageService.selectAdminFlag(upUserId);
+		 String flag = (String)adminFlag.get("memberGubun");
+		 System.out.println("flag : " + flag);
+		 if(flag.equals("A")) {
+			 System.out.println("여기안들어옴?");
+			 return "A";
+		 }else {
+			 //관리자가 아니면 바꾸기
+			 LessonVO vo = new LessonVO();
+			 vo.setLessonSeq(lessonSeq);
+			 vo.setLessonPrivateFlag(lessonPrivateFlag);
+			 vo.setMemberId(memberId);
+			 int updateResult = trainerPageService.updateLessonPrivate(vo);
+			 if(updateResult > 0) {
+				return "ok";
+			 }else {
+				 return "ng";
+			 }
+		 }
+		 
+		 
+		 
+	 }
 	
 	@RequestMapping(value = "classAccountInfo.do", method = RequestMethod.GET)
 	public String classAccountInfo(HttpServletRequest request, Model model, Criteria cri,
