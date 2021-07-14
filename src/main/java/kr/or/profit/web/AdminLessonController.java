@@ -168,5 +168,12 @@ public class AdminLessonController {
 		return "adminLesson/adminLessonPayList";
 	}	
 	
+   
+   @RequestMapping(value = "adminLessonStat.do", method = RequestMethod.GET)
+	public String adminLessonStat(Locale locale, Model model) {
+
+		return "adminLesson/adminLessonStat";
+	}
+   
 	
 }
