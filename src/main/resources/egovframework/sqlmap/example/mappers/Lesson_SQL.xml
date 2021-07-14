@@ -343,7 +343,8 @@
 	       NVL(D.LESSON_REPLY,0) AS LESSON_REPLY ,
 	       NVL(E.LESSON_BOOK,0) AS LESSON_BOOK,
 	       NVL(F.LESSON_GOOD,0) AS LESSON_GOOD,
-	       A.LESSON_HIT
+	       A.LESSON_HIT,
+           G.MEMBER_NAME
 			FROM LESSON A
             LEFT OUTER JOIN (SELECT FILE_SEQ, FILE_SAVE_NAME , FILE_REAL_NAME
 			                FROM ATTACH_FILE ) B
@@ -366,6 +367,9 @@
                             WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G'
                             GROUP BY LESSON_SEQ) F
             ON A.LESSON_SEQ = F.LESSON_SEQ
+            LEFT OUTER JOIN (SELECT MEMBER_ID,MEMBER_NAME,MEMBER_GUBUN
+                            FROM MEMBER) G
+            ON A.IN_USER_ID = G.MEMBER_ID
 			WHERE A.LESSON_SEQ= #{lessonSeq, jdbcType=VARCHAR}
 			]]>
 	</select>

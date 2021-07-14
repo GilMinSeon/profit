@@ -213,12 +213,17 @@ function go_refund(){
 				                                        
 				                                    </table>
 				                                    <br/><br/><br/><br/>
-				                                    
+				                                    <c:if test="${payDetailList.lessonRefundFlag eq 'Y'}">
+				                                    	<div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
+												         <a href="myLessonList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
+										   			 </div>
+				                                    </c:if>
+				                                    <c:if test="${payDetailList.lessonRefundFlag eq 'N'}">
 		                                    		<div class="classes__item__text"  style="text-align: center;padding-top: 0px;margin-left: auto;margin-right: auto;">
 												         <a class="class-btn_w" style="font-size: 1.1em;cursor:pointer;" onclick="fn_refund()">&nbsp;&nbsp;환불하기&nbsp;&nbsp;</a>
 												         <a href="myLessonList.do" class="class-btn_w" style="font-size: 1.1em;">&nbsp;&nbsp;뒤로가기&nbsp;&nbsp;</a>
 										   			 </div>
-				                                    
+				                                    </c:if>
 				                                </div>
 				                            </div><!-- /.col -->
 				                        </div><!-- /.row -->

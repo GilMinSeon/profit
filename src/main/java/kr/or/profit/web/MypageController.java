@@ -136,7 +136,10 @@ public class MypageController {
 	public String myLessonList(Locale locale, Model model, HttpServletRequest request,  Criteria cri) throws Exception {
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
-		System.out.println("buy파람id " + memberId);
+		System.out.println("buy파람id : " + memberId);
+		if (memberId == null) {
+			memberId = "";
+		}
 		
 		cri.setMemberId(memberId);
 		cri.setPerPageNum(10);
@@ -155,7 +158,7 @@ public class MypageController {
 		//전체 글 개수 세팅
 		pageMaker.setTotalCount(mypageService.selectbuyLessonCnt(cri));
 		
-		System.out.println("전체글개수-----------");
+		System.out.println("전체글개수-----------" + mypageService.selectbuyLessonCnt(cri));
 		
 		model.addAttribute("pageMaker", pageMaker);
 		
