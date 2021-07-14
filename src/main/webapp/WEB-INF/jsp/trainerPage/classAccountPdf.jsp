@@ -92,7 +92,7 @@ p{
 			<br>
 			<div class="classes__item__text" style="text-align: right;padding-top: 0;">
                  <a class="class-btn_w" onclick="fn_print()">PDF 출력</a>
-                 <a href="chatAccountInfo.do" class="class-btn_w" >뒤로가기</a>
+                 <a href="classAccountInfo.do" class="class-btn_w" >뒤로가기</a>
    		 	</div>
                	<div id="div0">
 <br>
@@ -112,7 +112,7 @@ p{
 	<td>신한은행</td>
 	<td>010-030-091874</td>
 	<td>${name}</td>
-	<td>${realPrice}원</td>
+	<td>${remainInfo.money}원</td>
 	<td></td>
 </tr>
 
@@ -123,89 +123,29 @@ p{
 	<tr>
 		<th>지급처</th>
 		<th>지급내용</th>
-		<th>건수</th>
-		<th>수익</th>
+		<th>강의명</th>
+		<th>가격</th>
+		<th>구매수</th>
 		<th>수수료</th>
 		<th>총금액</th>
 	</tr>
+	<c:forEach var="result" items="${AccountList}" varStatus="status">
 	<tr>
 		<td>(주)프로핏</td>
-		<td>1:1상담</td>
-		<td>${totalCount}건</td>
-		<td>${totalPrice}원</td>
-		<td>${vat}원</td>
-		<td>${realPrice}원</td>
+		<td>온라인클래스</td>
+		<td>${result.lessonTitle}</td>
+		<td>${result.lessonPrice}원</td>
+		<td>${result.cnt}</td>
+		<td>${result.vat}</td>
+		<td>${result.money}</td>
 	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	</c:forEach>
+	
 	<tr class="total">
-		<td colspan="2">합계</td>
-		<td>${totalCount}건</td>
-		<td>${totalPrice}원</td>
-		<td>${vat}원</td>
-		<td>${realPrice}원</td>
+		<td colspan="4">합계</td>
+		<td>${remainInfo.cnt}개</td>
+		<td>${remainInfo.vat}원</td>
+		<td>${remainInfo.money}원</td>
 	</tr>
 </table>
 <br><br><br>
