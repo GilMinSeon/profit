@@ -333,6 +333,7 @@ function getCurrentDate(){
 							<div class="class__filter__btn" style="display: left;width: 50px;margin-right: 680px;">
                                <button><i class="fa fa-search"></i></button>
                            </div>
+                           <span id="location123"></span>
 						</div>
 						
                        	</form>
