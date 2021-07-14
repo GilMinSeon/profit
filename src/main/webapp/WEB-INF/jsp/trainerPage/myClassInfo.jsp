@@ -75,7 +75,15 @@
 }   
 .table td, .table th {
 	vertical-align: middle;
-} ​
+} 
+a:hover, a:focus {
+    text-decoration: none;
+    outline: none;
+    color: #6d7ab0;
+}
+.link{
+	color: black;
+}​
 </style>
 
 <script type="text/javascript">
@@ -164,7 +172,11 @@ function fn_change(processSeq){
 	}
 }
 
+
 $(document).ready(function() {
+	$("#maleChart").hide();
+	$("#femaleChart").show();
+	
 	 var context = document
      .getElementById('myChart')
      .getContext('2d');
@@ -263,7 +275,7 @@ var myChart = new Chart(context, {
              ],
              backgroundColor: [
                  //색상
-            	 'rgba(102, 204, 255, 0.2)',
+            	 'rgba(255, 99, 132, 0.2)',
                  'rgba(54, 162, 235, 0.2)',
                  'rgba(255, 206, 86, 0.2)',
                  'rgba(75, 192, 192, 0.2)',
@@ -272,7 +284,7 @@ var myChart = new Chart(context, {
              ],
              borderColor: [
                  //경계선 색상
-            	 'rgba(102, 204, 255, 1)',
+            	 'rgba(255, 99, 132, 1)',
                  'rgba(54, 162, 235, 1)',
                  'rgba(255, 206, 86, 1)',
                  'rgba(75, 192, 192, 1)',
@@ -297,6 +309,19 @@ var myChart = new Chart(context, {
  }
 });
 });
+
+
+function fn_show1(){
+	$("#femaleChart").show();
+	$("#maleChart").hide();
+	
+}
+
+function fn_show2(){
+	
+	$("#maleChart").show();
+	$("#femaleChart").hide();
+}
 
 
 </script>
@@ -361,12 +386,19 @@ var myChart = new Chart(context, {
 		    <div class="classes__filter" style="margin-bottom: 0px;padding-bottom:0px">
 			<br>
                <div class="row">
-               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">누적 판매 순위 (여자 / 남자)</span><br>
-                   <div class="col-lg-12">
-                   		<div style="width: 900px; height: 1000px;">
+               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">* 누적 판매 순위 </span><br><br>
+                 <div class="r_gender">
+                    
+                   <div class="col-lg-12" style="margin-left: 25px">
+                   <input type="radio" name="gendType" id="male" value="M" autocomplete="off" style="opacity: 0;" checked onclick="fn_show1()">
+                    <label for="male" style="border:1px solid;float:left;">남자</label>
+					<input type="radio" name="gendType" id="female" value="F" autocomplete="off" style="opacity: 0;" onclick="fn_show2()">
+                    <label for="female" style="border:1px solid;" >여자</label>
+                 </div>
+                   		<div style="width: 900px; height: 550px;">
 							<!--차트가 그려질 부분-->
-						<canvas id="myChart"></canvas><br>
-						<canvas id="myChart2"></canvas>
+						<div id="maleChart"><canvas id="myChart"></canvas></div>
+						<div id="femaleChart"><canvas id="myChart2"></canvas></div>
 						</div>
 		
                    		
@@ -437,7 +469,7 @@ var myChart = new Chart(context, {
 					     <input type="hidden" class="upUserId" name="upUserId${status.index}" value="${result.upUserId}">
 						</td>
 						<td><img src="${result.filePath}" style="width: 50px; height: 50px"></td>
-						<td>${result.lessonTitle}</td>
+						<td><a class="link" href="lessonDetail.do?lessonSeq=${result.lessonSeq}">${result.lessonTitle}</a></td>
 						<td>${result.lessonPrice}원</td>
 						<td>${result.inDate}</td>
 						<td>
@@ -462,14 +494,14 @@ var myChart = new Chart(context, {
 					</c:forEach>
 				</tbody>
 			</table>
+			<div class="classes__item__text" style="text-align: right;padding-top: 0;">
+                 <a href="chatAccountInfo.do" class="class-btn_w">정산내역 보기</a>
+   		 	</div>
 			<br>
 			<div style="width: 100%;text-align: right;padding-right: 20px;font-weight: bold;">
 			
 			<c:set var="total" value="${totalCount * 3200}" />
 			<fmt:formatNumber value="${totalCount}" type="number" var="numberType" />
-			
-			<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 총 상담 건수 : ${totalCount}건<br></span>
-			<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 정산금액(예정) : ${total}원</span>
 			</div>
 			
 				<!-- 페이징처리 -->
@@ -498,6 +530,7 @@ var myChart = new Chart(context, {
 
 		<!-- container div 끝 -->	
 		</div>
+		
 	</section>
 
 

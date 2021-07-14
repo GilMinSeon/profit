@@ -115,10 +115,11 @@ public class TrainerController {
 		pageMaker.setCri(cri);
 		
 		//전체 글 개수 세팅
-		int total = trainerPageService.selectTrainerClassCnt(cri);
-		System.out.println("개수 : " + total);
-		pageMaker.setTotalCount(total);
+		int totalCount = trainerPageService.selectTrainerClassCnt(cri);
+		System.out.println("개수 : " + totalCount);
+		pageMaker.setTotalCount(totalCount);
 		model.addAttribute("pageMaker",pageMaker);
+		model.addAttribute("totalCount",totalCount);
 		
 		model.addAttribute("selCate", selCate);
 	   	model.addAttribute("selLev", selLev);
@@ -206,6 +207,20 @@ public class TrainerController {
 
 		return "trainerPage/classAccountInfo";
 	}
+	
+	@RequestMapping(value = "teachList.do", method = RequestMethod.GET)
+	public String teachList() throws Exception{
+		return "trainerPage/teachList";
+	}
+	
+	
+	@RequestMapping(value = "chatAccountPdf.do", method = RequestMethod.GET)
+	public String chatAccountPdf() throws Exception{
+		return "trainerPage/chatAccountPdf";
+	}
 		
+	
+	
+	
 	
 }
