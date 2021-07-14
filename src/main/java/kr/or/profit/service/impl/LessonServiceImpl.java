@@ -211,6 +211,12 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.selectClassCnt(cri);
 	}
 
+	//온라인클래스 상세 트레이너 정보소개
+	@Override
+	public List<?> trainerInfo(String lessonSeq) throws Exception {
+		return lessonDAO.trainerInfo(lessonSeq);
+	}
+
 	
 	
 

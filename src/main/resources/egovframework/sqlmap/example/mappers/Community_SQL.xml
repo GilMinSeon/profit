@@ -582,7 +582,11 @@
 	<!-- 자유게시판 인기글 TOP5 조회 -->
 	<select id="bestBoardList" resultType="egovMap">
 	    <![CDATA[
-	    SELECT D.RN, D.COMMUNITY_SEQ, D.CNT, 
+	    select *
+        from(
+        select rownum as rn, community_seq, cnt, common_title, in_date, file_seq, file_path
+        from
+        (SELECT D.COMMUNITY_SEQ, D.CNT, 
 	    CASE 
 	    WHEN LENGTH(D.COMMON_TITLE) > 20 THEN SUBSTR(D.COMMON_TITLE, 0, 20) ||'...' 
 		ELSE D.COMMON_TITLE
@@ -590,27 +594,30 @@
 		D.IN_DATE, E.FILE_SEQ, E.FILE_PATH
 		FROM
 		(
-		SELECT B.RN, B.COMMUNITY_SEQ, B.CNT, C.COMMON_TITLE,  C.FILE_SEQ, C.IN_DATE
+		SELECT B.COMMUNITY_SEQ, B.CNT, C.COMMON_TITLE,  C.FILE_SEQ, C.IN_DATE
 		FROM
 		(
-		SELECT ROWNUM AS RN, A.COMMUNITY_SEQ, A.CNT
+		SELECT A.COMMUNITY_SEQ, A.CNT
 		FROM
 		(
 		SELECT COMMUNITY_SEQ,COUNT(*) AS CNT
 		FROM BOOKGOOD
+        where bookgood_gubun = 'G'
 		GROUP BY COMMUNITY_SEQ
 		ORDER BY CNT DESC
 		) A
-		WHERE ROWNUM <= 5
 		) B
-		LEFT JOIN 
+		INNER JOIN 
 		COMMUNITY C ON
-		(B.COMMUNITY_SEQ = C.COMMUNITY_SEQ)
+		(B.COMMUNITY_SEQ = C.COMMUNITY_SEQ and c.common_seq = 5)
 		) D
 		LEFT JOIN 
 		ATTACH_FILE E ON
 		(D.FILE_SEQ = E.FILE_SEQ)
 		ORDER BY CNT DESC
+        )
+        )
+        where rn <= 5
 	    ]]>
 	</select>
 	

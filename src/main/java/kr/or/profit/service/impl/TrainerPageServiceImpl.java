@@ -96,4 +96,22 @@ public class TrainerPageServiceImpl implements TrainerPageService {
 		return trainerPageDAO.selectBestClassFemaleInfo(memberId);
 	}
 	
+	//이름 가져오기
+	@Override
+	public Map<String, Object> selectTrainer(String memberId) throws Exception {
+		return trainerPageDAO.selectTrainer(memberId);
+	}
+	
+	//총 정산 정보 목록 가져오기
+	@Override
+	public List<Map<String, Object>> selectAccountList(Map<String, Object> info) throws Exception {
+		return trainerPageDAO.selectAccountList(info);
+	}
+	
+	//나머지 정보 가져오기
+	@Override
+	public Map<String, Object> selectRemainInfo(Map<String, Object> info) throws Exception {
+		return trainerPageDAO.selectRemainInfo(info);
+	}
+	
 }

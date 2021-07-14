@@ -107,6 +107,9 @@ public interface LessonService {
 	//상세강의 글 개수 
 	public int selectClassCnt(Criteria cri) throws Exception;
 
+	//온라인클래스 상세 트레이너 정보소개
+	public List<?> trainerInfo(String lessonSeq) throws Exception;
+
 
 
 

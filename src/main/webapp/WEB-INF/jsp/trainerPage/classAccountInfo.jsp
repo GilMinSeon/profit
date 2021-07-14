@@ -82,28 +82,6 @@
   .toggle.android .toggle-handle { border-radius: 0px; }
 </style>
 <script type="text/javascript">
-function fn_change(processSeq){
-	if (confirm("신청서를 검토하시겠습니까?") == true){
-		$.ajax({
-			type : "POST",
-			data : "processSeq=" + processSeq,
-			url : "updateStatusBAjax.do",
-			dataType : "text", 
-			success : function(result) {
-				if (result == "ok") {
-					location.href="trainerPermitDetail.do?processSeq="+processSeq+" "
-				} else {
-					alert("문제가 발생하였습니다. 잠시 후 다시 시도해주세요")
-				}
-			},
-			error : function() {
-				alert("오류발생");
-			}
-		})
-	} else{  
-	    return;
-	}
-}
 
 $(document).ready(function() {
 	var now = new Date();
@@ -252,6 +230,21 @@ function getCurrentDate(){
     return year + month + day ;
 }
 
+function fn_pdf(){
+	var yearmonth = $("#mydate").val();
+	if(yearmonth == null || yearmonth == ''){
+		alert("날짜로 먼저 검색해주세요.");
+		return;
+	}
+	var payResult = $("#payResult").text();
+	if(payResult == '미정산'){
+		alert("해당 월은 아직 정산되지 않았습니다.");
+		return;
+	}
+	
+	$("#pdfInfo").submit();
+}
+
 </script>
 
 
@@ -324,7 +317,7 @@ function getCurrentDate(){
                    		
                    		<!-- 검색조건 form 시작 -->
                    		
-                       <form action="classAccountInfo.do" method="get">
+                       <form action="classAccountInfo.do#location123" method="get">
                            <div id="searchDiv" class="class__filter__input" style="width: 300px;text-align: left;">
 							<p style="margin-right: 140px;">날짜 검색</p>
 							<input type="text" placeholder="검색" id="mydate" style="width: 200px;display: left;margin-right: 10px;" 
@@ -333,6 +326,7 @@ function getCurrentDate(){
 							<div class="class__filter__btn" style="display: left;width: 50px;margin-right: 680px;">
                                <button><i class="fa fa-search"></i></button>
                            </div>
+                           <span id="location123"></span>
 						</div>
 						
                        	</form>
@@ -368,8 +362,8 @@ function getCurrentDate(){
 						<td>${result.lessonPrice}</td>
 						<td>${result.inDate}</td>
 						<td>
-						<c:if test="${result.classAccountFlag eq 'N'}"><span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">미정산</span></c:if>
-						<c:if test="${result.classAccountFlag eq 'Y'}"><span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;padding-left:8px;">&nbsp;&nbsp;정산&nbsp;&nbsp;</span></c:if>
+						<c:if test="${result.classAccountFlag eq 'N'}"><span id="payResult" style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">미정산</span></c:if>
+						<c:if test="${result.classAccountFlag eq 'Y'}"><span id="payResult" style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;padding-left:8px;">&nbsp;&nbsp;정산&nbsp;&nbsp;</span></c:if>
 						</td>
 					</tr>
 					</c:forEach>
@@ -381,8 +375,16 @@ function getCurrentDate(){
 			<c:set var="total" value="${totalCount * 3200}" />
 			<fmt:formatNumber value="${totalCount}" type="number" var="numberType" />
 			
-			<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 총 상담 건수 : ${totalCount}건<br></span>
-			<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 정산금액(예정) : ${total}원</span>
+			<div class="classes__item__text" style="text-align: right;padding-top: 0;">
+                 <a class="class-btn_w" onclick="fn_pdf()">정산내역 보기</a>
+   		 	</div>
+   		 	
+   		 	<form id="pdfInfo" method="post" action="classAccountPdf.do">
+	   		 	<input type="hidden" name="selDate" value="${selDate}">
+   		 	</form>
+   		 	
+   		 	
+   		 	
 			</div>
 			
 				<!-- 페이징처리 -->

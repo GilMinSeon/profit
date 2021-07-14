@@ -4,7 +4,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,9 +45,12 @@ import org.stringtemplate.v4.compiler.CodeGenerator.list_return;
 
 import kr.or.profit.service.TrainerPageService;
 import kr.or.profit.vo.AttachFileVO;
+import kr.or.profit.vo.BuyLessonVO;
+import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.PageMaker;
+import net.sf.json.JSONObject;
 
 @Controller
 public class TrainerController {
@@ -115,10 +121,11 @@ public class TrainerController {
 		pageMaker.setCri(cri);
 		
 		//전체 글 개수 세팅
-		int total = trainerPageService.selectTrainerClassCnt(cri);
-		System.out.println("개수 : " + total);
-		pageMaker.setTotalCount(total);
+		int totalCount = trainerPageService.selectTrainerClassCnt(cri);
+		System.out.println("개수 : " + totalCount);
+		pageMaker.setTotalCount(totalCount);
 		model.addAttribute("pageMaker",pageMaker);
+		model.addAttribute("totalCount",totalCount);
 		
 		model.addAttribute("selCate", selCate);
 	   	model.addAttribute("selLev", selLev);
@@ -206,6 +213,78 @@ public class TrainerController {
 
 		return "trainerPage/classAccountInfo";
 	}
+	
+	@RequestMapping(value = "teachList.do", method = RequestMethod.GET)
+	public String teachList() throws Exception{
+		return "trainerPage/teachList";
+	}
+	
+	
+	@RequestMapping(value = "chatAccountPdf.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String chatAccountPdf(HttpServletRequest request, Model model) throws Exception{
 		
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		if (memberId == null) {
+			memberId = "";
+		}
+		
+		
+		String totalPrice = request.getParameter("totalPrice");
+		String totalCount = request.getParameter("totalCount");
+		String selDate = request.getParameter("selDate").substring(4,6);
+		int vat = (int) (Integer.parseInt(totalPrice) * 0.2);
+		int realPrice = Integer.parseInt(totalPrice) - vat; 
+		System.out.println("totalPrice : " + totalPrice);
+		System.out.println("totalCount : " + totalCount);
+		System.out.println("selDate : " + selDate);
+		
+		//이름 가져오기
+		Map<String,Object> memberInfo = trainerPageService.selectTrainer(memberId);
+		String name = (String)memberInfo.get("memberName");		
+				
+		model.addAttribute("totalPrice" , totalPrice);
+		model.addAttribute("totalCount" , totalCount);
+		model.addAttribute("selDate" , selDate);
+		model.addAttribute("name" , name);
+		model.addAttribute("vat" , vat);
+		model.addAttribute("realPrice" , realPrice);
+		
+		return "trainerPage/chatAccountPdf";
+	}
+	
+	@RequestMapping(value = "classAccountPdf.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String classAccountPdf(HttpServletRequest request, Model model) throws Exception{
+		
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		if (memberId == null) {
+			memberId = "";
+		}
+		String selDate = request.getParameter("selDate");
+		System.out.println("에휴");
+		System.out.println(selDate);
+		
+		Map<String, Object> info = new HashMap<>();
+		info.put("memberId", memberId);
+		info.put("selDate", selDate);
+		
+		List<Map<String, Object>> AccountList = trainerPageService.selectAccountList(info);
+		model.addAttribute("AccountList", AccountList);
+		//이름 가져오기
+		Map<String,Object> memberInfo = trainerPageService.selectTrainer(memberId);
+		String name = (String)memberInfo.get("memberName");	
+		model.addAttribute("name", name);
+		
+		//나머지 정보 가져오기
+		Map<String,Object> remaininfo = trainerPageService.selectRemainInfo(info);
+		model.addAttribute("remainInfo",remaininfo);
+		
+		System.out.println("모델...");
+		System.out.println(model.toString());
+
+		
+		return "trainerPage/classAccountPdf";
+	}
 	
 }

@@ -280,17 +280,18 @@
 <!-- 민정 - 회원이 구매한 강의 list -->
 	<select id="myBuyLessonList" parameterType="Criteria" resultType="egovMap">
 	    <![CDATA[
-		    select rm, rm, BUY_LESSON_SEQ, LESSON_SEQ, LESSON_MONTH,
-				REMAINMONTH, lesson_TITLE, LESSON_CATEGORY_NAME, status, in_date
+		    select rm,  BUY_LESSON_SEQ, LESSON_SEQ, LESSON_MONTH,
+				REMAINMONTH, lesson_TITLE, LESSON_CATEGORY_NAME, status, in_date,up_user_id,member_gubun
 				from
 				(
 				select rownum as rm, BUY_LESSON_SEQ, LESSON_SEQ, LESSON_MONTH,
-				REMAINMONTH, lesson_TITLE, LESSON_CATEGORY_NAME, status, in_date
+				REMAINMONTH, lesson_TITLE, LESSON_CATEGORY_NAME, status, in_date,up_user_id,member_gubun
 				from
 				(
 				select A.BUY_LESSON_SEQ,
 				       A.LESSON_SEQ,
 		               a.in_date,
+		               b.up_user_id,
 		               B.LESSON_MONTH,
 		               TRUNC(TO_DATE(A.LESSON_FINISH_DATE) - SYSDATE)  REMAINMONTH,
 				       CASE WHEN LENGTH(B.LESSON_TITLE) > 20 THEN SUBSTR(B.LESSON_TITLE, 0, 20) || '...' ELSE B.LESSON_TITLE END AS lesson_TITLE,
@@ -301,12 +302,17 @@
 				        when lesson_click_FLAG = 'Y' and SYSDATE - TO_DATE(lesson_finish_date)  < 0 and lesson_refund_flag='N' then '수강진행'
 				        when lesson_click_flag = 'N' and lesson_refund_flag = 'N' then '결제완료'
 				        END ) status
+                        ,
+                        d.member_gubun
+        
 				       FROM BUY_LESSON A
 				       LEFT JOIN LESSON B ON
 				       (A.LESSON_SEQ = B.LESSON_SEQ)
 				       LEFT JOIN LESSON_CATEGORY C ON
 				       (B.LESSON_CATEGORY_SEQ = C.LESSON_CATEGORY_SEQ)
-				WHERE A.IN_USER_ID = #{memberId}
+				       left join member d on
+				       (d.member_id = b.up_user_id)
+				WHERE A.IN_USER_ID =  #{memberId}
 				)
 				)
 				where rm between #{rowStart} and #{rowEnd}
@@ -326,6 +332,7 @@
 		select A.BUY_LESSON_SEQ,
 				       A.LESSON_SEQ,
 		               a.in_date,
+		               a.up_user_id,
 		               B.LESSON_MONTH,
 		               TRUNC(TO_DATE(A.LESSON_FINISH_DATE) - SYSDATE)  REMAINMONTH,
 				       CASE WHEN LENGTH(B.LESSON_TITLE) > 20 THEN SUBSTR(B.LESSON_TITLE, 0, 20) || '...' ELSE B.LESSON_TITLE END AS lesson_TITLE,
@@ -394,6 +401,12 @@
 
 	</update>
 
-
+<!-- 	관리자인지 회원인지 구분 -->
+	<select id="checkMember" resultType="int">
+	    SELECT COUNT(*)
+		    FROM MEMBER
+		WHERE MEMBER_GUBUN='A'
+		AND MEMBER_ID = #{memberId}
+	</select>
 
 </mapper>

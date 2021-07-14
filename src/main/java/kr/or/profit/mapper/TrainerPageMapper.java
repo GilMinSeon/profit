@@ -48,4 +48,13 @@ public interface TrainerPageMapper {
 	//구매 많은 순 차트 정보 (여자)
 	List<Map<String,Object>> selectBestClassFemaleInfo(String memberId) throws Exception;
 	
+	//이름 가져오기
+	Map<String, Object> selectTrainer(String memberId) throws Exception;
+	
+	//총 정산 정보 목록 가져오기
+	List<Map<String, Object>> selectAccountList(Map<String, Object> info) throws Exception;
+	
+	//나머지 정보 가져오기
+	Map<String, Object> selectRemainInfo(Map<String, Object> info) throws Exception;
+	
 }

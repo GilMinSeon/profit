@@ -505,4 +505,75 @@
 		]]>
 	</select>
 	
+	<select id="selectTrainer" resultType="egovmap">
+	    select *
+	    from member
+	    where member_id = #{memberId}
+	</select>
+	
+	<select id="selectAccountList" parameterType="hashmap" resultType="egovmap">
+	    select lesson_title, lesson_price, vat, to_number(lesson_price - vat) as money ,cnt
+        from
+        (
+		select lesson_title, lesson_price,round(to_number(lesson_price * 0.8),-2) as vat, count(*) as cnt
+        from
+        (
+		select '['||d.LESSON_CATEGORY_NAME||']' || CASE
+					WHEN
+					LENGTH(LESSON_TITLE) > 10 THEN SUBSTR(LESSON_TITLE, 0, 10) ||
+					'...'
+					ELSE LESSON_TITLE
+					END AS LESSON_TITLE, 
+		            buy_lesson_seq, lesson_seq, lesson_refund_flag, c.in_user_id, to_char(c.in_date,'yyyy-mm-dd') as in_date,c.lesson_price, class_account_flag,trainer_id
+		from
+		(
+		select buy_lesson_seq, a.lesson_seq, lesson_refund_flag, a.in_user_id, a.in_date, a.class_account_flag,lesson_category_seq,lesson_title,lesson_price, b.in_user_id as trainer_id
+		from buy_lesson a, lesson b
+		where a.lesson_seq = b.lesson_seq(+) 
+		order by in_date desc
+		) c , lesson_category d
+		where c.lesson_category_seq = d.lesson_category_seq
+		and lesson_refund_flag = 'N'
+		and trainer_id = #{memberId}
+        and TO_CHAR(IN_DATE, 'YYYYMM') = #{selDate}
+		)
+		group by lesson_title, lesson_price, round(to_number(lesson_price * 0.8),-2)
+        )
+	    
+	</select>
+	
+	<select id="selectRemainInfo" parameterType="hashMap" resultType="egovMap">
+	    select sum(vat) as vat, sum(cnt) as cnt, sum(money) as money
+	    from
+	    (
+	    select lesson_title, lesson_price, vat, to_number(lesson_price - vat) as money ,cnt
+        from
+        (
+		select lesson_title, lesson_price,round(to_number(lesson_price * 0.8),-2) as vat, count(*) as cnt
+        from
+        (
+		select '['||d.LESSON_CATEGORY_NAME||']' || CASE
+					WHEN
+					LENGTH(LESSON_TITLE) > 10 THEN SUBSTR(LESSON_TITLE, 0, 10) ||
+					'...'
+					ELSE LESSON_TITLE
+					END AS LESSON_TITLE, 
+		            buy_lesson_seq, lesson_seq, lesson_refund_flag, c.in_user_id, to_char(c.in_date,'yyyy-mm-dd') as in_date,c.lesson_price, class_account_flag,trainer_id
+		from
+		(
+		select buy_lesson_seq, a.lesson_seq, lesson_refund_flag, a.in_user_id, a.in_date, a.class_account_flag,lesson_category_seq,lesson_title,lesson_price, b.in_user_id as trainer_id
+		from buy_lesson a, lesson b
+		where a.lesson_seq = b.lesson_seq(+) 
+		order by in_date desc
+		) c , lesson_category d
+		where c.lesson_category_seq = d.lesson_category_seq
+		and lesson_refund_flag = 'N'
+		and trainer_id = #{memberId}
+        and TO_CHAR(IN_DATE, 'YYYYMM') = #{selDate}
+		)
+		group by lesson_title, lesson_price, round(to_number(lesson_price * 0.8),-2)
+        )
+        )
+	</select>
+	
 </mapper>
