@@ -38,5 +38,8 @@ public interface MemberMapper {
 	
 	//카카오 회원인지 검사
 	public int kakaoSelectById(String memberId);
+	
+	//카카오 로그인 구분 가져오기
+	public MemberVO selectKakaoGubun(String memberId);
 
 }
