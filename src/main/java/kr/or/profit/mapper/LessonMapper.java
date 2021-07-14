@@ -108,6 +108,9 @@ public interface LessonMapper {
 	//상세 강의 글 개수
 	int selectClassCnt(Criteria cri) throws Exception;
 
+	//온라인클래스 상세 트레이너 정보소개
+	List<?> trainerInfo(String lessonSeq) throws Exception;
+
 
 
 

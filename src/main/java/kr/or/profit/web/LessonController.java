@@ -174,7 +174,10 @@ public class LessonController {
       System.out.println(cri.getRowStart());
       System.out.println(cri.getRowEnd());
       
+      List<?> trainerInfoList = lessonService.trainerInfo(lessonSeq);
+      
       model.addAttribute("resultClassList", classList);
+      model.addAttribute("trainerInfoList", trainerInfoList);
       System.out.println("디테일로 갈 파일 상세 리트스" + model.toString());
       
     //페이징처리

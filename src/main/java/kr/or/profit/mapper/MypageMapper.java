@@ -66,5 +66,7 @@ public interface MypageMapper {
 	//마이페이지 환불여부 변경
 	public int updBuyLessonRefundFlag(Map<String, Object> refundFlagMap) throws Exception;
 
+
+
 	
 }
