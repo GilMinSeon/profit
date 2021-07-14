@@ -109,11 +109,18 @@
 								<input type="hidden" name="buyLessonSeq" value="${result.buyLessonSeq}">
 									<tr>
 										<th scope="row" style="font-weight: normal;">${status.index+1}</th>
-										<td colspan="2">
-											<a href="lessonDetail.do?lessonSeq=${result.lessonSeq}" style="text-decoration: none; color: #4169e1;">
-												<span style="color:#4169e1;">[${result.lessonCategoryName}]</span>&nbsp; ${result.lessonTitle} 
-											</a>
-										</td>
+										<c:if test="${result.memberGubun ne 'A'}">
+											<td colspan="2">
+												<a href="lessonDetail.do?lessonSeq=${result.lessonSeq}" style="text-decoration: none; color: #4169e1;">
+													<span style="color:#4169e1;">[${result.lessonCategoryName}]</span>&nbsp; ${result.lessonTitle} 
+												</a>
+											</td>
+										</c:if>
+										<c:if test="${result.memberGubun eq 'A'}">
+											<td colspan="2">
+												<span style="color:red">해당강의는 비활성화 되었습니다.</span>
+											</td>
+										</c:if>
 										<td>
 											<c:choose>
 												<c:when test="${result.status eq '환불완료'}">

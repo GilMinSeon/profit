@@ -908,5 +908,26 @@
 		AND A.Lesson_Seq =#{lessonSeq}
         
     </select>
+    
+<!--     온라인클래스 상세 트레이너 소개정보 -->
+	 <select id="trainerInfo" parameterType="String" resultType="egovMap">
+        select a.trainer_seq,
+		       a.trainer_gym,
+		       a.trainer_award,
+		       a.trainer_career,
+		       b.file_seq,
+		       c.file_real_name,
+		       c.file_save_name,
+		       c.file_path,
+		       d.lesson_seq
+		    from trainer a
+		    left join member b on
+		    (a.in_user_id = b.member_id)
+		    left join attach_file c on
+		    (b.file_seq = c.file_seq)
+		    left join lesson d on
+		    (a.in_user_id = d.in_user_id)
+		where d.lesson_seq = #{lessonSeq}
+    </select>
 	
 </mapper>

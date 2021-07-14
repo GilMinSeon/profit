@@ -232,71 +232,13 @@ function fn_reply_del(seq){
 	
 }
 
+$(document).ready(function(){
+    $("#myA").click(function(){
+        $("#myModal").modal('show');
+    });
+});
 
 
-function fn_modalOpen(){
-	//ajax
-	
-	$.ajax({
-		type:"POST",
-		url:"kcalNumAjax.do",
-		data:formData,
-		processData : false,
-		contentType : false,
-		async:false,
-		dataType:"text",
-		success : function(data){
-			var jsonInfo = JSON.parse(data);
-			if(jsonInfo.msg=="ok"){
-				$('#food_name').text(jsonInfo.descKor);
-				$('#makerName').text(jsonInfo.makerName);
-				$('#nutrCont1').text(jsonInfo.nutrCont1);
-				$('#servingSize').text(jsonInfo.servingSize);
-				$('#sp1').text("탄수화물( " + jsonInfo.nutrCont2 + " g )");
-				$('#sp2').text("단백질( " + jsonInfo.nutrCont3 + " g )");
-				$('#sp3').text("지방( " + jsonInfo.nutrCont4 + " g )");
-				$('#sp4').text("당류( " + jsonInfo.nutrCont5 + " g )");
-				$('#sp5').text("나트륨( " + jsonInfo.nutrCont6 + " g )");
-				if(jsonInfo.cont2Rs>100){
-					$("#carbo").css('width',"100%");
-				}else{
-					$("#carbo").css('width',jsonInfo.cont2Rs + "%");
-				}
-				if(jsonInfo.cont3Rs>100){
-					$("#protein").css('width',"100%");
-				}else{
-					$("#protein").css('width',jsonInfo.cont3Rs + "%");
-				}
-				if(jsonInfo.cont4Rs>100){
-					$("#fat").css('width',"100%");
-				}else{
-					$("#fat").css('width',jsonInfo.cont4Rs + "%");
-				}
-				if(jsonInfo.cont5Rs>100){
-					$("#sugars").css('width',"100%");
-				}else{
-					$("#sugars").css('width',jsonInfo.cont5Rs + "%");
-				}
-				if(jsonInfo.cont6Rs>100){
-					$("#salt").css('width',"100%");
-				}else{
-					$("#salt").css('width',jsonInfo.cont6Rs + "%");
-				}
-				$("#myModal").modal('show');
-			}else if(jsonInfo.msg=="ng"){
-				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
-			}else{
-				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
-			}
-		},
-		error : function(error){
-			alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
-			console.log(error);
-			console.log(error.status);
-		}
-	});
-	
-}
 </script>
 <style type="text/css">
 .btn div {
@@ -363,6 +305,60 @@ function fn_modalOpen(){
 	</section>
 	<!-- Blog Hero End -->
 	<!-- 	main html 시작 -->
+<!-- 	모달 -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content" style="margin-top: 0px;margin-left:50px;width: 770px;height:auto;">
+		      
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="myModalLabel" style="font-size: 30px;">🏋️‍♂️트레이너 소개</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      
+		      <div class="modal-body">
+		      	<div style="display: flex;">
+	        		<div style="flex:1">
+	            		<div style="padding:10px;">
+	            			<img src="http://192.168.41.6:9999/upload/profit/${trainerInfoList[0]['fileSaveName']}" style="border-radius: 20px;">
+	            		</div>
+	            	</div>
+	            	
+	            	<div style="flex:1">
+	            		<div style="padding:10px;">
+		            			
+            				<fieldset>
+            					<legend style="background-color: #000; color: #fff;padding: 3px 6px; text-align: center;">소속헬스장</legend>
+	            				<div style="text-align: center;">${trainerInfoList[0]['trainerGym']}</div>
+            				</fieldset>
+	            			<br/><br/>
+	            			
+	            			<fieldset>
+            					<legend style="background-color: #000; color: #fff;padding: 3px 6px; text-align: center;">수상이력</legend>
+	            				<div style="text-align: center;"><pre>${trainerInfoList[0]['trainerAward']}</pre></div>
+            				</fieldset>
+	            			<br/><br/>
+	            			
+	            			<fieldset>
+            					<legend style="background-color: #000; color: #fff;padding: 3px 6px; text-align: center;">경력</legend>
+	            				<div style="text-align: center;"><pre>${trainerInfoList[0]['trainerCareer']}</pre></div>
+            				</fieldset>
+		            			
+	            		</div>
+	            	</div>
+	           
+			      </div>
+			     </div>
+			      <h6 style="color:gray;text-align:left;padding-right: 30px;margin: 0px;"> 언제나 당신과 함께하는 ProFit</h6>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+	
+	
 	
 	<section class="about spad">
 		<div class="container">
@@ -432,6 +428,7 @@ function fn_modalOpen(){
 						<img src="http://192.168.41.6:9999/upload/profit/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;object-fit: cover;">
 					</div>
 				</div>
+				
 				<div class="col-lg-5 p-0">
 					<div class="about__text" style="padding-left:20px;">
 						<div class="section-title">
@@ -439,41 +436,9 @@ function fn_modalOpen(){
 							<div>
 								<div style="display: inline-block;"><p># 강사 이름 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">
-									<a onclick="fn_modalOpen()">${resultList.memberName}</a> </p>
+									<a data-toggle="modal" data-target="#myModal" href="#myModal" id="myA">${resultList.memberName}</a> </p>
 								</div>
 							</div>
-							
-<!-- 							모달 -->
-							<div class="modal" id="myModal" tabindex="-1" role="dialog">
-							    <div class="modal-dialog" role="document">
-							        <div class="modal-content" style="margin-top: 0px;margin-left:50px;width: 770px;height:900px;">
-							            <div class="modal-header">
-							                <h3 class="modal-title">🏋️‍♂️트레이너 소개</h3>
-							                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							                    <span aria-hidden="true">&times;</span>
-							                </button>
-							            </div>
-							            <div class="modal-body">
-							            	<div style="display: inline-block;">
-							            		<div>
-							            			<img src="">ㅇㅇㅇ
-							            		</div>
-							            	</div>
-							            	
-							            	<div style="display: inline-block;">
-							            		<div>
-							            			<span>트레이너이름</span>
-							            			<span>간단소개</span>
-							            		</div>
-							            	</div>
-							        	</div>
-							            <div class="modal-footer">
-							                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							            </div>
-							        </div>
-							    </div>
-							</div>
-							
 							<div>
 								<div style="display: inline-block; float:left;"><p># 한줄 소개 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>

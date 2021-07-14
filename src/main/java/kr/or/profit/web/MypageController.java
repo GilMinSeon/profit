@@ -141,6 +141,7 @@ public class MypageController {
 			memberId = "";
 		}
 		
+		
 		cri.setMemberId(memberId);
 		cri.setPerPageNum(10);
 		
@@ -150,7 +151,8 @@ public class MypageController {
 		model.addAttribute("buyListResult", myBuyLessonList);
 		System.out.println("가랏 "+ model.toString());
 		
-		
+	     
+	     System.out.println("가랏2222 "+ model.toString());
 		//페이징처리
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
