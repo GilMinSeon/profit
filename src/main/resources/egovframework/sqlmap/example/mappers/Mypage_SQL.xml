@@ -408,5 +408,45 @@
 		WHERE MEMBER_GUBUN='A'
 		AND MEMBER_ID = #{memberId}
 	</select>
+	
+	<select id="selectBuyTicketList" parameterType="Criteria" resultType="egovMap">
+		select *
+		from
+		(
+		select rownum as rn, buy_ticket_seq, ticket_remain,ticket_refund_flag, 
+		to_char(in_date,'YYYY-MM-DD') as in_date, ticket_avail_flag,ticket_name
+		from
+		(
+		select *
+		from buy_ticket a, ticket_category b
+		where in_user_id = #{memberId}
+		and a.ticket_category_seq = b.ticket_category_seq(+)
+		<if test="selDate != null and selDate != '' ">
+		and to_char(in_date,'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selTicketName != null and selTicketName != '' ">
+		and b.ticket_name = #{selTicketName}
+		</if>
+		order by in_date desc
+		)
+		)
+		where rn between #{rowStart} and #{rowEnd}
+	</select>
+	
+	<select id="selectBuyTicketCnt" parameterType="Criteria" resultType="int">
+		
+		select count(*)
+		from buy_ticket a, ticket_category b
+		where in_user_id = #{memberId}
+		and a.ticket_category_seq = b.ticket_category_seq(+)
+		<if test="selDate != null and selDate != '' ">
+		and to_char(in_date,'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="selTicketName != null and selTicketName != '' ">
+		and b.ticket_name = #{selTicketName}
+		</if>
+		order by in_date desc
+		
+	</select>
 
 </mapper>

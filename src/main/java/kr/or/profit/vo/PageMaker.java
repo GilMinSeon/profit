@@ -221,5 +221,14 @@ public class PageMaker {
 
 		return uriComponents.toUriString();
 	}
+	
+	public String makeQueryBuyTicketList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+				.queryParam("selDate", cri.getSelDate())
+				.queryParam("selTicketName", cri.getSelTicketName())
+				.build();
+
+		return uriComponents.toUriString();
+	}
 
 }

@@ -210,9 +210,38 @@ public class MypageController {
 	///////////////////////////////////////
 	
 	//이용권 구매내역
-	@RequestMapping(value = "ticketBuyList.do", method = RequestMethod.GET)
-	public String ticketBuyList(Locale locale, Model model) {
-
+	@RequestMapping(value = "ticketBuyList.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String ticketBuyList(Model model, HttpServletRequest request, Criteria cri,
+			@RequestParam(value = "selDate", required = false) String selDate,
+			@RequestParam(value = "selTicketName", required = false) String selTicketName) throws Exception{
+		
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		if (memberId == null) {
+			memberId = "";
+		}
+		
+		System.out.println(selTicketName);
+		
+		cri.setPerPageNum(10);
+		cri.setMemberId(memberId);
+		cri.setSelDate(selDate);
+		cri.setSelTicketName(selTicketName);
+		
+		//이용권 구매목록
+		List<Map<String, Object>> buyTicketList = mypageService.selectBuyTicketList(cri);
+		model.addAttribute("buyTicketList", buyTicketList);
+		System.out.println(model.toString());
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		
+		//전체 글 개수 세팅
+		pageMaker.setTotalCount(mypageService.selectBuyTicketCnt(cri));
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("selDate", selDate);
+		model.addAttribute("selTicketName", selTicketName);
+		
 		return "mypage/ticketBuyList";
 	}
 
@@ -551,41 +580,37 @@ public class MypageController {
 			return msg;
 		}
 	
-		
-//		@RequestMapping(value = "updRefundFlagAjax.do", method = RequestMethod.GET)
-//		@ResponseBody
-//		public String updRefundFlag(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception {
-//		   
+		//이용권 구매내역
+		@RequestMapping(value = "ticketUseList.do", method = {RequestMethod.GET,RequestMethod.POST})
+		public String ticketUseList() throws Exception{
+			System.out.println("왜 안오세요?");
 //			HttpSession session = request.getSession();
 //			String memberId = (String) session.getAttribute("memberId");
-//			System.out.println("환불업드Id " + memberId);
+//			if (memberId == null) {
+//				memberId = "";
+//			}
 //			
-//			String buyLessonSeq = request.getParameter("buyLessonSeq");
-//			System.out.println("환불업드seq "+ buyLessonSeq);
+//			System.out.println(selTicketName);
 //			
-//			String lessonSeq = request.getParameter("lessonSeq");
-//			System.out.println("환불업드seq2 " + lessonSeq);
+//			cri.setPerPageNum(10);
+//			cri.setMemberId(memberId);
+//			cri.setSelDate(selDate);
+//			cri.setSelTicketName(selTicketName);
 //			
-//			 //환불 할 수 있는 사람인지 확인
-//		      Map<String, Object> refundFlagMap = new HashMap<>();
-//		      refundFlagMap.put("memberId", memberId);
-//		      refundFlagMap.put("lessonSeq", lessonSeq);
-//		      refundFlagMap.put("buyLessonSeq", buyLessonSeq);
-//		      int refundFlag = mypageService.updBuyLessonRefundFlag(refundFlagMap);
-//		      
-//		      String msg="";
-//		      if(checkRefundFlag > 0) {
-//		    	  model.addAttribute("refundOk", "1");
-//		    	   msg="ok"; 
-//		    	   mypageService.updBuyLessonRefundFlag();
-//		      }else {
-//		    	  model.addAttribute("refundOk", "0");
-//		    	   msg="no";
-//		      }
-//		      System.out.println("환불모델 " + model.toString());
-//			return msg;
-//		}
-		
-		
-	
+//			//이용권 구매목록
+//			List<Map<String, Object>> buyTicketList = mypageService.selectBuyTicketList(cri);
+//			model.addAttribute("buyTicketList", buyTicketList);
+//			System.out.println(model.toString());
+//			
+//			PageMaker pageMaker = new PageMaker();
+//			pageMaker.setCri(cri);
+//			
+//			//전체 글 개수 세팅
+//			pageMaker.setTotalCount(mypageService.selectBuyTicketCnt(cri));
+//			model.addAttribute("pageMaker", pageMaker);
+//			model.addAttribute("selDate", selDate);
+//			model.addAttribute("selTicketName", selTicketName);
+			
+			return "mypage/ticketUseList";
+		}
 }

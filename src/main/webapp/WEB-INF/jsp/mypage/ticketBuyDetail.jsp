@@ -5,6 +5,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+li a {
+    font-size: 16px;
+    color: #9B9EA3;
+    line-height: 48px;
+    -webkit-transition: all, 0.3s;
+    -moz-transition: all, 0.3s;
+    -ms-transition: all, 0.3s;
+    -o-transition: all, 0.3s;
+    transition: all, 0.3s;
+}
+li a:hover {
+    color: #5768AD;
+}
+</style>
 </head>
 <body>
 
@@ -32,33 +47,29 @@
 				<div class="col-lg-4 order-lg-1 order-2">
 					<div class="blog__sidebar">
 						<div class="blog__sidebar__categories">
-							<h4>카테고리</h4>
+							<h4>🧡 카테고리 🧡</h4>
 							<ul>
-								<li><a href="myinfo.do">내정보</a></li>
-								<li><a href="bookmark.do">북마크</a></li>
-								<li><a href="myLessonList.do">마이클래스</a></li>
-								<li><a href="myChatList.do">1:1채팅내역</a></li>
+								<li><a href="myinfo.do">- 내정보</a></li>
+								<li><a href="bookmark.do">- 북마크</a></li>
+								<li><a href="myLessonList.do">- 마이클래스</a></li>
+								<li><a href="myChatList.do">- 1:1채팅내역</a></li>
 							</ul>
 						</div>
 						
 						<br>
 						<div class="classes__sidebar">
 	                        <div class="classes__sidebar__item classes__sidebar__item--info">
-	                            <h4>채팅이용권</h4>
+	                            <h4>🧡 채팅이용권 🧡</h4>
 	                            <ul class="classes__sidebar__item__widget">
-	                                <li>이용권 보유 개수 ▶ 3회 </li>
-	                                <li><a href="ticketBuyList.do">이용권 구매내역</a></li><br>
-	                                <li><a href="ticketUseList.do">이용권 사용내역</a></li>
+	                                <li><a href="ticketBuyList.do">- 이용권 구매내역</a></li><br>
+	                                <li><a href="ticketUseList.do">- 이용권 사용내역</a></li>
 	                            </ul>
-	                            <br>
-	                            <a href="#" class="sidebar-btn">구매하기</a>
 	                        </div>
                         </div>
                         
-                        <br>
 						<div class="classes__sidebar">
 	                        <div class="classes__sidebar__item classes__sidebar__item--info">
-	                            <h4>트레이너 신청</h4>
+	                            <h4>🧡 트레이너 신청 🧡</h4>
 	                            <ul class="classes__sidebar__item__widget">
 	                                <li><span class="icon_calendar"></span><a href="trainerApplyList.do">나의 신청내역</a> </li>
 	                                <li><span class="icon_id"></span><a href="trainerApply.do">신청하기</a></li>

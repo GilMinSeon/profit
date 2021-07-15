@@ -162,8 +162,6 @@ function fn_modalOpen(kcalNum){
 				console.log("walkKcal : " + walkKcal + "분");
 				console.log("walkHour : " + walkHour);
 				console.log("walkMin : " + walkMin);
-				console.log("swimKcal : " + swimKcal + "분");
-				console.log("bikeKcal : " + bikeKcal + "분");
 				
 				
 				$("#myModal").modal('show');
