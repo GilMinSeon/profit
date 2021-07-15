@@ -59,7 +59,24 @@ function fn_detail(){
 		<div class="container">
 			<h3 style="text-align: center;">상세보기</h3>
 			<br>
-			<div class="classes__filter">
+<!-- 			검색form -->
+			<div class="classes__filter" style="margin-bottom: 0px;padding-bottom: 0px;">
+                <div class="row">
+                    <div class="col-lg-12" >
+                        <form action="adminSalesDetail.do">
+							<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
+								<p>검색어</p>
+								<input type="text" name="searchKeyword" placeholder="아이디검색" style="width: 100%;" value="${searchKeyword}">
+								<div class="class__filter__btn" style="padding-right: 525px;">
+                               		<button ><i class="fa fa-search"></i></button>
+                            	</div>
+							</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+			<div class="classes__filter" style="padding-top: 0px;">
 			 <button type="button" class="btn btn-outline-primary" style="float:right;">일괄 정산</button>
 			 <br/><br/><br/>
 			<table class="table" style="text-align: center;">
@@ -67,25 +84,22 @@ function fn_detail(){
 					<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
 						<th scope="col">번호</th>
 						<th scope="col">아이디</th>
-						<th scope="col" >강의명</th>
 						<th scope="col" >총금액</th>
 						<th scope="col" >수수료</th>
 						<th scope="col" >실수령액</th>
 					</tr>
 				</thead>
 				<tbody>
-<%-- 					<c:forEach var="result" items="${adminLessonList}" varStatus="status"> --%>
+					<c:forEach var="result" items="${adminSalesDetailList}" varStatus="status">
 					
 					<tr>
-					 
-						<td>oo</td>
-						<td>oo</td>
-						<td>oo</td>
-						<td>oo</td>
-						<td>oo</td>
-						<td >oo</td>
+						<td>${status.count}</td>
+						<td>${result.trainerId}</td>
+						<td>${result.sum} 원</td>
+						<td>${result.fee} 원</td>
+						<td >${result.realamount} 원</td>
 					</tr>
-<%-- 					</c:forEach> --%>
+					</c:forEach>
 				</tbody>
 			</table>
 			<br>
@@ -101,25 +115,25 @@ function fn_detail(){
 					<span>총 실수령액합계</span>
 			</div>
 			<!-- 페이징처리 -->
-<!--             	<div class="col-lg-12"> -->
-<!-- 					<div class="classes__pagination"> -->
-<%-- 					<c:if test="${pageMaker.prev}"> --%>
-<%-- 						<a href="adminLessonList.do${pageMaker.makeQueryAdminLessonList(pageMaker.startPage - 1)}"> --%>
-<!-- 							<span class="arrow_carrot-left"></span> -->
-<!-- 						</a> -->
-<%-- 					</c:if>  --%>
+            	<div class="col-lg-12">
+					<div class="classes__pagination">
+					<c:if test="${pageMaker.prev}">
+						<a href="adminSalesDetail.do${pageMaker.makeQueryAdminSalesDetailList(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
+						</a>
+					</c:if> 
 					
-<%-- 					<c:set var="page" value="${pageMaker.cri.page}"/> --%>
-<%-- 					<c:set var="idx" value="${idx}"/> --%>
-<%-- 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx"> --%>
-<%--             			<a href="adminLessonList.do${pageMaker.makeQueryAdminLessonList(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a> --%>
-<%-- 					</c:forEach> --%>
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="adminSalesDetail.do${pageMaker.makeQueryAdminSalesDetailList(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
 					
-<%-- 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}"> --%>
-<%-- 						<a href="adminLessonList.do${pageMaker.makeQueryAdminLessonList(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a> --%>
-<%-- 					</c:if> --%>
-<!-- 					</div> -->
-<!-- 				</div> -->
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="adminSalesDetail.do${pageMaker.makeQueryAdminSalesDetailList(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
+					</div>
+				</div>
 			
 			</div>
 		</div>
