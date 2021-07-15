@@ -23,9 +23,9 @@ $(document).ready(function(){
     });
 });
 
-
-	
-
+function fn_detail(){
+	location.href="adminSalesDetail.do";
+}
 </script>
 <style>
 .classes__filter form .class__filter__btn_re {
@@ -35,9 +35,7 @@ $(document).ready(function(){
 .table tr:hover {
 	background-color: #f8f6ff;
 }
-.ui-datepicker-calendar {
-    display: none;
-}  
+
 </style>
 <body>
 
@@ -59,56 +57,20 @@ $(document).ready(function(){
 				
 	<section class="classes spad">
 		<div class="container">
-			<h3 style="text-align: center;">정산하기</h3>
+			<h3 style="text-align: center;">상세보기</h3>
 			<br>
-			    <div class="classes__filter" style="margin-bottom: 0px;">
-				<br>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <form action="adminSalesList.do">
-                           <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
-								<p>날짜 검색</p>
-								<input type="text" placeholder="검색" id="mydate" style="width: 100%;" 
-									<c:if test="${not empty selDate}">value=${selDate}</c:if>
-									name="selDate" id="selDate">
-							</div>
-							<div class="class__filter__select" style="width: 150px;">
-                                <p>카테고리</p>
-                                <select name="selGubun">
-                                    <option <c:if test="${selGubun eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selGubun eq '강좌'}">selected</c:if>>강좌</option>
-                                    <option <c:if test="${selGubun eq '채팅'}">selected</c:if>>채팅</option>
-                                </select>
-                            </div>
-                            <div class="class__filter__select" style="width: 150px;">
-                                <p>상태</p>
-                                <select name="selStatus">
-                                    <option <c:if test="${selStatus eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selStatus eq '정산'}">selected</c:if>>정산</option>
-                                    <option <c:if test="${selStatus eq '비정산'}">selected</c:if>>비정산</option>
-                                </select>
-                                
-                            </div>
-							<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
-								<p>검색어</p>
-								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;" value="${searchKeyword}">
-								<div class="class__filter__btn">
-                                <button><i class="fa fa-search"></i></button>
-                            </div>
-							</div>
-                            
-                        </form>
-                    </div>
-                </div>
-            </div>
 			<div class="classes__filter">
+			 <button type="button" class="btn btn-outline-primary" style="float:right;">일괄 정산</button>
+			 <br/><br/><br/>
 			<table class="table" style="text-align: center;">
 				<thead>
 					<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
 						<th scope="col">번호</th>
-						<th scope="col">[월]카테고리</th>
-						<th scope="col">정산여부</th>
-						<th scope="col" >상세조회</th>
+						<th scope="col">아이디</th>
+						<th scope="col" >강의명</th>
+						<th scope="col" >총금액</th>
+						<th scope="col" >수수료</th>
+						<th scope="col" >실수령액</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -119,13 +81,25 @@ $(document).ready(function(){
 						<td>oo</td>
 						<td>oo</td>
 						<td>oo</td>
-						<td >
-							<button type="button" class="btn btn-outline-dark" onclick="location.href='adminSalesDetail.do'">상세</button>
-						</td>
+						<td>oo</td>
+						<td>oo</td>
+						<td >oo</td>
 					</tr>
 <%-- 					</c:forEach> --%>
 				</tbody>
 			</table>
+			<br>
+			<div style="width: 100%;text-align: right;padding-right: 20px;font-weight: bold;">
+			
+<%-- 				<c:set var="total" value="${totalCount * 3200}" /> --%>
+<%-- 				<fmt:formatNumber value="${totalCount}" type="number" var="numberType" /> --%>
+				
+<%-- 				<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 총 상담 건수 : ${totalCount}건<br></span> --%>
+<%-- 				<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 정산금액(예정) : ${total}원</span> --%>
+					<span>총 금액합계</span><br/>
+					<span>총 수수료합계</span><br/>
+					<span>총 실수령액합계</span>
+			</div>
 			<!-- 페이징처리 -->
 <!--             	<div class="col-lg-12"> -->
 <!-- 					<div class="classes__pagination"> -->

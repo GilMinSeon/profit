@@ -29,6 +29,7 @@ import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.PageMaker;
 import kr.or.profit.vo.ProcessVO;
+import net.sf.json.JSONObject;
 
 @Controller
 public class AdminMemberController {
@@ -37,51 +38,104 @@ public class AdminMemberController {
 
 	@Resource(name = "adminMemberService")
 	private AdminMemberService adminMemberService;
+	
+	
+	/*회원관리탭*/
+	
+	//회원 전체 리스트
+	@RequestMapping(value = "adminMemberList.do", method = RequestMethod.GET)
+	public String adminMemberList(Model model, HttpServletRequest request, Criteria cri) throws Exception {
+		cri.setPerPageNum(10);
+		List<MemberVO> memberList = adminMemberService.selectAdminMemberList(cri);
+		model.addAttribute("memberList", memberList);
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(adminMemberService.selectMemberListCnt(cri));
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "adminMember/adminMemberList";
+	}
+	
+	
+	// 모달 상세보기 ajax
+	@RequestMapping(value = "adminMemberDetailAjax.do", produces = "application/text; charset=utf-8")
+	public @ResponseBody String adminMemberDetail(String memberId, HttpServletResponse response) throws Exception {
+		MemberVO vo = adminMemberService.adminMemberDetail(memberId);
+		JSONObject jsonObject = new JSONObject();
 
+		if (vo != null) {
+			jsonObject.put("msg", "ok");
+			jsonObject.put("vo", vo);
+		} else {
+			jsonObject.put("msg", "no");
+		}
+		response.setCharacterEncoding("UTF-8");
+		String jsonInfo = jsonObject.toString();
+		System.out.println(jsonInfo);
+		return jsonInfo;
+		
+	}
+	
+	//블랙리스트 추가
+	@RequestMapping(value = "addBlacklistAjax.do", method = RequestMethod.GET)
+	public @ResponseBody String addBlacklist(HttpServletRequest request, MemberVO vo) throws Exception {
+		String msg = "";
+		int cnt = adminMemberService.insertBlacklist(vo);
+		
+		if(cnt > 0) {
+			msg = "ok";
+		}else {
+			msg = "no";
+		}
+		
+		return msg;
+	}
+	
+	//블랙리스트 해제
+	@RequestMapping(value = "removeBlacklistAjax.do", method = RequestMethod.GET)
+	public @ResponseBody String removeBlacklist(HttpServletRequest request, MemberVO vo) throws Exception {
+		String msg = "";
+		int cnt = adminMemberService.deleteBlacklist(vo.getMemberId());
+		
+		if(cnt > 0) {
+			msg = "ok";
+		}else {
+			msg = "no";
+		}
+		
+		return msg;
+	}
+	
+	
+	/*트레이너 승인 탭*/
+	
 	// 트레이너 승인 리스트
 	@RequestMapping(value = "trainerPermitList.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String fitness(Model model, HttpServletRequest request, Criteria cri,
-			@RequestParam(value = "selStatus", required = false) String selStatus,
-			@RequestParam(value = "selIdentity", required = false) String selIdentity,
-			@RequestParam(value = "selDate", required = false) String selDate,
-			@RequestParam(value = "searchKeyword", required = false) String searchKeyword) throws Exception {
-
+	public String fitness(Model model, HttpServletRequest request, Criteria cri) throws Exception {
 		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
 		if (memberId == null) {
 			memberId = "";
 		}
-
-		cri.setSelStatus(selStatus);
-		cri.setSelIdentity(selIdentity);
-		cri.setSelDate(selDate);
-		cri.setSearchKeyword(searchKeyword);
 		cri.setPerPageNum(10);
 
 		ProcessVO todayNumberList = adminMemberService.selectProcessNumberList();
-		System.out.println(todayNumberList.toString());
-		System.out.println(todayNumberList.getStatusDate());
 		model.addAttribute("todayNumberList", todayNumberList);
-
 		List<Map<String, Object>> processList = adminMemberService.selectProcessList(cri);
 		model.addAttribute("processList", processList);
-		System.out.println("00000000000000");
-		System.out.println(processList.toString());
+		
 		// 페이징처리
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-
 		pageMaker.setTotalCount(adminMemberService.selectProcessListCnt(cri));
-
+		
 		model.addAttribute("pageMaker", pageMaker);
-		model.addAttribute("selStatus", selStatus);
-		model.addAttribute("selIdentity", selIdentity);
-		model.addAttribute("selDate", selDate);
-		model.addAttribute("searchKeyword", searchKeyword);
-
-		System.out.println(todayNumberList.toString());
-		System.out.println(processList.toString());
-
+		model.addAttribute("selStatus", cri.getSelStatus());
+		model.addAttribute("selIdentity", cri.getSelIdentity());
+		model.addAttribute("selDate", cri.getSelDate());
+		model.addAttribute("searchKeyword", cri.getSearchKeyword());
+		
 		return "adminMember/trainerPermitList";
 	}
 
@@ -176,7 +230,6 @@ public class AdminMemberController {
 			System.out.println(result.get("code")); // REST API 에러코드
 			System.out.println(result.get("message")); // 에러메시지
 		}*/
-		System.out.println(msg);
 		return msg;
 	}
 
@@ -285,33 +338,6 @@ public class AdminMemberController {
 
 		return fileVOList;
 	}
+	
 
-	@RequestMapping(value = "adminMemberList.do", method = RequestMethod.GET)
-	public String adminMemberList(Model model, HttpServletRequest request, Criteria cri) throws Exception {
-		cri.setPerPageNum(10);
-		
-		List<MemberVO> memberList = adminMemberService.selectAdminMemberList(cri);
-		model.addAttribute("memberList", memberList);
-		
-		System.out.println("55555555555555555");
-		System.out.println(memberList.get(0).getBlacklistFlag());
-		System.out.println(memberList.get(0).getMemberGubun());
-		System.out.println(memberList.get(0).getMemberName());
-		System.out.println(model.toString());
-		System.out.println(memberList.size());
-		
-		return "adminMember/adminMemberList";
-	}
-
-	@RequestMapping(value = "adminMemberDetail.do", method = RequestMethod.GET)
-	public String adminMemberDetail(Locale locale, Model model) {
-
-		return "adminMember/adminMemberDetail";
-	}
-
-	@RequestMapping(value = "adminSendMail.do", method = RequestMethod.GET)
-	public String adminSendMail(Locale locale, Model model) {
-
-		return "adminMember/adminSendMail";
-	}
 }

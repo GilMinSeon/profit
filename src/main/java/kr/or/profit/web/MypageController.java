@@ -101,10 +101,6 @@ public class MypageController {
 		cri.setCommonSeq(commonSeq);
 		cri.setPerPageNum(6);
 		
-//		BookgoodVO paramVO = new BookgoodVO();
-//		paramVO.setMemberId(memberId);
-//		paramVO.setCommonSeq(commonSeq);
-		
 		List<Map<String, String>> list = mypageService.selectBookmarkList(cri);
 		
 		System.out.println(cri.getRowStart());

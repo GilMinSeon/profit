@@ -68,6 +68,11 @@ public class MemberServiceImpl implements MemberService{
 		memberMapper.updateTempPwd(vo);
 	}
 
+	@Override
+	public MemberVO selectKakaoGubun(String memberId) throws Exception {
+		return memberMapper.selectKakaoGubun(memberId);
+	}
+
 
 
 
