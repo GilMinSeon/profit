@@ -1,263 +1,293 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="./resources/datepicker/jquery-ui.css">
+<script src="./resources/datepicker/jquery-3.5.1.js"></script>
+<script src="./resources/datepicker/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<style type="text/css">
+.counter-section i {
+    display: block;
+    margin: 0 0 10px
+}
+
+.counter-section span.counter {
+    font-size: 40px;
+    color: #000;
+    line-height: 60px;
+    display: block;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 2px
+}
+
+.counter-title {
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase
+}
+
+.counter-icon {
+    top: 25px;
+    position: relative
+}
+
+.counter-style2 .counter-title {
+    letter-spacing: 0.55px;
+    float: left
+}
+
+.counter-style2 span.counter {
+    letter-spacing: 0.55px;
+    float: left;
+    margin-right: 10px
+}
+
+.counter-style2 i {
+    float: right;
+    line-height: 26px;
+    margin: 0 10px 0 0
+}
+
+.counter-subheadline span {
+    float: right
+}
+
+.medium-icon {
+    font-size: 40px !important;
+    margin-bottom: 15px !important
+}
+.classes__filter form .class__filter__btn_re {
+	padding-right: 125px;
+}
+.table tr:hover {
+	background-color: #f8f6ff;
+}
+.ui-datepicker-calendar {
+    display: none;
+}   
+.table td, .table th {
+	vertical-align: middle;
+} 
+a:hover, a:focus {
+    text-decoration: none;
+    outline: none;
+    color: #6d7ab0;
+}
+.link{
+	color: black;
+}
+
+textarea {
+    width: 70%;
+    height: 100px;
+    font-size: 16px;
+    color: #ffffff;
+    padding-left: 28px;
+    padding-top: 15px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    margin-bottom: 34px;
+}
+#hover_btn:hover {
+    background: white;
+    border: 1px solid #5768AD;
+    color: #5768AD;
+}
+#hover_btn {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    display: inline-block;
+    border: 1px solid rgba(155, 158, 163, 0.2);
+    padding: 10px 20px 7px;
+    border-radius: 2px;
+    background-color: #5768AD;
+}
+#hover_btn2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    display: inline-block;
+    border: 1px solid rgba(155, 158, 163, 0.2);
+    padding: 10px 20px 7px;
+    border-radius: 2px;
+    background-color: #ffbf00;
+}
+</style>
+<script type="text/javascript">
+function fn_myInfoMod(){
+	$("#modBtn1").hide();
+	$("#modBtn2").show();
+	$("textarea[name='trainerGym']").attr("readonly", false);
+	$("textarea[name='trainerAward']").attr("readonly", false);
+	$("textarea[name='trainerCareer']").attr("readonly", false);
+}
+
+function fn_myInfoModFinish(){
+	var result = confirm("정보를 수정하시겠습니까?");
+	if(result){
+		
+		var formData = new FormData($('#frm')[0]);
+		
+		$.ajax({
+			type : 'post',
+			url : 'trainerInfoModAjax.do',
+			data : formData,
+			processData : false,
+			contentType : false,
+			async:false,
+			dataType:"text",
+			success : function(data){
+				if(data=="ok"){
+					alert("정상적으로 수정되었습니다.");
+					window.location.reload();
+				}else if(data=="ng"){
+					alert("수정 도중 문제가 발생하였습니다. 다시 시도해 주세요");
+				}else{
+					alert("수정 도중 문제가 발생하였습니다. 다시 시도해 주세요");
+				}
+			},
+			error : function(error){
+				alert("수정 도중 문제가 발생하였습니다. 다시 시도해 주세요");
+				console.log(error);
+				console.log(error.status);
+			}
+		})
+		
+	}else{
+		return;
+	}
+	$("#modBtn2").hide();
+	$("#modBtn1").show();
+}
+
+$(function(){
+	$("#modBtn2").hide();
+})
+
+</script>
+
+
 </head>
 <body>
-
-    <!-- Breadcrumb Begin -->
-    <section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                        <h2>마이페이지</h2>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Breadcrumb End -->
-
-    <!-- Blog Section Begin -->
-    <section class="blog spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 order-lg-1 order-2">
-                    <div class="blog__sidebar">
-                        <div class="blog__sidebar__categories">
-                            <h4>카테고리</h4>
-                            <ul>
-                                <li><a href="myinfo">내정보</a></li>
-                                <li><a href="bookmark">북마크</a></li>
-                                <li><a href="trainerApply">트레이너신청(전)</a></li>
-                                <li><a href="trainerInfo">트레이너정보(후)</a></li>
-                                <li><a href="listenList">마이클래스(일반)</a></li>
-                                <li><a href="teachList">마이클래스(트레이너)</a></li>
-                                <li><a href="myChatList">상담내역</a></li>
-                                <li><a href="ticketPayList">이용권 구매내역</a></li>
-                            </ul>
-                        </div>
-                        <div class="blog__sidebar__recent">
-                            <h4>최신글</h4>
-                            <div class="blog__recent__item">
-                                <div class="blog__recent__item__pic">
-                                    <img src="./resources/img/blog/br-1.jpg" alt="">
-                                </div>
-                                <div class="blog__recent__item__text">
-                                    <h6>09 Kinds Of Vegetables Protect The Liver</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </div>
-                            <div class="blog__recent__item">
-                                <div class="blog__recent__item__pic">
-                                    <img src="./resources/img/blog/br-2.jpg" alt="">
-                                </div>
-                                <div class="blog__recent__item__text">
-                                    <h6>Tips You To Balance Nutrition Meal Day</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </div>
-                            <div class="blog__recent__item">
-                                <div class="blog__recent__item__pic">
-                                    <img src="./resources/img/blog/br-3.jpg" alt="">
-                                </div>
-                                <div class="blog__recent__item__text">
-                                    <h6>4 Principles Help You Lose Weight With Vegetables</h6>
-                                    <span>MAR 05, 2019</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="blog__sidebar__tags">
-                            <h4>인기 검색어</h4>
-                            <a href="#">Weight</a>
-                            <a href="#">Beauty</a>
-                            <a href="#">Yoga Ball</a>
-                            <a href="#">Fruit</a>
-                            <a href="#">Healthy Food</a>
-                            <a href="#">Lifestyle</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- 여기부터 달라짐 -->
-                <div class="col-lg-8 order-lg-2 order-1">
-                    <div class="row" style="display: inline-block;width: 100%;" >
-                        	<!-- Appoinment Section Begin -->
-	<section class="appointment" style=" margin-bottom: 50px;">
+	<!-- Breadcrumb Begin -->
+	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/hero/hero-11.jpg" style="padding-bottom: 0px; padding-top: 70px;">
+	</section>
+	<!-- Breadcrumb End -->
+	
+	
+	<!-- 본문 시작 -->
+	<section class="classes spad" style="visibility: visible; animation-name: fadeIn;">
+		
 		<div class="container">
-			<div class="appointment__text" style="background-color: #9e9e9e0a">
-				<!-- <div class="row">
-					<div class="col-lg-12">
-						<div class="section-title">
-							<h2></h2>
-						</div>
-					</div>
-				</div> -->
-				<form action="#" class="appointment__form">
-					<div class="text-center">
-						<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">트레이너 정보</h4>
-						<br/><br/>
+			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerInfo.do'" >내 정보</h3>
+			<br>
+        	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
+            <!-- counter -->
+            <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> 
+				<img src="./resources/img/common/onlineclass.png" style="width: 40px;height: 40px;" onclick="location.href='myClassInfo.do'">
+	            <span id="anim-number-pizza" class="counter-number"></span> 
+	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000" 
+	            	onclick="location.href='trainerPermitList.do?selStatus=A&selIdentity=&selDate=&searchKeyword=' " style="cursor: pointer">${todayNumberList.statusA }</span>
+	            <p class="counter-title" style="margin-top: 10px;">온라인 클래스</p>
+            </div> 
+            <!-- end counter -->
+            
+            <!-- counter -->
+            <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="600ms" style="visibility: visible; animation-duration: 600ms; animation-name: fadeInUp;"> 
+	            <img src="./resources/img/common/chatting.png" style="width: 40px;height: 40px;">
+	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000"
+	            	onclick="location.href='trainerPermitList.do?selStatus=B&selIdentity=&selDate=&searchKeyword=' "
+	            	style="cursor: pointer">${todayNumberList.statusB }</span> 
+	            <p class="counter-title" style="margin-top: 10px;">1:1 상담</p>
+	        </div> 
+	        <!-- end counter -->
+            
+            <!-- counter -->
+            <div class="col-md-3 col-sm-6 bottom-margin-small text-center counter-section wow fadeInUp xs-margin-bottom-ten animated" data-wow-duration="900ms" style="visibility: visible; animation-duration: 900ms; animation-name: fadeInUp;"> 
+            	<img src="./resources/img/common/money1.png" style="width: 40px;height: 40px;" onclick="location.href='classAccountInfo.do'">
+            	<span class="timer counter alt-font appear" data-to="810" data-speed="7000" 
+    	        	onclick="location.href='trainerPermitList.do?selStatus=C&selIdentity=&selDate=&searchKeyword=' " 
+	            	style="cursor: pointer">${todayNumberList.statusC }</span> 
+            	<p class="counter-title" style="margin-top: 10px;">강좌 정산 내역</p>
+            </div> 
+            <!-- end counter -->
+            
+            <!-- counter -->
+            <div class="col-md-3 col-sm-6 text-center counter-section wow fadeInUp animated" data-wow-duration="1200ms" style="visibility: visible; animation-duration: 1200ms; animation-name: fadeInUp;"> 
+            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;">
+            	<span class="timer counter alt-font appear" data-to="600" data-speed="7000" onclick="fn_today()" style="cursor: pointer">${todayNumberList.statusDate }</span> 
+            	<p class="counter-title" style="margin-top: 10px;">상담 정산 내역</p>
+            </div> 
+            <!-- end counter -->
+        </div>
+
+
 						
-						<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">이름</h5>
-											&nbsp;
-										</div>
-										<input type="text" readonly="readonly"
-											style="background-color: #3f51b50d; color: black;"
-											value="마동석">
-									</div>
-
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">성별</h5>
-											&nbsp;
-										</div>
-										<div class="r_gender">
-											<input type="radio" name="gend_type" id="male" value="남자" autocomplete="off" style="opacity: 0;" checked onclick="return(false);" >
-											<label for="male" style="border:1px solid;float:left;">남자</label>
-											<input type="radio" name="gend_type" id="female" value="여자" autocomplete="off" style="opacity: 0;" onclick="return(false);">
-											<label for="female" style="border:1px solid;" >여자</label>
-										</div>
-									</div>
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">핸드폰번호</h5>
-											&nbsp;
-										</div>
-										<input type="text" placeholder="Mobile" readonly="readonly"
-											style="background-color: #3f51b50d; color: black;"
-											value="010-4444-5555">
-									</div>
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">소속헬스장</h5>
-											&nbsp;
-										</div>
-										<input type="text" placeholder="GYM Name" readonly="readonly"
-											style="background-color: #3f51b50d; color: black;"
-											value="헬스짐">
-									</div>
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">수상이력</h5>
-											&nbsp;
-										</div>
-										<div class="row">
-											<div class="col-lg-12"></div>
-											<div class="col-lg-12 text-center">
-												<textarea  
-													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;" readonly="readonly">
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-
-                                    </textarea>
-
-											</div>
-										</div>
-									</div>
-									
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">경력</h5>
-											&nbsp;
-										</div>
-										<div class="row">
-											<div class="col-lg-12"></div>
-											<div class="col-lg-12 text-center">
-												<textarea 
-													style="background-color: #3f51b50d; color: black; margin-bottom: 20px;resize: none;" readonly="readonly">
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-2020~현재 대전 멋쟁이헬스장 트레이너 & 요가강사
-2014~2019 서울 멋진헬스장 트레이너 
-
-                                    </textarea>
-
-											</div>
-										</div>
-									</div>
-									
-									
-									
-									<div class="col-lg-6 text-center mypage_myinfo"
-										style="margin-right: auto; max-width: 100%; width: 500px; margin-left: auto;">
-										<div style="margin-bottom: 2px;">
-											<h5 style="display: inline; float: left; color: black;">첨부파일</h5>
-											&nbsp;
-										</div>
-										
-											
-										<div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="file" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류" readonly="readonly">
-									            <span class="input-group-addon" style="border:1px solid #5768AD; border-radius: 4px;height: 48px;">
-													<button type="button" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em; height: 43px;">보기</button>
-									            </span>
-								        </div>
-								        
-								        <div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="file" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류" readonly="readonly">
-									            <span class="input-group-addon" style="border:1px solid #5768AD; border-radius: 4px;height: 48px;">
-													<button type="button" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em; height: 43px;">보기</button>
-									            </span>
-								        </div>
-								        
-								        <div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="file" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류" readonly="readonly">
-									            <span class="input-group-addon" style="border:1px solid #5768AD; border-radius: 4px;height: 48px;">
-													<button type="button" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em; height: 43px;">보기</button>
-									            </span>
-								        </div>
-										
-										<div class="input-group" style="margin-bottom: 5px;">
-											<input type="text" class="form-control" placeholder="file" style="background-color: #3f51b50d;color: black; margin-bottom: 5px;" value="성범죄자 이력 조회 서류" readonly="readonly">
-									            <span class="input-group-addon" style="border:1px solid #5768AD; border-radius: 4px;height: 48px;">
-													<button type="button" class="input-group-addon" style=" font-weight: bold;font-size: 0.9em; height: 43px;">보기</button>
-									            </span>
-								        </div>
-									</div>
-
-									
-						
-
-					</div>
-				</form>
-			</div>
+			<!-- 2 -->
+			
+		    <div class="classes__filter" style="margin-bottom: 50px;padding-bottom:50px;text-align: center;">
+		    
+			<br>
+              <span style="font-size: 1.5em;font-weight: bold;color:#5768AD;">트레이너정보</span>
+               <form id="frm"> 
+               <div style="margin-top: 30px;">
+               <label>
+					<p style="font-weight:bold;margin-bottom:0">소속헬스장<span style="color:red;"> *</span></p>
+				</label>
+				<div style="text-align: center;">
+				<textarea name="trainerGym" rows="10" cols="80" style="background-color: #3f51b50d;color: black;margin-bottom: 20px;resize: none;" readonly="readonly">${myInfo['trainerGym']}</textarea>
+				<br/>
+				</div><br><br>
+               	</div>
+               	
+               	<div >
+               <label>
+					<p style="font-weight:bold;margin-bottom:0">수상이력<span style="color:red;"> *</span></p>
+				</label>
+				<div style="text-align: center;">
+				<textarea name="trainerAward" rows="10" cols="80" style="background-color: #3f51b50d;color: black;margin-bottom: 20px;resize: none;height: 200px;" readonly="readonly">${myInfo['trainerAward']}</textarea>
+				<br/>
+				</div><br><br>
+               	</div>
+               	
+               	<div >
+               <label>
+					<p style="font-weight:bold;margin-bottom:0">경력<span style="color:red;"> *</span></p>
+				</label>
+				<div style="text-align: center;">
+				<textarea name="trainerCareer" rows="10" cols="80" style="background-color: #3f51b50d;color: black;margin-bottom: 20px;resize: none;height: 200px;" readonly="readonly">${myInfo['trainerCareer']}</textarea>
+				<br/>
+				</div><br>
+				<div id="modBtn1" class="class__filter__input" style="text-align: center;width: 100%;">
+					<button id="hover_btn" type="button" style="width: 300px;height:45px; padding: 5px;font-size:1.2em;" onclick="fn_myInfoMod()" >수정하기</button>
+				</div>
+				<div id="modBtn2" class="class__filter__input" style="text-align: center;width: 100%;">
+					<button id="hover_btn2" type="button" style="width: 300px;height:45px; padding: 5px;font-size:1.2em;background-color: #ffbf00" onclick="fn_myInfoModFinish()" >수정완료</button>
+				</div>
+               	</div>
+               	</form>
+            </div>
+		<!-- container div 끝 -->	
 		</div>
 	</section>
-	<!-- Appoinment Section End -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Blog Section End -->
 
 
-
-    <!-- Js Plugins -->
-    <script src="./resources/js/jquery-3.3.1.min.js"></script>
-    <script src="./resources/js/bootstrap.min.js"></script>
-    <script src="./resources/js/jquery.nice-select.min.js"></script>
-    <script src="./resources/js/jquery.barfiller.js"></script>
-    <script src="./resources/js/jquery.slicknav.js"></script>
-    <script src="./resources/js/owl.carousel.min.js"></script>
-    <script src="./resources/js/main.js"></script>
+	<!-- Js Plugins -->
+	<script src="./resources/js/bootstrap.min.js"></script>
+	<script src="./resources/js/jquery.nice-select.min.js"></script>
+	<script src="./resources/js/jquery.barfiller.js"></script>
+	<script src="./resources/js/jquery.slicknav.js"></script>
+	<script src="./resources/js/owl.carousel.min.js"></script>
+	<script src="./resources/js/main.js"></script>
 </body>
 </html>

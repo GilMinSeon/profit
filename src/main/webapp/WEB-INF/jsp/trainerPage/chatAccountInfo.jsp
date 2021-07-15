@@ -253,7 +253,7 @@ function fn_pdf(){
 	<section class="classes spad" style="visibility: visible; animation-name: fadeIn;">
 		
 		<div class="container">
-			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerPermitList.do'" >나의 트레이너 정보</h3>
+			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerInfo.do'" >내 정보</h3>
 			<br>
         	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
             <!-- counter -->
@@ -294,6 +294,7 @@ function fn_pdf(){
             </div> 
             <!-- end counter -->
         </div>
+
 
 						
 			<!-- 2 -->

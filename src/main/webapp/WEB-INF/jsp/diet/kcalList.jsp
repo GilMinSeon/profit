@@ -124,6 +124,48 @@ function fn_modalOpen(kcalNum){
 				}else{
 					$("#salt").css('width',jsonInfo.cont6Rs + "%");
 				}
+				
+				//운동 칼로리 계산
+				var walkKcal = Math.round(parseInt(jsonInfo.servingSize) / 4);
+				var walkHour = Math.floor(walkKcal / 60);
+				var walkMin = walkKcal % 60;
+				
+				if(walkHour != 0){
+					$('#walkKcalHour').text(walkHour + "시간 ");
+				}
+				if(walkMin != 0){
+					$('#walkKcalMin').text(walkMin + "분");
+				}
+				
+				var swimKcal = Math.round(parseInt(jsonInfo.servingSize) / 10);
+				var swimHour = Math.floor(swimKcal / 60);
+				var swimMin = swimKcal % 60;
+				
+				if(swimHour != 0){
+					$('#swimKcalHour').text(swimHour + "시간 ");
+				}
+				if(swimMin != 0){
+					$('#swimKcalMin').text(swimMin + "분");
+				}
+				
+				var bikeKcal = Math.round(parseInt(jsonInfo.servingSize) / 7);
+				var bikeHour = Math.floor(bikeKcal / 60);
+				var bikeMin = bikeKcal % 60;
+				
+				if(bikeHour != 0){
+					$('#bikeKcalHour').text(bikeHour + "시간 ");
+				}
+				if(bikeMin != 0){
+					$('#bikeKcalMin').text(bikeMin + "분");
+				}
+				
+				console.log("walkKcal : " + walkKcal + "분");
+				console.log("walkHour : " + walkHour);
+				console.log("walkMin : " + walkMin);
+				console.log("swimKcal : " + swimKcal + "분");
+				console.log("bikeKcal : " + bikeKcal + "분");
+				
+				
 				$("#myModal").modal('show');
 			}else if(jsonInfo.msg=="ng"){
 				alert("데이터를 불러오는 데 실패했습니다. 다시 시도해 주세요.");
@@ -339,15 +381,15 @@ function fn_search(){
 					        <div style="text-align: center;">
 					        <div style="float: left;width: 30%;height: 200px;margin-left: 25px;">
 					        <img src="./resources/img/common/run.png" style="height: 174px;"><br>
-					        걷기 1시간
+					        걷기 <span id="walkKcalHour"></span><span id="walkKcalMin"></span>
 					        </div>
 					        <div style="float: left;width: 30%;height: 200px;margin-left: 10px;">
 					        <img src="./resources/img/common/bike.png" style="height: 174px;"><br>
-					       자전거 1시간   
+					        자전거 <span id="bikeKcalHour"></span><span id="bikeKcalMin"></span>   
 					        </div>
 					        <div style="float: left;width: 30%;height: 200px;margin-left: 10px;margin-right: 15px;">
 					        <img src="./resources/img/common/swim.png" style="height: 174px;"><br>
-					      수영 1시간
+					        수영 <span id="swimKcalHour"></span><span id="swimKcalMin"></span>   
 					        </div>
 					        </div>
 					        </div>

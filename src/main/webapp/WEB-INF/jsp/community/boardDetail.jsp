@@ -420,7 +420,7 @@ function fn_boardDel(seq){
                     <div class="blog__sidebar">
                         
                         <div class="blog__sidebar__comment" style="overflow-x:hidden;height: 500px;padding:10px;">
-                            <h4>댓글</h4>
+                            <h4>댓글(총 ${BoardDetail['replyCnt']}개)</h4>
 	                            <div class="classes__sidebar__comment" style="border-bottom: 0">
 	                                   <c:forEach var="result" items="${BoardDetail['replyList']}" varStatus="status">
 	                                <form id="frm${status.count}">
