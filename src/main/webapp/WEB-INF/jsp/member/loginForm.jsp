@@ -18,53 +18,48 @@
 </style>
 <script type="text/javascript">
 function fn_login(){
-   var memberId = $.trim($("#memberId").val());
-   var memberPwd = $.trim($("#memberPwd").val());
+	
+    var memberId = $.trim($("#memberId").val());
+    var memberPwd = $.trim($("#memberPwd").val());
    
-   if(memberId == ""){
-      alert("아이디를 입력해주세요");
-      $("#memberId").focus();
-      return false;
-   }
-   if(memberPwd == ""){
-      alert("비밀번호를 입력해주세요");
-      $("#memberPwd").focus();
-      return false;
-   }
-   sessionStorage.clear();
-   $.ajax({
-      type : "POST",
-      data : "memberId=" + memberId +"&memberPwd=" + memberPwd, //json
-      url : "loginSubmitAjax.do",
-//       dataType : "json", //리턴타입
+    if(memberId == ""){
+    	alert("아이디를 입력해주세요");
+      	$("#memberId").focus();
+      	return false;
+   	}
+   	if(memberPwd == ""){
+      	alert("비밀번호를 입력해주세요");
+      	$("#memberPwd").focus();
+      	return false;
+   	}
+   	sessionStorage.clear();
+   	$.ajax({
+      	type : "POST",
+      	data : "memberId=" + memberId +"&memberPwd=" + memberPwd,
+      	url : "loginSubmitAjax.do",
+      
+      	success : function(result) {
+	 	  	var jsonInfo = JSON.parse(result);
+			if (jsonInfo.sts == "OK") {
+				if(memberId == '1'){
+					alert("관리자님 안녕하세요");
+				}else{
+					alert(memberId+"님 로그인 되었습니다")
+				}
+				if(jsonInfo.returnUrl == null){
+					location.href= "home.do";
+				}else{
+					location.href= jsonInfo.returnUrl;
+				}
+			} else {
+			   alert("로그인 정보를 다시 확인해주세요");
+			}
+      	},
+      	error : function() {
+         	alert("오류발생");
+      	}
 
-      //전송 후 세팅
-      success : function(result) {
-    	  var jsonInfo = JSON.parse(result);
-         if (jsonInfo.sts == "OK") {
-        	 if(memberId == '1'){
-        		 alert("관리자님 안녕하세요");
-        	 }else{
-	            alert(memberId+"님 로그인 되었습니다")
-        	 }
-        	 if(jsonInfo.returnUrl == null){
-        		 location.href= "home.do";
-        	 }else{
-	            location.href= jsonInfo.returnUrl;
-        	 }
-        	 
-         } else {
-            alert("로그인 정보를 다시 확인해주세요");
-         }
-
-      },
-      error : function() {
-         alert("오류발생");
-      }
-
-   })
-   
-   
+   	});
 }
 
 </script>

@@ -18,7 +18,22 @@ public class MemberVO {
 	private String upDate;
 	
 	private String blacklistFlag;
+	private String blacklistReason;
+	private String bDate;
 	
+	
+	public String getBlacklistReason() {
+		return blacklistReason;
+	}
+	public void setBlacklistReason(String blacklistReason) {
+		this.blacklistReason = blacklistReason;
+	}
+	public String getbDate() {
+		return bDate;
+	}
+	public void setbDate(String bDate) {
+		this.bDate = bDate;
+	}
 	public String getBlacklistFlag() {
 		return blacklistFlag;
 	}

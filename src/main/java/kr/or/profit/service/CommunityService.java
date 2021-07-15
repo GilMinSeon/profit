@@ -69,6 +69,9 @@ public interface CommunityService {
 	//좋아요북마크 개수 가져오기
 	public int selectBookgoodCnt(BookgoodVO vo) throws Exception;
 	
+	//댓글 수 가져오기
+	public Map<String, Object> selectReplyCnt(String communitySeq) throws Exception;
+	
 	
 	
 	

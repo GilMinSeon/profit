@@ -339,7 +339,7 @@ function fn_show2(){
 	<section class="classes spad" style="visibility: visible; animation-name: fadeIn;">
 		
 		<div class="container">
-			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerPermitList.do'" >나의 트레이너 정보</h3>
+			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerInfo.do'" >내 정보</h3>
 			<br>
         	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
             <!-- counter -->
@@ -494,9 +494,6 @@ function fn_show2(){
 					</c:forEach>
 				</tbody>
 			</table>
-			<div class="classes__item__text" style="text-align: right;padding-top: 0;">
-                 <a href="chatAccountInfo.do" class="class-btn_w">정산내역 보기</a>
-   		 	</div>
 			<br>
 			<div style="width: 100%;text-align: right;padding-right: 20px;font-weight: bold;">
 			

@@ -16,6 +16,7 @@ import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.ProcessVO;
 import kr.or.profit.vo.ReplyVO;
 
 @Service("trainerPageService")
@@ -113,5 +114,18 @@ public class TrainerPageServiceImpl implements TrainerPageService {
 	public Map<String, Object> selectRemainInfo(Map<String, Object> info) throws Exception {
 		return trainerPageDAO.selectRemainInfo(info);
 	}
+	
+	//내 정보 가져오기
+	@Override
+	public Map<String, Object> selectMyInfo(String memberId) throws Exception {
+		return trainerPageDAO.selectMyInfo(memberId);
+	}
+	
+	//내정보 수정
+	@Override
+	public int updateMyInfo(ProcessVO vo) throws Exception {
+		return trainerPageDAO.updateMyInfo(vo);
+	}
+	
 	
 }

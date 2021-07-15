@@ -56,5 +56,17 @@ public interface AdminMemberService {
 	//회원관리 리스트
 	public List<MemberVO> selectAdminMemberList(Criteria cri) throws Exception;
 	
+	//회원관리 리스트 전체 개수
+    public int selectMemberListCnt(Criteria cri) throws Exception;
+    
+    //회원 디테일
+    public MemberVO adminMemberDetail(String memberId) throws Exception;
+    
+    //블랙리스트 추가
+    public int insertBlacklist(MemberVO vo) throws Exception;
+    
+    //블랙리스트 삭제
+    public int deleteBlacklist(String memebrId) throws Exception;
+	
 	
 }

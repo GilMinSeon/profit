@@ -135,5 +135,11 @@ public class CommunityServiceImpl implements CommunityService {
 	public int selectBoardCnt(Criteria cri) throws Exception {
 		return communityDAO.selectBoardCnt(cri);
 	}
-
+	
+	//댓글 수 가져오기
+	@Override
+	public Map<String, Object> selectReplyCnt(String communitySeq) throws Exception {
+		return communityDAO.selectReplyCnt(communitySeq);
+	}
+	
 }

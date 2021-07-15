@@ -48,7 +48,7 @@ public class MemberController {
 	private MemberService memberService;
 
 	// 민선-카카오 로그인
-	@RequestMapping(value = "kakaoCallback.do", produces = "application/json", method = { RequestMethod.GET,
+	@RequestMapping(value = "kakaoCallback.do", produces = "application/json; charset=utf-8", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	@ResponseBody // data를 리턴해주는 컨트롤러 함수가 된다
 	public ModelAndView kakaoCallback(String code, HttpSession session) throws Exception {
@@ -124,12 +124,6 @@ public class MemberController {
 		vo.setMemberNickname(kakaoProfile.getKakao_account().getProfile().getNickname());
 		vo.setMemberEmail(kakaoProfile.getKakao_account().getEmail());
 
-//		System.out.println(vo.getMemberId());
-//		System.out.println(vo.getMemberPwd());
-//		System.out.println(vo.getMemberName());
-//		System.out.println(vo.getMemberNickname());
-//		System.out.println(vo.getMemberEmail());
-
 		// 가입자인지 비가입자인이 체크해서 처리
 		String memberId = kakaoProfile.getId() + "@Kakao";
 		int cnt = memberService.kakaoSelectById(memberId);
@@ -143,10 +137,11 @@ public class MemberController {
 			session.setAttribute("memberGubun", "U");
 			System.out.println("1111");
 		} else {
-			// 로그인처리
+			// 로그인처리 & 이미 변경한 정보 있을 수 있기때문에 테이블에서 닉네임과 구분 가져와서 setting
+			MemberVO gubunVO = memberService.selectKakaoGubun(memberId);
 			session.setAttribute("memberId", vo.getMemberId());
-			session.setAttribute("memberNickname", vo.getMemberNickname());
-			session.setAttribute("memberGubun", "U");
+			session.setAttribute("memberNickname", gubunVO.getMemberNickname());
+			session.setAttribute("memberGubun", gubunVO.getMemberGubun());
 			System.out.println("2222");
 
 		}
@@ -225,34 +220,29 @@ public class MemberController {
 		}
 		return message;
 	}
-
+	
+	//로그인!!!
 	@RequestMapping("loginSubmitAjax.do")
 	public @ResponseBody String loginProcessing(MemberVO vo, HttpSession session) throws Exception {
 		String msg = "";
+		//회원정보VO 가져오기
 		MemberVO membervo = memberService.selectMemberCount(vo);
+		JSONObject jsonObject = new JSONObject();
+		
 		if (membervo != null) {
+			// 널이 아니면 => 로그인 가능
 			// session 생성
 			session.setAttribute("memberId", membervo.getMemberId());
 			session.setAttribute("memberNickname", membervo.getMemberNickname());
 			session.setAttribute("memberGubun", membervo.getMemberGubun());
-			// message 처리
-			msg = "ok";
+			msg = (String) session.getAttribute("returnUrl");
+			System.out.println(msg);
+			jsonObject.put("sts", "OK");
+			jsonObject.put("returnUrl", session.getAttribute("returnUrl"));
 		} else {
-			msg = "no";
+			// 널이면 회원정보 없는것!
+			jsonObject.put("sts", "NO");
 		}
-
-		msg = (String) session.getAttribute("returnUrl");
-		System.out.println(msg);
-		System.out.println(msg);
-		System.out.println(msg);
-		System.out.println(msg);
-		System.out.println(msg);
-		System.out.println(msg);
-		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("sts", "OK");
-		jsonObject.put("returnUrl", session.getAttribute("returnUrl"));
-		
 		return jsonObject.toString();
 	}
 
@@ -276,18 +266,11 @@ public class MemberController {
 			e.printStackTrace();
 			return "fail";
 		}
-
-//		try {
-//			testMailer.sendMail("받는대상", "이것은 제목", "스프링으로 구현해서 보내본다.","E:/파일위치","보낼파일명.확장자");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return "fail";
-//		}
 		return "ok";
 	}
 
 	// 아이디 찾기
-	@RequestMapping(value = "findIdAjax.do", produces = "application/text; charser=utf-8")
+	@RequestMapping(value = "findIdAjax.do", produces = "application/text; charset=utf-8")
 	public @ResponseBody String selectByFindId(MemberVO vo) throws Exception {
 
 		String id = memberService.selectByFindId(vo);
@@ -305,7 +288,7 @@ public class MemberController {
 	}
 
 	// 비밀번호 찾기
-	@RequestMapping(value = "findPwdAjax.do", produces = "application/text; charser=utf-8")
+	@RequestMapping(value = "findPwdAjax.do", produces = "application/text; charset=utf-8")
 	public @ResponseBody String selectByFindPwd(MemberVO vo) throws Exception {
 
 		// db에 정보 있는지 확인

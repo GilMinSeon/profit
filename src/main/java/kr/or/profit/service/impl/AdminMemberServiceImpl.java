@@ -95,5 +95,25 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	public List<MemberVO> selectAdminMemberList(Criteria cri) throws Exception {
 		return adminMemberMapper.selectAdminMemberList(cri);
 	}
+
+	@Override
+	public int selectMemberListCnt(Criteria cri) throws Exception {
+		return adminMemberMapper.selectMemberListCnt(cri);
+	}
+
+	@Override
+	public MemberVO adminMemberDetail(String memberId) throws Exception {
+		return adminMemberMapper.adminMemberDetail(memberId);
+	}
+
+	@Override
+	public int insertBlacklist(MemberVO vo) throws Exception {
+		return adminMemberMapper.insertBlacklist(vo);
+	}
+
+	@Override
+	public int deleteBlacklist(String memebrId) throws Exception {
+		return adminMemberMapper.deleteBlacklist(memebrId);
+	}
 	
 }
