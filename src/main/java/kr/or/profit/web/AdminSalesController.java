@@ -1,20 +1,29 @@
 package kr.or.profit.web;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.or.profit.service.AdminSalesService;
+import kr.or.profit.vo.BuyLessonVO;
+import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.PageMaker;
+import kr.or.profit.vo.ReplyVO;
+import kr.or.profit.vo.SalesVO;
 
 @Controller
 public class AdminSalesController {
@@ -79,6 +88,12 @@ public class AdminSalesController {
 		model.addAttribute("adminSalesDetailList", adminSalesDetailList);
 		System.out.println("resultModel " + model.toString());
 		
+		//정산하기 상세 총금액
+		List<?> totalPrice =  adminSalesService.totalPrice(cri);
+		System.out.println(totalPrice);
+		model.addAttribute("totalPrice", totalPrice);
+		System.out.println("모델가져와 " + model.toString());
+		
 		//페이징처리
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
@@ -97,5 +112,84 @@ public class AdminSalesController {
 		return "adminSales/adminSalesDetail";
 	}
 	
+	/**
+	 * 일괄정산 insert
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "insSalesAjax.do", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public String insSalesAjax(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		System.out.println("멤버아이디 "+memberId);
+		System.out.println("오니?");
+		
+		String gubun = request.getParameter("gubun");
+		System.out.println("gubun여기서찍어라 " + gubun);
+		
+		String yyyymm = request.getParameter("yyyymm");
+		System.out.println("yyyymm : " + yyyymm);
+		
+		String totalfee = request.getParameter("totalfee");
+		System.out.println("totalfee값 " + totalfee);
+		
+		
+		if(("온라인클래스").equals(gubun)) {
+			gubun = "O";
+		}else if(("채팅").equals(gubun)) {
+			gubun = "C";
+		}
+		System.out.println("최종gubun "+ gubun);
+		
+		int totalfee2 = Integer.parseInt(totalfee);
+		System.out.println("totalfee2 " + totalfee2);
+		
+		SalesVO vo = new SalesVO();
+		vo.setSalesGubun(gubun);
+		vo.setSlaesMonth(yyyymm);
+		vo.setSalesFee(totalfee);
+		vo.setInUserId(memberId);
+		vo.setUpUserId(memberId);
+		
+		//일괄정산시 sales 테이블에 insert
+		int insertResult = adminSalesService.insertSales(vo);
+		System.out.println("insertResult개수 " +insertResult );
+		
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm");
+		Date yd = dateFormat.parse(yyyymm);
+		String finalDate = new SimpleDateFormat("yyyy/mm").format(yd);
+		System.out.println("finalDate " + finalDate );
+
+		int updateResult=0;
+		if(("O").equals(gubun)) {
+			BuyLessonVO buyvo = new BuyLessonVO();
+			buyvo.setYyyymm(finalDate);
+			
+			//일괄정산시 buy_lesson 테이블에 update
+			updateResult = adminSalesService.updateBuyLesson(buyvo);
+			System.out.println("updateResult개수 " +updateResult);
+		}else if(("C").equals(gubun)) {
+			ChattingVO chatvo = new ChattingVO();
+			chatvo.setYyyymm(finalDate);
+		//일괄정산 시 chatting 테이블에 update
+			updateResult = adminSalesService.updateChatting(chatvo);
+			System.out.println("updateResult1개수 " + updateResult);
+			
+		}
+
+		
+		
+	    String msg="ng";
+	    
+		if(insertResult > 0 & updateResult>0) {
+			msg = "ok";
+		}
+		return msg;
+	}
+
 
 }

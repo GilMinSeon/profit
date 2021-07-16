@@ -118,7 +118,7 @@
 	    	(
 	    	select rownum as rm, m.yyyymm, m.trainer_id, m.cnt, m.sum, m.fee, m.realamount, m.Gubun
                     from(
-                        select substr(to_char(a.in_date,'yyyymm'),0,7)  yyyymm,
+                        select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
                                b.in_user_id trainer_id,
                                count(*) as cnt,
                                sum(lesson_price) as sum,
@@ -131,11 +131,11 @@
                             (a.lesson_seq = b.lesson_seq)
                             left join member c on
                             (b.in_user_id = c.member_id)
-                            group by substr(to_char(a.in_date,'yyyymm'),0,7) , b.in_user_id, '온라인클래스'
+                            group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.in_user_id, '온라인클래스'
                          
                          union all
                          
-                          select substr(to_char(a.in_date,'yyyymm'),0,7)  yyyymm,
+                          select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
                                b.chat_profile_id trainer_id,
                                count(*) as cnt,
                                count(*) * 3200 as sum,
@@ -146,16 +146,15 @@
                             from chatting a
                             left join chat_profile b on 
                             (a.chat_profile_seq = b.chat_profile_seq)
-                            group by substr(to_char(a.in_date,'yyyymm'),0,7) , b.chat_profile_id, '채팅'
+                            group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.chat_profile_id, '채팅'
                         
                         )m
 			          where m.yyyymm = #{yyyymm}
                       and m.gubun = #{gubun}
-                      and 1=1
-                    <if test="keyword != null and keyword != '' ">
-					    AND m.trainer_id LIKE '%' || #{keyword} || '%'
-					    
-					</if>
+<!--                       and 1=1 -->
+<!--                     <if test="searchKeyword != null and searchKeyword != ''"> -->
+<!-- 					    and m.trainer_id LIKE '%' || #{searchKeyword} || '%' -->
+<!-- 					</if> -->
 					order by m.yyyymm desc, m.gubun
 					
 				)tt
@@ -170,7 +169,7 @@
 		count(*)
 		from
 		(
-		 select substr(to_char(a.in_date,'yyyymm'),0,7)  yyyymm,
+		 select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
                                b.in_user_id trainer_id,
                                count(*) as cnt,
                                sum(lesson_price) as sum,
@@ -183,11 +182,11 @@
                             (a.lesson_seq = b.lesson_seq)
                             left join member c on
                             (b.in_user_id = c.member_id)
-                            group by substr(to_char(a.in_date,'yyyymm'),0,7) , b.in_user_id, '온라인클래스'
+                            group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.in_user_id, '온라인클래스'
                          
                          union all
                          
-                          select substr(to_char(a.in_date,'yyyymm'),0,7)  yyyymm,
+                          select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
                                b.chat_profile_id trainer_id,
                                count(*) as cnt,
                                count(*) * 3200 as sum,
@@ -198,18 +197,104 @@
                             from chatting a
                             left join chat_profile b on 
                             (a.chat_profile_seq = b.chat_profile_seq)
-                            group by substr(to_char(a.in_date,'yyyymm'),0,7) , b.chat_profile_id, '채팅'
+                            group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.chat_profile_id, '채팅'
                         
                       )m
                         
 			          where m.yyyymm = #{yyyymm}
                       and m.gubun = #{gubun}
-                      and 1=1
-                    <if test="keyword != null and keyword != '' ">
-					    AND m.trainer_id LIKE '%' || #{keyword} || '%'
-					</if>
+<!--                       and 1=1 -->
+<!--                     <if test="searchKeyword != null and searchKeyword != ''"> -->
+<!-- 					    and m.trainer_id LIKE '%' || #{searchKeyword} || '%' -->
+<!-- 					</if> -->
 					order by m.yyyymm desc, m.gubun
 	    
 	</select>
+	
     
+<!--     정산 상세리스트 총금액합계 -->
+        <select id="totalPrice" parameterType="Criteria" resultType="egovMap">
+	 select sum(m.sum) total,
+	       sum(m.fee) totalFee,
+	       sum(m.realamount) totalRealAmount
+from (
+    select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
+                                   b.in_user_id trainer_id,
+                                   count(*) as cnt,
+                                   sum(lesson_price) as sum,
+                                    round(sum(lesson_price) * 0.2,-1) as fee,
+                                    sum(lesson_price) - round(sum(lesson_price) * 0.2,-1) realamount,
+                                   '온라인클래스'   Gubun
+                            
+                                from buy_lesson a
+                                left join lesson b on 
+                                (a.lesson_seq = b.lesson_seq)
+                                left join member c on
+                                (b.in_user_id = c.member_id)
+                                group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.in_user_id, '온라인클래스'
+                             
+                             union all
+                             
+                              select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
+                                   b.chat_profile_id trainer_id,
+                                   count(*) as cnt,
+                                   count(*) * 3200 as sum,
+                                   round(count(*) * 3200 * 0.2,-1) as fee,
+                                   count(*) * 3200  - round(count(*) * 3200 * 0.2,-1)  realamount,
+                                   '채팅'   Gubun
+                            
+                                from chatting a
+                                left join chat_profile b on 
+                                (a.chat_profile_seq = b.chat_profile_seq)
+                                group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.chat_profile_id, '채팅'
+                            
+          )m
+         
+	          where m.yyyymm = #{yyyymm}
+                    and m.gubun = #{gubun}
+	    
+	</select>
+    
+        
+<!--         일괄정산시 sales 테이블에 insert -->
+	<insert id="insertSales" parameterType="SalesVO">
+	    <selectKey order="BEFORE" keyProperty="salesSeq" resultType="String">
+			SELECT NVL(MAX(TO_NUMBER(SALES_SEQ)),0)+1 FROM SALES
+		</selectKey>
+		<![CDATA[
+			INSERT INTO SALES
+			(	SALES_SEQ,
+				SALES_GUBUN,
+				SLAES_MONTH,
+				SALES_FEE,
+				IN_USER_ID,
+				IN_DATE,
+				UP_USER_ID,
+				UP_DATE
+			)
+			VALUES (#{salesSeq},
+					#{salesGubun},
+					#{slaesMonth},
+					#{salesFee},
+					#{inUserId},
+					sysdate,
+					#{upUserId},
+					sysdate)
+		]]>
+	</insert>
+	
+<!-- 	일괄정산시 buy_lesson 테이블에 update -->
+	<update id="updateBuyLesson" parameterType="BuyLessonVO">
+		update buy_lesson
+		    set class_account_flag = 'Y'
+		where to_char(in_date,'yyyy/mm') like #{yyyymm} || '%'
+	</update>
+    
+<!-- 	일괄정산 시 chatting 테이블에 update -->
+	<update id="updateChatting" parameterType="ChattingVO">
+		update chatting
+		    set chatting_account_flag = 'Y'
+		where to_char(in_date,'yyyy/mm') like #{yyyymm} || '%'
+	</update>
+	
 </mapper>

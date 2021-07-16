@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import kr.or.profit.mapper.AdminSalesMapper;
 import kr.or.profit.service.AdminSalesService;
+import kr.or.profit.vo.BuyLessonVO;
+import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.SalesVO;
 
 
 @Service("adminSalesService")
@@ -39,7 +42,33 @@ public class AdminSalesServiceImpl implements AdminSalesService {
 	//정산하기 상세 리스트 전체 글 개수 세팅
 	@Override
 	public int selectAdminSalesDetailCnt(Criteria cri) throws Exception {
+		System.out.println("얌마" + cri.getGubun());
+		System.out.println(cri.getYyyymm());
 		return adminSalesDAO.selectAdminSalesDetailCnt(cri);
+	}
+
+	//정산하기 상세 총금액
+	@Override
+	public List<?> totalPrice(Criteria cri) throws Exception {
+		return adminSalesDAO.totalPrice(cri);
+	}
+
+	//일괄정산시 sales 테이블에 insert
+	@Override
+	public int insertSales(SalesVO vo) throws Exception {
+		return adminSalesDAO.insertSales(vo);
+	}
+
+	//일괄정산시 buy_lesson 테이블에 update
+	@Override
+	public int updateBuyLesson(BuyLessonVO buyvo) throws Exception {
+		return adminSalesDAO.updateBuyLesson(buyvo);
+	}
+
+	//일괄정산 시 chatting 테이블에 update
+	@Override
+	public int updateChatting(ChattingVO chatvo) throws Exception {
+		return adminSalesDAO.updateChatting(chatvo);
 	}
 
 	

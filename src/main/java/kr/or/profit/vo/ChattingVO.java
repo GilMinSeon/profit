@@ -11,7 +11,15 @@ public class ChattingVO {
 	private Date inDate;
 	private String upUserId;
 	private Date upDate;
+	private String yyyymm;
 	
+	
+	public String getYyyymm() {
+		return yyyymm;
+	}
+	public void setYyyymm(String yyyymm) {
+		this.yyyymm = yyyymm;
+	}
 	public String getChattingSeq() {
 		return chattingSeq;
 	}

@@ -110,7 +110,6 @@ function fn_detail(ele){
 					<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
 						<th scope="col">번호</th>
 						<th scope="col">[월]&nbsp;카테고리</th>
-						<th scope="col">건수</th>
 						<th scope="col">정산여부</th>
 						<th scope="col" >상세조회</th>
 					</tr>
@@ -125,7 +124,6 @@ function fn_detail(ele){
 							
 						</td>
 						<td style="vertical-align: middle;"><span>[${fn:substring(result.yyyymm,0,7)}]</span>&nbsp;${result.gubun}</td>
-						<td style="vertical-align: middle;">${result.cnt}</td>
 						<td style="vertical-align: middle;">
 							<c:if test="${result.accountflag eq '미정산'}"><span id="payResult" style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">미정산</span></c:if>
 							<c:if test="${result.accountflag eq '정산'}"><span id="payResult" style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;padding-left:8px;">&nbsp;&nbsp;정산&nbsp;&nbsp;</span></c:if>	
