@@ -153,7 +153,7 @@
 						</thead>
 						<tbody>
 
-							<c:forEach var="data" items="${data}" varStatus="status">
+							<c:forEach var="data" items="${datta}" varStatus="status">
 								<c:if test="${data.inUserId eq sessionScope.memberId || '1' eq sessionScope.memberId}">
 									<tr>
 										<th scope="row">${data.rm}</th>
