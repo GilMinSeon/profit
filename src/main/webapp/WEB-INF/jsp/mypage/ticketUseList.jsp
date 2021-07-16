@@ -42,6 +42,19 @@ li a:hover {
 	background-color: #5768AD;
 	color: white;
 }
+
+.btn:hover {
+    /* color: #fff; */
+    background-color: #5768AD;
+    color:white;
+    border-color: none;
+}
+.btn{
+	border-color:#5768AD;
+	background-color: white;
+	font-weight: bold;
+	color: #5768AD
+}
 </style>
 <body>
 
@@ -122,24 +135,17 @@ li a:hover {
 										<p style="color:#5768AD;">▶ 이용권에 관련한 궁금 사항은 <span style="color:#FC7F65;">문의하기</span>에 남겨주세요.</p>
 										<br/><br/>
 									</div>
-										<form id="ticketPay_form" action="ticketBuyList.do#location123" style="padding-left: 0;">
+										<form id="ticketPay_form" action="ticketUseList.do#location123" style="padding-left: 0;">
 
 											<div id="searchBtn" class="class__filter__input" style="margin-right: 20px;">
 												<p>날짜:</p>
 												<input type="text" name="selDate" value="${selDate}" placeholder="검색" id="mydate" style="width: 100%;">
 											</div>
 											
-											<div class="class__filter__select">
-												<p>검색조건:</p>
-												<select name="selTicketName">
-													<option value="">전체</option>
-													<option <c:if test="${selTicketName eq '1회권'}"> selected</c:if> value="1회권">1회권</option>
-													<option <c:if test="${selTicketName eq '3회권'}"> selected</c:if> value="3회권">3회권</option>
-													<option <c:if test="${selTicketName eq '5회권'}"> selected</c:if> value="5회권">5회권</option>
-												</select>
-												
-											</div>
-											
+											<div class="class__filter__input">
+				                                <p>트레이너 이름:</p>
+				                                	<input style="width: 150px;" type="text" placeholder="검색" id="keyword" name="keyword" value="${keyword}">
+				                            </div>
 											
 											<div id="search2" class="class__filter__btn_re" style="padding-right:345px;">
 												<button>
@@ -156,40 +162,23 @@ li a:hover {
 									<thead>
 										<tr style="background: #E6E6E6;">
 											<th scope="col">번호</th>
-											<th scope="col">이용권 종류</th>
-											<th scope="col">남은 횟수</th>
-											<th scope="col">구매 금액</th>
-											<th scope="col">구매 일자</th>
-											<th scope="col">상태</th>
+											<th scope="col">트레이너이름</th>
+											<th scope="col">날짜</th>
+											<th scope="col"></th>
+											<th scope="col"></th>
 										</tr>
 									</thead>
 									<tbody>
-									<c:forEach var="result" items="${buyTicketList}" varStatus="status">
+									<c:forEach var="result" items="${useTicketList}" varStatus="status">
 										<tr>
 											<td>${result.rn}</td>
-											<td>${result.ticketName}</td>
-											<td>${result.ticketRemain}</td>
-											<td>
-												<c:if test="${result.ticketName eq '1회권'}">4000원</c:if>
-												<c:if test="${result.ticketName eq '3회권'}">11000원</c:if>
-												<c:if test="${result.ticketName eq '5회권'}">17500원</c:if>
-											</td>
+											<td>${result.memberName}</td>
 											<td>${result.inDate}</td>
 											<td>
-											<c:if test="${result.ticketAvailFlag eq 'Y'}">
-												<span style="background-color:#6ABD66;padding: 5px;color: white;font-weight: bold;">&nbsp;&nbsp;사용중&nbsp;&nbsp;</span>
-											</c:if>
-											<c:if test="${result.ticketAvailFlag eq 'N'}">
-												<c:choose>
-													<c:when test="${result.ticketRefundFlag eq 'Y'}">
-														<span style="background-color:#D16666;padding: 5px;color: white;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;환불&nbsp;&nbsp;&nbsp;&nbsp;</span>
-													</c:when>
-													<c:otherwise>
-														<span style="background-color:#958BF2;padding: 5px;color: white;font-weight: bold;">사용만료</span>
-													</c:otherwise>
-												
-												</c:choose>
-											</c:if>
+											<button class="btn" type="button" onclick="location.href='chatDetail.do?chatProfileSeq=${result.chatProfileSeq}'">상담사 프로필</button>
+											</td>
+											<td>
+											<button class="btn" type="button" onclick="location.href='myChattingDetail.do'">채팅내역</button>
 											</td>
 										</tr>
 									</c:forEach>
@@ -201,7 +190,7 @@ li a:hover {
             	<div class="col-lg-12">
 					<div class="classes__pagination">
 					<c:if test="${pageMaker.prev}">
-						<a href="ticketBuyList.do${pageMaker.makeQueryBuyTicketList(pageMaker.startPage - 1)}">
+						<a href="ticketUseList.do${pageMaker.makeQueryUseTicketList(pageMaker.startPage - 1)}">
 							<span class="arrow_carrot-left"></span>
 						</a>
 					</c:if> 
@@ -209,11 +198,11 @@ li a:hover {
 					<c:set var="page" value="${pageMaker.cri.page}"/>
 					<c:set var="idx" value="${idx}"/>
 					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-            			<a href="ticketBuyList.do${pageMaker.makeQueryBuyTicketList(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+            			<a href="ticketUseList.do${pageMaker.makeQueryUseTicketList(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
 					</c:forEach>
 					
 					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
-						<a href="ticketBuyList.do${pageMaker.makeQueryBuyTicketList(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+						<a href="ticketUseList.do${pageMaker.makeQueryUseTicketList(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
 					</c:if>
 					</div>
 				</div>

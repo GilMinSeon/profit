@@ -242,5 +242,730 @@
 	    
 	</select>
     
+    <select id="lessonPriceDays" resultType="egovMap">
+        
+        select *
+		from
+		(
+		select to_char(sysdate,'yyyy-mm-dd') as cal1,nvl(sum(lesson_price),0) as day1
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate,'yyyymmdd')
+		group by to_char(sysdate,'yyyy-mm-dd')
+		),
+		(
+		select to_char(sysdate-1,'yyyy-mm-dd') as cal2,nvl(sum(lesson_price),0) as day2
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-1,'yyyymmdd')
+		group by to_char(sysdate-1,'yyyy-mm-dd')
+		),
+		(
+		select to_char(sysdate-2,'yyyy-mm-dd') as cal3,nvl(sum(lesson_price),0) as day3
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-2,'yyyymmdd')
+		group by to_char(sysdate-2,'yyyy-mm-dd')
+		),
+		(
+		select to_char(sysdate-3,'yyyy-mm-dd') as cal4,nvl(sum(lesson_price),0) as day4
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-3,'yyyymmdd')
+		group by to_char(sysdate-3,'yyyy-mm-dd')
+		),
+		(
+		select to_char(sysdate-4,'yyyy-mm-dd') as cal5,nvl(sum(lesson_price),0) as day5
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-4,'yyyymmdd')
+		group by to_char(sysdate-4,'yyyy-mm-dd')
+		),
+		(
+		select to_char(sysdate-5,'yyyy-mm-dd') as cal6,nvl(sum(lesson_price),0) as day6
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-5,'yyyymmdd')
+		group by to_char(sysdate-5,'yyyy-mm-dd')
+		),
+		(
+		select to_char(sysdate-6,'yyyy-mm-dd') as cal7,nvl(sum(lesson_price),0) as day7
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-6,'yyyymmdd')
+		group by to_char(sysdate-6,'yyyy-mm-dd')
+		)
+        
+    </select>
+    
+    <select id="lessonPriceDaysM" resultType="egovMap">
+        
+        select * 
+		from
+		(
+		select nvl(sum(b.lesson_price),0) as m1
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'M'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m2
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-1,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'M'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m3
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-2,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'M'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m4
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-3,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'M'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m5
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-4,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'M'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m6
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-5,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'M'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m7
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-6,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'M'
+		)
+        
+    </select>
+    
+    <select id="lessonPriceDaysF" resultType="egovMap">
+        select * 
+		from
+		(
+		select nvl(sum(b.lesson_price),0) as f1
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'F'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f2
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-1,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'F'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f3
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-2,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'F'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f4
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-3,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'F'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f5
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-4,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'F'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f6
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-5,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'F'
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f7
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-6,'yyyymmdd')
+		and a.in_user_id = c.member_id (+)
+		and c.member_gender = 'F'
+		)
+        
+    </select>
+    
+    <select id="lessonPriceWeeks" resultType="egovMap">
+        
+        select * 
+		from
+		(
+		select nvl(sum(b.lesson_price),0) as week1
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and a.in_date between sysdate-7 and sysdate 
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as week2
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and a.in_date between sysdate-14 and sysdate-7 
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as week3
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and a.in_date between sysdate-21 and sysdate-14 
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as week4
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and a.in_date between sysdate-28 and sysdate-21 
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as week5
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and a.in_date between sysdate-35 and sysdate-28 
+		)
+    </select>
 	
+	<select id="lessonPriceWeeksM" resultType="egovMap">
+	select *
+	from
+	(
+	select nvl(sum(b.lesson_price),0) as M1
+	from buy_lesson a , lesson b, member c
+	where a.lesson_seq = b.lesson_seq(+)
+	and a.in_user_id = c.member_id
+	and a.lesson_refund_flag = 'N' 
+	and member_gender = 'M'
+	and a.in_date between sysdate-7 and sysdate
+	),
+	(
+	select nvl(sum(b.lesson_price),0) as M2
+	from buy_lesson a , lesson b, member c
+	where a.lesson_seq = b.lesson_seq(+)
+	and a.in_user_id = c.member_id
+	and a.lesson_refund_flag = 'N' 
+	and member_gender = 'M'
+	and a.in_date between sysdate-14 and sysdate-7
+	),
+	(
+	select nvl(sum(b.lesson_price),0) as M3
+	from buy_lesson a , lesson b, member c
+	where a.lesson_seq = b.lesson_seq(+)
+	and a.in_user_id = c.member_id
+	and a.lesson_refund_flag = 'N' 
+	and member_gender = 'M'
+	and a.in_date between sysdate-21 and sysdate-14
+	),
+	(
+	select nvl(sum(b.lesson_price),0) as M4
+	from buy_lesson a , lesson b, member c
+	where a.lesson_seq = b.lesson_seq(+)
+	and a.in_user_id = c.member_id
+	and a.lesson_refund_flag = 'N' 
+	and member_gender = 'M'
+	and a.in_date between sysdate-28 and sysdate-21
+	),
+	(
+	select nvl(sum(b.lesson_price),0) as M5
+	from buy_lesson a , lesson b, member c
+	where a.lesson_seq = b.lesson_seq(+)
+	and a.in_user_id = c.member_id
+	and a.lesson_refund_flag = 'N' 
+	and member_gender = 'M'
+	and a.in_date between sysdate-35 and sysdate-28
+	)
+	</select>
+	
+	<select id="lessonPriceWeeksF" resultType="egovMap">
+	    select *
+		from
+		(
+		select nvl(sum(b.lesson_price),0) as F1
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id
+		and a.lesson_refund_flag = 'N' 
+		and member_gender = 'F'
+		and a.in_date between sysdate-7 and sysdate
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as F2
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id
+		and a.lesson_refund_flag = 'N' 
+		and member_gender = 'F'
+		and a.in_date between sysdate-14 and sysdate-7
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as F3
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id
+		and a.lesson_refund_flag = 'N' 
+		and member_gender = 'F'
+		and a.in_date between sysdate-21 and sysdate-14
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as F4
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id
+		and a.lesson_refund_flag = 'N' 
+		and member_gender = 'F'
+		and a.in_date between sysdate-28 and sysdate-21
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as F5
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id
+		and a.lesson_refund_flag = 'N' 
+		and member_gender = 'F'
+		and a.in_date between sysdate-35 and sysdate-28
+		)
+	    
+	</select>
+	
+	<select id="lessonPriceMonths" resultType="egovMap">
+	    select *
+		from
+		(
+		select to_char(sysdate,'yyyy-mm') as cal1, nvl(sum(b.lesson_price),0) as month1
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymm') = to_char(sysdate,'yyyymm')
+		group by to_char(sysdate,'yyyy-mm')
+		),
+		(
+		select to_char(add_months(sysdate,-1),'yyyy-mm') as cal2, nvl(sum(b.lesson_price),0) as month2
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-1),'yyyymm')
+		group by to_char(add_months(sysdate,-1),'yyyy-mm')
+		),
+		(
+		select to_char(add_months(sysdate,-2),'yyyy-mm') as cal3, nvl(sum(b.lesson_price),0) as month3
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-2),'yyyymm')
+		group by to_char(add_months(sysdate,-2),'yyyy-mm')
+		),
+		(
+		select to_char(add_months(sysdate,-3),'yyyy-mm') as cal4, nvl(sum(b.lesson_price),0) as month4
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-3),'yyyymm')
+		group by to_char(add_months(sysdate,-3),'yyyy-mm')
+		),
+		(
+		select to_char(add_months(sysdate,-4),'yyyy-mm') as cal5, nvl(sum(b.lesson_price),0) as month5
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-4),'yyyymm')
+		group by to_char(add_months(sysdate,-4),'yyyy-mm')
+		),
+		(
+		select to_char(add_months(sysdate,-5),'yyyy-mm') as cal6, nvl(sum(b.lesson_price),0) as month6
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-5),'yyyymm')
+		group by to_char(add_months(sysdate,-5),'yyyy-mm')
+		)
+	</select>
+	
+	<select id="lessonPriceMonthsM" resultType="egovMap">
+	    
+	    select *
+		from
+		(
+		select nvl(sum(b.lesson_price),0) as m1
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'M'
+		and to_char(a.in_date,'yyyymm') = to_char(sysdate,'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m2
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-1),'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m3
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-2),'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m4
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-3),'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m5
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-4),'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as m6
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'M'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-5),'yyyymm')
+		)
+	</select>
+	
+	<select id="lessonPriceMonthsF" resultType="egovMap">
+	    select *
+		from
+		(
+		select nvl(sum(b.lesson_price),0) as f1
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'F'
+		and to_char(a.in_date,'yyyymm') = to_char(sysdate,'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f2
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-1),'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f3
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-2),'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f4
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-3),'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f5
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-4),'yyyymm')
+		),
+		(
+		select nvl(sum(b.lesson_price),0) as f6
+		from buy_lesson a , lesson b, member c
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.in_user_id = c.member_id(+)
+		and a.lesson_refund_flag = 'N' 
+		and c.member_gender = 'F'
+		and to_char(a.in_date,'yyyymm') = to_char(add_months(sysdate,-5),'yyyymm')
+		)
+	    
+	</select>
+	
+	<select id="newTop5" resultType="egovMap">
+		select *
+		from
+		(
+		select rownum as rn, lesson_seq, lesson_title,cnt
+		from
+		(
+		select a.lesson_seq, 
+		CASE
+		WHEN
+		LENGTH(b.LESSON_TITLE) > 10 THEN SUBSTR(b.LESSON_TITLE, 0, 10) ||
+		'...'
+		ELSE b.LESSON_TITLE
+		END AS LESSON_TITLE,
+		count(*) as cnt
+		from buy_lesson a, lesson b
+		where b.in_date between sysdate-7 and sysdate
+		and a.lesson_seq = b.lesson_seq(+)
+		and lesson_refund_flag='N'
+		group by a.lesson_seq,b.lesson_title
+		order by cnt desc
+		)
+		)
+		where rn between 1 and 5	    
+	</select>
+	
+	<select id="newRegister" resultType="egovMap">
+	    
+	    select
+		(
+		select count(*)
+		from lesson a, lesson_category b
+		where in_date between sysdate-7 and sysdate
+		and a.lesson_category_seq = b.lesson_category_seq
+		and a.lesson_category_seq='1'
+		) as 헬스,
+		(
+		select count(*)
+		from lesson a, lesson_category b
+		where in_date between sysdate-7 and sysdate
+		and a.lesson_category_seq = b.lesson_category_seq
+		and a.lesson_category_seq='2'
+		) as 요가,
+		(
+		select count(*)
+		from lesson a, lesson_category b
+		where in_date between sysdate-7 and sysdate
+		and a.lesson_category_seq = b.lesson_category_seq
+		and a.lesson_category_seq='3'
+		) as 필라테스,
+		(
+		select count(*)
+		from lesson a, lesson_category b
+		where in_date between sysdate-7 and sysdate
+		and a.lesson_category_seq = b.lesson_category_seq
+		and a.lesson_category_seq='4'
+		) as 맨몸운동
+		from dual
+	    
+	</select>
+	
+	<select id="newRegisterCount" resultType="egovMap">
+	    
+	   select 
+		(
+		select to_char(sysdate,'mm/dd')
+		from dual
+		) as day1,
+		(
+		select count(*)
+		from lesson
+		where to_char(in_date,'yyyymmdd') = to_char(sysdate, 'yyyymmdd')
+		) as cnt1,
+		(
+		select to_char(sysdate-1,'mm/dd')
+		from dual
+		) as day2,
+		(
+		select count(*)
+		from lesson
+		where to_char(in_date,'yyyymmdd') = to_char(sysdate-1, 'yyyymmdd')
+		) as cnt2,
+		(
+		select to_char(sysdate-2,'mm/dd')
+		from dual
+		) as day3,
+		(
+		select count(*)
+		from lesson
+		where to_char(in_date,'yyyymmdd') = to_char(sysdate-2, 'yyyymmdd')
+		) as cnt3,
+		(
+		select to_char(sysdate-3,'mm/dd')
+		from dual
+		) as day4,
+		(
+		select count(*)
+		from lesson
+		where to_char(in_date,'yyyymmdd') = to_char(sysdate-3, 'yyyymmdd')
+		) as cnt4,
+		(
+		select to_char(sysdate-4,'mm/dd')
+		from dual
+		) as day5,
+		(
+		select count(*)
+		from lesson
+		where to_char(in_date,'yyyymmdd') = to_char(sysdate-4, 'yyyymmdd')
+		) as cnt5,
+		(
+		select to_char(sysdate-5,'mm/dd')
+		from dual
+		) as day6,
+		(
+		select count(*)
+		from lesson
+		where to_char(in_date,'yyyymmdd') = to_char(sysdate-5, 'yyyymmdd')
+		) as cnt6,
+		(
+		select to_char(sysdate-6,'mm/dd')
+		from dual
+		) as day7,
+		(
+		select count(*)
+		from lesson
+		where to_char(in_date,'yyyymmdd') = to_char(sysdate-6, 'yyyymmdd')
+		) as cnt7
+		from dual
+	    
+	</select>
+	
+	<select id="bookmarkRank" resultType="egovMap">
+	    select *
+		from
+		(
+		select rownum as rn, lesson_seq, lesson_title, cnt
+		from
+		(
+		select a.lesson_seq, 
+		CASE
+		WHEN
+		LENGTH(b.LESSON_TITLE) > 10 THEN SUBSTR(b.LESSON_TITLE, 0, 10) ||
+		'...'
+		ELSE b.LESSON_TITLE
+		END AS LESSON_TITLE,
+		count(*) as cnt
+		from bookgood a, lesson b
+		where a.lesson_seq is not null
+		and a.bookgood_gubun = 'B'
+		and a.lesson_seq = b.lesson_seq(+)
+		group by a.lesson_seq,b.lesson_title
+		order by cnt desc
+		)
+		)
+		where rn between 1 and 5
+	</select>
+	
+	<select id="goodRank" resultType="egovMap" >
+	    select *
+		from
+		(
+		select rownum as rn, lesson_seq, lesson_title, cnt
+		from
+		(
+		select a.lesson_seq, 
+		CASE
+		WHEN
+		LENGTH(b.LESSON_TITLE) > 10 THEN SUBSTR(b.LESSON_TITLE, 0, 10) ||
+		'...'
+		ELSE b.LESSON_TITLE
+		END AS LESSON_TITLE,
+		count(*) as cnt
+		from bookgood a, lesson b
+		where a.lesson_seq is not null
+		and a.bookgood_gubun = 'G'
+		and a.lesson_seq = b.lesson_seq(+)
+		group by a.lesson_seq,b.lesson_title
+		order by cnt desc
+		)
+		)
+		where rn between 1 and 5
+	    
+	</select>
+	
+	<select id="lessonRank" resultType="egovMap">
+	    
+	    select *
+		from
+		(
+		select rownum as rn, lesson_seq, 
+		CASE
+		WHEN
+		LENGTH(LESSON_TITLE) > 10 THEN SUBSTR(LESSON_TITLE, 0, 10) ||
+		'...'
+		ELSE LESSON_TITLE
+		END AS LESSON_TITLE, 
+		cnt
+		from
+		(
+		select a.lesson_seq, b.lesson_title, count(*) as cnt
+		from buy_lesson a, lesson b
+		where a.lesson_refund_flag = 'N'
+		and a.lesson_seq = b.lesson_seq(+)
+		group by a.lesson_seq, b.lesson_title
+		order by cnt desc
+		)
+		)
+		where rn between 1 and 10
+	</select>
 </mapper>

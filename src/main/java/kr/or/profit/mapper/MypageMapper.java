@@ -71,6 +71,12 @@ public interface MypageMapper {
 	
 	//전체 글 개수 세팅
 	public int selectBuyTicketCnt(Criteria cri) throws Exception;
+	
+	//이용권 사용목록
+	public List<Map<String, Object>> selectUseTicketList(Criteria cri) throws Exception;
+	
+	//전체글 개수
+	public int selectUseTicketCnt(Criteria cri) throws Exception;
 
 
 

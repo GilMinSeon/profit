@@ -2,6 +2,7 @@ package kr.or.profit.web;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -170,9 +171,69 @@ public class AdminLessonController {
 	
    
    @RequestMapping(value = "adminLessonStat.do", method = RequestMethod.GET)
-	public String adminLessonStat(Locale locale, Model model) {
-
-		return "adminLesson/adminLessonStat";
+	public String adminLessonStat(Locale locale, Model model) throws Exception{
+	   
+	   //온라인 클래스 최근 7일 수익
+	   Map<String,Object> sevenDays = adminLessonService.lessonPriceDays();
+	   model.addAttribute("lessonPriceDays", sevenDays);
+	   
+	   //온라인 클래스 최근 7일 수익(남자)
+	   Map<String,Object> sevenDaysM = adminLessonService.lessonPriceDaysM();
+	   model.addAttribute("lessonPriceDaysM" , sevenDaysM);
+	   
+	   //온라인 클래스 최근 7일 수익(여자)
+	   Map<String,Object> sevenDaysF = adminLessonService.lessonPriceDaysF();
+	   model.addAttribute("lessonPriceDaysF" , sevenDaysF);
+	   
+	   //온라인 클래스 최근 5주 수익
+	   Map<String,Object> fiveWeeks = adminLessonService.lessonPriceWeeks();
+	   model.addAttribute("lessonPriceWeeks" , fiveWeeks);
+	   
+	   //온라인 클래스 최근 5주 수익(남자)
+	   Map<String,Object> fiveWeeksM = adminLessonService.lessonPriceWeeksM();
+	   model.addAttribute("lessonPriceWeeksM" , fiveWeeksM);
+	   
+	   //온라인 클래스 최근 5주 수익(여자)
+	   Map<String,Object> fiveWeeksF = adminLessonService.lessonPriceWeeksF();
+	   model.addAttribute("lessonPriceWeeksF" , fiveWeeksF);
+	   
+	   //온라인 클래스 최근 6개월 수익
+	   Map<String,Object> sixMonths = adminLessonService.lessonPriceMonths();
+	   model.addAttribute("lessonPriceMonths" , sixMonths);
+	   
+	   //온라인 클래스 최근 6개월 수익(남자)
+	   Map<String,Object> sixMonthsM = adminLessonService.lessonPriceMonthsM();
+	   model.addAttribute("lessonPriceMonthsM" , sixMonthsM);
+	   
+	   //온라인 클래스 최근 6개월 수익(여자)
+	   Map<String,Object> sixMonthsF = adminLessonService.lessonPriceMonthsF();
+	   model.addAttribute("lessonPriceMonthsF" , sixMonthsF);
+	   
+	   //신규강좌(일주일) 구매 TOP5
+	   List<Map<String,Object>> buyTop5 = adminLessonService.newTop5();
+	   model.addAttribute("buyTop5" , buyTop5);
+	   
+	   //카테고리별 신규강좌 등록 비율
+	   Map<String,Object> newRegister = adminLessonService.newRegister();
+	   model.addAttribute("newRegister" , newRegister);
+	   
+	   //최근 일주일 신규강좌 등록 수
+	   Map<String,Object> newRegisterCount = adminLessonService.newRegisterCount();
+	   model.addAttribute("newRegisterCount" , newRegisterCount);
+	   
+	   //누적 북마크순
+	   List<Map<String,Object>> bookmarkRank = adminLessonService.bookmarkRank();
+	   model.addAttribute("bookmarkRank" , bookmarkRank);
+	   
+	   //누적 좋아요순
+	   List<Map<String,Object>> goodRank = adminLessonService.goodRank();
+	   model.addAttribute("goodRank" , goodRank );
+	   
+	   //누적 인기강좌 순위
+	   List<Map<String,Object>> lessonRank = adminLessonService.lessonRank();
+	   model.addAttribute("lessonRank", lessonRank);
+	   System.out.println(model.toString());
+	   return "adminLesson/adminLessonStat";
 	}
    
 	

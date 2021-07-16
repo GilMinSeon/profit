@@ -1,6 +1,7 @@
 package kr.or.profit.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.Criteria;
@@ -28,6 +29,51 @@ public interface AdminLessonService {
 
 	//온라인클래스 결제/환불내역 전체 글개수
 	int adminLessonPayListCnt(Criteria cri) throws Exception;
+	
+	//온라인 클래스 최근 7일 수익
+	Map<String, Object> lessonPriceDays() throws Exception;
+	
+	//온라인 클래스 최근 7일 수익(남자)
+	Map<String, Object> lessonPriceDaysM() throws Exception;
+	
+	//온라인 클래스 최근 7일 수익(여자)
+	Map<String, Object> lessonPriceDaysF() throws Exception;
+	
+	//온라인 클래스 최근 5주 수익
+	Map<String, Object> lessonPriceWeeks() throws Exception;
+	
+	//온라인 클래스 최근 5주 수익(남자)
+	Map<String, Object> lessonPriceWeeksM() throws Exception;
+	
+	//온라인 클래스 최근 5주 수익(여자)
+	Map<String, Object> lessonPriceWeeksF() throws Exception;
+	
+	//온라인 클래스 최근 6개월 수익
+	Map<String, Object> lessonPriceMonths() throws Exception;
+	
+	//온라인 클래스 최근 6개월 수익(남자)
+	Map<String, Object> lessonPriceMonthsM() throws Exception;
+	
+	//온라인 클래스 최근 6개월 수익(여자)
+	Map<String, Object> lessonPriceMonthsF() throws Exception;
+	
+	//신규강좌(일주일) 구매 TOP5
+	List<Map<String,Object>> newTop5() throws Exception;
+	
+	//카테고리별 신규강좌 등록 비율
+	Map<String, Object> newRegister() throws Exception;
+	
+	//최근 일주일 신규강좌 등록 수
+	Map<String, Object> newRegisterCount() throws Exception;
+	
+	//누적 북마크순
+	List<Map<String,Object>> bookmarkRank() throws Exception;
+	
+	//누적 좋아요순
+	List<Map<String, Object>> goodRank() throws Exception;
+	
+	//누적 인기강좌 순위
+	List<Map<String, Object>> lessonRank() throws Exception;
 
 
 }

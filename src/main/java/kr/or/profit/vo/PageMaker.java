@@ -244,5 +244,14 @@ public class PageMaker {
 
 		return uriComponents.toUriString();
 	}
+	
+	public String makeQueryUseTicketList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+				.queryParam("selDate", cri.getSelDate())
+				.queryParam("keyword", cri.getKeyword())
+				.build();
+
+		return uriComponents.toUriString();
+	}
 
 }

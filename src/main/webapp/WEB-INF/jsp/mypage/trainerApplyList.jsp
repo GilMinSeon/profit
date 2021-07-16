@@ -95,12 +95,6 @@ input:-webkit-autofill {
 li a {
     font-size: 16px;
     color: #9B9EA3;
-    line-height: 48px;
-    -webkit-transition: all, 0.3s;
-    -moz-transition: all, 0.3s;
-    -ms-transition: all, 0.3s;
-    -o-transition: all, 0.3s;
-    transition: all, 0.3s;
 }
 li a:hover {
     color: #5768AD;
