@@ -222,8 +222,6 @@ function fn_updTicketCnt(ele){
 								<span class="plus" style="cursor: pointer; height: 34px; width:26px;">+</span>
 							</div>
 							<button type="button" id="updBtn${status.index}" class="btn btn-outline-dark" onclick="fn_updTicketCnt(this)" style="display: inline-block;font-size: 14px;">수정</button>
-<%-- 						<c:if test="${result.ticketRefundFlag eq 'N'}"><span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;">결제</span></c:if> --%>
-<%-- 						<c:if test="${result.ticketRefundFlag eq 'Y'}"><span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">환불</span></c:if> --%>
 						</td>
 					</tr>
 					</c:forEach>

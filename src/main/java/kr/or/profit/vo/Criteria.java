@@ -44,9 +44,14 @@ public class Criteria {
        this.yyyymm = yyyymm;
     }
 
+    
     public String getGubun() {
        return gubun;
     }
+    
+    public void setGubun(String gubun) {
+        this.gubun = gubun;
+     }
     
 	public String getSelTicketName() {
 		return selTicketName;

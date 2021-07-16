@@ -158,6 +158,20 @@ public class PageMaker {
 
 				return uriComponents.toUriString();
 	}
+			
+	//관리자 정산하기 목록 페이징
+	public String makeQueryAdminSalesList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page).build();
+
+		return uriComponents.toUriString();
+	}
+	
+	//관리자 정산하기 상세 목록 페이징
+	public String makeQueryAdminSalesDetailList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page).build();
+
+		return uriComponents.toUriString();
+	}	
 	
 	
 	

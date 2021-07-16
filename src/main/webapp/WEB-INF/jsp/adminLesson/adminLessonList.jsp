@@ -205,8 +205,6 @@ function fn_switch(ele){
 							  	</div>
 							</c:if>
 							
-<%-- 						<c:if test="${result.ticketRefundFlag eq 'N'}"><span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;">결제</span></c:if> --%>
-<%-- 						<c:if test="${result.ticketRefundFlag eq 'Y'}"><span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">환불</span></c:if> --%>
 						</td>
 					</tr>
 					</c:forEach>

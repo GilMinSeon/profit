@@ -89,15 +89,15 @@
 
 	//글 등록
 	function fn_boardAdd() {
-		var title = $("input[name='title']").val();
-		var contents = $("textarea[name='contents']").val();
+		var commonTitle = $("input[name='commonTitle']").val();
+		var commonContent = $("textarea[name='commonContent']").val();
 		var file = $("input[name='file']").val();
 
-		if (!title) {
+		if (!commonTitle) {
 			alert("제목을 입력해주세요");
 			return;
 		}
-		if (!contents) {
+		if (!commonContent) {
 			alert("내용을 입력해주세요");
 			return;
 		}
@@ -152,17 +152,17 @@
 		<h3>👨‍🎓공지사항을 입력 해주세요</h3>
 		<br>
 		<form id="form" name="form" enctype="multipart/form-data">
-			<!-- 		<form id="form" name="form" enctype="multipart/form-data" action="/noticeAdd.do"> -->
 			<div class="pt-1"></div>
 			<label>
 				<p style="font-weight: bold; margin-bottom: 0">
 					제목<span style="color: red;"> *</span>
 				</p>
 			</label>
-			<input type="text" name="title" placeholder="제목을 입력하세요" style="width: 99%; border: none; border-bottom: 1px solid #D5D4D4; height: 54px; font-size: 15px;">
-			<div class="pt-1">
-				<br>
-				<textarea class="summernote" id="summernote" name="contents"></textarea>
+			<div class="pt-1"></div>
+
+			<input type="text" name="commonTitle" placeholder="제목을 입력하세요" style="width: 99%; border: none; border-bottom: 1px solid #D5D4D4; height: 54px; font-size: 15px;">
+			<div class="container" style="margin-top: 10px; margin-bottom: 20px; padding: 0; position: relative;">
+				<textarea class="summernote" id="summernote" name="commonContent"></textarea>
 				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">
 					<img id="loading-image" src="./resources/img/common/loading.gif" alt="Loading..." />
 				</div>
@@ -173,19 +173,9 @@
 			</div>
 			<div class="pt-1 text-right">
 				<button id="hover_btn" class="btn btn btn-success" type="button" style="width: 10%; padding: 5px;" onclick="fn_boardAdd()">등록</button>
-				<!-- 				<button id="hover_btn" class="btn btn btn-success" type="submit" style="width: 10%; padding: 5px;">등록</button> -->
 			</div>
 		</form>
 		</main>
 	</section>
-
-	<!-- Js Plugins -->
-<!-- 	<script src="./resources/js/jquery-3.3.1.min.js"></script> -->
-<!-- 	<script src="./resources/js/bootstrap.min.js"></script> -->
-<!-- 	<script src="./resources/js/jquery.nice-select.min.js"></script> -->
-<!-- 	<script src="./resources/js/jquery.barfiller.js"></script> -->
-<!-- 	<script src="./resources/js/jquery.slicknav.js"></script> -->
-<!-- 	<script src="./resources/js/owl.carousel.min.js"></script> -->
-<!-- 	<script src="./resources/js/main.js"></script> -->
 </body>
 </html>

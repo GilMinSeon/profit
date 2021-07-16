@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.profit.mapper.QnaMapper;
 import kr.or.profit.service.QnaService;
+import kr.or.profit.vo.Criteria;
 
 @Service("qnaService")
 public class QnaServiceImpl implements QnaService{
@@ -18,8 +19,8 @@ public class QnaServiceImpl implements QnaService{
 
 	//글 목록
 	@Override
-	public List<?> qnaList() throws Exception {
-		return mapper.qnaList();
+	public List<?> qnaList(Criteria cri) throws Exception {
+		return mapper.qnaList(cri);
 	}
 
 	@Override
@@ -87,6 +88,13 @@ public class QnaServiceImpl implements QnaService{
 	public int qnaReplyAdd(Map<String, Object> map) throws Exception {
 		System.out.println("대 댓글 서비스옴 = " + map);
 		return mapper.qnaReplyAdd(map);
+	}
+
+	//페이징
+	@Override
+	public int selectBoardCnt(Criteria cri) throws Exception {
+		System.out.println("페이징옴 = " + cri);
+		return mapper.selectBoardCnt(cri);
 	}
 
 

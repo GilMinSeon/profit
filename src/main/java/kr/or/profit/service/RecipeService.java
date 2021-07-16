@@ -3,9 +3,12 @@ package kr.or.profit.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.QnaVO;
+
 public interface RecipeService {
 
-	List<?> recipeList() throws Exception;
+	List<Map<String, String>> recipeList(Criteria cri) throws Exception;
 
 	int recipeAddInsert(Map<String, Object> map) throws Exception;
 
@@ -33,13 +36,14 @@ public interface RecipeService {
 
 	String imgcnt() throws Exception;
 
-	List<?> recipeTopList() throws Exception;
+	List<?> recipeTopList(String memberId) throws Exception;
 
 	List<?> recipeNewList() throws Exception;
 
 	List<?> recipeGoodList() throws Exception;
 
+	List<?> recipeListKeyword(Map<String, Object> map) throws Exception;
 
-
+	int recipeSelectBoardCnt(Criteria cri) throws Exception;
 
 }

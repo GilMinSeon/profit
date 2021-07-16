@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<script src="./resources/js/jquery-3.3.1.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script src="./resources/js/recipe.js"></script>
 <style>
 .classes__item__text .class-btn:hover {
@@ -83,7 +83,7 @@
 		var formData = new FormData($('#replyfrmAdd'+replySeq)[0]);
 		$.ajax({
 			type : 'post',
-			url : 'recipeReplyAdd.do',
+			url : 'recipeaddBookgood.do',
 			data : formData,
 			processData : false,
 			contentType : false,
@@ -112,7 +112,7 @@
 			$.ajax({
 				type : 'POST',
 				async : false,
-				url : 'recipeReplyDelete.do',
+				url : 'reciperemoveBookgood.do',
 				data : replySeq,
 				success : function(data) {
 					if (data == "ok") {
@@ -137,6 +137,86 @@
 		}
 	};
 
+//좋아요 북마크
+	$(function(){
+
+		//좋아요북마크 취소
+		$(document).on("click",".remove",function(){
+			var memberId = $("#sessionId").val();
+			var communitySeq = $("#communitySeq").val();
+			var bookgoodGubun = $(this).attr('alt');
+
+			$.ajax({
+				type : "get",
+				data : {memberId:memberId, bookgoodGubun:bookgoodGubun, communitySeq:communitySeq},
+				url : "removeBookgoodAjax.do",
+				success : function(result) {
+					if (result == "no") {
+						alert("문제가 발생하였습니다. 잠시후 다시 시도해주세요")
+					} else {
+						if(bookgoodGubun == 'G'){
+							var txt = "";
+							txt += "<img src='./resources/img/common/like.png' style='width: 17px; height: 15px;' class='full' alt='G' />"
+							$("#div_good_img").html(txt);
+							var txt2 = "";
+							txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+							$("#div_good_cnt").html(txt2);
+						}else{
+							var txt = "";
+							txt += "<img src='./resources/img/common/bookmark.png' style='width: 12px; height: 16px;' class='full' alt='B' />"
+							$("#div_book_img").html(txt);
+							var txt2 = "";
+							txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+							$("#div_book_cnt").html(txt2);
+						}
+					}
+				},
+				error : function() {
+					alert("오류발생");
+				}
+			});
+		}); //.remove 클릭 이벤트 끝
+
+
+		//좋아요북마크 추가
+		$(document).on("click",".full",function(){
+			var memberId = $("#sessionId").val();
+			var communitySeq = $("#communitySeq").val();
+			var bookgoodGubun = $(this).attr('alt');
+
+			$.ajax({
+				type : "get",
+				data : {memberId:memberId, bookgoodGubun:bookgoodGubun, communitySeq:communitySeq},
+				url : "addBookgoodAjax.do",
+				success : function(result) {
+					if (result == "no") {
+						alert("문제가 발생하였습니다. 잠시후 다시 시도해주세요")
+					} else {
+						if(bookgoodGubun == 'G'){
+							var txt = "";
+							txt += "<img src='./resources/img/common/red_like.png' style='width: 17px; height: 15px;' class='remove' alt='G' />"
+							$("#div_good_img").html(txt);
+							var txt2 = "";
+							txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+							$("#div_good_cnt").html(txt2);
+						}else{
+							var txt = "";
+							txt += "<img src='./resources/img/common/yellow_bookmark.png' style='width: 12px; height: 16px;' class='remove' alt='B' />"
+							$("#div_book_img").html(txt);
+							var txt2 = "";
+							txt2 += "<p>"+result+"&nbsp;&nbsp;</p>"
+							$("#div_book_cnt").html(txt2);
+						}
+					}
+				},
+				error : function() {
+					alert("오류발생");
+				}
+			});
+		}); //.full 이벤트 끝
+
+
+	});
 
 </script>
 
@@ -166,32 +246,32 @@
 
 						<div class="blog__sidebar__recent">
 							<h4>최신글</h4>
-							<div class="blog__recent__item">
-								<c:forEach var="recipeNewList" items="${recipeNewList}">
+							<c:forEach var="recipeNewList" items="${recipeNewList}">
+								<div class="blog__recent__item" onclick="location.href='recipeDetail.do?communitySeq=${recipeNewList.communitySeq}'">
 									<div class="blog__recent__item__pic">
 										<img src="${recipeNewList.filePath }" alt="" style="width: 90px; height: 70px;">
 									</div>
 									<div class="blog__recent__item__text">
-										<h6>WOW</h6>
+										<h6>${recipeNewList.commonTitle }</h6>
 										<span>${recipeNewList.inDate }</span>
 									</div>
-								</c:forEach>
-							</div>
+								</div>
+							</c:forEach>
 
 						</div>
 						<div class="blog__sidebar__tags">
 							<h4>인기글</h4>
-							<div class="blog__recent__item">
-								조아요글 목록 리스트 포문 자리
-								<div class="blog__recent__item__pic">
-									<img src="http://192.168.41.6:9999/upload/profit/5eac3229-1023-4234-97d2-03e21abcf8ba_wow.jpg" alt="" style="width: 90px; height: 70px;">
+							<c:forEach var="recipeGoodList" items="${recipeGoodList}">
+								<div class="blog__recent__item">
+									<div class="blog__recent__item__pic">
+										<img src="${recipeGoodList.filePath }" alt="" style="width: 90px; height: 70px;">
+									</div>
+									<div class="blog__recent__item__text">
+										<h6>${recipeGoodList.commonTitle}</h6>
+										<span>${recipeGoodList.inDate}</span>
+									</div>
 								</div>
-								<div class="blog__recent__item__text">
-									<h6>WOW</h6>
-									<span>2021-07-06 18:59</span>
-								</div>
-							</div>
-
+							</c:forEach>
 						</div>
 					</div>
 				</div>
@@ -216,26 +296,38 @@
 							<p>${data.cnt}&nbsp;&nbsp;</p>
 						</div>
 
+						<input type="hidden" value="${sessionScope.memberId }" id="sessionId">
+						<input type="hidden" value="${data.communitySeq}" id="communitySeq">
 						<!-- 좋아요 이미지 찍히는 곳 -->
-						<div style="display: inline-block; vertical-align: middle;">
-							<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
-							<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+						<div style="display: inline-block; vertical-align: middle;" id="div_good_img">
+							<c:set var="boardDetail" value="${boardDetail}" />
+							<c:if test="${boardDetail.goodFlag == '1' }">
+								<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;" class="remove" alt="G">
+							</c:if>
+							<c:if test="${boardDetail.goodFlag == '0' }">
+								<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;" class="full" alt="G">
+							</c:if>
 						</div>
 
 						<!-- 좋아요수 -->
-						<div style="display: inline-block; vertical-align: sub;">
-							<p>${data.commonHit}&nbsp;&nbsp;</p>
+						<div style="display: inline-block; vertical-align: sub;" id="div_good_cnt">
+							<p>${boardDetail.boardGood}&nbsp;&nbsp;</p>
 						</div>
 
 						<!-- 북마크 이미지 찍히는 곳 -->
-						<div style="display: inline-block; vertical-align: middle;">
-							<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
-							<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+						<div style="display: inline-block; vertical-align: middle;" id="div_book_img">
+							<c:set var="boardDetail" value="${boardDetail}" />
+							<c:if test="${boardDetail.bookFlag == '1' }">
+								<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;" class="remove" alt="B">
+							</c:if>
+							<c:if test="${boardDetail.bookFlag == '0' }">
+								<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;" class="full" alt="B">
+							</c:if>
 						</div>
 
 						<!-- 북마크수 -->
-						<div style="display: inline-block; vertical-align: sub;">
-							<p>${data.commonHit}&nbsp;&nbsp;</p>
+						<div style="display: inline-block; vertical-align: sub;" id="div_book_cnt">
+							<p>${boardDetail.boardBook}&nbsp;&nbsp;</p>
 						</div>
 					</div>
 					<hr style="color: #545454">
@@ -259,7 +351,7 @@
 	<!-- Blog Details Section End -->
 
 	<!-- Leave Comment Begin -->
-<!-- 	댓글부분 -->
+	<!-- 	댓글부분 -->
 	<div class="leave-comment spad">
 		<div class="container">
 			<div class="row">
