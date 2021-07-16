@@ -42,7 +42,7 @@
 	$(function() {
 		$('#loading').hide();
 		$('.summernote').summernote({
-			height : 600,
+			height : 300,
 			fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
 			fontNamesIgnoreCheck : [ '맑은고딕' ],
 			focus : true,
@@ -114,9 +114,14 @@
 		<h3>🌮레시피를 입력 해주세요</h3>
 		<br>
 		<form name="form" method="POST" action="/recipeAdd.do">
+			<label>
+				<p style="font-weight: bold; margin-bottom: 0">
+					제목<span style="color: red;"> *</span>
+				</p>
+			</label>
 			<input type="hidden" id="hidden" name="tumnalil_img" value="none" />
 			<div class="pt-1"></div>
-			<input type="text" name="commonTitle" placeholder="제목을 입력하세요" style="border-radius: 5px; width: 100%; padding: 5px;">
+			<input type="text" name="commonTitle" placeholder="제목을 입력하세요" style="width: 99%; border: none; border-bottom: 1px solid #D5D4D4; height: 54px; font-size: 15px;">
 			<div class="container" style="margin-top: 10px; margin-bottom: 20px; padding: 0; position: relative;">
 				<textarea class="summernote" id="summernote" name="commonContent"></textarea>
 				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">

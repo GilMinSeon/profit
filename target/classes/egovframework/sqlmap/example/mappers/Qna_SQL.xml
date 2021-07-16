@@ -17,36 +17,74 @@
 		<result property="upDate" column="UP_DATE"/>
 	</resultMap>
 
-	<!-- qna 목록 댓글 개수 -->
-	<select id="qnaList" resultType="egovMap">
-		SELECT
-		    (SELECT
-		            COUNT(*)
-		        FROM
-		            REPLY B
-		        WHERE
-		            A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
-		        ) CNT,
-		    A.COMMUNITY_SEQ,
-		    A.COMMON_SEQ,
-		    A.COMMUNITY_CATEGORY_SEQ,
-		    A.FILE_SEQ,
-		    A.COMMON_TITLE,
-		    A.COMMON_HIT,
-		    A.COMMON_DEL_FLAG,
-		    A.IN_USER_ID,
-		    TO_CHAR(A.IN_DATE, 'YYYY-MM-DD') IN_DATE,
-		    A.UP_USER_ID,
-		    TO_CHAR(A.UP_DATE, 'YYYY-MM-DD') IN_DATE,
-		    A.COMMON_CONTENT
-
+<!--  페이징 처리 -->
+	<select id="selectBoardCnt" parameterType="Criteria" resultType="int">
+	    SELECT
+		    COUNT(*)
 		FROM
 		    COMMUNITY A
+
 		WHERE
+		    A.COMMON_DEL_FLAG = 'N'
+		AND
 		    A.COMMON_SEQ = '8'
 		AND
-			A.COMMON_DEL_FLAG = 'N'
-
+		    1=1
+	</select>
+	<!-- qna 목록 -->
+	<select id="qnaList" parameterType="Criteria" resultType="egovMap">
+		select
+			tt.rm, tt.community_seq, tt.common_hit, tt.community_category_seq, tt.file_seq, tt.board_good,
+            tt.board_book, tt.good_flag,
+            tt.book_flag, tt.common_title,
+            tt.common_content, tt.in_user_id, TO_CHAR(tt.in_date,'YYYY-MM-DD') in_date, tt.file_path,
+            tt.board_reply, tt.community_category_name
+	    from
+	    	(
+	    	select rownum as rm, tbl.community_seq , tbl.common_hit, tbl.community_category_seq ,
+					tbl.file_seq, tbl.board_good, tbl.board_book, tbl.good_flag,
+					tbl.book_flag, tbl.common_title,
+					tbl.common_content, tbl.in_user_id, tbl.in_date, tbl.file_path,
+					tbl.board_reply, tbl.community_category_name
+			from (
+			    SELECT A.COMMUNITY_SEQ,A.COMMUNITY_CATEGORY_SEQ,A.FILE_SEQ,
+			            (select count(*) from bookgood bk where bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as board_good,
+			            (select count(*) from bookgood bk where bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as board_book,
+			            (select count(*) from bookgood bk where member_id=#{memberId} and bookgood_gubun = 'G' and bk.community_seq = a.community_seq) as good_flag,
+			            (select count(*) from bookgood bk where member_id=#{memberId} and bookgood_gubun = 'B' and bk.community_seq = a.community_seq) as book_flag,
+			          CASE WHEN LENGTH(A.COMMON_TITLE) > 15 THEN SUBSTR(A.COMMON_TITLE, 0, 15) || '...' ELSE A.COMMON_TITLE END AS COMMON_TITLE,
+			          A.COMMON_CONTENT,
+			          A.COMMON_HIT,
+			          A.IN_USER_ID,
+			          A.IN_DATE,
+			          B.FILE_PATH,
+			          NVL(D.BOARD_REPLY,0) AS BOARD_REPLY,
+			          E.COMMUNITY_CATEGORY_NAME
+			    FROM
+			          COMMUNITY A
+			          LEFT JOIN
+			          ATTACH_FILE B ON
+			          (A.FILE_SEQ = B.FILE_SEQ)
+			          LEFT JOIN
+			          (
+			          SELECT COMMUNITY_SEQ,
+			          COUNT(*) AS BOARD_REPLY
+			          FROM REPLY
+			          WHERE REPLY_DEL_FLAG='N'
+			          GROUP BY
+			          COMMUNITY_SEQ
+			          ) D ON
+			          (A.COMMUNITY_SEQ = D.COMMUNITY_SEQ)
+			          LEFT JOIN
+			          COMMUNITY_CATEGORY E ON
+			          (A.COMMUNITY_CATEGORY_SEQ =
+			          E.COMMUNITY_CATEGORY_SEQ)
+			    WHERE
+			          A.COMMON_SEQ = 8 AND A.COMMON_DEL_FLAG = 'N'
+			          and 1=1
+				) tbl
+			) tt
+			where tt.rm between #{rowStart} and #{rowEnd}
 	</select>
 <!-- 	관리자 목록 -->
 	<select id="qnaListAll" resultType="egovMap">

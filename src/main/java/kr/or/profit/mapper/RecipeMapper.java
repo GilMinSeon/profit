@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.QnaVO;
 
 @Mapper("recipeMapper")
 public interface RecipeMapper {
 
-	List<?> recipeList() throws Exception;
+	List<Map<String, String>> recipeList(Criteria cri) throws Exception;
 
 	int recipeAddInsert(Map<String, Object> map) throws Exception;
 
@@ -36,11 +38,14 @@ public interface RecipeMapper {
 
 	String imgcnt() throws Exception;
 
-	List<?> recipeTopList() throws Exception;
+	List<?> recipeTopList(String memberId) throws Exception;
 
 	List<?> recipeNewList() throws Exception;
 
 	List<?> recipeGoodList() throws Exception;
 
+	List<?> recipeListKeyword(Map<String, Object> map) throws Exception;
+
+	int recipeSelectBoardCnt(Criteria cri) throws Exception;
 
 }
