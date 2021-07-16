@@ -2,6 +2,7 @@ package kr.or.profit.mapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.BuyLessonVO;
@@ -36,6 +37,12 @@ public interface AdminSalesMapper {
 
 	//일괄정산 시 chatting 테이블에 update
 	int updateChatting(ChattingVO chatvo) throws Exception;
+
+	//정산pdf 정보
+	List<Map<String, Object>> selectAccountList(Map<String, Object> info) throws Exception;
+
+	//정산 pdf 합계정보
+	List<?> selectAccountSumList(Map<String, Object> info) throws Exception;
 
 
 

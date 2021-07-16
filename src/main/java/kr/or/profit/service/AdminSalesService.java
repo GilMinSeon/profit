@@ -1,6 +1,7 @@
 package kr.or.profit.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.ChattingVO;
@@ -31,7 +32,13 @@ public interface AdminSalesService {
 	int updateBuyLesson(BuyLessonVO buyvo) throws Exception;
 	
 	//일괄정산 시 chatting 테이블에 update
-	int updateChatting(ChattingVO chatvo) throws Exception;
+	int updateChatting(ChattingVO chatvo) throws Exception ;
+
+	//정산pdf 정보
+	List<Map<String, Object>> selectAccountList(Map<String, Object> info) throws Exception;
+
+	//정산 pdf 합계정보
+	List<?> selectAccountSumList(Map<String, Object> info) throws Exception;
 
 
 

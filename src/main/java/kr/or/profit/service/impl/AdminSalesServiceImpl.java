@@ -2,6 +2,7 @@ package kr.or.profit.service.impl;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -69,6 +70,18 @@ public class AdminSalesServiceImpl implements AdminSalesService {
 	@Override
 	public int updateChatting(ChattingVO chatvo) throws Exception {
 		return adminSalesDAO.updateChatting(chatvo);
+	}
+
+	//정산pdf 정보
+	@Override
+	public List<Map<String, Object>> selectAccountList(Map<String, Object> info) throws Exception {
+		return adminSalesDAO.selectAccountList(info);
+	}
+
+	//정산 pdf 합계정보
+	@Override
+	public List<?> selectAccountSumList(Map<String, Object> info) throws Exception {
+		return adminSalesDAO.selectAccountSumList(info);
 	}
 
 	

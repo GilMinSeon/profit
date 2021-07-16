@@ -3,8 +3,10 @@ package kr.or.profit.web;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +23,11 @@ import kr.or.profit.service.AdminSalesService;
 import kr.or.profit.vo.BuyLessonVO;
 import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.PageMaker;
 import kr.or.profit.vo.ReplyVO;
 import kr.or.profit.vo.SalesVO;
+import net.sf.json.JSONObject;
 
 @Controller
 public class AdminSalesController {
@@ -192,4 +196,73 @@ public class AdminSalesController {
 	}
 
 
+	
+//	@RequestMapping(value = "showPdfAjax.do", produces = "application/text; charset=utf-8")
+//	@ResponseBody
+//	public String showPdfAjax(HttpServletRequest request, HttpServletResponse response,  Model model) throws Exception{
+//		HttpSession session = request.getSession();
+//		String memberId = (String) session.getAttribute("memberId");
+//		System.out.println("멤버아이디 "+memberId);
+//		System.out.println("오니?");
+//		
+//		String yyyymm = request.getParameter("yyyymm");
+//		System.out.println("yyyymm : " + yyyymm);
+//		
+//		String gubun = request.getParameter("gubun");
+//		System.out.println("gubun여기서찍어라 " + gubun);
+//		
+//		Map<String, Object> info = new HashMap<>();
+//		info.put("memberId", memberId);
+//		info.put("yyyymm", yyyymm);
+//		info.put("gubun", gubun);
+//		
+//		//정산pdf 정보
+//		List<Map<String, Object>> AccountList = adminSalesService.selectAccountList(info);
+//		
+//		JSONObject jsonObject = new JSONObject();
+//		
+//		jsonObject.put("msg", "ok");
+//		jsonObject.put("AccountList", AccountList);
+//		
+//		String jsonInfo = jsonObject.toString();
+//		System.out.println("jsonInfo " + jsonInfo);
+//		
+//		return jsonInfo;
+//	}
+	
+	
+	@RequestMapping(value = "salesAccountPdf.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String salesAccountPdf(HttpServletRequest request, Model model) throws Exception{
+		System.out.println("여기");
+//		System.out.println(request.getParameter("yyyymm"));
+//		System.out.println(request.getParameter("gubun"));
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		if (memberId == null) {
+			memberId = "";
+		}
+		
+		String yyyymm = request.getParameter("yyyymm");
+		System.out.println("yyyymm : " + yyyymm);
+		
+		String gubun = request.getParameter("gubun");
+		System.out.println("gubun여기서찍어라 " + gubun);
+		
+		Map<String, Object> info = new HashMap<>();
+		info.put("memberId", memberId);
+		info.put("yyyymm", yyyymm);
+		info.put("gubun", gubun);
+		
+		List<Map<String, Object>> AccountList = adminSalesService.selectAccountList(info);
+		model.addAttribute("AccountList", AccountList);
+		
+		List<?> AccountSumList = adminSalesService.selectAccountSumList(info);
+		
+		System.out.println("모델...");
+		System.out.println(model.toString());
+	
+		return "adminSales/salesAccountPdf";
+	}
+	
+	
 }
