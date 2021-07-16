@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +30,17 @@ $(document).ready(function(){
 <style>
 .classes__filter form .class__filter__btn_re {
 	padding-right: 125px;
+}
+li a {
+    font-size: 16px;
+    color: #9B9EA3;
+}
+li a:hover {
+    color: #5768AD;
+}
+#buyList tr th{
+	background-color: #5768AD;
+	color: white;
 }
 </style>
 <body>
@@ -56,33 +71,29 @@ $(document).ready(function(){
 				<div class="col-lg-4 order-lg-1 order-2">
 					<div class="blog__sidebar">
 						<div class="blog__sidebar__categories">
-							<h4>카테고리</h4>
+							<h4>🧡 카테고리 🧡</h4>
 							<ul>
-								<li><a href="myinfo.do">내정보</a></li>
-								<li><a href="bookmark.do">북마크</a></li>
-								<li><a href="myLessonList.do">마이클래스</a></li>
-								<li><a href="myChatList.do">1:1채팅내역</a></li>
+								<li><a href="myinfo.do">- 내정보</a></li>
+								<li><a href="bookmark.do">- 북마크</a></li>
+								<li><a href="myLessonList.do">- 마이클래스</a></li>
+								<li><a href="myChatList.do">- 1:1채팅내역</a></li>
 							</ul>
 						</div>
 						
 						<br>
 						<div class="classes__sidebar">
 	                        <div class="classes__sidebar__item classes__sidebar__item--info">
-	                            <h4>채팅이용권</h4>
+	                            <h4>🧡 채팅이용권 🧡</h4>
 	                            <ul class="classes__sidebar__item__widget">
-	                                <li>이용권 보유 개수 ▶ 3회 </li>
-	                                <li><a href="ticketBuyList.do">이용권 구매내역</a></li><br>
-	                                <li><a href="ticketUseList.do">이용권 사용내역</a></li>
+	                                <li><a href="ticketBuyList.do">- 이용권 구매내역</a></li><br>
+	                                <li><a href="ticketUseList.do">- 이용권 사용내역</a></li>
 	                            </ul>
-	                            <br>
-	                            <a href="#" class="sidebar-btn">구매하기</a>
 	                        </div>
                         </div>
                         
-                        <br>
 						<div class="classes__sidebar">
 	                        <div class="classes__sidebar__item classes__sidebar__item--info">
-	                            <h4>트레이너 신청</h4>
+	                            <h4>🧡 트레이너 신청 🧡</h4>
 	                            <ul class="classes__sidebar__item__widget">
 	                                <li><span class="icon_calendar"></span><a href="trainerApplyList.do">나의 신청내역</a> </li>
 	                                <li><span class="icon_id"></span><a href="trainerApply.do">신청하기</a></li>
@@ -111,74 +122,102 @@ $(document).ready(function(){
 										<p style="color:#5768AD;">▶ 이용권에 관련한 궁금 사항은 <span style="color:#FC7F65;">문의하기</span>에 남겨주세요.</p>
 										<br/><br/>
 									</div>
-										<form id="ticketPay_form" action="#" >
+										<form id="ticketPay_form" action="ticketBuyList.do#location123" style="padding-left: 0;">
 
-											<div class="class__filter__select">
-												<p>검색조건:</p>
-												<select>
-													<option>전체</option>
-													<option>이름</option>
-													<option>아이디</option>
-												</select>
-	<!-- <input type="text" id="mydate"/>	 -->									</div>
-											
 											<div id="searchBtn" class="class__filter__input" style="margin-right: 20px;">
 												<p>날짜:</p>
-												<input type="text" placeholder="검색" id="mydate" style="width: 100%;">
+												<input type="text" name="selDate" value="${selDate}" placeholder="검색" id="mydate" style="width: 100%;">
 											</div>
 											
-											<div id="searchBtn" class="class__filter__input">
-												<p>Search:</p>
-												<input type="text" placeholder="검색" style="width: 100%;">
+											<div class="class__filter__select">
+												<p>검색조건:</p>
+												<select name="selTicketName">
+													<option value="">전체</option>
+													<option <c:if test="${selTicketName eq '1회권'}"> selected</c:if> value="1회권">1회권</option>
+													<option <c:if test="${selTicketName eq '3회권'}"> selected</c:if> value="3회권">3회권</option>
+													<option <c:if test="${selTicketName eq '5회권'}"> selected</c:if> value="5회권">5회권</option>
+												</select>
+												
 											</div>
-											<div id="search2" class="class__filter__btn_re">
+											
+											
+											<div id="search2" class="class__filter__btn_re" style="padding-right:345px;">
 												<button>
 													<i class="fa fa-search"></i>
 												</button>
 											</div>
-
+											<span id="location123"></span>
 										</form>
 									</div>
 								</div>
 								<br>
 
-								<table class="table table-hover" style="text-align: center;">
+								<table id="buyList" class="table table-hover" style="text-align: center;">
 									<thead>
 										<tr style="background: #E6E6E6;">
+											<th scope="col">번호</th>
 											<th scope="col">이용권 종류</th>
 											<th scope="col">남은 횟수</th>
-											<th scope="col">결제내역</th>
+											<th scope="col">구매 금액</th>
+											<th scope="col">구매 일자</th>
+											<th scope="col">상태</th>
 										</tr>
 									</thead>
 									<tbody>
+									<c:forEach var="result" items="${buyTicketList}" varStatus="status">
 										<tr>
-											<td>3회권</td>
-											<td>1회</td>
-											<td><a href="ticketPayDetail" style="text-decoration: none; color: #5768AD;">결제내역 상세보기</a></td>
+											<td>${result.rn}</td>
+											<td>${result.ticketName}</td>
+											<td>${result.ticketRemain}</td>
+											<td>
+												<c:if test="${result.ticketName eq '1회권'}">4000원</c:if>
+												<c:if test="${result.ticketName eq '3회권'}">11000원</c:if>
+												<c:if test="${result.ticketName eq '5회권'}">17500원</c:if>
+											</td>
+											<td>${result.inDate}</td>
+											<td>
+											<c:if test="${result.ticketAvailFlag eq 'Y'}">
+												<span style="background-color:#6ABD66;padding: 5px;color: white;font-weight: bold;">&nbsp;&nbsp;사용중&nbsp;&nbsp;</span>
+											</c:if>
+											<c:if test="${result.ticketAvailFlag eq 'N'}">
+												<c:choose>
+													<c:when test="${result.ticketRefundFlag eq 'Y'}">
+														<span style="background-color:#D16666;padding: 5px;color: white;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;환불&nbsp;&nbsp;&nbsp;&nbsp;</span>
+													</c:when>
+													<c:otherwise>
+														<span style="background-color:#958BF2;padding: 5px;color: white;font-weight: bold;">사용만료</span>
+													</c:otherwise>
+												
+												</c:choose>
+											</c:if>
+											</td>
 										</tr>
-										<tr>
-											<td>3회권</td>
-											<td>1회</td>
-											<td><a href="ticketPayDetail" style="text-decoration: none; color: #5768AD;">결제내역 상세보기</a></td>
-										</tr>
-										<tr>
-											<td>3회권</td>
-											<td>1회</td>
-											<td><a href="ticketPayDetail" style="text-decoration: none; color: #5768AD;">결제내역 상세보기</a></td>
-										</tr>
-										<tr>
-											<td>3회권</td>
-											<td>1회</td>
-											<td><a href="ticketPayDetail" style="text-decoration: none; color: #5768AD;">결제내역 상세보기</a></td>
-										</tr>
-										<tr>
-											<td>3회권</td>
-											<td>1회</td>
-											<td><a href="ticketPayDetail" style="text-decoration: none; color: #5768AD;">결제내역 상세보기</a></td>
-										</tr>
+									</c:forEach>
 									</tbody>
 								</table>
 							</div>
+							
+							<!-- 페이징처리 -->
+            	<div class="col-lg-12">
+					<div class="classes__pagination">
+					<c:if test="${pageMaker.prev}">
+						<a href="ticketBuyList.do${pageMaker.makeQueryBuyTicketList(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
+						</a>
+					</c:if> 
+					
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="ticketBuyList.do${pageMaker.makeQueryBuyTicketList(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
+					
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="ticketBuyList.do${pageMaker.makeQueryBuyTicketList(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
+					</div>
+				</div>
+				
 						</section>
 						<!-- Classes Section End -->
 					</div>

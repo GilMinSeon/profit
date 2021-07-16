@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ProcessVO;
 
 public interface AdminMemberService {
@@ -49,5 +50,23 @@ public interface AdminMemberService {
 	
 	//멤버구분 업데이트
 	public void updateGubunTrainer(ProcessVO vo) throws Exception;
+	
+	
+	//회원관리탭
+	//회원관리 리스트
+	public List<MemberVO> selectAdminMemberList(Criteria cri) throws Exception;
+	
+	//회원관리 리스트 전체 개수
+    public int selectMemberListCnt(Criteria cri) throws Exception;
+    
+    //회원 디테일
+    public MemberVO adminMemberDetail(String memberId) throws Exception;
+    
+    //블랙리스트 추가
+    public int insertBlacklist(MemberVO vo) throws Exception;
+    
+    //블랙리스트 삭제
+    public int deleteBlacklist(String memebrId) throws Exception;
+	
 	
 }

@@ -36,9 +36,20 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 		StringBuilder url = new StringBuilder();
 		
 		url.append(request.getContextPath());
+		System.out.println(request.getContextPath());
+		
+		if(request.getServletPath() == null) {
+			request.getSession().setAttribute("returnUrl", url.toString());
+		}
+		
+		
 		url.append(request.getServletPath());
+		
+		System.out.println(request.getServletPath());
 		url.append("?");
 		url.append(request.getQueryString());
+		
+		System.out.println(request.getQueryString());
 		
 //		while (params.hasMoreElements()) {
 //			String key = (String) params.nextElement();
@@ -71,29 +82,5 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 		return true;
 	}
 
-//		HttpSession session=request.getSession(true);
-//		if(session.getAttribute("memberId")==null){
-//            response.sendRedirect("login");
-//            return false;
-//        }
-//        
-//        return true;
-//    }
-//    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws java.lang.Exception{
-//        
-//        super.postHandle(request, response, handler, modelAndView);
-//    }
-//    
-//    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws java.lang.Exception{
-//        
-//        super.afterCompletion(request, response, handler, ex);
-//    }
-
-//		if(request.getSession().getAttribute("memberId")!=null){
-//			return true;
-//		}else{
-//			ModelAndView modelAndView = new ModelAndView("redirect:/login");			
-//			throw new ModelAndViewDefiningException(modelAndView);
-//		}
 
 }

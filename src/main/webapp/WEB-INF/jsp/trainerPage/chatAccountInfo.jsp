@@ -75,28 +75,6 @@
 }    ​
 </style>
 <script type="text/javascript">
-function fn_change(processSeq){
-	if (confirm("신청서를 검토하시겠습니까?") == true){
-		$.ajax({
-			type : "POST",
-			data : "processSeq=" + processSeq,
-			url : "updateStatusBAjax.do",
-			dataType : "text", 
-			success : function(result) {
-				if (result == "ok") {
-					location.href="trainerPermitDetail.do?processSeq="+processSeq+" "
-				} else {
-					alert("문제가 발생하였습니다. 잠시 후 다시 시도해주세요")
-				}
-			},
-			error : function() {
-				alert("오류발생");
-			}
-		})
-	} else{  
-	    return;
-	}
-}
 
 $(document).ready(function() {
 	var now = new Date();
@@ -245,6 +223,21 @@ function getCurrentDate(){
     return year + month + day ;
 }
 
+function fn_pdf(){
+	var yearmonth = $("#mydate").val();
+	if(yearmonth == null || yearmonth == ''){
+		alert("날짜로 먼저 검색해주세요.");
+		return;
+	}
+	var payResult = $("#payResult").text();
+	if(payResult == '미정산'){
+		alert("해당 월은 아직 정산되지 않았습니다.");
+		return;
+	}
+	
+	$("#pdfInfo").submit();
+}
+
 </script>
 
 
@@ -260,12 +253,12 @@ function getCurrentDate(){
 	<section class="classes spad" style="visibility: visible; animation-name: fadeIn;">
 		
 		<div class="container">
-			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerPermitList.do'" >나의 트레이너 정보</h3>
+			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerInfo.do'" >내 정보</h3>
 			<br>
         	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> 
-				<img src="./resources/img/common/onlineclass.png" style="width: 40px;height: 40px;">
+				<img src="./resources/img/common/onlineclass.png" style="width: 40px;height: 40px;" onclick="location.href='myClassInfo.do'">
 	            <span id="anim-number-pizza" class="counter-number"></span> 
 	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000" 
 	            	onclick="location.href='trainerPermitList.do?selStatus=A&selIdentity=&selDate=&searchKeyword=' " style="cursor: pointer">${todayNumberList.statusA }</span>
@@ -285,7 +278,7 @@ function getCurrentDate(){
             
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin-small text-center counter-section wow fadeInUp xs-margin-bottom-ten animated" data-wow-duration="900ms" style="visibility: visible; animation-duration: 900ms; animation-name: fadeInUp;"> 
-            	<img src="./resources/img/common/money1.png" style="width: 40px;height: 40px;">
+            	<img src="./resources/img/common/money1.png" style="width: 40px;height: 40px;" onclick="location.href='classAccountInfo.do'">
             	<span class="timer counter alt-font appear" data-to="810" data-speed="7000" 
     	        	onclick="location.href='trainerPermitList.do?selStatus=C&selIdentity=&selDate=&searchKeyword=' " 
 	            	style="cursor: pointer">${todayNumberList.statusC }</span> 
@@ -302,12 +295,15 @@ function getCurrentDate(){
             <!-- end counter -->
         </div>
 
+
 						
 			<!-- 2 -->
+			
 		    <div class="classes__filter" style="margin-bottom: 0px;padding-bottom:0px">
+		    
 			<br>
                <div class="row">
-               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">최근 7개월 간 수익 현황</span>
+               	<span style="font-weight: bold; font-size: 1.1em;padding-left: 30px;">최근 6개월 간 구매 현황</span>
                    <div class="col-lg-12">
                    		<div style="width: 900px; height: 550px;">
 							<!--차트가 그려질 부분-->
@@ -317,15 +313,16 @@ function getCurrentDate(){
                    		
                    		<!-- 검색조건 form 시작 -->
                    		
-                       <form action="chatAccountInfo.do" method="get">
+                       <form action="chatAccountInfo.do#location123" method="get" id="frm">
                            <div id="searchDiv" class="class__filter__input" style="width: 300px;text-align: left;">
 							<p style="margin-right: 140px;">날짜 검색</p>
-							<input type="text" placeholder="검색" id="mydate" style="width: 200px;display: left;margin-right: 10px;" 
+							<input type="text" placeholder="검색" id="mydate" class="mydate" style="width: 200px;display: left;margin-right: 10px;" 
 								<c:if test="${not empty selDate}">value=${selDate}</c:if>
 								name="selDate" id="selDate">
 							<div class="class__filter__btn" style="display: left;width: 50px;margin-right: 680px;">
                                <button><i class="fa fa-search"></i></button>
                            </div>
+                           <span id="location123"></span>
 						</div>
 						
                        	</form>
@@ -334,6 +331,7 @@ function getCurrentDate(){
             </div>
 		    <div class="classes__filter">
 			<span style="font-weight: bold; font-size: 1.1em;">총 ${totalCount}건</span>
+			<div id="div1">
 			<table class="table" style="text-align: center;">
 			<thead>
 				<tr style="background: #6d7ab0; color: white;font-size: 1.1em;">
@@ -347,26 +345,35 @@ function getCurrentDate(){
 				<tbody>
 					<c:forEach var="result" items="${chatAccountList}" varStatus="status">
 					<tr>
-						<td>${status.count}</td>
+						<td>${result.rn}</td>
 						<td>${result.chattingMemberId}</td>
 						<td>${result.chatDate}</td>
 						<td>${result.chatTime}</td>
 						<td>
-						<c:if test="${result.chattingAccountFlag eq 'N'}"><span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">미정산</span></c:if>
-						<c:if test="${result.chattingAccountFlag eq 'Y'}"><span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;padding-left:8px;">&nbsp;&nbsp;정산&nbsp;&nbsp;</span></c:if>
+						<c:if test="${result.chattingAccountFlag eq 'N'}"><span id="payResult" style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">미정산</span></c:if>
+						<c:if test="${result.chattingAccountFlag eq 'Y'}"><span id="payResult" style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;padding-left:8px;">&nbsp;&nbsp;정산&nbsp;&nbsp;</span></c:if>
 						</td>
 					</tr>
 					</c:forEach>
 				</tbody>
 			</table>
+			</div>
+			
 			<br>
 			<div style="width: 100%;text-align: right;padding-right: 20px;font-weight: bold;">
 			
 			<c:set var="total" value="${totalCount * 3200}" />
 			<fmt:formatNumber value="${totalCount}" type="number" var="numberType" />
 			
-			<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 총 상담 건수 : ${totalCount}건<br></span>
-			<span style="background-color: #FFFF66">${fn:substring(chatAccountList[0].chatDate,0,4)}년 ${fn:substring(chatAccountList[0].chatDate,5,7)}월 정산금액(예정) : ${total}원</span>
+			<div class="classes__item__text" style="text-align: right;padding-top: 0;">
+                 <a class="class-btn_w" onclick="fn_pdf()">정산내역 보기</a>
+   		 	</div>
+   		 	
+   		 	<form id="pdfInfo" method="post" action="chatAccountPdf.do">
+	   		 	<input type="hidden" name="totalCount" value="${totalCount}">
+	   		 	<input type="hidden" name="totalPrice" value="${total}">
+	   		 	<input type="hidden" name="selDate" value="${selDate}">
+   		 	</form>
 			</div>
 			
 				<!-- 페이징처리 -->
@@ -389,10 +396,7 @@ function getCurrentDate(){
 					</c:if>
 					</div>
 				</div>
-			
-			
 			</div>
-
 		<!-- container div 끝 -->	
 		</div>
 	</section>

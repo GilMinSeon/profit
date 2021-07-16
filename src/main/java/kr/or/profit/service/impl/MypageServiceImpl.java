@@ -114,6 +114,19 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 	public int updBuyLessonRefundFlag(Map<String, Object> refundFlagMap) throws Exception {
 		return mypageDAO.updBuyLessonRefundFlag(refundFlagMap);
 	}
+	
+	//이용권 구매목록
+	@Override
+	public List<Map<String, Object>> selectBuyTicketList(Criteria cri) throws Exception {
+		return mypageDAO.selectBuyTicketList(cri);
+	}
+	
+	//전체 글 개수 세팅
+	@Override
+	public int selectBuyTicketCnt(Criteria cri) throws Exception {
+		return mypageDAO.selectBuyTicketCnt(cri);
+	}
+
 
 
 	

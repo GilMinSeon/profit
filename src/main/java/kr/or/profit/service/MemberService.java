@@ -31,5 +31,10 @@ public interface MemberService {
 	public int selectByFindPwd(MemberVO vo) throws Exception;
 	
 	//임시 비밀번호로 update
-	public void updateTempPwd(MemberVO vo)throws Exception;
+	public void updateTempPwd(MemberVO vo) throws Exception;
+	
+	//카카오 로그인 구분 가져오기
+	public MemberVO selectKakaoGubun(String memberId) throws Exception;
+	
+
 }

@@ -40,10 +40,6 @@ function fn_switch(ele){
 			lessonPrivateFlag = $(vtr).find('.lessonPrivateFlag').val();
 			console.log(lessonSeq)
 			console.log(lessonPrivateFlag)
-		
-			
-
-			
 			
 			var param = "";
 				param += "dummy=" + Math.random();
@@ -64,11 +60,12 @@ function fn_switch(ele){
 						location.reload();
 					}else if(data=="no"){
 						alert("수정에 실패하였습니다. 다시 시도해주세요");
-						
+						location.reload();
 					}
 			    },
 				error : function(error){
 					alert("수정에 실패하였습니다. 다시 시도해 주세요.");
+					location.reload();
 					console.log(error);
 					console.log(error.status);
 				}
@@ -79,6 +76,7 @@ function fn_switch(ele){
 		}//if save 
 		else{
 			alert("수정이 취소되었습니다.");
+			location.reload();
 		}
 	}  //if msg
 	
@@ -207,8 +205,6 @@ function fn_switch(ele){
 							  	</div>
 							</c:if>
 							
-<%-- 						<c:if test="${result.ticketRefundFlag eq 'N'}"><span style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;">결제</span></c:if> --%>
-<%-- 						<c:if test="${result.ticketRefundFlag eq 'Y'}"><span style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">환불</span></c:if> --%>
 						</td>
 					</tr>
 					</c:forEach>

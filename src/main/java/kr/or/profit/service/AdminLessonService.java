@@ -23,5 +23,11 @@ public interface AdminLessonService {
 	//관리자 비활성화 환불
 	int updAdminRefund(BuyLessonVO buyvo) throws Exception;
 
+	//관리자가보는 온라인클래스 결제/환불 리스트
+	List<?> adminLessonPayList(Criteria cri) throws Exception;
+
+	//온라인클래스 결제/환불내역 전체 글개수
+	int adminLessonPayListCnt(Criteria cri) throws Exception;
+
 
 }

@@ -10,37 +10,9 @@
 <title>Insert title here</title>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
-// $(document).ready(function(){
-// 	var link = document.location.href; //현재 접속url
-// 	var tab = link.split('/').pop(); //배열의 맨 마지막 요소를 삭제하고 삭제한 해당값반환
-// 	$('a[href$='+tab+']').trigger("show");
-// });
 
 
 $(function(){
-// 	var link = document.location.href; //현재 접속url
-// 	var tab = link.split('/').pop(); //배열의 맨 마지막 요소를 삭제하고 삭제한 해당값반환
-// 	$('a[href$='+tab+']').trigger("click");
-	
-// 	$("#tab_list").tabs({
-
-// 	       select: function(event, ui) {                   
-
-// 	      window.location.replace(ui.tab.hash);
-
-// 	   //  위 두줄을 추가를 하면 새로고침을 해도 선택된 탭에서 계속 유지가 된다.
-
-// 	   }
-
-// 	});
-
-
-// #gnb의 자식 엘리먼트(li)가 몇번째인지 확인한 후 a요소를 찾은 후 on이라는 클래스 추가
-
-
-
-
-	
 	//좋아요북마크 취소
 	$(document).on("click",".remove",function(){
 		var memberId = $("#sessionId").val(); 
@@ -260,6 +232,13 @@ function fn_reply_del(seq){
 	
 }
 
+$(document).ready(function(){
+    $("#myA").click(function(){
+        $("#myModal").modal('show');
+    });
+});
+
+
 </script>
 <style type="text/css">
 .btn div {
@@ -326,6 +305,60 @@ function fn_reply_del(seq){
 	</section>
 	<!-- Blog Hero End -->
 	<!-- 	main html 시작 -->
+<!-- 	모달 -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content" style="margin-top: 0px;margin-left:50px;width: 770px;height:auto;">
+		      
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="myModalLabel" style="font-size: 30px;">🏋️‍♂️트레이너 소개</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      
+		      <div class="modal-body">
+		      	<div style="display: flex;">
+	        		<div style="flex:1">
+	            		<div style="padding:10px;">
+	            			<img src="http://192.168.41.6:9999/upload/profit/${trainerInfoList[0]['fileSaveName']}" style="border-radius: 20px;">
+	            		</div>
+	            	</div>
+	            	
+	            	<div style="flex:1">
+	            		<div style="padding:10px;">
+		            			
+            				<fieldset>
+            					<legend style="background-color: #000; color: #fff;padding: 3px 6px; text-align: center;">소속헬스장</legend>
+	            				<div style="text-align: center;">${trainerInfoList[0]['trainerGym']}</div>
+            				</fieldset>
+	            			<br/><br/>
+	            			
+	            			<fieldset>
+            					<legend style="background-color: #000; color: #fff;padding: 3px 6px; text-align: center;">수상이력</legend>
+	            				<div style="text-align: center;"><pre>${trainerInfoList[0]['trainerAward']}</pre></div>
+            				</fieldset>
+	            			<br/><br/>
+	            			
+	            			<fieldset>
+            					<legend style="background-color: #000; color: #fff;padding: 3px 6px; text-align: center;">경력</legend>
+	            				<div style="text-align: center;"><pre>${trainerInfoList[0]['trainerCareer']}</pre></div>
+            				</fieldset>
+		            			
+	            		</div>
+	            	</div>
+	           
+			      </div>
+			     </div>
+			      <h6 style="color:gray;text-align:left;padding-right: 30px;margin: 0px;"> 언제나 당신과 함께하는 ProFit</h6>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+	
+	
 	
 	<section class="about spad">
 		<div class="container">
@@ -395,10 +428,17 @@ function fn_reply_del(seq){
 						<img src="http://192.168.41.6:9999/upload/profit/${resultList.fileSaveName}" alt="강의 이미지" style="width: 85%; height: 450px;object-fit: cover;">
 					</div>
 				</div>
+				
 				<div class="col-lg-5 p-0">
 					<div class="about__text" style="padding-left:20px;">
 						<div class="section-title">
-							<span style="font-size: 1.4em; font-weight: bold;color: #545454">◾ ${resultList.lessonTitle}</span><br/><br/>
+							<span style="font-size: 1.4em; font-weight: bold;color: #545454"> ${resultList.lessonTitle}</span><br/><br/>
+							<div>
+								<div style="display: inline-block;"><p># 강사 이름 : </p></div>&nbsp;
+								<div style="display: inline-block;"><p style="color:#304060">
+									<a data-toggle="modal" data-target="#myModal" href="#myModal" id="myA">${resultList.memberName}</a> </p>
+								</div>
+							</div>
 							<div>
 								<div style="display: inline-block; float:left;"><p># 한줄 소개 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonTitleComment}</p></div>
@@ -624,7 +664,7 @@ function fn_reply_del(seq){
 	                                     			<c:if test="${result.replyDepth == 1}">
 	                                     				<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
 	                                     			</c:if>
-	                                    		<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family: 'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
+	                                    		<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family:'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
 	                                    		</c:when>
 	                                    		
 	                                    		<c:when test="${(result.replySecretFlag == 'Y' && result.inUserId eq memberId) || (result.replySecretFlag == 'Y' && resultList.inUserId eq memberId)}">

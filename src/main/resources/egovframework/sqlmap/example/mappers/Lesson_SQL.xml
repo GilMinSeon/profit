@@ -343,7 +343,8 @@
 	       NVL(D.LESSON_REPLY,0) AS LESSON_REPLY ,
 	       NVL(E.LESSON_BOOK,0) AS LESSON_BOOK,
 	       NVL(F.LESSON_GOOD,0) AS LESSON_GOOD,
-	       A.LESSON_HIT
+	       A.LESSON_HIT,
+           G.MEMBER_NAME
 			FROM LESSON A
             LEFT OUTER JOIN (SELECT FILE_SEQ, FILE_SAVE_NAME , FILE_REAL_NAME
 			                FROM ATTACH_FILE ) B
@@ -366,6 +367,9 @@
                             WHERE BOOKGOOD_FLAG='Y' AND BOOKGOOD_GUBUN='G'
                             GROUP BY LESSON_SEQ) F
             ON A.LESSON_SEQ = F.LESSON_SEQ
+            LEFT OUTER JOIN (SELECT MEMBER_ID,MEMBER_NAME,MEMBER_GUBUN
+                            FROM MEMBER) G
+            ON A.IN_USER_ID = G.MEMBER_ID
 			WHERE A.LESSON_SEQ= #{lessonSeq, jdbcType=VARCHAR}
 			]]>
 	</select>
@@ -903,6 +907,27 @@
 		where b.lesson_private_flag='N'
 		AND A.Lesson_Seq =#{lessonSeq}
         
+    </select>
+    
+<!--     온라인클래스 상세 트레이너 소개정보 -->
+	 <select id="trainerInfo" parameterType="String" resultType="egovMap">
+        select a.trainer_seq,
+		       a.trainer_gym,
+		       a.trainer_award,
+		       a.trainer_career,
+		       b.file_seq,
+		       c.file_real_name,
+		       c.file_save_name,
+		       c.file_path,
+		       d.lesson_seq
+		    from trainer a
+		    left join member b on
+		    (a.in_user_id = b.member_id)
+		    left join attach_file c on
+		    (b.file_seq = c.file_seq)
+		    left join lesson d on
+		    (a.in_user_id = d.in_user_id)
+		where d.lesson_seq = #{lessonSeq}
     </select>
 	
 </mapper>

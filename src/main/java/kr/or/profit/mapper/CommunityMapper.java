@@ -72,5 +72,8 @@ public interface CommunityMapper {
 	//좋아요북마크 개수 가져오기
 	int selectBookgoodCnt(BookgoodVO vo) throws Exception;
 	
+	//댓글 수 조회
+	Map<String, Object> selectReplyCnt(String communitySeq) throws Exception;
+	
 	
 }

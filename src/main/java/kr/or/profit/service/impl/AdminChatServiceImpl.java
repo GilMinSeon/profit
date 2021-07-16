@@ -13,6 +13,7 @@ import kr.or.profit.service.AdminChatService;
 import kr.or.profit.service.CommunityService;
 import kr.or.profit.vo.AttachFileVO;
 import kr.or.profit.vo.BookgoodVO;
+import kr.or.profit.vo.BuyTicketVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
@@ -33,6 +34,24 @@ public class AdminChatServiceImpl implements AdminChatService {
 	@Override
 	public int selectAdminChatCnt(Criteria cri) throws Exception {
 		return adminChatDAO.selectAdminChatCnt(cri);
+	}
+
+	//관리자 이용권조회리스트
+	@Override
+	public List<?> adminTicketPayList(Criteria cri) throws Exception {
+		return adminChatDAO.adminTicketPayList(cri);
+	}
+
+	//관리자 이용권조회 리스트 전체 글 개수 
+	@Override
+	public int adminTicketPayListCnt(Criteria cri) throws Exception {
+		return adminChatDAO.adminTicketPayListCnt(cri);
+	}
+
+	//관리자 이용권개수 수정
+	@Override
+	public int updTicketCnt(BuyTicketVO vo) throws Exception {
+		return adminChatDAO.updTicketCnt(vo);
 	}
 
 

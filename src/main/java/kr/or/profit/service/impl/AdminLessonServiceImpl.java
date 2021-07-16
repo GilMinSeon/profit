@@ -52,6 +52,18 @@ public class AdminLessonServiceImpl implements AdminLessonService {
 		return adminLessonDAO.updAdminRefund(buyvo);
 	}
 
+	//관리자가보는 온라인클래스 결제/환불 리스트
+	@Override
+	public List<?> adminLessonPayList(Criteria cri) throws Exception {
+		return adminLessonDAO.adminLessonPayList(cri);
+	}
+
+	//온라인클래스 결제/환불내역 전체 글개수
+	@Override
+	public int adminLessonPayListCnt(Criteria cri) throws Exception {
+		return adminLessonDAO.adminLessonPayListCnt(cri);
+	}
+
 	
 	
 	

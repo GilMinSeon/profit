@@ -153,7 +153,7 @@
                                     <ul class="dropdown">
                                         <li><a href="adminLessonList.do">강좌리스트</a></li>
                                         <li><a href="adminLessonPayList.do">결제/환불내역</a></li>
-                                        <li><a href="#">강좌통계</a></li>
+                                        <li><a href="adminLessonStat.do">강좌통계</a></li>
                                     </ul>
                                 </li>
                                 
@@ -167,9 +167,8 @@
                                 
                                 <li><a href="#">매출관리</a>
                                     <ul class="dropdown">
+                                        <li><a href="adminSalesList.do">정산하기</a></li>
                                         <li><a href="aiTeachList.do">매출통계</a></li>
-                                        <li><a href="#">송금요청 리스트</a></li>
-                                        <li><a href="#">정산내역 조회</a></li>
                                     </ul>
                                 </li>
                                 

@@ -11,7 +11,22 @@ public class BuyTicketVO {
 	private Date inDate;
 	private String upUserId;
 	private Date upDate;
+	private String memberId;
+	private String ticketAvailFlag;
 	
+	
+	public String getTicketAvailFlag() {
+		return ticketAvailFlag;
+	}
+	public void setTicketAvailFlag(String ticketAvailFlag) {
+		this.ticketAvailFlag = ticketAvailFlag;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 	public String getBuyTicketSeq() {
 		return buyTicketSeq;
 	}
