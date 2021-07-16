@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import kr.or.profit.mapper.NoticeMapper;
 import kr.or.profit.service.NoticeService;
+import kr.or.profit.vo.Criteria;
 
 @Service("noticeService")
-public class NoticeServiceImpl implements NoticeService{
+public class NoticeServiceImpl implements NoticeService {
 
 	@Resource(name = "noticeMapper")
 	private NoticeMapper mapper;
@@ -21,26 +22,31 @@ public class NoticeServiceImpl implements NoticeService{
 	public int noticeInsert(Map<String, Object> map) throws Exception {
 		return mapper.noticeInsert(map);
 	}
+
 	//글목록
 	@Override
-	public List<?> noticeList(Map<String, Object> map) throws Exception {
-		return mapper.noticeList(map);
+	public List<?> noticeList(Criteria cri) throws Exception {
+		return mapper.noticeList(cri);
 	}
+
 	//글상세 보기
 	@Override
 	public Map<String, Object> noticeDetail(Map<String, Object> map) throws Exception {
 		return mapper.noticeDetail(map);
 	}
+
 	//글 수정
 	@Override
 	public int noticeModUpdate(Map<String, Object> map) throws Exception {
 		return mapper.noticeModUpdate(map);
 	}
+
 	//글 삭제
 	@Override
 	public int noticeDelete(Map<String, Object> map) throws Exception {
 		return mapper.noticeDelete(map);
 	}
+
 	//조회수 증가
 	@Override
 	public int noticeCommonHit(Map<String, Object> map) throws Exception {
@@ -75,7 +81,11 @@ public class NoticeServiceImpl implements NoticeService{
 		return mapper.noticeModDelFile(map);
 	}
 
-
-
+	//페이징
+		@Override
+		public int selectBoardCnt(Criteria cri) throws Exception {
+			System.out.println("페이징옴 = " + cri);
+			return mapper.selectBoardCnt(cri);
+		}
 
 }

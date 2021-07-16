@@ -20,13 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.or.profit.service.CommunityService;
 import kr.or.profit.service.QnaService;
+import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.PageMaker;
 
 @Controller
 public class QnaController {
 
 	@Resource(name = "qnaService")
 	private QnaService qnaService;
+	@Resource(name = "communityService")
+	private CommunityService communityService;
 
 	/**
 	 * 관리자 목록(listAll)
@@ -36,10 +41,10 @@ public class QnaController {
 	 * @return "qna/qnaList"
 	 * @exception Exception
 	 */
-	public List<?> listAll(@RequestParam Map<String, Object> map, HttpSession ssion, ModelMap model) throws Exception {
-		List<?> qnaList = qnaService.qnaListAll();
-		return qnaList;
-	}
+	//	public List<?> listAll(@RequestParam Map<String, Object> map, HttpSession ssion, ModelMap model) throws Exception {
+	//		List<?> qnaList = qnaService.qnaListAll();
+	//		return qnaList;
+	//	}
 
 	/**
 	 * 문의하기 목록(qnaList)
@@ -52,13 +57,30 @@ public class QnaController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "qnaList.do", method = RequestMethod.GET)
-	public String qnaList(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
-		System.out.println("문의하기 목록옴 " + map);
+	public String qnaList(HttpSession ssion, Criteria cri, ModelMap model) throws Exception {
+		System.out.println("문의하기 목록옴 ");
+		String memberId = (String) ssion.getAttribute("memberId");
+		if (memberId == null) {
+			memberId = "";
+		}
 
-		List<?> qnaList = qnaService.qnaList();
+		cri.setMemberId(memberId);
+
+		System.out.println("레시피 목록 온다" + memberId);
+		List<?> qnaList = qnaService.qnaList(cri);
 		System.out.println("문의하기 목록돌아옴" + qnaList);
 		model.addAttribute("data", qnaList);
 
+		// 페이징처리
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+
+		// 전체 글 개수 세팅 - 검색결과과 무관하게 페이징 생성 => 수정필요 => 수정 완
+		pageMaker.setTotalCount(qnaService.selectBoardCnt(cri));
+
+		System.out.println(qnaService.selectBoardCnt(cri) + "가져오는 개수!!!!!!!!!!!!");
+
+		model.addAttribute("pageMaker", pageMaker);
 		return "qna/qnaList";
 	}
 
@@ -200,8 +222,7 @@ public class QnaController {
 
 	@RequestMapping(value = "qnaProfileImage.do", method = RequestMethod.POST)
 	@ResponseBody
-	public void qnaProfileImage(MultipartFile file, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public void qnaProfileImage(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
 		System.out.println("휴...");
 		PrintWriter out = response.getWriter();
@@ -276,6 +297,7 @@ public class QnaController {
 
 	/**
 	 * 문의하기 대 댓글 등록(qnaReply)
+	 *
 	 * @author 박상빈
 	 * @param map
 	 * @return msg
@@ -284,13 +306,13 @@ public class QnaController {
 
 	@RequestMapping(value = "qnaReplyAdd.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String qnaReplyAdd(@RequestParam Map<String, Object> map,Model model) throws Exception {
+	public String qnaReplyAdd(@RequestParam Map<String, Object> map, Model model) throws Exception {
 
 		System.out.println("대댓글 옴" + map);
 		int qnaReplyAdd = qnaService.qnaReplyAdd(map);
 
 		String msg = "ng";
-		if(qnaReplyAdd > 0) {
+		if (qnaReplyAdd > 0) {
 			msg = "ok";
 		}
 

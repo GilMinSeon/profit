@@ -3,9 +3,11 @@ package kr.or.profit.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.or.profit.vo.Criteria;
+
 public interface QnaService {
 
-	List<?> qnaList() throws Exception;
+	List<?> qnaList(Criteria cri) throws Exception;
 
 	int qnaInsert(Map<String, Object> map) throws Exception;
 
@@ -32,6 +34,8 @@ public interface QnaService {
 	List<?> qnaDetailReplyList(Map<String, Object> map) throws Exception;
 
 	int qnaReplyAdd(Map<String, Object> map) throws Exception;
+
+	int selectBoardCnt(Criteria cri) throws Exception;
 
 
 }

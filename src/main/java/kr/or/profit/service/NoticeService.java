@@ -3,11 +3,13 @@ package kr.or.profit.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.or.profit.vo.Criteria;
+
 public interface NoticeService {
 
 	int noticeInsert(Map<String, Object> map) throws Exception;
 
-	List<?> noticeList(Map<String, Object> map) throws Exception;
+	List<?> noticeList(Criteria cri) throws Exception;
 
 	int noticeCommonHit(Map<String, Object> map) throws Exception;
 
@@ -25,6 +27,6 @@ public interface NoticeService {
 
 	int noticeModDelFile(Map<String, Object> map) throws Exception;
 
-
+	int selectBoardCnt(Criteria cri) throws Exception;
 
 }

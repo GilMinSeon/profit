@@ -5,14 +5,22 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">
-
-</script>
 <style>
-.classes__item__text .class-btn:hover {
-	background: #ffffff;
-	border: 1px solid #5768AD;
-	color: #5768AD;
+@media only screen and (min-width: 768px) {
+	.classes__filter form .class__filter__input {
+		width: calc(70% - 5px);
+		float: left;
+		margin-right: 30px;
+	}
+}
+
+@media only screen and (max-width: 991px) {
+	.classes__filter form .class__filter__input {
+		width: 100%;
+		margin-right: 0;
+		margin-bottom: 20px;
+		float: none;
+	}
 }
 
 .classes__item__text .class-btn {
@@ -29,6 +37,11 @@
 	-ms-transition: all 0.4s;
 	-o-transition: all 0.4s;
 	transition: all 0.4s;
+}
+
+.team__slider.owl-carousel .owl-stage-outer {
+	padding-top: 10px;
+	padding-bottom: 40px;
 }
 </style>
 
@@ -51,11 +64,9 @@
 	<section class="team spad">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12">
-					<div class="section-title" style="margin-top: 50px;">
-						<h2 style="font-weight: bold;">🏆인기글 TOP 6</h2>
-						<br>
-						<p style="color: #535353; font-size: 1.2em;">지금 가장 조회수가 많은 레시피를 확인해 보세요!!</p>
+				<div class="col-lg-12" style="height: 60px;">
+					<div class="section-title" style="text-align: left">
+						<h3 style="font-weight: bold;">🏆조회수 TOP 5</h3>
 					</div>
 				</div>
 			</div>
@@ -72,26 +83,49 @@
 										<div style="display: inline-block; vertical-align: middle;">
 											<img src="./resources/img/common/hit.png" style="width: 30px; height: 20px; opacity: 0.5;">
 										</div>
+										<!--조회수 -->
 										<div style="display: inline-block; vertical-align: sub;">
 											<p style="margin: 0;">${recipeTopList.commonHit}&nbsp;&nbsp;</p>
 										</div>
 										<div style="display: inline-block; vertical-align: middle;">
 											<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
 										</div>
+										<!--댓글수 -->
 										<div style="display: inline-block; vertical-align: sub;">
 											<p>${recipeTopList.cnt}&nbsp;&nbsp;</p>
 										</div>
-										<div style="display: inline-block; vertical-align: middle;">
-											<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+										<input type="hidden" value="${sessionScope.memberId }" id="sessionId">
+										<input type="hidden" value="${recipeTopList.communitySeq}" id="communitySeq">
+										<!-- 좋아요 이미지 찍히는 곳 -->
+										<div style="display: inline-block; vertical-align: middle;" id="div_good_img">
+											<c:set var="recipeTopList" value="${recipeTopList}" />
+											<c:if test="${recipeTopList.goodFlag == '1' }">
+												<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;" class="remove" alt="G">
+											</c:if>
+											<c:if test="${recipeTopList.goodFlag == '0' }">
+												<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;" class="full" alt="G">
+											</c:if>
 										</div>
-										<div style="display: inline-block; vertical-align: sub;">
-											<p>좋아요&nbsp;&nbsp;</p>
+
+										<!-- 좋아요수 -->
+										<div style="display: inline-block; vertical-align: sub;" id="div_good_cnt">
+											<p>${recipeTopList.boardGood}&nbsp;&nbsp;</p>
 										</div>
-										<div style="display: inline-block; vertical-align: middle;">
-											<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+
+										<!-- 북마크 이미지 찍히는 곳 -->
+										<div style="display: inline-block; vertical-align: middle;" id="div_book_img">
+											<c:set var="recipeTopList" value="${recipeTopList}" />
+											<c:if test="${recipeTopList.bookFlag == '1' }">
+												<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;" class="remove" alt="B">
+											</c:if>
+											<c:if test="${recipeTopList.bookFlag == '0' }">
+												<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;" class="full" alt="B">
+											</c:if>
 										</div>
-										<div style="display: inline-block; vertical-align: sub;">
-											<p>북마크&nbsp;&nbsp;</p>
+
+										<!-- 북마크수 -->
+										<div style="display: inline-block; vertical-align: sub;" id="div_book_cnt">
+											<p>${recipeTopList.boardGood}&nbsp;&nbsp;</p>
 										</div>
 									</div>
 									<h4 style="margin-bottom: 10px;">
@@ -123,7 +157,9 @@
 			<div class="classes__filter">
 				<div class="row">
 					<div class="col-lg-12">
-						<form method="get" id="frm" action="lessonList.do#location123">
+
+						<form method="get" id="frm" action="/recipeList.do#location123">
+							<input type="hidden">
 							<div class="class__filter__select">
 								<p>Level:</p>
 								<select name="selLev" id="selLev">
@@ -144,6 +180,7 @@
 							</div>
 							<span id="location123"></span>
 						</form>
+
 					</div>
 				</div>
 			</div>
@@ -171,22 +208,43 @@
 									<div style="display: inline-block; vertical-align: sub;">
 										<p>${data.cnt}&nbsp;&nbsp;</p>
 									</div>
-									<div style="display: inline-block; vertical-align: middle;">
-										<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+									<input type="hidden" value="${sessionScope.memberId }" id="sessionId">
+									<input type="hidden" value="${data.communitySeq}" id="communitySeq">
+									<!-- 좋아요 이미지 찍히는 곳 -->
+									<div style="display: inline-block; vertical-align: middle;" id="div_good_img">
+										<c:set var="data" value="${data}" />
+										<c:if test="${data.goodFlag == '1' }">
+											<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;" class="remove" alt="G">
+										</c:if>
+										<c:if test="${data.goodFlag == '0' }">
+											<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;" class="full" alt="G">
+										</c:if>
 									</div>
-									<div style="display: inline-block; vertical-align: sub;">
-										<p>${data.commonHit}&nbsp;&nbsp;</p>
+
+									<!-- 좋아요수 -->
+									<div style="display: inline-block; vertical-align: sub;" id="div_good_cnt">
+										<p>${data.boardGood}&nbsp;&nbsp;</p>
 									</div>
-									<div style="display: inline-block; vertical-align: middle;">
-										<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+
+									<!-- 북마크 이미지 찍히는 곳 -->
+									<div style="display: inline-block; vertical-align: middle;" id="div_book_img">
+										<c:set var="data" value="${data}" />
+										<c:if test="${data.bookFlag == '1'}">
+											<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;" class="remove" alt="B">
+										</c:if>
+										<c:if test="${data.bookFlag == '0' }">
+											<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;" class="full" alt="B">
+										</c:if>
 									</div>
-									<div style="display: inline-block; vertical-align: sub;">
-										<p>${data.commonHit}&nbsp;&nbsp;</p>
+
+									<!-- 북마크수 -->
+									<div style="display: inline-block; vertical-align: sub;" id="div_book_cnt">
+										<p>${data.boardGood}&nbsp;&nbsp;</p>
 									</div>
 								</div>
 								<p style="color: #CE60FA;"></p>
 								<h4 style="margin-bottom: 30px;">
-									<a href="lessonDetail.do" style="font-size: 0.8em; font-weight: bold;">${data.commonTitle}</a>
+									<a href="recipeDetail.do?communitySeq=${data.communitySeq}" style="font-size: 0.8em; font-weight: bold;">${data.commonTitle}</a>
 								</h4>
 								<div>
 									<div style="display: inline-block; vertical-align: middle;">
@@ -203,13 +261,25 @@
 					</div>
 
 				</c:forEach>
-				<div class="col-lg-12">
+
+            	<!-- 페이징처리 -->
+            	<div class="col-lg-12">
 					<div class="classes__pagination">
-						<a href="#">1</a>
-						<a href="#">2</a>
-						<a href="#">
-							<span class="arrow_carrot-right"></span>
+					<c:if test="${pageMaker.prev}">
+						<a href="recipeList.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">
+							<span class="arrow_carrot-left"></span>
 						</a>
+					</c:if>
+
+					<c:set var="page" value="${pageMaker.cri.page}"/>
+					<c:set var="idx" value="${idx}"/>
+					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+            			<a href="recipeList.do${pageMaker.makeQuery(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+					</c:forEach>
+
+					<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+						<a href="recipeList.do${pageMaker.makeQuery(pageMaker.endPage + 1)}"><span class="arrow_carrot-right"></span></a>
+					</c:if>
 					</div>
 				</div>
 

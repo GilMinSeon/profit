@@ -156,12 +156,12 @@
 							<c:forEach var="data" items="${data}" varStatus="status">
 								<c:if test="${data.inUserId eq sessionScope.memberId || '1' eq sessionScope.memberId}">
 									<tr>
-										<th scope="row">${status.count}</th>
+										<th scope="row">${data.rm}</th>
 										<td colspan="3">
 											<a href="${path}qnaDetail.do?communitySeq=${data.communitySeq}" style="text-decoration: none; color: blue;"> ${data.commonTitle} </a>
 										</td>
 										<td>
-											<c:set var="cnt" value="${data.cnt}" />
+											<c:set var="cnt" value="${data.boardReply}" />
 											<c:if test="${cnt == '0' }">
 												<c:out value="X" />
 											</c:if>
@@ -178,8 +178,31 @@
 					<div class="classes__item__text" style="text-align: right;">
 						<a href="qnaAdd.do" class="class-btn">등록</a>
 					</div>
-
 				</div>
+				<!-- 페이징처리 -->
+				<div class="col-lg-12">
+					<div class="classes__pagination">
+						<c:if test="${pageMaker.prev}">
+							<a href="boardList.do${pageMaker.makeQuery(pageMaker.startPage - 1)}">
+								<span class="arrow_carrot-left"></span>
+							</a>
+						</c:if>
+
+						<c:set var="page" value="${pageMaker.cri.page}" />
+						<c:set var="idx" value="${idx}" />
+						<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+							<a href="qnaList.do${pageMaker.makeQuery(idx)}" <c:if test="${page == idx }">style="background: #5768AD;color:#FFFFFF;"</c:if>>${idx}</a>
+						</c:forEach>
+
+						<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+							<a href="qnaList.do${pageMaker.makeQuery(pageMaker.endPage + 1)}">
+								<span class="arrow_carrot-right"></span>
+							</a>
+						</c:if>
+					</div>
+				</div>
+
+
 			</div>
 		</div>
 	</section>
