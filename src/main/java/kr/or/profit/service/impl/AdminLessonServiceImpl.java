@@ -63,10 +63,98 @@ public class AdminLessonServiceImpl implements AdminLessonService {
 	public int adminLessonPayListCnt(Criteria cri) throws Exception {
 		return adminLessonDAO.adminLessonPayListCnt(cri);
 	}
+	
+	//온라인 클래스 최근 7일 수익
+	@Override
+	public Map<String, Object> lessonPriceDays() throws Exception{
+		return adminLessonDAO.lessonPriceDays();
+	}
+	
+	//온라인 클래스 최근 7일 수익(남자)
+	@Override
+	public Map<String, Object> lessonPriceDaysM() throws Exception {
+		return adminLessonDAO.lessonPriceDaysM();
+	}
+	
+	//온라인 클래스 최근 7일 수익(여자)
+	@Override
+	public Map<String, Object> lessonPriceDaysF() throws Exception {
+		return adminLessonDAO.lessonPriceDaysF();
+	}
 
+	//온라인 클래스 최근 5주 수익
+	@Override
+	public Map<String, Object> lessonPriceWeeks() throws Exception {
+		return adminLessonDAO.lessonPriceWeeks();
+	}
 	
+	//온라인 클래스 최근 5주 수익(남자)
+	@Override
+	public Map<String, Object> lessonPriceWeeksM() throws Exception {
+		return adminLessonDAO.lessonPriceWeeksM();
+	}
 	
+	//온라인 클래스 최근 5주 수익(여자)
+	@Override
+	public Map<String, Object> lessonPriceWeeksF() throws Exception {
+		return adminLessonDAO.lessonPriceWeeksF();
+	}
 	
+	//온라인 클래스 최근 6개월 수익
+	@Override
+	public Map<String, Object> lessonPriceMonths() throws Exception {
+		return adminLessonDAO.lessonPriceMonths();
+	}
+	
+	//온라인 클래스 최근 6개월 수익(남자)
+	@Override
+	public Map<String, Object> lessonPriceMonthsM() throws Exception {
+		return adminLessonDAO.lessonPriceMonthsM();
+	}
 
+	//온라인 클래스 최근 6개월 수익(여자)
+	@Override
+	public Map<String, Object> lessonPriceMonthsF() throws Exception {
+		return adminLessonDAO.lessonPriceMonthsF();
+	}
+
+	//신규강좌(일주일) 구매 TOP5
+	@Override
+	public List<Map<String,Object>> newTop5() throws Exception {
+		return adminLessonDAO.newTop5();
+	}
+	
+	//카테고리별 신규강좌 등록 비율
+	@Override
+	public Map<String, Object> newRegister() throws Exception {
+		return adminLessonDAO.newRegister();
+	}
+	
+	//최근 일주일 신규강좌 등록 수
+	@Override
+	public Map<String, Object> newRegisterCount() throws Exception {
+		return adminLessonDAO.newRegisterCount();
+	}
+	
+	//누적 북마크순
+	@Override
+	public List<Map<String,Object>> bookmarkRank() throws Exception {
+		return adminLessonDAO.bookmarkRank();
+	}
+	
+	//누적 좋아요순
+	@Override
+	public List<Map<String, Object>> goodRank() throws Exception {
+		return adminLessonDAO.goodRank();
+	}
+	
+	//누적 인기강좌 순위
+	@Override
+	public List<Map<String, Object>> lessonRank() throws Exception {
+		return adminLessonDAO.lessonRank();
+	}
+	
+	
+	
 
 }

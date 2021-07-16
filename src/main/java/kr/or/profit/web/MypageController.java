@@ -245,14 +245,6 @@ public class MypageController {
 		return "mypage/ticketBuyList";
 	}
 
-	//이용권 사용내역
-	@RequestMapping(value = "ticketUseList.do", method = RequestMethod.GET)
-	public String ticketUseList(Locale locale, Model model) {
-
-		return "mypage/ticketUseList";
-	}
-	
-	
 	@RequestMapping(value = "ticketBuyDetail.do", method = RequestMethod.GET)
 	public String ticketBuyDetail(Locale locale, Model model) {
 
@@ -582,35 +574,41 @@ public class MypageController {
 	
 		//이용권 구매내역
 		@RequestMapping(value = "ticketUseList.do", method = {RequestMethod.GET,RequestMethod.POST})
-		public String ticketUseList() throws Exception{
-			System.out.println("왜 안오세요?");
-//			HttpSession session = request.getSession();
-//			String memberId = (String) session.getAttribute("memberId");
-//			if (memberId == null) {
-//				memberId = "";
-//			}
-//			
-//			System.out.println(selTicketName);
-//			
-//			cri.setPerPageNum(10);
-//			cri.setMemberId(memberId);
-//			cri.setSelDate(selDate);
-//			cri.setSelTicketName(selTicketName);
-//			
-//			//이용권 구매목록
-//			List<Map<String, Object>> buyTicketList = mypageService.selectBuyTicketList(cri);
-//			model.addAttribute("buyTicketList", buyTicketList);
-//			System.out.println(model.toString());
-//			
-//			PageMaker pageMaker = new PageMaker();
-//			pageMaker.setCri(cri);
-//			
-//			//전체 글 개수 세팅
-//			pageMaker.setTotalCount(mypageService.selectBuyTicketCnt(cri));
-//			model.addAttribute("pageMaker", pageMaker);
-//			model.addAttribute("selDate", selDate);
-//			model.addAttribute("selTicketName", selTicketName);
+		public String ticketUseList(Model model, HttpServletRequest request, Criteria cri,
+				@RequestParam(value = "selDate", required = false) String selDate,
+				@RequestParam(value = "keyword", required = false) String keyword) throws Exception{
+			HttpSession session = request.getSession();
+			String memberId = (String) session.getAttribute("memberId");
+			if (memberId == null) {
+				memberId = "";
+			}
+			
+			
+			cri.setPerPageNum(10);
+			cri.setMemberId(memberId);
+			cri.setSelDate(selDate);
+			cri.setKeyword(keyword);
+			
+			//이용권 사용목록
+			List<Map<String, Object>> useTicketList = mypageService.selectUseTicketList(cri);
+			model.addAttribute("useTicketList", useTicketList);
+			System.out.println(model.toString());
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			
+			//전체 글 개수 세팅
+			pageMaker.setTotalCount(mypageService.selectUseTicketCnt(cri));
+			model.addAttribute("pageMaker", pageMaker);
+			model.addAttribute("selDate", selDate);
+			model.addAttribute("keyword", keyword);
 			
 			return "mypage/ticketUseList";
+		}
+		
+		@RequestMapping(value = "myChattingDetail.do", method = RequestMethod.GET)
+		public String myChattingDetail(Locale locale, Model model) {
+
+			return "mypage/myChattingDetail";
 		}
 }

@@ -296,8 +296,8 @@ function fn_close(){
 			<div class="classes__filter" style="padding-top: 20px;">
 			
 			
-			<input onclick="fn_remove()" class="site-btn" type="button" value="블랙리스트 해제" style="height: 40px; padding : 8px 30px; background-color: #17a2b8;opacity: 85%;float: right;"/>
-			<input onclick="fn_add()" class="site-btn" type="button" value="블랙리스트 등록" style="height: 40px; padding : 8px 30px; background-color: #c82333;opacity: 88%;float: right; margin-right: 15px;"/>
+			<input onclick="fn_remove()" class="site-btn" type="button" value="블랙리스트 해제" style="font-size:1.1em;height: 40px; padding : 8px 30px; background-color: #6ABD66;opacity: 85%;float: right;"/>
+			<input onclick="fn_add()" class="site-btn" type="button" value="블랙리스트 등록" style="font-size:1.1em;height: 40px; padding : 8px 30px; background-color: #D16666;opacity: 88%;float: right; margin-right: 15px;"/>
 			
 			<br><br>
 			<table class="table" style="text-align: center;">

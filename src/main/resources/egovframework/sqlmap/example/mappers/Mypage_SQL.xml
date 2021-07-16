@@ -449,4 +449,42 @@
 		
 	</select>
 
+	<select id="selectUseTicketList" parameterType="Criteria" resultType="egovMap">
+		select *
+		from
+		(
+		select rownum as rn, chatting_seq, chat_profile_seq, in_date, chat_profile_id,member_name
+		from
+		(
+		select a.chatting_seq, a.chat_profile_seq, to_char(a.in_date,'yyyy-mm-dd') as in_date, b.chat_profile_id, c.member_name
+		from chatting a, chat_profile b, member c
+		where chatting_member_id = #{memberId}
+		and a.chat_profile_seq = b.chat_profile_seq(+) 
+		and b.chat_profile_id = c.member_id(+)
+		<if test="selDate != null and selDate != '' ">
+		and to_char(a.in_date,'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="keyword != null and keyword != '' ">
+		and c.member_name like '%'||#{keyword}||'%'
+		</if>
+		order by in_date desc
+		)
+		)
+		where rn between 1 and 10
+	
+	</select>
+	
+	<select id="selectUseTicketCnt" parameterType="Criteria" resultType="int">
+		select count(*)
+		from chatting a, chat_profile b, member c
+		where chatting_member_id = '10'
+		and a.chat_profile_seq = b.chat_profile_seq(+) 
+		and b.chat_profile_id = c.member_id(+)
+		<if test="selDate != null and selDate != '' ">
+		and to_char(a.in_date,'YYYYMMDD') = #{selDate}
+		</if>
+		<if test="keyword != null and keyword != '' ">
+		and c.member_name like '%'||#{keyword}||'%'
+		</if>
+	</select>
 </mapper>

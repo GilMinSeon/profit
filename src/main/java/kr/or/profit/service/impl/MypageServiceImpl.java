@@ -126,10 +126,17 @@ public class MypageServiceImpl extends EgovAbstractServiceImpl implements Mypage
 	public int selectBuyTicketCnt(Criteria cri) throws Exception {
 		return mypageDAO.selectBuyTicketCnt(cri);
 	}
-
-
-
 	
-
+	//이용권 사용목록
+	@Override
+	public List<Map<String, Object>> selectUseTicketList(Criteria cri) throws Exception {
+		return mypageDAO.selectUseTicketList(cri);
+	}
+	
+	//전체 글 개수 세팅
+	@Override
+	public int selectUseTicketCnt(Criteria cri) throws Exception {
+		return mypageDAO.selectUseTicketCnt(cri);
+	}
 
 }
