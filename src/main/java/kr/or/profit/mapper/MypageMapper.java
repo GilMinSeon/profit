@@ -65,6 +65,18 @@ public interface MypageMapper {
 
 	//마이페이지 환불여부 변경
 	public int updBuyLessonRefundFlag(Map<String, Object> refundFlagMap) throws Exception;
+	
+	//이용권 구매목록
+	public List<Map<String, Object>> selectBuyTicketList(Criteria cri) throws Exception;
+	
+	//전체 글 개수 세팅
+	public int selectBuyTicketCnt(Criteria cri) throws Exception;
+	
+	//이용권 사용목록
+	public List<Map<String, Object>> selectUseTicketList(Criteria cri) throws Exception;
+	
+	//전체글 개수
+	public int selectUseTicketCnt(Criteria cri) throws Exception;
 
 
 

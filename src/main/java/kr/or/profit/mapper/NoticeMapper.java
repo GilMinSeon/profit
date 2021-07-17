@@ -3,15 +3,18 @@ package kr.or.profit.mapper;
 import java.util.List;
 import java.util.Map;
 
-
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import kr.or.profit.vo.Criteria;
 
 @Mapper("noticeMapper")
 public interface NoticeMapper {
 
 	int noticeInsert(Map<String, Object> map) throws Exception;
 
-	List<?> noticeList(Map<String, Object> map) throws Exception;
+
+
+
+	List<?> noticeList(Criteria cri) throws Exception;
 
 	int noticeCommonHit(Map<String, Object> map) throws Exception;
 
@@ -28,4 +31,6 @@ public interface NoticeMapper {
 	Map<String, Object> qnaProfileDownload(Map<String, Object> map) throws Exception;
 
 	int noticeModDelFile(Map<String, Object> map) throws Exception;
+
+	int selectBoardCnt(Criteria cri) throws Exception;
 }

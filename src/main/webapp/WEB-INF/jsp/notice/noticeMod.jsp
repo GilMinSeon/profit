@@ -101,7 +101,7 @@
 			data : form,
 			success : function(data) {
 				if (data == "ok") {
-					alert("글이 정상적으로 삭제되었습니다.");
+					alert("파일이 정상적으로 삭제되었습니다.");
 					location.href = "noticeMod.do?communitySeq=" + $("input[name='communitySeq']").val();
 				} else if (data == "ng") {
 					alert("등록이 실패하였습니다. 다시 시도해주세요");
@@ -136,7 +136,7 @@
 
 
 	<section class="classes spad">
-		<main role="main" class="container"> +
+		<main role="main" class="container">
 		<h3>📑 공지사항 수정해주세요</h3>
 		<br>
 		<c:set var="data" value="${data}" />
@@ -146,14 +146,14 @@
 			<input type="hidden" name="fileRealName" value="${data.fileRealName}">
 			<input type="hidden" name="fileRealNameNew" value="${data.fileRealName}">
 			<div class="pt-1"></div>
-			+ <label>
+			<label>
 				<p style="font-weight: bold; margin-bottom: 0">
 					제목<span style="color: red;"> *</span>
 				</p>
 			</label>
 			<input type="text" name="title" value="${data.commonTitle}" placeholder="제목을 입력하세요" style="width: 99%; border: none; border-bottom: 1px solid #D5D4D4; height: 54px; font-size: 15px;">
 			<div class="pt-1">
-				+
+
 				<br>
 				<textarea class="summernote" id="summernote" name="contents">${data.commonContent}</textarea>
 				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">

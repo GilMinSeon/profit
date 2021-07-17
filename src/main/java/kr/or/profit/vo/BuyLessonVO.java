@@ -14,7 +14,22 @@ public class BuyLessonVO {
 	private String upUserId;
 	private Date upDate;
 	private String memberId;
+	private String classAccountFlag;
+	private String yyyymm;
 	
+	
+	public String getClassAccountFlag() {
+		return classAccountFlag;
+	}
+	public void setClassAccountFlag(String classAccountFlag) {
+		this.classAccountFlag = classAccountFlag;
+	}
+	public String getYyyymm() {
+		return yyyymm;
+	}
+	public void setYyyymm(String yyyymm) {
+		this.yyyymm = yyyymm;
+	}
 	public String getMemberId() {
 		return memberId;
 	}

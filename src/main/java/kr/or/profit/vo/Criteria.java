@@ -26,8 +26,40 @@ public class Criteria {
 	private String selDate;
 	private String searchKeyword;
 	
-	//민선
+	//민정
+    private String yyyymm;
+    private String gubun;
+	
+    //민선
 	private String selGubun;
+	
+	//예진
+	private String selTicketName;
+	
+	public String getYyyymm() {
+       return yyyymm;
+    }
+
+    public void setYyyymm(String yyyymm) {
+       this.yyyymm = yyyymm;
+    }
+
+    
+    public String getGubun() {
+       return gubun;
+    }
+    
+    public void setGubun(String gubun) {
+        this.gubun = gubun;
+     }
+    
+	public String getSelTicketName() {
+		return selTicketName;
+	}
+
+	public void setSelTicketName(String selTicketName) {
+		this.selTicketName = selTicketName;
+	}
 
 	public String getSelGubun() {
 		return selGubun;

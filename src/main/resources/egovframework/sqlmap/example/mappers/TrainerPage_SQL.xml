@@ -576,4 +576,21 @@
         )
 	</select>
 	
+	<select id="selectMyInfo" resultType="egovMap">
+	    select a.member_id, a.member_name, a.member_mobile, a.member_height,a.member_weight,
+		b.trainer_gym, b.trainer_award,b.trainer_career 
+		from member a, trainer b
+		where member_id = #{memberId}
+		and 
+		a.member_id = b.in_user_id(+)
+	</select>
+	
+	<update id="updateMyInfo" parameterType="processVO">
+			update trainer 
+			set trainer_gym = #{trainerGym},
+			trainer_award=#{trainerAward},
+			trainer_career=#{trainerCareer}
+			where in_user_id = #{memberId}
+	</update>
+	
 </mapper>

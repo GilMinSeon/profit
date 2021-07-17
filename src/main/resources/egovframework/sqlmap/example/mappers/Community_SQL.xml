@@ -621,4 +621,22 @@
 	    ]]>
 	</select>
 	
+	<select id="selectReplyCnt" resultType="egovMap">
+	    SELECT 
+		count(*) as cnt
+		FROM
+		(
+		SELECT *
+		FROM REPLY
+		WHERE REPLY_DEL_FLAG='N'
+		START WITH REPLY_PARENT_SEQ IS NULL
+		CONNECT BY PRIOR REPLY_SEQ = REPLY_PARENT_SEQ
+		ORDER SIBLINGS BY IN_DATE DESC, REPLY_SEQ
+		) A
+		LEFT JOIN 
+		MEMBER B ON
+		(A.IN_USER_ID=B.MEMBER_ID)
+		WHERE COMMUNITY_SEQ = #{communitySeq}
+	</select>
+	
 </mapper>

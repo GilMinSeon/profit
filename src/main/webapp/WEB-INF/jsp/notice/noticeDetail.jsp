@@ -29,18 +29,18 @@
 	<section class="blog-details spad">
 		<div class="container">
 			<div class="row" style="justify-content: center">
-				<div class="col-lg-8 order-lg-2 order-1">
+				<div class="col-lg-8 order-lg-2 order-1" style="text-align: center;">
 					<c:set var="data" value="${data}" />
 					<span style="font-size: 1.3em; font-weight: bold;">${data.commonTitle}</span>
 				</div>
-				<p style="font-weight: bold; padding-right: 30px;">
-					작성자&nbsp;&nbsp; <span>${data.inUserId}</span>
-				</p>
 			</div>
-			<hr>
 			<div class="blog__details__text">
-				<p>${data.commonContent}</p>
-				<div style="text-align: right; margin-bottom: 5px; padding-right: 8px;">
+				<div style="text-align: right; margin-bottom: 0px; padding-right: 8px; line-height: 90px;">
+					<div style="display: inline-block; vertical-align: sub;">
+						<p style="font-weight: bold; padding-right: 30px;">
+							관리자&nbsp;&nbsp; <span>${data.inUserId}</span>
+						</p>
+					</div>
 					<div style="display: inline-block; vertical-align: sub;">
 						<p style="margin: 0;">${data.inDate}&nbsp;&nbsp;</p>
 					</div>
@@ -48,7 +48,7 @@
 						<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 					</div>
 					<div style="display: inline-block; vertical-align: sub;">
-						<p style="margin: 0;">17&nbsp;&nbsp;</p>
+						<p style="margin: 0;">${data.commonHit}&nbsp;&nbsp;</p>
 					</div>
 				</div>
 			</div>
@@ -56,7 +56,11 @@
 			<form id="form" method="post" action="qnaProfileDownload.do">
 				<input type="hidden" name="communitySeq" value="${data.communitySeq}">
 				<!-- 					<a onclick="fn_qnaProfileDownload()" class="download" style="float: right;">다운로드</a> -->
-				<input style="float: right;" type="submit" name="download" value="다운로드">
+				<!-- 				<input style="float: right;" type="submit" name="download" value="다운로드"> -->
+				<c:if test="${data.fileRealName ne '파일없음'}">
+					<a id="submitA" onclick="document.getElementById('form').submit();return;" style="float: right; color: #343a40; cursor: pointer">
+						<img src="./resources/img/common/DownloadIcon2.jpg" style="width: 25px; height: 25px; opacity: 0.5;">${data.fileRealName}</a>
+				</c:if>
 			</form>
 			<br>
 			<div class="blog__details__text">

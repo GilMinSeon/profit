@@ -50,6 +50,7 @@ import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
 import kr.or.profit.vo.PageMaker;
+import kr.or.profit.vo.ProcessVO;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -287,4 +288,52 @@ public class TrainerController {
 		return "trainerPage/classAccountPdf";
 	}
 	
+	@RequestMapping(value = "trainerInfo.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String trainerInfo(HttpServletRequest request, Model model) throws Exception{
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		if (memberId == null) {
+			memberId = "";
+		}
+		
+		//내 정보 가져오기
+		Map<String,Object> myInfo = trainerPageService.selectMyInfo(memberId);
+		model.addAttribute("myInfo", myInfo);
+		System.out.println("모델....");
+		System.out.println(model.toString());
+		return "trainerPage/trainerInfo";
+	}
+	
+  @RequestMapping(value = "trainerInfoModAjax.do")
+  @ResponseBody
+  public String trainerInfoModAjax(HttpServletRequest request, Model model) throws Exception {
+	  HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		if (memberId == null) {
+			memberId = "";
+		}
+		
+		
+	  String trainerGym = request.getParameter("trainerGym");
+	  String trainerAward = request.getParameter("trainerAward");
+	  String trainerCareer = request.getParameter("trainerCareer");
+	  
+	  System.out.println("trainerGym "+trainerGym);
+	  System.out.println("trainerAward "+trainerAward );
+	  System.out.println("trainerCareer "+trainerCareer);
+	  
+	  //내정보 수정
+	  ProcessVO vo = new ProcessVO();
+	  vo.setTrainerGym(trainerGym);
+	  vo.setTrainerAward(trainerAward);
+	  vo.setTrainerCareer(trainerCareer);
+	  vo.setMemberId(memberId);;
+	  int updateResult = trainerPageService.updateMyInfo(vo);
+     String msg = "ng";
+     
+     if(updateResult > 0) {
+        msg = "ok";
+     }
+      return msg;
+  }
 }

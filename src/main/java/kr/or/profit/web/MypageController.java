@@ -210,20 +210,41 @@ public class MypageController {
 	///////////////////////////////////////
 	
 	//이용권 구매내역
-	@RequestMapping(value = "ticketBuyList.do", method = RequestMethod.GET)
-	public String ticketBuyList(Locale locale, Model model) {
-
+	@RequestMapping(value = "ticketBuyList.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String ticketBuyList(Model model, HttpServletRequest request, Criteria cri,
+			@RequestParam(value = "selDate", required = false) String selDate,
+			@RequestParam(value = "selTicketName", required = false) String selTicketName) throws Exception{
+		
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		if (memberId == null) {
+			memberId = "";
+		}
+		
+		System.out.println(selTicketName);
+		
+		cri.setPerPageNum(10);
+		cri.setMemberId(memberId);
+		cri.setSelDate(selDate);
+		cri.setSelTicketName(selTicketName);
+		
+		//이용권 구매목록
+		List<Map<String, Object>> buyTicketList = mypageService.selectBuyTicketList(cri);
+		model.addAttribute("buyTicketList", buyTicketList);
+		System.out.println(model.toString());
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		
+		//전체 글 개수 세팅
+		pageMaker.setTotalCount(mypageService.selectBuyTicketCnt(cri));
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("selDate", selDate);
+		model.addAttribute("selTicketName", selTicketName);
+		
 		return "mypage/ticketBuyList";
 	}
 
-	//이용권 사용내역
-	@RequestMapping(value = "ticketUseList.do", method = RequestMethod.GET)
-	public String ticketUseList(Locale locale, Model model) {
-
-		return "mypage/ticketUseList";
-	}
-	
-	
 	@RequestMapping(value = "ticketBuyDetail.do", method = RequestMethod.GET)
 	public String ticketBuyDetail(Locale locale, Model model) {
 
@@ -551,41 +572,43 @@ public class MypageController {
 			return msg;
 		}
 	
+		//이용권 구매내역
+		@RequestMapping(value = "ticketUseList.do", method = {RequestMethod.GET,RequestMethod.POST})
+		public String ticketUseList(Model model, HttpServletRequest request, Criteria cri,
+				@RequestParam(value = "selDate", required = false) String selDate,
+				@RequestParam(value = "keyword", required = false) String keyword) throws Exception{
+			HttpSession session = request.getSession();
+			String memberId = (String) session.getAttribute("memberId");
+			if (memberId == null) {
+				memberId = "";
+			}
+			
+			
+			cri.setPerPageNum(10);
+			cri.setMemberId(memberId);
+			cri.setSelDate(selDate);
+			cri.setKeyword(keyword);
+			
+			//이용권 사용목록
+			List<Map<String, Object>> useTicketList = mypageService.selectUseTicketList(cri);
+			model.addAttribute("useTicketList", useTicketList);
+			System.out.println(model.toString());
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			
+			//전체 글 개수 세팅
+			pageMaker.setTotalCount(mypageService.selectUseTicketCnt(cri));
+			model.addAttribute("pageMaker", pageMaker);
+			model.addAttribute("selDate", selDate);
+			model.addAttribute("keyword", keyword);
+			
+			return "mypage/ticketUseList";
+		}
 		
-//		@RequestMapping(value = "updRefundFlagAjax.do", method = RequestMethod.GET)
-//		@ResponseBody
-//		public String updRefundFlag(HttpServletResponse response, HttpServletRequest request, Model model) throws Exception {
-//		   
-//			HttpSession session = request.getSession();
-//			String memberId = (String) session.getAttribute("memberId");
-//			System.out.println("환불업드Id " + memberId);
-//			
-//			String buyLessonSeq = request.getParameter("buyLessonSeq");
-//			System.out.println("환불업드seq "+ buyLessonSeq);
-//			
-//			String lessonSeq = request.getParameter("lessonSeq");
-//			System.out.println("환불업드seq2 " + lessonSeq);
-//			
-//			 //환불 할 수 있는 사람인지 확인
-//		      Map<String, Object> refundFlagMap = new HashMap<>();
-//		      refundFlagMap.put("memberId", memberId);
-//		      refundFlagMap.put("lessonSeq", lessonSeq);
-//		      refundFlagMap.put("buyLessonSeq", buyLessonSeq);
-//		      int refundFlag = mypageService.updBuyLessonRefundFlag(refundFlagMap);
-//		      
-//		      String msg="";
-//		      if(checkRefundFlag > 0) {
-//		    	  model.addAttribute("refundOk", "1");
-//		    	   msg="ok"; 
-//		    	   mypageService.updBuyLessonRefundFlag();
-//		      }else {
-//		    	  model.addAttribute("refundOk", "0");
-//		    	   msg="no";
-//		      }
-//		      System.out.println("환불모델 " + model.toString());
-//			return msg;
-//		}
-		
-		
-	
+		@RequestMapping(value = "myChattingDetail.do", method = RequestMethod.GET)
+		public String myChattingDetail(Locale locale, Model model) {
+
+			return "mypage/myChattingDetail";
+		}
 }

@@ -7,19 +7,21 @@
 <head>
 <title>bulletin_write</title>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+<script src="./resources/js/jquery-3.3.1.min.js"></script>
+<script src="./resources/js/bootstrap.min.js"></script>
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.15/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.15/dist/summernote.min.js"></script>
 <script src="https://github.com/summernote/summernote/tree/master/lang/summernote-ko-KR.js"></script>
 
 <!-- 서머노트를 위해 추가해야할 부분 -->
-  <script src="./resources/summernote/summernote-lite.js"></script>
-  <script src="./resources/summernote/lang/summernote-ko-KR.js"></script>
-  <link rel="stylesheet" href="./resources/summernote/summernote-lite.css">
+<script src="./resources/summernote/summernote-lite.js"></script>
+<script src="./resources/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="./resources/summernote/summernote-lite.css">
   
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <script>
@@ -143,7 +145,7 @@ function fn_boardAdd(){
 }
 </style>
 </head>
-<body>
+<body style="background-color: white;">
 
 	<!-- Breadcrumb Begi -->
 	<section class="breadcrumb-option set-bg"
@@ -167,7 +169,7 @@ function fn_boardAdd(){
 		<h3 style="padding-left: 15px;color: #263246;font-family:DM Sans,sans-serif;font-weight: 400;">🔎 회원들과 공유할 꿀Tip을 작성해주세요</h3>
 	</div>
 	<br/><br/>
-		<main role="main" class="container">
+<!-- 		<main role="main" class="container"> -->
 			<form name="form" id="frm">
 			<input type="hidden" id="hidden" name="tumnail_img" value="none"/>
 				<div class="write-title" style="margin-bottom: 5px;">
@@ -218,7 +220,7 @@ function fn_boardAdd(){
 				</div>
 				
 			</form>
-		</main>
+<!-- 		</main> -->
 	</section>
 	</div>
 </body>

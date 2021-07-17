@@ -8,6 +8,7 @@ import org.antlr.grammar.v3.ANTLRParser.throwsSpec_return;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.ProcessVO;
 
 @Mapper("trainerPageMapper")
 public interface TrainerPageMapper {
@@ -56,5 +57,11 @@ public interface TrainerPageMapper {
 	
 	//나머지 정보 가져오기
 	Map<String, Object> selectRemainInfo(Map<String, Object> info) throws Exception;
+	
+	//내 정보 가져오기
+	Map<String, Object> selectMyInfo(String memberId) throws Exception;
+	
+	//내정보 수정
+	int updateMyInfo(ProcessVO vo) throws Exception;
 	
 }

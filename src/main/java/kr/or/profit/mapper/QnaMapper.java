@@ -7,13 +7,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
+import kr.or.profit.vo.Criteria;
 
 //Mapper Interface => 메서드명과 쿼리ID를 매핑하여 쿼리호출
 
 @Mapper("qnaMapper")
 public interface QnaMapper {
 
-	List<?> qnaList() throws Exception;
+	List<?> qnaList(Criteria cri) throws Exception;
 
 	int qnaInsert(Map<String, Object>map) throws Exception;
 
@@ -43,6 +44,9 @@ public interface QnaMapper {
 
 	//대 댓글 등록
 	int qnaReplyAdd(Map<String, Object> map) throws Exception;
+
+	//페이징
+	int selectBoardCnt(Criteria cri) throws Exception;
 
 
 

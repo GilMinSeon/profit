@@ -260,7 +260,7 @@ function fn_pdf(){
 	<section class="classes spad" style="visibility: visible; animation-name: fadeIn;">
 		
 		<div class="container">
-			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerPermitList.do'" >나의 트레이너 정보</h3>
+			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerInfo.do'" >내 정보</h3>
 			<br>
         	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
             <!-- counter -->
@@ -295,12 +295,13 @@ function fn_pdf(){
             
             <!-- counter -->
             <div class="col-md-3 col-sm-6 text-center counter-section wow fadeInUp animated" data-wow-duration="1200ms" style="visibility: visible; animation-duration: 1200ms; animation-name: fadeInUp;"> 
-            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;" onclick="location.href='chatAccountInfo.do'">
+            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;">
             	<span class="timer counter alt-font appear" data-to="600" data-speed="7000" onclick="fn_today()" style="cursor: pointer">${todayNumberList.statusDate }</span> 
             	<p class="counter-title" style="margin-top: 10px;">상담 정산 내역</p>
             </div> 
             <!-- end counter -->
         </div>
+
 
 						
 			<!-- 2 -->

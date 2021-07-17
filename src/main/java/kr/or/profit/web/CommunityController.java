@@ -209,6 +209,10 @@ public class CommunityController {
 		// 댓글 목록 가져오기
 		List<Map<String, Object>> replyList = communityService.selectReplyList(communitySeq);
 		boardDetail.put("replyList", replyList);
+		
+		//댓글 수 가져오기
+		Map<String,Object> replyCnt = communityService.selectReplyCnt(communitySeq);
+		boardDetail.put("replyCnt", replyCnt.get("cnt"));
 
 		// 조회수 증가
 		communityService.increaseHit(communitySeq);

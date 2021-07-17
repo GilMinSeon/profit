@@ -158,6 +158,20 @@ public class PageMaker {
 
 				return uriComponents.toUriString();
 	}
+			
+	//관리자 정산하기 목록 페이징
+	public String makeQueryAdminSalesList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page).build();
+
+		return uriComponents.toUriString();
+	}
+	
+	//관리자 정산하기 상세 목록 페이징
+	public String makeQueryAdminSalesDetailList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page).build();
+
+		return uriComponents.toUriString();
+	}	
 	
 	
 	
@@ -217,6 +231,24 @@ public class PageMaker {
 	public String makeQueryChatList(int page) {
 		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
 				.queryParam("selStatus", cri.getSelStatus()).queryParam("selDate", cri.getSelDate())
+				.build();
+
+		return uriComponents.toUriString();
+	}
+	
+	public String makeQueryBuyTicketList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+				.queryParam("selDate", cri.getSelDate())
+				.queryParam("selTicketName", cri.getSelTicketName())
+				.build();
+
+		return uriComponents.toUriString();
+	}
+	
+	public String makeQueryUseTicketList(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+				.queryParam("selDate", cri.getSelDate())
+				.queryParam("keyword", cri.getKeyword())
 				.build();
 
 		return uriComponents.toUriString();
