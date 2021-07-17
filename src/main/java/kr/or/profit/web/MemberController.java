@@ -235,6 +235,7 @@ public class MemberController {
 			session.setAttribute("memberId", membervo.getMemberId());
 			session.setAttribute("memberNickname", membervo.getMemberNickname());
 			session.setAttribute("memberGubun", membervo.getMemberGubun());
+			session.setAttribute("trainerChatFlag", "N");
 			msg = (String) session.getAttribute("returnUrl");
 			System.out.println(msg);
 			jsonObject.put("sts", "OK");

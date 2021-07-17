@@ -3,6 +3,7 @@ package kr.or.profit.web;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +56,16 @@ public class DietController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DietController.class);
 	
+	
+	//민선 추가
+	@RequestMapping(value = "changeSessionYAjax.do", method = RequestMethod.POST)
+	public @ResponseBody String changeSessionY(@RequestParam String memberId, HttpServletRequest request) throws Exception{
+		HttpSession session = request.getSession();
+		session.setAttribute("trainerChatFlag", "Y");
+		String msg = "ok";
+		return msg;
+	}
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -61,6 +73,13 @@ public class DietController {
 	public String chatList(HttpServletRequest request , Model model, Criteria cri) throws Exception{
 		HttpSession session = request.getSession();
 		
+//		 Enumeration<?> se = session.getAttributeNames();
+		  
+//		  while(se.hasMoreElements()){
+//		   String getse = se.nextElement()+"";
+//		   System.out.println("@@@@@@@ session : "+getse+" : "+session.getAttribute(getse));
+//		  }
+
 		String memberId = (String) session.getAttribute("memberId");
 		if(memberId == null) {
 			return "member/loginForm";
@@ -84,7 +103,7 @@ public class DietController {
 		}else {
 			model.addAttribute("profileFlag", "ok");
 		}
-		
+		cri.setPerPageNum(6);
 		//상담 프로필 목록 가져오기
 		List<Map<String, Object>> chatList = dietService.selectChatProflieList(cri);
 		
