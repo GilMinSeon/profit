@@ -35,6 +35,39 @@
 </style>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
 <script>
+$(function(){
+	memberGubun = "${sessionScope.memberGubun}";
+	trainerId = "${sessionScope.memberId}";
+	
+	//최초연결
+ 	connect();
+//	<c:if test="${sessionScope.trainerChatFlag eq 'Y'}">
+//		$("#${sessionScope.memberId}").attr("src", "./resources/img/common/chat1.png")
+//	</c:if>
+	
+	
+	//트레이너가 "상담받기" 클릭했을때
+	$('#btnAdd').on('click', function(evt) {
+		
+	  	evt.preventDefault();
+		if (webSocket.readyState !== 1) return;
+		  	
+		//let msg = $('input#msg').val();
+		webSocket.send("add," + trainerId);
+	});
+	
+	//인풋박스 메세지 보내기
+/* 	$('#btnSend').on('click', function(evt) {
+		
+	  	evt.preventDefault();
+		if (webSocket.readyState !== 1) return;
+		  	
+		let msg = $('input#msg').val();
+		webSocket.send(msg);
+	}); */
+	
+});
+
 var webSocket = null;
 function connect(){
 	var ws = new WebSocket("ws://localhost:9999/websocket/echo.do");
@@ -62,12 +95,15 @@ function connect(){
 
 //프로세스 오픈
 function processOpen() {
+	//connectionType = "firstConnection";
 	var command = "firstConnection";
 	var memberId = "${sessionScope.memberId}";
+// 	var trainerChatFlag = "${sessionScope.trainerChatFlag}";
+
+	fn_changeSessionY();
 	
-	webSocket.send(JSON.stringify({ "command" : command, "memberId" : memberId}));
+	webSocket.send(JSON.stringify({ "command" : command, "memberId" : memberId, "trainerChatFlag" : "Y" }));
 	console.log("processOpen");
-	//여기서 보냈으니까 밑에서 받을것
 }
 
 //프로세스 중
@@ -75,14 +111,14 @@ function processMessage(message) {
 	//var jsonData = JSON.parse("message.data");
 	console.log("화면 두번째 메서드");
 	var str = message.data;
-	console.log(str)
 	var arr = str.split(",");
-	console.log("여기여기")
+	
 	
 	console.log(arr)
-	if(arr[0] == "first"){
-		console.log(arr[2])
+	if(arr[0] == "first" && arr[2] == "Y"){
+		$("#"+arr[1]+"").attr("src", "./resources/img/common/chat1.png")
 	}
+	location.reload();
 	
 	
 	
@@ -122,33 +158,63 @@ function processMessage(message) {
 }
 
 
-$(function(){
-	memberGubun = "${sessionScope.memberGubun}";
-	trainerId = "${sessionScope.memberId}";
-
-	connect();
-	
-	//트레이너가 "상담받기" 클릭했을때
-	$('#btnAdd').on('click', function(evt) {
+function displayUsers(userList) {
+	var username;
+	$("#users tr:not(:first)").remove();
+	for (var i=0; i<userList.length; i++) {
+		if("${loginVO.name}"==userList[i]) {
+			username = userList[i]+"(me!)";
+		} else{
+			username = userList[i];
+		}
+		$.newTr = $("<tr id="+userList[i]+" onclick='trClick(this)'><td>"+username+"</td></tr>");
+		//append
+		$("#users").last().append($.newTr);
 		
-	  	evt.preventDefault();
-		if (webSocket.readyState !== 1) return;
-		  	
-		//let msg = $('input#msg').val();
-		webSocket.send("add," + trainerId);
-	});
+	}
+}
 
-	
-});
+
+
+
+
+
+
 
 function fn_showTrainer(){
+	//var memberId = "${sessionScope.memberId}";
+	//$('#trainers > tbody:last').append('<tr><td>HELLO world</td><td>' + memberId + '</td></tr>');
 	memberId = "${sessionScope.memberId}";
+	connect();
 	$("#"+memberId+"").attr("src", "./resources/img/common/chat1.png")
 	
 }
 
 
+function fn_changeSessionY(){
+	var memberId = "${sessionScope.memberId}";
+	$.ajax({
+		type : "POST",
+		data : "memberId=" + memberId,
+		url : "changeSessionYAjax.do",
+		dataType : "text", 
+		success : function(result) {
+			if (result == "no") {
+				console.log("세션 값 바꾸기 문제 발생");
+			}
+// 			location.reload();
+		},
+		error : function() {
+			alert("오류발생");
+		}
+
+	})
+}
+
+
 </script>
+
+
 </head>
 <body>
 <!-- Breadcrumb Begin -->
@@ -192,7 +258,7 @@ function fn_showTrainer(){
             <div class="col-lg-4 col-md-6" style="margin-bottom: 100px;">
             <div class="single-trainer-item" style="position: relative">
             	<h3>        
-            		<input type="button" value="상담받기" id="btnAdd">
+            		<input type="button" value="상담받기" id="btnAdd" onclick="connect()">
             		<input type="button" value="상담그만">
             	</h3>
             	<br><br>
