@@ -38,7 +38,7 @@ public interface AdminSalesService {
 	List<Map<String, Object>> selectAccountList(Map<String, Object> info) throws Exception;
 
 	//정산 pdf 합계정보
-	List<?> selectAccountSumList(Map<String, Object> info) throws Exception;
+	List<Map<String, Object>>  selectAccountSumList(Map<String, Object> info) throws Exception;
 
 
 

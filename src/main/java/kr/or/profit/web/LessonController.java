@@ -73,11 +73,7 @@ public class LessonController {
     * @return
     */
    @RequestMapping(value = "lessonList.do",  method = {RequestMethod.GET, RequestMethod.POST})
-   public String lessonList(@ModelAttribute("lessonVO") LessonVO lessonVO, AttachFileVO fileVO, Model model, HttpServletRequest request,
-		   Criteria cri,
-		   @RequestParam(value="selCate", required=false) String selCate, 
-		   @RequestParam(value="selLev", required=false) String selLev,
-		   @RequestParam(value="keyword", required=false) String keyword) throws Exception  {
+   public String lessonList(Locale locale, Model model, Criteria cri, HttpServletRequest request) throws Exception  {
 	   
 	   HttpSession session = request.getSession();
 	   String memberId = (String) session.getAttribute("memberId");
@@ -86,24 +82,8 @@ public class LessonController {
 		   memberId = "";
 	   }
 	   
-//	  Map<String, Object> map = new HashMap<>();
-	  selCate = request.getParameter("selCate");
-	  selLev = request.getParameter("selLev");
-	  keyword = request.getParameter("keyword");
-	  System.out.println("selCate " +selCate );
-	  System.out.println("selLev " +selLev );
-	  System.out.println("keyword " +keyword );
-	  
-//	  map.put("selCate", selCate);
-//	  map.put("selLev", selLev);
-//	  map.put("keyword", keyword);	
-//	  map.put("memberId", memberId);
-	  
+	  cri.setPerPageNum(9);
 	  cri.setMemberId(memberId);
-	  cri.setSelCate(selCate);
-	  cri.setSelLev(selLev);
-	  cri.setKeyword(keyword);
-	 
 	  
       List<?> lessonList = lessonService.selectLessonList(cri);
       model.addAttribute("resultList", lessonList);
@@ -121,10 +101,6 @@ public class LessonController {
    	
    	  model.addAttribute("pageMaker", pageMaker);
    	  
-   	//입력한 검색어 유지시키기
-   	  model.addAttribute("selCate", selCate);
-   	  model.addAttribute("selLev", selLev);
-   	  model.addAttribute("keyword", keyword);
    	  
       //트레이너인지 아닌지 여부
       int trainerFlag = lessonService.checkTrainer(memberId);
@@ -900,28 +876,7 @@ public class LessonController {
        return msg;
    }
    
-//   /**
-//    * 동영상시간 lessonDetail로 보내기
-//    * @param request
-//    * @param model
-//    * @return
-//    * @throws Exception
-//    */
-//   @RequestMapping(value = "sendTimeAjax.do")
-//   @ResponseBody
-//   public String sendTime(HttpServletRequest request, Model model) throws Exception {
-//
-//	  String time = request.getParameter("time");
-//	  System.out.println("영상재생시간가져오니 "+time);
-//	  model.addAttribute("time", time);
-////      String msg = "ng";
-////      
-////      if(cnt > 0) {
-////         msg = "ok";
-////      }
-////      System.out.println("얌마"+msg);
-//       return "redit:/lesson/lessonDetail";
-//   }
-//   
+   
+
    
 }

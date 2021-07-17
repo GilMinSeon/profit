@@ -135,19 +135,19 @@ p{
 		<td>(주)프로핏</td>
 		<td>${result.gubun}</td>
 		<td>${result.memberName}</td>
-		<td>${result.cnt}</td>
-		<td>${result.sum}원</td>
-		<td>${result.fee}</td>
-		<td>${result.realamount}</td>
+		<td>${result.cnt} 건</td>
+		<td>${result.sum} 원</td>
+		<td>${result.fee} 원</td>
+		<td>${result.realamount} 원</td>
 	</tr>
 	</c:forEach>
 	
 	<tr class="total">
 		<td colspan="3">합계</td>
-		<td>${remainInfo.cnt}개</td>
-		<td>${remainInfo.vat}원</td>
-		<td>${remainInfo.money}원</td>
-		<td>${remainInfo.money}원</td>
+		<td>${AccountSumList[0]['totalcnt']}건</td>
+		<td>${AccountSumList[0]['total']}원</td>
+		<td>${AccountSumList[0]['totalfee']}원</td>
+		<td>${AccountSumList[0]['totalrealamount']}원</td>
 	</tr>
 </table>
 <br><br><br>

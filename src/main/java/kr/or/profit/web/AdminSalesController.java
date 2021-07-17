@@ -256,7 +256,8 @@ public class AdminSalesController {
 		List<Map<String, Object>> AccountList = adminSalesService.selectAccountList(info);
 		model.addAttribute("AccountList", AccountList);
 		
-		List<?> AccountSumList = adminSalesService.selectAccountSumList(info);
+		List<Map<String, Object>> AccountSumList = adminSalesService.selectAccountSumList(info);
+		model.addAttribute("AccountSumList", AccountSumList);
 		
 		System.out.println("모델...");
 		System.out.println(model.toString());
