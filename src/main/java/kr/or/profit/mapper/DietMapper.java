@@ -17,7 +17,15 @@ import kr.or.profit.vo.ReplyVO;
 
 @Mapper("dietMapper")
 public interface DietMapper {
-
+	
+	
+   //웹소켓
+   int updateChatNowFlagToY(String memberId) throws Exception;
+   int updateChatNowFlagToN(String memberId) throws Exception;
+   
+   //웹소켓 세션용 트레이너 리스트
+   List<ChatProfileVO> websocketSessionList() throws Exception;
+	
 	//선택한 이용권 정보 조회
 	Map<String, Object> selectTicketCategory(String ticketCategorySeq) throws Exception;
 	
@@ -90,6 +98,4 @@ public interface DietMapper {
 	//채팅 테이블에 데이터 추가
 	int insertChatting(ChattingVO chattingVO) throws Exception;
 	
-	//웹소켓 세션용 트레이너 리스츠
-	List<MemberVO> websocketSessionList() throws Exception;
 }

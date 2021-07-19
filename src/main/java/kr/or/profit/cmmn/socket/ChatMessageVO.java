@@ -6,6 +6,14 @@ public class ChatMessageVO {
 	private String memberGubun;
 	private String trainerChatFlag;
 	private String command;
+	private String connectingUser;
+	
+	public String getConnectingUser() {
+		return connectingUser;
+	}
+	public void setConnectingUser(String connectingUser) {
+		this.connectingUser = connectingUser;
+	}
 	public String getConnectionType() {
 		return connectionType;
 	}

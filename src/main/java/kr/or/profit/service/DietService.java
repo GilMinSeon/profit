@@ -11,7 +11,12 @@ import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ReplyVO;
 
 public interface DietService {
-
+	
+	public int updateChatNowFlagToY(String memberId) throws Exception;
+	public int updateChatNowFlagToN(String memberId) throws Exception;
+	//웹소켓 세션용 트레이너 리스트
+	public List<ChatProfileVO> websocketSessionList() throws Exception;
+	
 	//선택한 이용권 정보 조회
 	public Map<String, Object> selectTicketCategory(String ticketCategorySeq) throws Exception;	
 	
@@ -84,7 +89,5 @@ public interface DietService {
 	//채팅 테이블에 데이터 추가
 	public int insertChatting(ChattingVO chattingVO) throws Exception;
 	
-	//웹소켓 세션용 트레이너 리스츠
-	public List<MemberVO> websocketSessionList() throws Exception;
 	
 }
