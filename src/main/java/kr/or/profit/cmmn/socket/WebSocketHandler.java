@@ -1,9 +1,11 @@
 package kr.or.profit.cmmn.socket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.context.request.RequestContextHolder;
@@ -15,8 +17,13 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.or.profit.service.DietService;
+import kr.or.profit.vo.MemberVO;
+
 public class WebSocketHandler extends TextWebSocketHandler{
 	
+	@Resource(name = "dietService")
+	private DietService dietService;
 	
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	
@@ -26,6 +33,9 @@ public class WebSocketHandler extends TextWebSocketHandler{
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		System.out.println("첫번째");
 		System.out.println("afterConnectionEstablished:" + session);
+		
+		System.out.println(session.getAttributes());
+		
 		sessions.add(session);
 	}
 	
@@ -56,26 +66,43 @@ public class WebSocketHandler extends TextWebSocketHandler{
 		if(chatMessage.getCommand().equals("firstConnection")) {
 			System.out.println("first커맨드");
 			
+			List<MemberVO> list = websocketSessionList();
+			
+			for(int i=0; i<list.size(); i++) {
+				System.out.println(list.get(i).getAddFlag());
+				System.out.println(list.get(i).getMemberId());
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("memberId", list.get(i).getMemberId());
+				map.put("addFlag", list.get(i).getAddFlag());
+				session.getAttributes().put("trainerList", map);
+			}
+			
 			String memberId = chatMessage.getMemberId();
 			System.out.println(memberId);
 			
+			
+			
 			String a = (String) session.getAttributes().get("a");
-			//request
-			//HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-			//String addFlag = (String) req.getServletContext().getAttribute("addFlag");
-			//System.out.println(addFlag);
-			//if(addFlag == null) {
-			//	addFlag = "없다";
-			//}
+//			List<MemberVO> resultList = (List<MemberVO>) session.getAttributes().get("trainerList");
 			
+//			for(int i=0;i<resultList.size();i++) {
+//				System.out.println("for문");
+//				System.out.println(resultList.get(i).getAddFlag());
+//			}
 			
-			TextMessage firstMsg = new TextMessage("first," + memberId + "," + a);
+//			TextMessage newMsg = new TextMessage("first"+resultList.get(0).getMemberId()+ "," +resultList.get(0).getAddFlag() + "," 
+//													+resultList.get(1).getMemberId()+ "," +resultList.get(1).getAddFlag()+ ","
+//													+resultList.get(2).getMemberId()+ "," +resultList.get(2).getAddFlag()
+//												);
+			
+			//TextMessage firstMsg = new TextMessage("first," + memberId + "," + a);
 			int cnt = 0;
-			for(WebSocketSession sess : sessions) {
-				sess.sendMessage(firstMsg);
-				System.out.println(cnt);
-				cnt++;
-			}
+//			for(WebSocketSession sess : sessions) {
+//				sess.sendMessage(newMsg);
+//				System.out.println(cnt);
+//				System.out.println(newMsg);
+//				cnt++;
+//			}
 			
 		}else if(chatMessage.getCommand().equals("add")) {
 			System.out.println("add커맨드");
@@ -145,4 +172,13 @@ public class WebSocketHandler extends TextWebSocketHandler{
 		return memberId;
 	}
 	
+	
+	public List<MemberVO> websocketSessionList() throws Exception{
+		List<MemberVO> list = dietService.websocketSessionList();
+		return list;
+	}
+	
+	
 }
+
+

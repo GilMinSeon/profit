@@ -12,6 +12,7 @@ import kr.or.profit.vo.ChatProfileVO;
 import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ReplyVO;
 
 @Mapper("dietMapper")
@@ -88,4 +89,7 @@ public interface DietMapper {
 	
 	//채팅 테이블에 데이터 추가
 	int insertChatting(ChattingVO chattingVO) throws Exception;
+	
+	//웹소켓 세션용 트레이너 리스츠
+	List<MemberVO> websocketSessionList() throws Exception;
 }

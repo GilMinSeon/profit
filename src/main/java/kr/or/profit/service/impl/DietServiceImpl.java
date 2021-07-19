@@ -18,6 +18,7 @@ import kr.or.profit.vo.ChattingVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.LessonVO;
+import kr.or.profit.vo.MemberVO;
 import kr.or.profit.vo.ReplyVO;
 
 @Service("dietService")
@@ -181,6 +182,12 @@ public class DietServiceImpl implements DietService {
 	@Override
 	public int insertChatting(ChattingVO chattingVO) throws Exception {
 		return dietDAO.insertChatting(chattingVO);
+	}
+
+
+	@Override
+	public List<MemberVO> websocketSessionList() throws Exception {
+		return dietDAO.websocketSessionList();
 	}
 
 }

@@ -80,11 +80,15 @@ function processMessage(message) {
 	console.log("여기여기")
 	
 	console.log(arr)
-	if(arr[0] == "first"){
-		console.log(arr[2])
+	if(arr[0] == "add"){
+		
+		$("#"+arr[1]+"").attr("src", "./resources/img/common/chat1.png")
 	}
 	
-	
+	if (jsonData.allUsers != null) {
+		//다른 사용자 접속 시,
+		displayUsers(jsonData.allUsers);
+	}  
 	
 	
 /* 	console.log("프로세스중!!!")
@@ -121,6 +125,41 @@ function processMessage(message) {
 	} */
 }
 
+function displayUsers(userList) {
+	var username;
+
+	for (var i=0; i<userList.length; i++) {
+		username = userList[i];
+		
+		alert(username);
+		
+		$("#"+username).attr("src", "./resources/img/common/chat1.png");
+
+		if("${loginVO.name}"==userList[i]) {
+			username = userList[i]+"(me!)";
+			// 나의 이미지 정보 표시
+			
+		} else{
+			
+			var trainerflag = $("#" + username).data("trainerflag");
+
+			if ("Y" == trainerflag ){
+
+				// 로그인 사용자 && 디비에 컬럼 값이 Y 사용자만...
+				// 트레인 가능한 사용자 목록에 이미지 경로 변경해주기..
+				// 트레인 접속 여부를 체크 하여 이미지를 변경 (활성화 이미지로...)
+				//data-trainerflag="Y"
+				// <img id="아이디"   src="./resources/img/common/chat1.png" style="width: 35px; height: 35px;"> 변경... 이미지 SRC 경로만 변경해주세요..
+				
+				
+			}
+			 
+		}
+		
+	}
+}
+
+
 
 $(function(){
 	memberGubun = "${sessionScope.memberGubun}";
@@ -128,14 +167,67 @@ $(function(){
 
 	connect();
 	
+	//트레이너가 "상담그만받기" 클릭했을때
+	// 나의 프로필에 data-trainerflag="N" 변경
+	$('#btnStop').on('click', function(evt) {
+		
+	  	evt.preventDefault();
+
+	  	alert($("#${sessionScope.memberId}").data("trainerflag"));
+        $.ajax({
+            type : 'post',
+            url : '/상담여부 Ajax Url 등록 해주세요.. db update',
+            data : formData,
+            processData : false,
+            contentType : false,
+            async:false,
+            dataType:"text",
+            success : function(data){
+            	 
+            	// 나의 프로필에 data-trainerflag="Y" 변경
+            	$("#${sessionScope.memberId}").data("trainerflag", "N");
+         },
+            error : function(error){
+               alert("프로필 등록에 실패하였습니다. 다시 시도해 주세요.");
+               console.log(error);
+               console.log(error.status);
+            }
+            
+            
+         })
+         
+ 
+	});
+
+	
 	//트레이너가 "상담받기" 클릭했을때
 	$('#btnAdd').on('click', function(evt) {
 		
 	  	evt.preventDefault();
-		if (webSocket.readyState !== 1) return;
-		  	
-		//let msg = $('input#msg').val();
-		webSocket.send("add," + trainerId);
+
+        $.ajax({
+            type : 'post',
+            url : '/상담여부 Ajax Url 등록 해주세요.. db update',
+            data : formData,
+            processData : false,
+            contentType : false,
+            async:false,
+            dataType:"text",
+            success : function(data){
+         
+            	// 나의 프로필에 data-trainerflag="Y" 변경
+            	$("#${sessionScope.memberId}").data("trainerflag", "Y");
+         },
+            error : function(error){
+               alert("프로필 등록에 실패하였습니다. 다시 시도해 주세요.");
+               console.log(error);
+               console.log(error.status);
+            }
+            
+            
+         })
+         
+ 
 	});
 
 	
@@ -193,7 +285,7 @@ function fn_showTrainer(){
             <div class="single-trainer-item" style="position: relative">
             	<h3>        
             		<input type="button" value="상담받기" id="btnAdd">
-            		<input type="button" value="상담그만">
+            		<input type="button" value="상담그만" id="btnStop">
             	</h3>
             	<br><br>
             	<input type="text" id="msg">
@@ -215,7 +307,7 @@ function fn_showTrainer(){
                 <div class="col-lg-4 col-md-6" style="margin-bottom: 100px;">
                     <div class="single-trainer-item" style="position: relative">
                     	<div style="position: absolute;left: 10px;top: 10px;" >
-                        	<img id="${result.memberId }" src="./resources/img/common/chat3.png" style="width: 35px; height: 35px;">
+                        	<img id="${result.memberId }" data-trainerflag="Y" src="./resources/img/common/chat3.png" style="width: 35px; height: 35px;">
                         </div>
                         <img src="${result.filePath}" style="width: 360px;height: 360px" alt="">
                         <div class="trainer-text">
