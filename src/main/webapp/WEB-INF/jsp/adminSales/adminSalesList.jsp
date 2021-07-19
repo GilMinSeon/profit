@@ -34,6 +34,28 @@ function fn_detail(ele){
 	location.href="adminSalesDetail.do?yyyymm="+yyyymm + "&gubun=" + gubun;
 }
 
+function fn_pdf(cnt){
+// 	vtr = $(cnt).parents('tr');
+// 	payResult = $(vtr).find('.payResult').text();
+// 	yyyymm = $(vtr).find('.yyyymm').val();
+// 	gubun = $(vtr).find('.gubun').val();
+// 	console.log("payResult " + payResult)
+// 	console.log("yyyymm " + yyyymm);
+// 	console.log("gubun " + gubun);
+
+	var accountFlag = $("#accountFlag" + cnt).val();
+	console.log("accountFlag "+accountFlag);
+	
+	if(accountFlag == '미정산'){
+		alert("해당 월은 아직 정산되지 않았습니다.");
+		return;
+	}
+	$("#frm" + cnt).submit();
+
+	
+}
+
+
 </script>
 <style>
 .classes__filter form .class__filter__btn_re {
@@ -46,6 +68,12 @@ function fn_detail(ele){
 .ui-datepicker-calendar {
     display: none;
 }  
+#openPdf{
+	color:#17a2b8;
+}
+#openPdf:hover{
+	color: #52E4DC;
+}
 </style>
 <body>
 
@@ -116,25 +144,33 @@ function fn_detail(ele){
 				</thead>
 				<tbody>
 					<c:forEach var="result" items="${adminSalesList}" varStatus="status">
+						<form id="frm${status.count}" action="salesAccountPdf.do" method="post">
 					<tr>
 						<td style="vertical-align: middle;">
-							<input type="hidden" class="yyyymm" name="yyyymm${status.index}" value="${fn:substring(result.yyyymm,0,7)}"/>
-							<input type="hidden" class="gubun" name="gubun${status.index}" value="${result.gubun}" />
+							<input type="hidden" class="yyyymm" name="yyyymm" value="${fn:substring(result.yyyymm,0,7)}"/>
+							<input type="hidden" class="gubun" name="gubun" value="${result.gubun}" />
 							${status.count}
-							
+						
 						</td>
-						<td style="vertical-align: middle;"><span>[${fn:substring(result.yyyymm,0,7)}]</span>&nbsp;${result.gubun}</td>
 						<td style="vertical-align: middle;">
-							<c:if test="${result.accountflag eq '미정산'}"><span id="payResult" style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">미정산</span></c:if>
-							<c:if test="${result.accountflag eq '정산'}"><span id="payResult" style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;padding-left:8px;">&nbsp;&nbsp;정산&nbsp;&nbsp;</span></c:if>	
+							<a onclick="fn_pdf(${status.count})" style="cursor: pointer;" id="openPdf"><span>[${fn:substring(result.yyyymm,0,7)}]</span>&nbsp;${result.gubun}</a>
 						</td>
+						<td style="vertical-align: middle;">
+							<c:if test="${result.accountflag eq '미정산'}"><span class="payResult" id="payResult${status.index}" style="background-color: #D16666;color: white;font-weight: bold;padding: 7px;">미정산</span></c:if>
+							<c:if test="${result.accountflag eq '정산'}"><span class="payResult" id="payResult${status.index}" style="background-color: #6ABD66;color: white;font-weight: bold;padding: 7px;padding-left:8px;">&nbsp;&nbsp;정산&nbsp;&nbsp;</span></c:if>	
+						<input type="hidden" id="accountFlag${status.count}" name="accountFlag" value="${result.accountflag}">
+						</td>
+						
 						<td style="vertical-align: middle;">
 							<button type="button" id="detailBtn${status.index}" class="btn btn-outline-info" onclick="fn_detail(this)">상세</button>
 						</td>
 					</tr>
+						</form>
 					</c:forEach>
 				</tbody>
 			</table>
+			
+   		 	
 			<!-- 페이징처리 -->
             	<div class="col-lg-12">
 					<div class="classes__pagination">

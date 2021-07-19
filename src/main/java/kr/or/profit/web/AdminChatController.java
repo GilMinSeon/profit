@@ -33,6 +33,9 @@ public class AdminChatController {
 			@RequestParam(value = "selIdentity", required = false) String selIdentity,
 			@RequestParam(value = "selDate", required = false) String selDate,
 			@RequestParam(value = "searchKeyword", required = false) String searchKeyword) throws Exception{
+		
+		//체크체크
+		//request.getServletContext().setAttribute(name, object);
 			
 		System.out.println("selStatus : " + selStatus);
 		System.out.println("selIdentity : " + selIdentity);
