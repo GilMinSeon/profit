@@ -27,7 +27,7 @@ public class RecipeServicempl implements RecipeService {
 		return mapper.recipeList(cri);
 	}
 
-	//글등록
+	//글등 록
 	@Override
 	public int recipeAddInsert(Map<String, Object> map) throws Exception {
 		System.out.println("서비스옴 글등록 " + map);

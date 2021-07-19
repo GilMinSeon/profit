@@ -33,18 +33,6 @@ public class QnaController {
 	@Resource(name = "communityService")
 	private CommunityService communityService;
 
-	/**
-	 * 관리자 목록(listAll)
-	 *
-	 * @author 박상빈
-	 * @param map, ssion, model map 사용안함 memberId 로그인 아이디 가지고옴 model로 리턴
-	 * @return "qna/qnaList"
-	 * @exception Exception
-	 */
-	//	public List<?> listAll(@RequestParam Map<String, Object> map, HttpSession ssion, ModelMap model) throws Exception {
-	//		List<?> qnaList = qnaService.qnaListAll();
-	//		return qnaList;
-	//	}
 
 	/**
 	 * 문의하기 목록(qnaList)
@@ -66,9 +54,9 @@ public class QnaController {
 
 		cri.setMemberId(memberId);
 
-		System.out.println("레시피 목록 온다" + memberId);
+		System.out.println("문의하기 목록 온다" + memberId);
 		List<?> qnaList = qnaService.qnaList(cri);
-		System.out.println("문의하기 목록돌아옴" + qnaList);
+		System.out.println("문의하기 목록돌아옴 data " + qnaList);
 		model.addAttribute("data", qnaList);
 
 		// 페이징처리
