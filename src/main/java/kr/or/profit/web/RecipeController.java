@@ -34,7 +34,7 @@ public class RecipeController {
 	private CommunityService communityService;
 
 	/**
-	 * 레시피 목록(recipeList)
+	 * 레시피 목록(recipe List)
 	 *
 	 * @author 박상빈
 	 * @param model
