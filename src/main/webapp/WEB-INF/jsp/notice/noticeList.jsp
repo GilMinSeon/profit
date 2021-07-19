@@ -47,7 +47,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="data" items="${datta}" varStatus="status">
+						<c:forEach var="data" items="${data}" varStatus="status">
 							<tr>
 								<th scope="row">${data.rm}</th>
 								<td colspan="5">
@@ -55,7 +55,14 @@
 										<a href="${path}noticeDetail.do?communitySeq=${data.communitySeq}" style="text-decoration: none; color: blue;">${data.commonTitle} </a>
 									</form>
 								</td>
-								<td>${data.fileRealName}</td>
+								<c:if test="${data.fileCnt ne '0'}">
+									<td>
+										<img src="./resources/img/common/logo.png" style="width: 20px; height: 10px; opacity: 0.5;">
+									</td>
+								</c:if>
+								<c:if test="${data.fileCnt eq '0'}">
+									<td></td>
+								</c:if>
 								<td>${data.inUserId}</td>
 								<td>${data.inDate}</td>
 								<td>${data.commonHit}</td>

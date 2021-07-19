@@ -34,61 +34,55 @@
 
 <!-- 	글목록 -->
 	<select id="noticeList" parameterType="Criteria" resultType="egovMap">
-				SELECT
-			TT.RM, TT.COMMUNITY_SEQ, TT.COMMON_HIT, TT.COMMUNITY_CATEGORY_SEQ, TT.FILE_SEQ, TT.BOARD_GOOD,
-            TT.BOARD_BOOK, TT.GOOD_FLAG,
-            TT.BOOK_FLAG, TT.COMMON_TITLE,
-            TT.COMMON_CONTENT, TT.IN_USER_ID, TO_CHAR(TT.IN_DATE,'YYYY-MM-DD') IN_DATE, TT.FILE_PATH,
-            TT.BOARD_REPLY, TT.COMMUNITY_CATEGORY_NAME,
-            TT.FILE_REAL_NAME
-	    FROM
-	    	(
-	    	SELECT ROWNUM AS RM, TBL.COMMUNITY_SEQ , TBL.COMMON_HIT, TBL.COMMUNITY_CATEGORY_SEQ ,
-					TBL.FILE_SEQ, TBL.BOARD_GOOD, TBL.BOARD_BOOK, TBL.GOOD_FLAG,
-					TBL.BOOK_FLAG, TBL.COMMON_TITLE,
-					TBL.COMMON_CONTENT, TBL.IN_USER_ID, TBL.IN_DATE, TBL.FILE_PATH,
-					TBL.BOARD_REPLY, TBL.COMMUNITY_CATEGORY_NAME,
-                    TBL.FILE_REAL_NAME
-			FROM (
-			    SELECT A.COMMUNITY_SEQ,A.COMMUNITY_CATEGORY_SEQ,A.FILE_SEQ,
-			            (SELECT COUNT(*) FROM BOOKGOOD BK WHERE BOOKGOOD_GUBUN = 'G' AND BK.COMMUNITY_SEQ = A.COMMUNITY_SEQ) AS BOARD_GOOD,
-			            (SELECT COUNT(*) FROM BOOKGOOD BK WHERE BOOKGOOD_GUBUN = 'B' AND BK.COMMUNITY_SEQ = A.COMMUNITY_SEQ) AS BOARD_BOOK,
-			            (SELECT COUNT(*) FROM BOOKGOOD BK WHERE MEMBER_ID=#{memberId} AND BOOKGOOD_GUBUN = 'G' AND BK.COMMUNITY_SEQ = A.COMMUNITY_SEQ) AS GOOD_FLAG,
-			            (SELECT COUNT(*) FROM BOOKGOOD BK WHERE MEMBER_ID=#{memberId} AND BOOKGOOD_GUBUN = 'B' AND BK.COMMUNITY_SEQ = A.COMMUNITY_SEQ) AS BOOK_FLAG,
-			          CASE WHEN LENGTH(A.COMMON_TITLE) > 15 THEN SUBSTR(A.COMMON_TITLE, 0, 15) || '...' ELSE A.COMMON_TITLE END AS COMMON_TITLE,
-			          A.COMMON_CONTENT,
-			          A.COMMON_HIT,
-			          A.IN_USER_ID,
-			          A.IN_DATE,
-			          B.FILE_PATH,
-                      B.FILE_REAL_NAME,
-			          NVL(D.BOARD_REPLY,0) AS BOARD_REPLY,
-			          E.COMMUNITY_CATEGORY_NAME
-			    FROM
-			          COMMUNITY A
-			          LEFT JOIN
-			          ATTACH_FILE B ON
-			          (A.FILE_SEQ = B.FILE_SEQ)
-			          LEFT JOIN
-			          (
-			          SELECT COMMUNITY_SEQ,
-			          COUNT(*) AS BOARD_REPLY
-			          FROM REPLY
-			          WHERE REPLY_DEL_FLAG='N'
-			          GROUP BY
-			          COMMUNITY_SEQ
-			          ) D ON
-			          (A.COMMUNITY_SEQ = D.COMMUNITY_SEQ)
-			          LEFT JOIN
-			          COMMUNITY_CATEGORY E ON
-			          (A.COMMUNITY_CATEGORY_SEQ =
-			          E.COMMUNITY_CATEGORY_SEQ)
-			    WHERE
-			          A.COMMON_SEQ = 7 AND A.COMMON_DEL_FLAG = 'N'
-			          AND 1=1
-				) TBL
-			) TT
-		WHERE TT.RM BETWEEN #{rowStart} AND #{rowEnd}
+		SELECT *
+		FROM
+		(
+		SELECT ROWNUM AS RN, COMMUNITY_SEQ, COMMON_TITLE, IN_USER_ID, TO_CHAR(IN_DATE, 'YYYY-MM-DD') IN_DATE, COMMON_HIT, FILE_SEQ, FILE_CNT
+		FROM
+		(
+		SELECT
+		        TT.COMMUNITY_SEQ, TT.COMMON_TITLE, TT.IN_USER_ID, TT.IN_DATE,TT.COMMON_HIT, TT.FILE_SEQ, COUNT(FILE_PATH) AS FILE_CNT
+		       FROM
+		          (
+		             SELECT A.COMMUNITY_SEQ,A.COMMUNITY_CATEGORY_SEQ,A.FILE_SEQ,
+		                   CASE WHEN LENGTH(A.COMMON_TITLE) > 15 THEN SUBSTR(A.COMMON_TITLE, 0, 15) || '...' ELSE A.COMMON_TITLE END AS COMMON_TITLE,
+		                   A.COMMON_CONTENT,
+		                   A.COMMON_HIT,
+		                   A.IN_USER_ID,
+		                   A.IN_DATE,
+		                   B.FILE_PATH,
+		                      B.FILE_REAL_NAME,
+		                   NVL(D.BOARD_REPLY,0) AS BOARD_REPLY,
+		                   E.COMMUNITY_CATEGORY_NAME
+		             FROM
+		                   COMMUNITY A
+		                   LEFT JOIN
+		                   ATTACH_FILE B ON
+		                   (A.FILE_SEQ = B.FILE_SEQ)
+		                   LEFT JOIN
+		                   (
+		                   SELECT COMMUNITY_SEQ,
+		                   COUNT(*) AS BOARD_REPLY
+		                   FROM REPLY
+		                   WHERE REPLY_DEL_FLAG='N'
+		                   GROUP BY
+		                   COMMUNITY_SEQ
+		                   ) D ON
+		                   (A.COMMUNITY_SEQ = D.COMMUNITY_SEQ)
+		                   LEFT JOIN
+		                   COMMUNITY_CATEGORY E ON
+		                   (A.COMMUNITY_CATEGORY_SEQ =
+		                   E.COMMUNITY_CATEGORY_SEQ)
+		             WHERE
+		                   A.COMMON_SEQ = 7 AND A.COMMON_DEL_FLAG = 'N'
+		                   AND 1=1
+		         ) TT
+		      GROUP BY
+		        TT.COMMUNITY_SEQ, TT.COMMON_TITLE, TT.IN_USER_ID, TT.IN_DATE,TT.COMMON_HIT, TT.FILE_SEQ
+		        ORDER BY IN_DATE DESC
+		)
+		)
+		WHERE RN BETWEEN #{rowStart} AND #{rowEnd}
 	</select>
 
 <!-- 	글 상세보기 -->
