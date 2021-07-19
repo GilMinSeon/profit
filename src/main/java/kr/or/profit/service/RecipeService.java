@@ -46,4 +46,5 @@ public interface RecipeService {
 
 	int recipeSelectBoardCnt(Criteria cri) throws Exception;
 
+
 }

@@ -53,7 +53,7 @@
 }
 </style>
 <script type="text/javascript">
-	//댓글 등록
+	//댓글 등 록
 	function fn_reipeReplyAdd() {
 		var formData = new FormData($('#replyfrm')[0]);
 		$.ajax({

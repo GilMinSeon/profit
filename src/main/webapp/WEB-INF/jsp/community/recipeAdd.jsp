@@ -38,7 +38,7 @@
 </style>
 
 <script type="text/javascript">
-	//섬머노트
+	//섬머노 트
 	$(function() {
 		$('#loading').hide();
 		$('.summernote').summernote({
