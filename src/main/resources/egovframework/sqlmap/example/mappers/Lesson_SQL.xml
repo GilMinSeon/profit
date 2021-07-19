@@ -132,7 +132,6 @@
 	   <!-- 강의 목록조회 --> 
 	    
 	    <select id="selectLessonList"  resultType="egovMap" parameterType="Criteria">	 <!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
-		 
 		 select
 				tt.rm, tt.lesson_seq, tt.lesson_hit, tt.lesson_category_seq, tt.file_seq, tt.lesson_good,
 	            tt.lesson_book, tt.good_flag,
@@ -234,7 +233,6 @@
 	    
 	<!-- 강의 페이징 처리 -->
 		<select id="selectLessonCnt" parameterType="Criteria" resultType="int">
-		    <![CDATA[
 		        select 
 		count(*)
 		from
@@ -296,7 +294,6 @@
 					
 		)
 		order by in_date desc
-		]]>
 		</select>	
 		
 	<!-- 강의상세 페이징 처리 -->
