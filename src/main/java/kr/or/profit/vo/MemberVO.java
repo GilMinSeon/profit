@@ -21,7 +21,17 @@ public class MemberVO {
 	private String blacklistReason;
 	private String bDate;
 	
+	private String addFlag;
 	
+	
+	
+	
+	public String getAddFlag() {
+		return addFlag;
+	}
+	public void setAddFlag(String addFlag) {
+		this.addFlag = addFlag;
+	}
 	public String getBlacklistReason() {
 		return blacklistReason;
 	}
