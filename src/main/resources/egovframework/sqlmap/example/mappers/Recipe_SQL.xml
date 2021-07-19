@@ -17,7 +17,7 @@
 		<result property="upDate" column="UP_DATE"/>
 	</resultMap>
 
-<!-- 레시피 페이징 처리 -->
+<!-- 레시피 페이징 처 리 -->
 	<select id="recipeSelectBoardCnt" parameterType="Criteria" resultType="int">
 	    SELECT
 		    COUNT(*)

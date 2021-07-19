@@ -47,7 +47,7 @@
 
 <body>
 
-	<!-- Breadcrumb Begin -->
+	<!-- Breadcrumb Begi n -->
 	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg">
 		<div class="container">
 			<div class="row">
@@ -190,7 +190,7 @@
 			</div>
 			<div class="row">
 
-				<c:forEach var="data" items="${datta}" varStatus="status">
+				<c:forEach var="data" items="${data}" varStatus="status">
 					<div class="col-lg-4 col-md-6">
 						<div class="classes__item classes__item__page">
 							<div class="classes__item__pic set-bg" data-setbg="${data.filePath}"></div>
