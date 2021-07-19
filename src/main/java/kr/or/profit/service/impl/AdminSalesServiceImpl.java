@@ -80,7 +80,7 @@ public class AdminSalesServiceImpl implements AdminSalesService {
 
 	//정산 pdf 합계정보
 	@Override
-	public List<?> selectAccountSumList(Map<String, Object> info) throws Exception {
+	public List<Map<String, Object>>  selectAccountSumList(Map<String, Object> info) throws Exception {
 		return adminSalesDAO.selectAccountSumList(info);
 	}
 

@@ -5,88 +5,9 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="./resources/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">
 
-// function fn_seljogun(){
-// 	var selCategory = document.getElementById("selCate");
-// 	var selLev = document.getElementById("selLev");
-// 	var searchText = document.getElementById("searchText");
-	
-// 	var sel_cvalue = $("select[name=selCate] option:selected").text();
-// 	var sel_lvalue = $("select[name=selLev] option:selected").text();
-// 	var sel_tvalue = $("input:[name=searchText]").val();
-	
-// 	console.log("sel_cvalue "+sel_cvalue);
-// 	console.log("sel_lvalue "+sel_lvalue);
-// 	console.log("sel_tvalue "+sel_tvalue);
-	
-// 	var param = "";
-// 	param += "dummy=" + Math.random();
-// 	param += "&sel_cvalue=" + sel_cvalue;
-// 	param += "&sel_lvalue=" + sel_lvalue;
-// 	param += "&sel_tvalue=" + sel_tvalue;
-	
-// 	console.log("param "+ param);
-	
-// 	$.ajax({
-// 		type : 'get',
-// 		url : 'searchCateAjax.do',
-// 		data : param,
-// 		async:false,
-// 		dataType:"json",
-// 		success : function(data, textStatus){
-// 			if(data != null){
-// // 				var jsonInfo = JSON.parse(data);
-// 				console.log(data)
-// 				if(data.msg == "ok"){
-// 					var txt = "";
-					
-// 				}
-// 			}else{
-// 				alert("뿡뿡이");
-// 			}
-// 	},
-// 		error : function(error){
-// 			alert("신청이 실패하였습니다. 다시 시도해 주세요.");
-// 			console.log(error);
-// 			console.log(error.status);
-// 		}
-		
-		
-// 	})
-	
-// }
-
-// submit방식
-// $(function(){
-// 	$("#frm").submit(function(){
-// 		var sel_cvalue = $("select[name=selCate] option:selected").text();
-// 	 	var sel_lvalue = $("select[name=selLev] option:selected").text();
-// 	 	var keyword = $("input[name=keyword]").text();
-	 	
-// 		console.log("sel_cvalue "+sel_cvalue);
-// 	 	console.log("sel_lvalue "+sel_lvalue);
-// 	 	console.log("keyword"+keyword);
-	 	
-// 	 	var offset = $('#row_sel').offset();
-// 	 	console.log(offset);
-// 	 	$('html').animate({scrollTop : offset.top}, 1672);
-
-	 	
-	 	
-	 	
-// 	})
-	
-	
-	
-	
-	
-// })
-
-
-
-</script>
 <style>
 
 .classes__item__text .class-btn:hover {
@@ -115,6 +36,8 @@
     padding-top: 10px; 
     padding-bottom: 40px;
 }
+
+
 </style>
 
 <body>
@@ -132,21 +55,29 @@
         </div>
     </section>
     <!-- Breadcrumb End -->
+    
 	<!-- Breadcrumb Begin -->
 	<section class="team spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12" style="height:60px;">
                     <div class="section-title" style="text-align: left">
-                        <h3 style="font-weight: bold;">🏆조회수 TOP 5</h3>
-                    </div>
+                        <h3 style="font-weight: bold;">
+                        	<span style="display: block;color:#444;font-size: 32px;">프로핏</span>
+                        	<span style="display: block;color:#444;font-size: 32px;">추천프로그램👍🏻</span>
+                        </h3>
+                        <p class="slogan" style="margin-top: 0;display: block;margin-block-start: 1em;margin-block-end: 1em;margin-inline-start: 0px;margin-inline-end: 0px;">
+                        마음에 드는 운동프로그램을 선택하세요<br/>
+                        <span class="blinking" style="color:red;">↓ AI의 추천 Pick</span>도 함께 둘러보세요
+                     </div>
                 </div>
             </div>
+            <br/><br/><br/><br/>
             <div class="row">
-                <div class="team__slider owl-carousel">
+                <div class="team__slider owl-carousel" >
 				<c:forEach var="resultTop" items="${resultTopList}" varStatus="status">
 				<c:if test="${resultTop.lessonPrivateFlag eq 'N'}">
-                    <div class="col-lg-6">
+                     <div class="col-lg-6">
                         <div class="team__item" style="padding-top:0px;padding-bottom: 10px;">
                         <div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${resultTop.fileSaveName}" style="padding-top: 0px;">
                             <span>${fn:substring(resultTop.inDate,0,10)}</span>
@@ -218,6 +149,8 @@
         </div>
     </section>
 	<!-- Team Section End -->
+	
+	
 	<!-- Classes Section Begin -->
 	<section class="classes spad">
 		<div class="container">
@@ -282,10 +215,56 @@
 			<c:forEach var="result" items="${resultList}" varStatus="status">
 			<c:if test="${result.lessonPrivateFlag eq 'N'}">
 			<input type="hidden" name="lessonSeq">
+				
+<!-- 				<ul class="row prmPList"  id="firstRow"> -->
+<!--                     <li class="col-sm-6 col-lg-4"> -->
+<!--                         <a class="aa" href="/class/296"> -->
+<%--                             <div class="imgHolder" style="background-image: url('http://192.168.41.6:9999/upload/profit/${result.fileSaveName}')"> --%>
+<!--                                 <strong class="title">요요 그만! 문도경 코치의 인생 마지막 다이어트</strong> -->
+<!--                                 <img class="coachPic" src="https://storage.googleapis.com/workout-72a55.appspot.com//workout/1100/20210310/문도경_사진_7.jpeg_1615360121936_22.286711345795517" alt="문도경"> -->
+<!--                             </div> -->
+<!--                             <div class="textHolder">
+<!--                                 <em class="category">홈 트레이닝</em> -->
+<!--                                 <strong class="title">요요 그만! 문도경 코치의 인생 마지막 다이어트</strong> -->
+<!--                                 <b class="author">문도경</b> -->
+<!--                                 <div class="price"> -->
+<!--                                     <small>월</small> ₩<span class="commify">20000</span> -->
+<!--                                 </div> -->
+<!--                                 <div class="meta"> -->
+<!--                                     <span>참여 <span class="commify"></span></span> -->
+<!--                                 </div> 
+<!--                             </div> --> 
+<!--                             <div class="txtHolder"> -->
+<%--                                 <small class="category">${result.lessonCategoryName}</small> --%>
+<!--                                 <small class="period">4주 / 주3회 / 20분</small> -->
+                                
+<!--                                 <small class="custom">맞춤형</small> -->
+                                
+<%--                                 <strong class="title">${result.lessonTitle}</strong> --%>
+<!--                                 <div class="meta"> -->
+<%--                                     <span><b class="author">${result.inUserId}</b></span> --%>
+                                    
+                                    
+<!--                                     <span class="remaining">남은 자리 <i class="commify">12</i></span> -->
+<!--                                 </div> -->
+<!--                                 <div class="price"> -->
+<!--                                     <del><i class="commify">200,000</i>원</del> -->
+<!--                                     <b>50% 할인</b> -->
+<!--                                     <strong>월 <i class="commify">20,000</i>원 <small>(5개월 무이자 할부시)</small></strong> -->
+<!--                                 </div> -->
+<!--                             </div>/.txtHolder -->
+<!--                         </a> -->
+<!--                     </li> -->
+<!--                  </ul> -->
+			
+			
+			
 				<div class="col-lg-4 col-md-6">
-					<div class="classes__item classes__item__page">
-						<div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${result.fileSaveName}"></div>
-						<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
+					<div class="classes__item classes__item__page" style="border-radius: 20px;">
+					<a href="lessonDetail.do?lessonSeq=${result.lessonSeq}">
+						<div class="classes__item__pic set-bg" data-setbg="http://192.168.41.6:9999/upload/profit/${result.fileSaveName}" style="border-top-left-radius:20px;border-top-right-radius:20px;">
+						</div>
+						<div class="classes__item__text" style=" padding: 5px 3px 5px 8px;">
 							<div style="text-align: right;">
 								<div style="display: inline-block;vertical-align:sub;float: left">
 									<p style="margin:0;">${fn:substring(result.inDate,0,10)}&nbsp;&nbsp;</p>
@@ -327,9 +306,9 @@
 									<p>${result.lessonBook}&nbsp;&nbsp;</p>
 								</div>
 							</div>
-							<p style="color:#CE60FA;">카테고리 | <span>${result.lessonCategoryName}</span></p>
-							<h4 style="margin-bottom: 30px;">
-								<a href="lessonDetail.do" style="font-size: 0.8em;font-weight: bold;">${result.lessonTitle}</a>
+							<p style="color:#CE60FA;">카테고리 | <span>${result.lessonCategoryName}</span>&nbsp;&nbsp; <span style="color:#FFB400;">맞춤형</span></p>
+							<h4 style="margin-bottom: 10px; font-size: 18px; color:#123;">
+								<strong>${result.lessonTitle}</strong>
 							</h4>
 							<div>
 								<div style="display: inline-block; vertical-align: middle;">
@@ -337,11 +316,20 @@
 								</div>
 								&nbsp;
 								<div style="display: inline-block;">
-									<h6 style="margin-bottom: 25px;">${result.inUserId}</h6>
+									<h6 style="margin-bottom: 1px;">${result.memberName}</h6>
 								</div>
 							</div>
-							<a href="lessonDetail.do?lessonSeq=${result.lessonSeq}"  class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+							<hr>
+							<div id="price" style="display: inline-block;">
+								<span style="color:#D25A5A;display: block;"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.lessonPrice}" /> 원</span>
+								<span style="color: #444;display: block;">월  <fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.lessonPrice / 5}" />원 (5개월할부시) </span>
+							</div>
+							<div style="width: 60px;height: 60px; border-radius: 70%;overflow: hidden;display: inline-block; float:right;margin-right: 30px; ">
+								<img src="${result.profilePath}" style=" width: 100%;height: 100%;object-fit: cover;">
+							</div>
 						</div>
+						<br/>
+						</a>
 					</div>
 				</div>
 				</c:if>

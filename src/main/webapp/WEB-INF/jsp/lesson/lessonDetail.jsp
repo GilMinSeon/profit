@@ -367,9 +367,10 @@ $(document).ready(function(){
 		<div style="background-color: white;border: 1px solid #ebecef;border-radius: 10px;">
 			<div class="row" style="padding-top: 30px;padding-bottom: 30px;">
 				<div class="col-lg-6 p-0">
-					<div style="float: left;margin-left: 40px;">
-	                  	<p style="font-weight: bold; color: #8B94B5;">카테고리&nbsp;&nbsp;|&nbsp; <span>${resultList.lessonCategoryName}</span></p>
+					<div style="display: inline-block;margin-left: 40px;">
+	                  	<p style="font-weight: bold; color:#CE60FA;">카테고리&nbsp;&nbsp;|&nbsp; <span>${resultList.lessonCategoryName}</span></p>
 	                </div><br/>
+	                
 	                <div  style="float: right;margin-bottom: 7px;margin-right: 40px;margin-left: 40px;">
                         <div style="display: inline-block;vertical-align:sub;">
 							<p style="margin:0;">${resultList.inDate}&nbsp;&nbsp;</p>
@@ -432,11 +433,11 @@ $(document).ready(function(){
 				<div class="col-lg-5 p-0">
 					<div class="about__text" style="padding-left:20px;">
 						<div class="section-title">
-							<span style="font-size: 1.4em; font-weight: bold;color: #545454"> ${resultList.lessonTitle}</span><br/><br/>
+							<h3 style=" font-weight: bold;color: #545454; margin-bottom: 0px;"> 『 ${resultList.lessonTitle} 』</h3><br/>
 							<div>
 								<div style="display: inline-block;"><p># 강사 이름 : </p></div>&nbsp;
 								<div style="display: inline-block;"><p style="color:#304060">
-									<a data-toggle="modal" data-target="#myModal" href="#myModal" id="myA">${resultList.memberName}</a> </p>
+									<a data-toggle="modal" data-target="#myModal" href="#myModal" id="myA" style="color: #80E12A;">${resultList.memberName}</a> </p>
 								</div>
 							</div>
 							<div>

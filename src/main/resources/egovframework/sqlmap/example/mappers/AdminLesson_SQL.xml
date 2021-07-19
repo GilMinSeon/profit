@@ -244,15 +244,18 @@
     
     <select id="lessonPriceDays" resultType="egovMap">
         
-        select *
+         select *
 		from
+        (
+        select to_char(sysdate,'yyyy-mm-dd') as cal1
+        from dual
+        ),
 		(
-		select to_char(sysdate,'yyyy-mm-dd') as cal1,nvl(sum(lesson_price),0) as day1
+		select nvl(sum(lesson_price),0) as day1
 		from buy_lesson a , lesson b
 		where a.lesson_seq = b.lesson_seq(+)
 		and a.lesson_refund_flag = 'N' 
 		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate,'yyyymmdd')
-		group by to_char(sysdate,'yyyy-mm-dd')
 		),
 		(
 		select to_char(sysdate-1,'yyyy-mm-dd') as cal2,nvl(sum(lesson_price),0) as day2
