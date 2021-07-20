@@ -69,8 +69,8 @@ public class LessonServiceImpl implements LessonService {
 
 	//인기강의 조회
 	@Override
-	public List<?> selectTopLessonList() throws Exception {
-		return lessonDAO.selectTopLessonList();
+	public List<?> selectTopLessonList(String memberId) throws Exception {
+		return lessonDAO.selectTopLessonList(memberId);
 	}
 
 	//상세 강의 파일등록
@@ -217,6 +217,13 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.trainerInfo(lessonSeq);
 	}
 
+	//강좌 추천ai
+	@Override
+	public List<Map<String, Object>> recommand(String lessonSeq) throws Exception {
+		return lessonDAO.recommand(lessonSeq);
+	}
+
+	
 	
 	
 

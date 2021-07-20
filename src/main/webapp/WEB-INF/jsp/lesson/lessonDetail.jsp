@@ -3,6 +3,7 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -238,7 +239,6 @@ $(document).ready(function(){
     });
 });
 
-
 </script>
 <style type="text/css">
 .btn div {
@@ -288,6 +288,34 @@ $(document).ready(function(){
     margin-top: 15px;
     
 }
+
+.cards-wrapper {
+  display: flex;
+  justify-content: center;
+}
+.card img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.card {
+  margin: 0 0.5em;
+  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+  border: none;
+  border-radius: 0;
+}
+.carousel-inner {
+  padding: 1em;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: #e1e1e1;
+  width: 20px;
+  height: 50px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 </style>
 </head>
 <body>
@@ -446,7 +474,7 @@ $(document).ready(function(){
 							</div>
 							<div>
 								<div style="display: inline-block;"><p># 강의 가격 : </p></div>&nbsp;
-								<div style="display: inline-block;"><p style="color:#304060">${resultList.lessonPrice} 원</p></div>
+								<div style="display: inline-block;"><p style="color:#304060"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${resultList.lessonPrice}" /> 원</p></div>
 							</div>
 							<div>
 								<div style="display: inline-block;"><p># 강의 기간 : </p></div>&nbsp;
@@ -488,9 +516,67 @@ $(document).ready(function(){
 				
 			</div>
 			</div>
+		
+	
+			<div class="classes__item__text" style="text-align: right;">
+				<c:choose>
+					<c:when test="${buyer eq '1'}">
+						<a href="javascript:alert('이미 강의를 구매하셨습니다. \n하단의 커리큘럼에서 강의 영상을 봐주시거나 마이페이지에서 확인해주세요');" class="class-btn">강의구매</a>
+					</c:when>
+					<c:when test="${buyer eq '0'}">
+	                	<span class="blinking" style="color:#ED2348;">강의를 구매하시면 커리큘럼 내에서 영상을 볼 수 있어요! → </span>&nbsp;
+						<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
+					</c:when>
+				</c:choose>
+					<a href="lessonList.do" class="class-btn">목록</a>
+					<c:if test="${resultList.inUserId eq memberId}">
+						<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
+						<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
+						<a href="classAdd.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의추가</a>
+					</c:if>
+			</div>
 		</div>
 	</section>
-	<!-- 	main html 시작 -->
+	
+	<!-- ai시작 -->
+	<section class="team spad" style="background-color: white; padding-bottom: 0px;">
+		<div class="container">
+				<div class="section-title" style="text-align: left;margin-bottom: 1px;">
+		            <span style="display: block;color:#444;font-size: 20px;font-weight: bold;">프로핏 추천프로그램👍🏻<br/>
+		            <span class="blinking" style="color:red;font-size: 25px;">↓ AI의 추천 Pick</span> 강의도 함께 둘러보세요</span>
+		         </div><br/>
+				<div style="display: flex;">
+					<c:forEach var="recommand" items="${recommandList}" varStatus="status">
+						<div class="col-lg-4 col-md-6" style="width: 35%; flex:1; padding:5px 7px 5px;"">
+							<div class="classes__item classes__item__page" style="border-radius: 20px;">
+							<a href="lessonDetail.do?lessonSeq=${recommand.recommandDetailSeq}">
+								<div class="classes__item__pic set-bg" data-setbg="${recommand.filePath}" style="border-top-left-radius:20px;border-top-right-radius:20px;">
+								</div>
+								<div class="classes__item__text" style=" padding: 5px 3px 5px 8px;">
+									<p style="color:#CE60FA;">카테고리 | <span>${recommand.lessonCategoryName}</span>&nbsp;&nbsp; <br/><span style="color:#FFB400;">맞춤형</span></p>
+									<h5 style="margin-bottom: 10px; font-size: 18px; color:#123; font-weight: bold;">
+										${recommand.lessonTitle}
+									</h5>
+									<div>
+										<div style="display: inline-block; vertical-align: middle;">
+											<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
+										</div>
+										&nbsp;
+										<div style="display: inline-block;">
+											<h6 style="margin-bottom: 1px;">${recommand.memberName}</h6>
+										</div>
+									</div>
+								</div>
+								<br/>
+								</a>
+							</div>
+						</div>
+						</c:forEach>
+					</div>
+			</div>
+		</section>
+	<!-- ai끝 -->
+	
 	<!-- 	변경 DIV 시작 -->
 	<script type="text/javascript">
 		// 	style="border-bottom: 3px solid #7952B3;"
@@ -523,23 +609,7 @@ $(document).ready(function(){
 	<section class="about spad" style="padding-top:20px;">
 	<div class="container">
 		<main id="main" class="site-main" role="main">
-			<div class="classes__item__text" style="text-align: right;">
-			<c:choose>
-				<c:when test="${buyer eq '1'}">
-					<a href="javascript:alert('이미 강의를 구매하셨습니다. \n하단의 커리큘럼에서 강의 영상을 봐주시거나 마이페이지에서 확인해주세요');" class="class-btn">강의구매</a>
-				</c:when>
-				<c:when test="${buyer eq '0'}">
-                	<span class="blinking" style="color:#ED2348;">강의를 구매하시면 커리큘럼 내에서 영상을 볼 수 있어요! → </span>&nbsp;
-					<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
-				</c:when>
-			</c:choose>
-				<a href="lessonList.do" class="class-btn">목록</a>
-				<c:if test="${resultList.inUserId eq memberId}">
-					<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
-					<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
-					<a href="classAdd.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의추가</a>
-				</c:if>
-			</div>
+			
 			
 			<div class="d-flex justify-content-between align-items-center has-border" id="tab_list" >
 				<ul id="titeul" class="nav sub-nav sub-nav--has-border">

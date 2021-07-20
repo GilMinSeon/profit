@@ -4,7 +4,7 @@
 <mapper namespace="kr.or.profit.mapper.AdminLessonMapper">
 
     <select id="selectAdminLessonList" resultType="egovMap" parameterType="Criteria">
-        <![CDATA[
+       
     	select rm, lesson_seq, lesson_title, lesson_private_flag,
 		lesson_category_name, member_id, member_name, member_gubun,
 		 in_date, buy_lesson_seq
@@ -55,7 +55,7 @@
 		)
 		where rm between #{rowStart} and #{rowEnd}
 		order by in_date desc
-		]]>
+		
     </select>
     
 	<select id="selectAdminLessonCnt" parameterType="Criteria" resultType="int">
@@ -135,7 +135,7 @@
     
 <!--     관리자가보는 온라인클래스 결제/환불 리스트 -->
     <select id="adminLessonPayList" resultType="egovMap" parameterType="Criteria">
-        <![CDATA[
+        
     	select rm, buy_lesson_seq,lesson_seq, lesson_refund_flag, in_user_id,
 		in_date, member_id, member_name, member_gubun, lesson_title, lesson_category_name,status
 		from
@@ -190,7 +190,7 @@
 		)
 		where rm between #{rowStart} and #{rowEnd}
 		order by in_date desc
-		]]>
+		
     </select>
     
 <!--     온라인클래스 결제/환불내역 전체 글개수 -->

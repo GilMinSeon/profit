@@ -38,7 +38,7 @@ public interface LessonMapper {
 	int updateLessonFile(Map map) throws Exception;
 
 	//인기강의 조회
-	List<?> selectTopLessonList() throws Exception;
+	List<?> selectTopLessonList(String memberId) throws Exception;
 
 	//상세강의파일 등록
 	int insertClassFile(Map map) throws Exception;
@@ -110,6 +110,9 @@ public interface LessonMapper {
 
 	//온라인클래스 상세 트레이너 정보소개
 	List<?> trainerInfo(String lessonSeq) throws Exception;
+
+	//강좌 추천 ai
+	List<Map<String, Object>> recommand(String lessonSeq) throws Exception;
 
 
 

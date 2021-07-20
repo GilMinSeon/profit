@@ -82,13 +82,25 @@ public class LessonController {
 		   memberId = "";
 	   }
 	   
+	   String selCate = request.getParameter("selCate");
+	   String selLev = request.getParameter("selLev");
+	   String keyword = request.getParameter("keyword");
+	   
 	  cri.setPerPageNum(9);
 	  cri.setMemberId(memberId);
+	  cri.setKeyword(keyword);
+	  cri.setSelLev(selLev);
+	  cri.setSelCate(selCate);
 	  
       List<?> lessonList = lessonService.selectLessonList(cri);
       model.addAttribute("resultList", lessonList);
 //      model.addAttribute("option", map);
       System.out.println("resultList새롬이 "+ model.toString());
+      
+    //입력한 검색어 유지시키기
+	model.addAttribute("selCate", selCate);
+	model.addAttribute("selLev", selLev);
+	model.addAttribute("keyword", keyword);
       
    // 페이징처리
       PageMaker pageMaker = new PageMaker();
@@ -111,9 +123,10 @@ public class LessonController {
       }
       
       //인기강의top5
-      List<?> lessonTopList = lessonService.selectTopLessonList();
+      List<?> lessonTopList = lessonService.selectTopLessonList(memberId);
       model.addAttribute("resultTopList", lessonTopList);
       System.out.println("dddddddddddd"+model);
+      
       
       return "lesson/lessonList";
    }
@@ -155,6 +168,12 @@ public class LessonController {
       model.addAttribute("resultClassList", classList);
       model.addAttribute("trainerInfoList", trainerInfoList);
       System.out.println("디테일로 갈 파일 상세 리트스" + model.toString());
+      
+      //강좌 추천ai
+      List<Map<String, Object>> recommandList =  lessonService.recommand(lessonSeq);
+      model.addAttribute("recommandList", recommandList);
+      System.out.println("추천강좌 " + model.toString());
+      
       
     //페이징처리
       PageMaker pageMaker = new PageMaker();
