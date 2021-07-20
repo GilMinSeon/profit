@@ -6,7 +6,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<script src="./resources/js/jquery-3.3.1.min.js"></script>
 
 <style>
 
@@ -62,84 +61,90 @@
             <div class="row">
                 <div class="col-lg-12" style="height:60px;">
                     <div class="section-title" style="text-align: left">
-                        <h3 style="font-weight: bold;">
-                        	<span style="display: block;color:#444;font-size: 32px;">프로핏</span>
-                        	<span style="display: block;color:#444;font-size: 32px;">추천프로그램👍🏻</span>
-                        </h3>
-                        <p class="slogan" style="margin-top: 0;display: block;margin-block-start: 1em;margin-block-end: 1em;margin-inline-start: 0px;margin-inline-end: 0px;">
-                        마음에 드는 운동프로그램을 선택하세요<br/>
-                        <span class="blinking" style="color:red;">↓ AI의 추천 Pick</span>도 함께 둘러보세요
-                     </div>
+                        <h3 style="font-weight: bold;">🏆조회수 TOP 5</h3>
+                    </div>
                 </div>
             </div>
-            <br/><br/><br/><br/>
-            
-             <div class="row">
+            <div class="row">
                 <div class="team__slider owl-carousel" >
+	                <c:forEach var="result" items="${resultTopList}" varStatus="status">
                     <div class="col-lg-6">
-                        <div class="team__item" style="padding-top:0px;padding-bottom: 10px;">
-                        <div class="classes__item__pic set-bg" data-setbg="" style="padding-top: 0px;">
-                            <span>dd</span>
+                    <a href="lessonDetail.do?lessonSeq=${result.lessonSeq}">
+                        <div class="team__item" style="padding-top:0px;padding-bottom: 10px; border-radius: 20px;">
+                        <div class="classes__item__pic set-bg" data-setbg="${result.filePath}" style="padding-top: 0px;border-radius :10px;">
                         </div>
                         <div class="classes__item__text" style="padding-top: 10px;padding-bottom: 10px; padding-left: 0;padding-right: 0;">
                             <div style="text-align: right;">
+                            	<div style="display: inline-block;vertical-align:sub;float: left">
+									<p style="margin:0;">${fn:substring(result.inDate,0,10)}&nbsp;&nbsp;</p>
+								</div>
 	                            <div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
-									<p style="margin:0;">dd&nbsp;&nbsp;</p>
+									<p style="margin:0;">${result.lessonHit }&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/newreply.png" style="width: 17px; height: 17px; opacity: 0.5;">
+									<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
-									<p>dd&nbsp;&nbsp;</p>
+									<p>${result.lessonReply}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
 								
-<%-- 									<c:set var="goodFlag" value="${result.goodFlag}"/> --%>
-<%--                     				<c:if test="${goodFlag == '1' }"> --%>
-<!-- 									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;"> -->
-<%-- 									</c:if> --%>
-<%-- 									<c:if test="${goodFlag == '0' }"> --%>
+									<c:set var="goodFlag" value="${result.goodFlag}"/>
+                    				<c:if test="${goodFlag == '1' }">
+									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;">
+									</c:if>
+									<c:if test="${goodFlag == '0' }">
 									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
-<%-- 									</c:if> --%>
+									</c:if>
 									
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
-									<p>ss&nbsp;&nbsp;</p>
+									<p>${result.lessonGood}&nbsp;&nbsp;</p>
 								</div>
 								<div style="display: inline-block; vertical-align: middle;">
 								
-<%-- 									<c:set var="bookFlag" value="${result.bookFlag}"/> --%>
-<%--                     				<c:if test="${bookFlag == '1' }"> --%>
-<!-- 									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;"> -->
-<%-- 									</c:if> --%>
-<%-- 									<c:if test="${bookFlag == '0' }"> --%>
+									<c:set var="bookFlag" value="${result.bookFlag}"/>
+                    				<c:if test="${bookFlag == '1' }">
+									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;">
+									</c:if>
+									<c:if test="${bookFlag == '0' }">
 									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
-<%-- 									</c:if> --%>
+									</c:if>
 									
 								</div>
 								<div style="display: inline-block;vertical-align:sub;">
-									<p>dd&nbsp;&nbsp;</p>
+									<p>${result.lessonBook}&nbsp;&nbsp;</p>
 								</div> 
                             </div>
-                            <p style="font-weight: bold; color: #8B94B5;">카테고리 | <span>dd</span></p>
-							<h4 style="margin-bottom: 10px;">
-								<a style="font-size: 0.8em;font-weight: bold;">dd</a>
+                            <p style="color:#CE60FA;">카테고리 | <span>${result.lessonCategoryName}</span>&nbsp;&nbsp; <span style="color:#FFB400;">맞춤형</span></p>
+							<h4 style="margin-bottom: 10px; font-size: 18px; color:#123;">
+								<strong>${result.lessonTitle}</strong>
 							</h4>
                             <div>
 								<div style="display: inline-block; vertical-align: middle;">
 									<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
 								</div>
+								&nbsp;
 								<div style="display: inline-block;">
-									<h6 style="margin-bottom: 25px;color:#535353">dd</h6>
+									<h6 style="margin-bottom: 1px;">${result.memberName}</h6>
 								</div>
 							</div>
-							<a href="boardDetail.do?communitySeq=${result.communitySeq}"  class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+							<hr>
+							<div id="price" style="display: inline-block;">
+								<span style="color:#D25A5A;display: block;"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.lessonPrice}" /> 원</span>
+								<span style="color: #444;display: block;">월  <fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.lessonPrice / 5}" />원 (5개월할부시) </span>
+							</div>
+							<div style="width: 60px;height: 60px; border-radius: 70%;overflow: hidden;display: inline-block; float:right;margin-right: 30px; ">
+								<img src="${result.profilePath}" style=" width: 100%;height: 100%;object-fit: cover;">
+							</div>
                         </div>
                         </div>
+                        </a>
                     </div>
+                    </c:forEach>
                 </div>
             </div>
         </div>
@@ -182,7 +187,7 @@
 							</div>
 							<div class="class__filter__input">
 								<p>Search:</p>
-								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${option.keyword}">
+								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${keyword}">
 							</div>
 							<div class="class__filter__btn">
 								<button type="submit" style="cursor:pointer;">

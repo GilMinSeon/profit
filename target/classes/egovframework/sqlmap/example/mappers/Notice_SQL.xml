@@ -90,8 +90,6 @@
 		SELECT
 		    A.COMMUNITY_SEQ,
 		    A.COMMON_SEQ,
-		    C.FILE_REAL_NAME,
-		    C.FILE_SEQ,
 		    TO_CHAR(A.COMMON_CONTENT) COMMON_CONTENT,
 		    A.COMMON_TITLE,
 		    A.COMMON_HIT,
@@ -103,7 +101,6 @@
 
 		FROM
 		    COMMUNITY A
-            LEFT JOIN ATTACH_FILE C ON (A.FILE_SEQ = C.FILE_SEQ)
 		WHERE
 		    COMMON_SEQ = '7'
 		AND
@@ -118,8 +115,10 @@
                 COMMON_SEQ,
                 COMMON_TITLE,
                 COMMON_CONTENT,
-                FILE_SEQ,
-                COMMON_DEL_FLAG,
+                <if test="tumnalil_img != null and tumnalil_img != ''">
+	                FILE_SEQ,
+				</if>
+	                COMMON_DEL_FLAG,
                 COMMON_HIT,
                 IN_USER_ID,
                 IN_DATE,
@@ -134,7 +133,9 @@
 				'7',
 				#{commonTitle},
 				#{commonContent},
-				#{tumnalil_img},
+				<if test="tumnalil_img != null and tumnalil_img != ''">
+					#{tumnalil_img},
+				</if>
 				'N',
 				'0',
 				#{memberId},
@@ -150,8 +151,8 @@
 		    COMMUNITY
 		SET
 			FILE_SEQ 		= #{fileSeq},
-		    COMMON_TITLE    = #{title},
-		    COMMON_CONTENT  = #{contents},
+		    COMMON_TITLE    = #{commonTitle},
+		    COMMON_CONTENT  = #{commonContent},
 		    UP_DATE         = SYSDATE
 		WHERE
 		    COMMUNITY_SEQ = #{communitySeq}
@@ -193,11 +194,12 @@
 		    )
 		values
 		    (
+
 		    (SELECT
 		        NVL(MAX(TO_NUMBER(FILE_SEQ)),0) AS FILE_SEQ
 		    FROM
-		        ATTACH_FILE)+1,
-		    '1',
+		        ATTACH_FILE)<if test="cnt == null">+1 </if>,
+		    #{fileDetailSeq},
 		    #{fileRealName},
 		    #{filesavename},
 		    #{imgFile},
@@ -212,7 +214,7 @@
 <!-- 	파일번호확인 -->
 	<select id="noticeFileCnt" resultType="String">
 		SELECT
-		     NVL(MAX(TO_NUMBER(FILE_SEQ)),0) AS FILE_SEQ
+		     NVL(MAX(TO_NUMBER(FILE_SEQ)),0)+1 AS FILE_SEQ
 		FROM
 		    ATTACH_FILE
 
@@ -230,17 +232,85 @@
 		    LEFT JOIN ATTACH_FILE B ON (A.FILE_SEQ = B.FILE_SEQ)
 		WHERE
 		    A.COMMUNITY_SEQ = #{communitySeq}
+		 AND
+            b.FILE_DETAIL_SEQ = #{fileDetailSeq}
 	</select>
 
 <!-- 	파일 삭제 -->
-	<update id="noticeModDelFile" parameterType="hashMap">
-		UPDATE
+	<delete id="noticeModDelFile" parameterType="hashMap">
+		DELETE FROM
 		    ATTACH_FILE
-		SET
-		    FILE_SAVE_NAME = '파일없음',
-		    FILE_REAL_NAME = '파일없음',
-		    FILE_PATH = '파일없음'
 		WHERE
+		   FILE_SEQ = #{fileSeq}
+		AND
+		    FILE_DETAIL_SEQ = #{fileDetailSeq}
+	</delete>
+
+
+<!-- 	파일 리스트 -->
+	<select id="noticeDetailFile" parameterType="hashMap" resultType="egovMap">
+		SELECT
+		    B.FILE_SEQ,
+		    B.FILE_DETAIL_SEQ,
+		    B.FILE_REAL_NAME
+		FROM
+		    COMMUNITY A
+		    LEFT JOIN ATTACH_FILE B ON (A.FILE_SEQ = B.FILE_SEQ)
+		WHERE
+		    A.COMMUNITY_SEQ = #{communitySeq}
+		ORDER BY B.FILE_DETAIL_SEQ DESC
+	</select>
+
+<!-- 	파일 수정 -->
+	<insert id="noticeFileUploadMod" parameterType="hashMap">
+		INSERT INTO ATTACH_FILE
+		    (
+		    FILE_SEQ,
+			FILE_DETAIL_SEQ,
+			FILE_REAL_NAME,
+			FILE_SAVE_NAME,
+			FILE_PATH,
+		    IN_USER_ID,
+		    IN_DATE,
+		    UP_USER_ID,
+		    UP_DATE
+		    )
+		values
+		    (
+			<choose>
+			    <when test="fileSeq != 0">
+			         #{fileSeq},
+			    </when>
+			    <otherwise>
+			        (SELECT
+			        	NVL(MAX(TO_NUMBER(FILE_SEQ)),0) AS FILE_SEQ
+			        FROM
+			        	ATTACH_FILE)+1,
+			    </otherwise>
+			</choose>
+		    (SELECT
+		    	NVL(MAX(TO_NUMBER(FILE_DETAIL_SEQ)),0) AS FILE_DETAIL_SEQ
+		    FROM
+		    	ATTACH_FILE)+1,
+		    #{fileRealName},
+		    #{filesavename},
+		    #{imgFile},
+		    #{memberId},
+		    SYSDATE,
+		    #{memberId},
+		    SYSDATE
+		    )
+
+	</insert>
+
+<!-- 	파일 번호만 넣기 -->
+	<update id="fileSeq" parameterType="hashMap">
+	    UPDATE
+		    COMMUNITY
+		SET
 		    FILE_SEQ = #{fileSeq}
+		WHERE
+		    COMMUNITY_SEQ = #{communitySeq}
 	</update>
+
 </mapper>

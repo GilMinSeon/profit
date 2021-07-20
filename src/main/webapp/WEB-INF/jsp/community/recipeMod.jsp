@@ -39,7 +39,7 @@
 </style>
 
 <script type="text/javascript">
-	//섬머노 트
+	//섬머노트
 	$(function() {
 		$('#loading').hide();
 		$('.summernote').summernote({
@@ -88,7 +88,6 @@
 	$(function() {
 		$('#hover_btn').click(function() {
 			var tumnail = $("form img").first().attr("src");
-			alert(tumnail);
 			$('#hidden').val(tumnail);
 		})
 	})

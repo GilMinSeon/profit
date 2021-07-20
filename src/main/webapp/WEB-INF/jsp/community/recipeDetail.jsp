@@ -53,7 +53,7 @@
 }
 </style>
 <script type="text/javascript">
-	//댓글 등 록
+	//댓글 등록
 	function fn_reipeReplyAdd() {
 		var formData = new FormData($('#replyfrm')[0]);
 		$.ajax({
@@ -91,13 +91,13 @@
 			dataType : "text",
 			success : function(data) {
 				if (data == "ok") {
-					alert("댓글이 정상적으로 등록되었습니다.");
+					alert("답변이 정상적으로 등록되었습니다.");
 					$("textarea[name=replyContent]").val('');
 					$(".replyarea").load(location.href + " .replyarea");
 				} else if (data == "ng") {
-					alert("댓글을 다시 입력해주세요 .");
+					alert("답변을 다시 입력해주세요 .");
 				} else {
-					alert("댓글을 다시 입력해주세요 .");
+					alert("답변을 다시 입력해주세요 .");
 				}
 			}
 		})
@@ -105,7 +105,6 @@
 
 	//댓글 삭제
 	function fn_reply_del(replySeq) {
-		alert("OK" + replySeq)
 		var result = confirm("정말 댓글을 삭제하시겠습니까?" + replySeq);
 		if (result) {
 			var replySeq = "replySeq=" + replySeq;
@@ -120,9 +119,9 @@
 						$("textarea[name=replyContent]").val('');
 						$(".replyarea").load(location.href + " .replyarea");
 					} else if (data == "ng") {
-						alert("댓글을 다시 입력해주세요 .");
+						alert("댓글을 다시 삭제해주세요 .");
 					} else {
-						alert("댓글을 다시 입력해주세요 .");
+						alert("댓글을 다시 삭제해주세요 .");
 					}
 				}
 			})
@@ -139,7 +138,6 @@
 
 //좋아요 북마크
 	$(function(){
-
 		//좋아요북마크 취소
 		$(document).on("click",".remove",function(){
 			var memberId = $("#sessionId").val();

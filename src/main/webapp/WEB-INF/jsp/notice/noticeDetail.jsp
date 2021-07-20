@@ -53,15 +53,18 @@
 				</div>
 			</div>
 			<hr>
-			<form id="form" method="post" action="qnaProfileDownload.do">
-				<input type="hidden" name="communitySeq" value="${data.communitySeq}">
-				<!-- 					<a onclick="fn_qnaProfileDownload()" class="download" style="float: right;">다운로드</a> -->
-				<!-- 				<input style="float: right;" type="submit" name="download" value="다운로드"> -->
-				<c:if test="${data.fileRealName ne '파일없음'}">
-					<a id="submitA" onclick="document.getElementById('form').submit();return;" style="float: right; color: #343a40; cursor: pointer">
-						<img src="./resources/img/common/DownloadIcon2.jpg" style="width: 25px; height: 25px; opacity: 0.5;">${data.fileRealName}</a>
-				</c:if>
-			</form>
+			<c:forEach var="noticeDetailFile" items="${noticeDetailFile}">
+				<form id="form${noticeDetailFile.fileDetailSeq}" method="post" action="qnaProfileDownload.do">
+					<input type="hidden" name="communitySeq" value="${data.communitySeq}">
+					<input type="hidden" name="fileDetailSeq" value="${noticeDetailFile.fileDetailSeq}">
+					<c:if test="${not empty noticeDetailFile.fileRealName}">
+						<a id="submitA" onclick="document.getElementById('form${noticeDetailFile.fileDetailSeq}').submit();return;" style="float: right; color: #343a40; cursor: pointer">
+							<img src="./resources/img/common/DownloadIcon2.jpg" style="width: 25px; height: 25px; opacity: 0.5;">
+							${noticeDetailFile.fileRealName}
+						</a>
+					</c:if>
+				</form>
+			</c:forEach>
 			<br>
 			<div class="blog__details__text">
 				<p>${data.commonContent}</p>

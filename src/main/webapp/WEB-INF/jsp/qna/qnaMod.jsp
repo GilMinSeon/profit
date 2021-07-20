@@ -46,7 +46,6 @@
 			fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
 			fontNamesIgnoreCheck : [ '맑은고딕' ],
 			focus : true,
-
 			callbacks : {
 				onImageUpload : function(files, editor, welEditable) {
 					for (var i = files.length - 1; i >= 0; i--) {
@@ -87,7 +86,6 @@
 	$(function() {
 		$('#hover_btn').click(function() {
 			var tumnail = $("form img").first().attr("src");
-			alert(tumnail);
 			$('#hidden').val(tumnail);
 		})
 	})
