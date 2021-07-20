@@ -1,6 +1,7 @@
 package kr.or.profit.cmmn.socket;
 
 import java.io.IOException;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,15 +16,15 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import org.slf4j.LoggerFactory;
-
+import kr.or.profit.cmmn.socket.config.ChatServerAppConfig;
 import kr.or.profit.cmmn.socket.model.ChatMessage;
 import kr.or.profit.cmmn.socket.model.Message;
 import kr.or.profit.cmmn.socket.model.UsersMessage;
 import kr.or.profit.cmmn.socket.model.decoder.MessageDecoder;
 import kr.or.profit.cmmn.socket.model.encoder.MessageEncoder;
 
-@ServerEndpoint(value = "/chat/{room}", encoders = { MessageEncoder.class }, decoders = { MessageDecoder.class })
+//Spring bean과 연동하기 위해서는 ServerAppConfig를 configurator로 등록해줘야만 한다!!!!!!
+@ServerEndpoint(value = "/chat/{room}", encoders = { MessageEncoder.class }, decoders = { MessageDecoder.class }, configurator=ChatServerAppConfig.class)
 public class ChatServerHandler {
 	private Set<Session> chatroomUsers = Collections.synchronizedSet(new HashSet<Session>());
 
@@ -50,14 +51,18 @@ public class ChatServerHandler {
 	 */
 	@OnMessage
 	public void handleMessage(Message incomingMessage, Session userSession, @PathParam("room") final String room) throws IOException, EncodeException {
+		ChatMessage outgoingChatMessage = new ChatMessage();
 		ChatMessage incomingChatMessage = (ChatMessage) incomingMessage;
 		System.out.println("메시지 찍은거"+incomingChatMessage.getMessage());//나는 5197
 		System.out.println("메시지 찍은거"+incomingChatMessage.getName());//null
 		System.out.println("메시지 찍은거"+incomingChatMessage.getRoom());//rsbuskrl
-		ChatMessage outgoingChatMessage = new ChatMessage();
 
 		String username = (String) userSession.getUserProperties().get("username");
 		System.out.println("유저네임!!!!"+username);//쳇_5197
+		
+		System.out.println(chatroomUsers.size());
+		
+		//첫번째 턴일때!!!
 		if (username == null) {
 			System.out.println("여기 들어옴???");
 			username = incomingChatMessage.getMessage();
@@ -72,9 +77,13 @@ public class ChatServerHandler {
 				for (Session session : chatroomUsers) {
 					//메세지 보내는 부분 1
 					session.getBasicRemote().sendObject(new UsersMessage(getUsers()));
+					System.out.println("보내는부분");
 				}
 			}
-		} else { //유저네임이 null이 아니면 즉 첫번째 턴을 지나면!!!!!!
+		} 
+		
+		//유저네임이 null이 아니면 즉 첫번째 턴을 지나면!!!!!!
+		else { 
 			System.out.println("else문!!!");
 			outgoingChatMessage.setName(username);
 			outgoingChatMessage.setMessage(incomingChatMessage.getMessage());
