@@ -42,7 +42,7 @@
 	$(function() {
 		$('#loading').hide();
 		$('.summernote').summernote({
-			height : 600,
+			height : 300,
 			fontNames : [ '맑은고딕', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', ],
 			fontNamesIgnoreCheck : [ '맑은고딕' ],
 			focus : true,
@@ -87,7 +87,6 @@
 	$(function() {
 		$('#hover_btn').click(function() {
 			var tumnail = $("form img").first().attr("src");
-			alert(tumnail);
 			$('#hidden').val(tumnail);
 		})
 	})

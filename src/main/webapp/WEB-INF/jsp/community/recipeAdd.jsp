@@ -38,7 +38,7 @@
 </style>
 
 <script type="text/javascript">
-	//섬머노 트
+	//섬머노트
 	$(function() {
 		$('#loading').hide();
 		$('.summernote').summernote({
@@ -87,7 +87,6 @@
 	$(function() {
 		$('#hover_btn').click(function() {
 			var tumnail = $("form img").first().attr("src");
-			alert(tumnail);
 			$('#hidden').val(tumnail);
 		})
 	})
@@ -124,7 +123,7 @@
 			<input type="text" name="commonTitle" placeholder="제목을 입력하세요" style="width: 99%; border: none; border-bottom: 1px solid #D5D4D4; height: 54px; font-size: 15px;">
 			<div class="container" style="margin-top: 10px; margin-bottom: 20px; padding: 0; position: relative;">
 				<textarea class="summernote" id="summernote" name="commonContent"></textarea>
-				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">
+				<div id="loading" style="position: absolute; top: 60%; left: 55%; margin: -150px 0 0 -150px">
 					<img id="loading-image" src="./resources/img/common/loading.gif" alt="Loading..." />
 				</div>
 			</div>

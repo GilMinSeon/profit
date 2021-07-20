@@ -56,7 +56,6 @@ public class NoticeServiceImpl implements NoticeService {
 	//파일 저장
 	@Override
 	public int noticeFileUpload(Map<String, Object> map) throws Exception {
-		System.out.println("파일 저장 서비스옴" + map);
 		return mapper.noticeFileUpload(map);
 
 	}
@@ -64,7 +63,6 @@ public class NoticeServiceImpl implements NoticeService {
 	//파일 번호
 	@Override
 	public String noticeFileCnt() throws Exception {
-		System.out.println("파일 번호 서비스옴");
 		return mapper.noticeFileCnt();
 	}
 
@@ -77,15 +75,30 @@ public class NoticeServiceImpl implements NoticeService {
 	//파일 삭제
 	@Override
 	public int noticeModDelFile(Map<String, Object> map) throws Exception {
-		System.out.println("서비스 파일 삭제옴");
 		return mapper.noticeModDelFile(map);
 	}
 
 	//페이징
-		@Override
-		public int selectBoardCnt(Criteria cri) throws Exception {
-			System.out.println("페이징옴 = " + cri);
-			return mapper.selectBoardCnt(cri);
-		}
+	@Override
+	public int selectBoardCnt(Criteria cri) throws Exception {
+		return mapper.selectBoardCnt(cri);
+	}
+
+	//파일 리스트
+	@Override
+	public List<?> noticeDetailFile(Map<String, Object> map) throws Exception {
+		return mapper.noticeDetailFile(map);
+	}
+
+	//파일 수정
+	@Override
+	public int noticeFileUploadMod(Map<String, Object> map) throws Exception {
+		return mapper.noticeFileUploadMod(map);
+	}
+
+	@Override
+	public void fileSeq(Map<String, Object> map) throws Exception {
+		mapper.fileSeq(map);
+	}
 
 }

@@ -11,7 +11,7 @@
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.15/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.15/dist/summernote.min.js"></script>
-<script src="https://github.com/summernote/summernote/tree/master/lang/summernote-ko-KR.js"></script>
+<!-- <script src="https://github.com/summernote/summernote/tree/master/lang/summernote-ko-KR.js"></script> -->
 
 <!-- 서머노트를 위해 추가해야할 부분 -->
 <script src="./resources/summernote/summernote-lite.js"></script>
@@ -61,7 +61,7 @@
 		});
 	})
 
-	+ //이미지 업로드
+	//이미지 업로드
 	function sendFile(file, el) {
 		var form_data = new FormData();
 		form_data.append('file', file);
@@ -87,34 +87,56 @@
 		});
 	}
 
-	//파일 삭제
-	function fn_delFile() {
-		var form = {
-			communitySeq : $("input[name='communitySeq']").val(),
-			fileSeq : $("input[name='fileSeq']").val(),
-			fileRealName : $("input[name='fileRealName']").val()
-		}
-		alert("form = " + form);
-		$.ajax({
-			type : 'get',
-			url : 'noticeModDelFile.do',
-			data : form,
-			success : function(data) {
-				if (data == "ok") {
-					alert("파일이 정상적으로 삭제되었습니다.");
-					location.href = "noticeMod.do?communitySeq=" + $("input[name='communitySeq']").val();
-				} else if (data == "ng") {
-					alert("등록이 실패하였습니다. 다시 시도해주세요");
-				} else {
-					alert("등록이 실패하였습니다. 다시 시도해주세요");
-				}
-			},
-			error : function(error) {
-				alert("삭제가 실패하였습니다. 다시 시도해 주세요.");
-			}
+	$(function() {
+		$('#file').change(function() {
+			$('#loading').show();
+			var files = $('input[name="file"]')[0].files;
+			var filesList = [];
 
+			for (var i = 0; i < files.length; i++) {
+				filesList.push(files[i].name);
+			}
+			$('input[name=fileNum]').attr('value', filesList);
+
+			var formData = new FormData($('#form')[0]);
+			$.ajax({
+				type : 'post',
+				url : 'qnaProfileUploadMod.do',
+				data : formData,
+				processData : false,
+				contentType : false,
+				async : false,
+				dataType : "text",
+				beforeSend : function() {
+					$('#loading').show();
+				},
+				success : function(data) {
+					if (data == 'ok') {
+						$('#loading').hide();
+						location.href = "noticeMod.do?communitySeq=" + $("input[name='communitySeq']").val();
+						alert("파일이 정상적으로 등록 되었습니다");
+					} else {
+						alert("파일등록시 오류발생");
+					}
+				}
+			})
 		})
-	}
+	})
+
+	//파일 삭제
+	$(function() {
+		$(".fileChecked").click(function() {
+			var len = $("input[name='fileChecked']:checked").length;
+			var checkArr = [];
+			if (len > 0) {
+				$("input[name='fileChecked']:checked").each(function(e) {
+					var value = $(this).val();
+					checkArr.push(value);
+				})
+			}
+			$('input[name=fileDel]').attr('value', checkArr);
+		})
+	})
 </script>
 
 </head>
@@ -133,53 +155,48 @@
 		</div>
 	</section>
 	<!-- Breadcrumb End -->
-
-
 	<section class="classes spad">
 		<main role="main" class="container">
 		<h3>📑 공지사항 수정해주세요</h3>
 		<br>
-		<c:set var="data" value="${data}" />
-		<form name="form" method="POST" action="/noticeMod.do?communitySeq=${data.communitySeq}" enctype="multipart/form-data">
+		<c:set var="data" value="${data}" /> <!-- 		<form method="post" action="noticeMod.do" enctype="multipart/form-data"> -->
+		<form id="form" name="form" method="POST" action="/noticeMod.do?communitySeq=${data.communitySeq}" enctype="multipart/form-data">
 			<input type="hidden" name="communitySeq" value="${data.communitySeq}">
-			<input type="hidden" name="fileSeq" value="${data.fileSeq}">
-			<input type="hidden" name="fileRealName" value="${data.fileRealName}">
-			<input type="hidden" name="fileRealNameNew" value="${data.fileRealName}">
+
 			<div class="pt-1"></div>
 			<label>
 				<p style="font-weight: bold; margin-bottom: 0">
 					제목<span style="color: red;"> *</span>
 				</p>
 			</label>
-			<input type="text" name="title" value="${data.commonTitle}" placeholder="제목을 입력하세요" style="width: 99%; border: none; border-bottom: 1px solid #D5D4D4; height: 54px; font-size: 15px;">
+			<input type="text" name="commonTitle" value="${data.commonTitle}" placeholder="제목을 입력하세요" style="width: 99%; border: none; border-bottom: 1px solid #D5D4D4; height: 54px; font-size: 15px;">
 			<div class="pt-1">
-
 				<br>
-				<textarea class="summernote" id="summernote" name="contents">${data.commonContent}</textarea>
-				<div id="loading" style="position: absolute; top: 50%; left: 50%; margin: -150px 0 0 -150px">
+				<textarea class="summernote" id="summernote" name="commonContent">${data.commonContent}</textarea>
+				<div id="loading" style="position: absolute; top: 100%; left: 40%;">
 					<img id="loading-image" src="./resources/img/common/loading.gif" alt="Loading..." />
 				</div>
 			</div>
 			<br>
 			<div>
 				<div id="d_file">
-					<input type="hidden" class="fn_delFile" name="fn_delFile" value="${data.communitySeq}">
-					<c:if test="${data.fileRealName ne '파일없음'}">
-						<div style="display: inline-block;">
-							<span>첨부파일 : </span>
-						</div>
-						<div style="display: inline-block;">
-							<input type="text" class="form-control" id="fileRealName" style="width: auto;" value="${data.fileRealName}">
-						</div>
-						<div style="display: inline-block;">
-							<a type="button" style="background-color: #efefef; width: 30px; text-align: center; height: 30px; border-radius: 4px; line-height: 28px;" onclick="fn_delFile()">X</a>
-						</div>
+					<c:if test="${noticeDetailFile ne '0'}">
+						<br>
+						첨부파일 :&nbsp;
+						<c:forEach var="noticeDetailFile" items="${noticeDetailFile}">
+							<input type="hidden" name="fileSeq" value="${noticeDetailFile.fileSeq}">
+							<input type="hidden" name="fileDetailSeq" value="${noticeDetailFile.fileDetailSeq}">
+							<label> <input type="checkbox" class="fileChecked" name="fileChecked" value="${noticeDetailFile.fileDetailSeq}"> ${noticeDetailFile.fileRealName}
+							</label>
+							&nbsp;&nbsp;
+						</c:forEach>
 					</c:if>
-					<c:if test="${data.fileRealName eq '파일없음'}">
-						<div>
-							<input type="file" id="file" name="file" value="파일첨부">
-						</div>
-					</c:if>
+					<div class="">
+						<input multiple type="file" id="file" name="file" value="파일첨부">
+						<br>
+						<input type="hidden" name="fileDel" value="">
+						<input type="hidden" name="fileNum" id="fileNum" value="">
+					</div>
 				</div>
 			</div>
 			<div class="pt-1 text-right">
