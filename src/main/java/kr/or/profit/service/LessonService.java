@@ -40,7 +40,7 @@ public interface LessonService {
 	public int updateLessonFile(Map map) throws Exception;
 
 	//인기강의 조회
-	public List<?> selectTopLessonList()throws Exception;
+	public List<?> selectTopLessonList(String memberId)throws Exception;
 
 	//상세 강의 파일등록
 	public int insertClassFile(Map map) throws Exception;
@@ -109,6 +109,9 @@ public interface LessonService {
 
 	//온라인클래스 상세 트레이너 정보소개
 	public List<?> trainerInfo(String lessonSeq) throws Exception;
+
+	//강좌 추천ai
+	public List<Map<String, Object>> recommand(String lessonSeq) throws Exception;
 
 
 
