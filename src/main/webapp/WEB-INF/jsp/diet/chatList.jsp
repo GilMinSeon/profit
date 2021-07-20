@@ -8,9 +8,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript">
-	
-</script>
 <style type="text/css">
 .classes__item__text .class-btn {
 	font-size: 14px;
@@ -27,7 +24,6 @@
 	-o-transition: all 0.4s;
 	transition: all 0.4s;
 }
-
 .classes__item__text .class-btn:hover {
 	background: #ffffff;
 	border: 1px solid #5768AD;
@@ -86,10 +82,12 @@
 		}
 
 		else if (jsonData.enterChatId != null) {
+			
+			alert("dddd")
+			
 			var roomId = jsonData.enterChatId;
 			$("#roomId").val(roomId);
 			$("#username").val(jsonData.username);
-			alert(jsonData.username)
 			var url = "chatting.do";
 			
 			var form = $("form[name=userForm]");
@@ -209,9 +207,9 @@
 			memberId = "${sessionScope.memberId}";
 			$.ajax({
 				type : "POST",
-				data : "memberId=" + memberId, //json
+				data : "memberId=" + memberId,
 				url : "updateChatNowFlagToNAjax.do",
-				dataType : "text", //리턴타입
+				dataType : "text", 
 
 				//전송 후 세팅
 				success : function(result) {
@@ -240,9 +238,9 @@
 			alert(memberId)
 			$.ajax({
 				type : "POST",
-				data : "memberId=" + memberId, //json
+				data : "memberId=" + memberId,
 				url : "updateChatNowFlagToYAjax.do",
-				dataType : "text", //리턴타입
+				dataType : "text",
 
 				//전송 후 세팅
 				success : function(result) {

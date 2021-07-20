@@ -34,40 +34,30 @@ public class RecipeController {
 	private CommunityService communityService;
 
 	/**
-	 * 레시피 목록(recipeList )
+	 * 레시피 목록(recipeList)
 	 *
 	 * @author 박상빈
-	 * @param model
-	 * @return String - community/boardAdd
+	 * @param Model, HttpSession, Criteria, selLev, keyword
+	 * @return String
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "recipeList.do", method = {
-			RequestMethod.GET, RequestMethod.POST })
-	public String recipeList(Model model, HttpSession ssion, Criteria cri, @RequestParam(value = "selLev", required = false) String selLev, @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
-
-		System.out.println("목록옴");
+	@RequestMapping(value = "recipeList.do", method = {RequestMethod.GET, RequestMethod.POST })
+	public String recipeList(Model model, HttpSession ssion, Criteria cri,
+			@RequestParam(value = "selLev", required = false) String selLev,
+			@RequestParam(value = "keyword", required = false) String keyword) throws Exception {
 		String memberId = (String) ssion.getAttribute("memberId");
 		if (memberId == null) {
 			memberId = "";
 		}
-
 		cri.setMemberId(memberId);
 		cri.setSelLev(selLev);
 		cri.setKeyword(keyword);
-
-		System.out.println("레시피 목록 온다" + memberId);
-
 		//인기글
 		List<?> recipeTopList = recipeService.recipeTopList(memberId);
-		System.out.println("인기글 돌아옴 recipeTopList = " + recipeTopList);
 		model.addAttribute("recipeTopList", recipeTopList);
-
 		//레시피 목록
 		List<?> recipeList = recipeService.recipeList(cri);
-		System.out.println("레시피 목록 돌아옴 recipeList = " + recipeList);
 		model.addAttribute("data", recipeList);
-
-		System.out.println("이곳"+model.toString());
 		// 페이징처리
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
@@ -75,50 +65,18 @@ public class RecipeController {
 		pageMaker.setTotalCount(recipeService.recipeSelectBoardCnt(cri));
 		System.out.println(recipeService.recipeSelectBoardCnt(cri) + "가져오는 개수!!!!!!!!!!!!");
 		model.addAttribute("pageMaker", pageMaker);
-
-
 		//입력한 검색어 유지시키기
 		model.addAttribute("selLev", selLev);
 		model.addAttribute("keyword", keyword);
-
 		return "community/recipeList";
 	}
-	//	/**
-	//	 * 레시피 목록(recipeList)
-	//	 *
-	//	 * @author 박상빈
-	//	 * @param model
-	//	 * @return String - community/boardAdd
-	//	 * @throws Exception
-	//	 */
-	//	@RequestMapping(value = "recipeList.do", method = RequestMethod.GET)
-	//	public String recipeList(@RequestParam Map<String, Object> map, HttpSession ssion, Model model) throws Exception {
-	//		System.out.println("목록옴");
-	//		String memberId = (String) ssion.getAttribute("memberId");
-	//		if (memberId == null) {
-	//			memberId = "";
-	//		}
-	//
-	//		System.out.println("레시피 목록 온다" + memberId);
-	//
-	//		List<QnaVO> recipeList = recipeService.recipeList(memberId);
-	//		List<?> recipeTopList = recipeService.recipeTopList(memberId);
-	//
-	//		System.out.println("레시피 목록 돌아옴 recipeList = " + recipeList);
-	//		System.out.println("인기글 돌아옴 recipeTopList = " + recipeTopList);
-	//
-	//
-	//		model.addAttribute("data", recipeList);
-	//		model.addAttribute("recipeTopList", recipeTopList);
-	//		return "community/recipeList";
-	//	}
 
 	/**
-	 * 레시피 상세보기/댓글 목록(recipeDetail)
+	 * 레시피 상세보기/댓글(recipeDetail)
 	 *
 	 * @author 박상빈
-	 * @param model
-	 * @return String - community/recipeDetail
+	 * @param Map, HttpSession, Model
+	 * @return String
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "recipeDetail.do", method = RequestMethod.GET)
@@ -127,8 +85,6 @@ public class RecipeController {
 		CommunityVO paramVO = new CommunityVO();
 		paramVO.setMemberId((String) (map.get("memberId")));
 		paramVO.setCommunitySeq((String) (map.get("communitySeq")));
-		System.out.println("상세옴여기  = " + map);
-
 		Map<String, Object> recipeDetail = recipeService.recipeDetail(map);
 		recipeCommonHit(map);
 		List<?> recipeDetailReply = recipeService.recipeDetailReply(map);
@@ -137,15 +93,6 @@ public class RecipeController {
 		List<?> recipeNewList = recipeService.recipeNewList();
 		List<?> recipeGoodList = recipeService.recipeGoodList();
 		Map<String, Object> boardDetail = communityService.selectBoardDetail(paramVO);
-
-		System.out.println("레시피 상세보기 옴 = " + recipeDetail);
-		System.out.println("댓글돌아 옴 = " + recipeDetailReply);
-		System.out.println("대  댓글돌아옴 = " + recipeDetailReplyList);
-		System.out.println("멤버 돌아옴 = " + recipeDetailMember);
-		System.out.println("최신글5개 = " + recipeNewList);
-		System.out.println("인기글(좋아요)5개 = " + recipeGoodList);
-		System.out.println("좋아요/북마크 = " + boardDetail);
-
 		model.addAttribute("data", recipeDetail);
 		model.addAttribute("recipeDetailReply", recipeDetailReply);
 		model.addAttribute("recipeDetailReplyList", recipeDetailReplyList);
@@ -157,77 +104,55 @@ public class RecipeController {
 	}
 
 	/**
-	 * 레시피 등록(recipeAdd)GET
+	 * 레시피 등록(recipeAdd)
 	 *
 	 * @author 박상빈
-	 * @param model
-	 * @return String - community/boardAdd
+	 * @param
+	 * @return String
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "recipeAdd.do", method = RequestMethod.GET)
-	public String recipeAdd(@RequestParam Map<String, Object> map, Model model) throws Exception {
-		System.out.println("등록옴" + map);
-
+	public String recipeAdd() throws Exception {
 		return "community/recipeAdd";
 	}
 
 	/**
-	 * 레시피 등록(recipeAdd)POST
+	 * 레시피 등록(recipeAdd)
 	 *
 	 * @author 박상빈
-	 * @param model
-	 * @return String - community/boardAdd
+	 * @param HttpSession, Map, HttpServletResponse, Model
+	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "recipeAdd.do", method = RequestMethod.POST)
 	public void recipeAddInsert(@RequestParam Map<String, Object> map, HttpSession ssion, HttpServletResponse response, Model model) throws Exception {
-		System.out.println("등록Insert옴" + map);
 		map.put("memberId", ssion.getAttribute("memberId"));
 		String imgFile = (String) map.get("tumnalil_img");
-
 		String commonTitle = (String) map.get("commonTitle");
 		String commonContent = (String) map.get("commonContent");
 		if (commonContent.equals("") || commonTitle.equals("")) {
-			System.out.println("정상이다1111111111");
-
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('내용을 확인해주세요'); location.href='recipeAdd.do';</script>");
 			out.flush();
 		}
-
-		System.out.println("정상 =  " + imgFile);
 		if (imgFile.equals("./resources/img/common/loading.gif")) {
-			System.out.println("정상 =  " + imgFile);
 			map.put("tumnalil_img", "64");
 		} else {
 			Map<String, Object> imgindexs = new HashMap<String, Object>();
-			System.out.println("자르기시작");
 			int index1 = imgFile.indexOf("profit/") + 44;
 			String fileRealName = imgFile.substring(index1);
-			System.out.println("path : " + fileRealName);
-
 			int index2 = imgFile.indexOf("profit/") + 7;
 			String filesavename = imgFile.substring(index2);
-			System.out.println("path : " + filesavename);
-
 			imgindexs.put("imgFile", imgFile);
 			imgindexs.put("fileRealName", fileRealName);
 			imgindexs.put("filesavename", filesavename);
 			imgindexs.put("memberId", map.get("memberId"));
-			System.out.println("파일이름들 = " + imgindexs);
 			recipeService.imgFile(imgindexs);
-			System.out.println("여기는했다");
 			imgFile = recipeService.imgcnt();
 			map.put("tumnalil_img", imgFile);
-			System.out.println("파일 번호 = " + imgFile);
-			System.out.println("자르기 끝");
 		}
-		System.out.println("map =  " + map);
-
 		int recipeAddInsert = recipeService.recipeAddInsert(map);
-		System.out.println("recipeAddInsert =  " + recipeAddInsert);
-
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("<script>alert('레시피가 등록 되었습니다'); location.href='recipeList.do';</script>");
@@ -235,47 +160,39 @@ public class RecipeController {
 	}
 
 	/**
-	 * 레시피 수정(recipeMod)GET
+	 * 레시피 수정(recipeMod)
 	 *
 	 * @author 박상빈
-	 * @param model
-	 * @return String - community/boardAdd
+	 * @param Model, Map
+	 * @return String
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "recipeMod.do", method = RequestMethod.GET)
 	public String recipeMod(@RequestParam Map<String, Object> map, Model model) throws Exception {
-		System.out.println("수정옴" + map);
-
 		Map<String, Object> recipeDetail = recipeService.recipeDetail(map);
-		System.out.println("수정 돌아옴 = " + recipeDetail);
 		model.addAttribute("data", recipeDetail);
 		return "community/recipeMod";
 	}
 
 	/**
-	 * 레시피 수정(recipeMod)POST
+	 * 레시피 수정(recipeMod)
 	 *
 	 * @author 박상빈
-	 * @param model
-	 * @return String - community/boardAdd
+	 * @param Map, HttpServletResponse
+	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "recipeMod.do", method = RequestMethod.POST)
-	public void recipeModUpdate(@RequestParam Map<String, Object> map, HttpServletResponse response, Model model) throws Exception {
-		System.out.println("수정하러 옴" + map);
+	public void recipeModUpdate(@RequestParam Map<String, Object> map, HttpServletResponse response) throws Exception {
 		String commonTitle = (String) map.get("commonTitle");
 		String commonContent = (String) map.get("commonContent");
 		if (commonContent.equals("") || commonTitle.equals("")) {
-			System.out.println("정상이다1111111111");
-
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('내용을 확인해주세요'); location.href='recipeAdd.do';</script>");
 			out.flush();
 		}
 		int recipeModUpdate = recipeService.recipeModUpdate(map);
-		System.out.println("수정하고 옴" + recipeModUpdate);
-
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("<script>alert('레시피가 수정 되었습니다'); location.href='recipeList.do';</script>");
@@ -286,16 +203,13 @@ public class RecipeController {
 	 * 레시피 삭제(recipeDelete)
 	 *
 	 * @author 박상빈
-	 * @param model
-	 * @return String - community/boardAdd
+	 * @param HttpServletResponse, Map
+	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "recipeDelete.do", method = RequestMethod.GET)
-	public void recipeDelete(@RequestParam Map<String, Object> map, Model model, HttpServletResponse response) throws Exception {
-		System.out.println("삭제옴" + map);
+	public void recipeDelete(@RequestParam Map<String, Object> map, HttpServletResponse response) throws Exception {
 		int recipeDelete = recipeService.recipeDelete(map);
-		System.out.println("삭제하고 옴" + recipeDelete);
-
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		out.println("<script>alert('레시피가 삭제 되었습니다');location.href='recipeList.do';</script>");
@@ -306,40 +220,31 @@ public class RecipeController {
 	 * 조회수 증가(recipeCommonHit)
 	 *
 	 * @author 박상빈
-	 * @param map
+	 * @param Map
 	 * @return
 	 * @throws Exception
 	 */
 	public void recipeCommonHit(Map<String, Object> map) throws Exception {
-		System.out.println("조회수옴" + map);
 		int recipeCommonHit = recipeService.recipeCommonHit(map);
-		System.out.println("조회수 작동함" + recipeCommonHit);
-
 	}
 
 	/**
 	 * 레시피 댓글 등록(recipeReply)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * @return
+	 * @param Map
+	 * @return String
 	 * @throws Exception
 	 */
 
 	@RequestMapping(value = "recipeReplyInsert.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String recipeReply(@RequestParam Map<String, Object> map, Model model) throws Exception {
-		System.out.println("댓글옴" + map);
+	public String recipeReply(@RequestParam Map<String, Object> map) throws Exception {
 		int recipeReply = recipeService.recipeReply(map);
-		System.out.println("댓글추가 하고 옴 = " + recipeReply);
-
 		String msg = "ng";
-		System.out.println("msg = " + msg);
-
 		if (recipeReply > 0) {
 			msg = "ok";
 		}
-		System.out.println("msg = " + msg);
 		return msg;
 	}
 
@@ -347,24 +252,19 @@ public class RecipeController {
 	 * 레시피 댓글 삭제(recipeReplyDelete)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * @return
+	 * @param Map
+	 * @return String
 	 * @throws Exception
 	 */
 
 	@RequestMapping(value = "recipeReplyDelete.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String recipeReplyDelete(@RequestParam Map<String, Object> map, Model model) throws Exception {
-		System.out.println("댓글삭제 옴" + map);
+	public String recipeReplyDelete(@RequestParam Map<String, Object> map) throws Exception {
 		int recipeReplyDelete = recipeService.recipeReplyDelete(map);
-		System.out.println("댓글삭제 하고 옴 = " + recipeReplyDelete);
-
 		String msg = "ng";
-
 		if (recipeReplyDelete > 0) {
 			msg = "ok";
 		}
-		System.out.println("msg = " + msg);
 		return msg;
 	}
 
@@ -372,23 +272,19 @@ public class RecipeController {
 	 * 레시피 대 댓글 등록(recipeReply)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * @return
+	 * @param Map
+	 * @return String
 	 * @throws Exception
 	 */
 
 	@RequestMapping(value = "recipeReplyAdd.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String recipeReplyAdd(@RequestParam Map<String, Object> map, Model model) throws Exception {
-
-		System.out.println("대댓글 옴" + map);
+	public String recipeReplyAdd(@RequestParam Map<String, Object> map) throws Exception {
 		int recipeReplyAdd = recipeService.recipeReplyAdd(map);
-
 		String msg = "ng";
 		if (recipeReplyAdd > 0) {
 			msg = "ok";
 		}
-
 		return msg;
 	}
 
@@ -402,19 +298,15 @@ public class RecipeController {
 	 */
 	@RequestMapping(value = "reciperemoveBookgood.do", produces = "application/text; charser=utf-8")
 	public @ResponseBody String removeBookgood(BookgoodVO vo) throws Exception {
-
 		int delCnt = communityService.deleteBookgood(vo);
 		int cnt = communityService.selectBookgoodCnt(vo);
 		String str_cnt = Integer.toString(cnt);
-
 		String msg = "";
-
 		if (delCnt > 0) {
 			msg = str_cnt;
 		} else {
 			msg = "no";
 		}
-
 		return msg;
 	}
 
@@ -428,13 +320,10 @@ public class RecipeController {
 	 */
 	@RequestMapping(value = "recipeaddBookgood.do", produces = "application/text; charser=utf-8")
 	public @ResponseBody String addBookgood(BookgoodVO vo) throws Exception {
-
 		int insCnt = communityService.insertBookgood(vo);
 		int cnt = communityService.selectBookgoodCnt(vo);
 		String str_cnt = Integer.toString(cnt);
-
 		String msg = "";
-
 		if (insCnt > 0) {
 			msg = str_cnt;
 		} else {
@@ -447,36 +336,24 @@ public class RecipeController {
 	 * 레시피 카테고리 목록(recipeListCategorie)
 	 *
 	 * @author 박상빈
-	 * @param map
-	 * @return String - community/boardAdd
+	 * @param Map, HttpSession, Model
+	 * @return String
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "recipeListCategorie.do", method = {
-			RequestMethod.POST })
+	@RequestMapping(value = "recipeListCategorie.do", method = {RequestMethod.POST })
 	public String recipeListCategorie(@RequestParam Map<String, Object> map, HttpSession ssion, Model model) throws Exception {
 		String memberId = (String) ssion.getAttribute("memberId");
 		if (memberId == null) {
 			memberId = "";
 		}
 		map.put("memberId", memberId);
-
 		String condition = (String) map.get("selLev");
 		String keyword = (String) map.get("keyword");
-
-		System.out.println("레시피 카테고리" + map);
-		System.out.println("검색어는 = " + condition);
-		System.out.println("검색어는 = " + keyword);
-
 		//목록 전부
 		List<?> recipeListCategorie = recipeService.recipeListKeyword(map);
 		List<?> recipeTopList = recipeService.recipeTopList(memberId);
-
-		System.out.println("목록전부 돌아옴 = " + recipeListCategorie);
-		System.out.println("인기글 돌아옴 = " + recipeTopList);
-
 		model.addAttribute("data", recipeListCategorie);
 		model.addAttribute("recipeTopList", recipeTopList);
-
 		return "community/recipeList";
 	}
 }

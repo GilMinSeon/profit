@@ -86,12 +86,12 @@
 			}
 		});
 	}
-
 	//글 등록
 	function fn_boardAdd() {
 		var commonTitle = $("input[name='commonTitle']").val();
 		var commonContent = $("textarea[name='commonContent']").val();
 		var file = $("input[name='file']").val();
+
 
 		if (!commonTitle) {
 			alert("제목을 입력해주세요");
@@ -125,7 +125,6 @@
 			error : function(error) {
 				alert("등록이 실패하였습니다. 다시 시도해 주세요.");
 			}
-
 		})
 	}
 </script>
@@ -169,7 +168,7 @@
 			</div>
 			<br>
 			<div>
-				<input type="file" id="file" name="file" value="파일첨부">
+				<input type="file" class="file" id="file" name="file" value="파일첨부" multiple="multiple"/>
 			</div>
 			<div class="pt-1 text-right">
 				<button id="hover_btn" class="btn btn btn-success" type="button" style="width: 10%; padding: 5px;" onclick="fn_boardAdd()">등록</button>

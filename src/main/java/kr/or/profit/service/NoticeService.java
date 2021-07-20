@@ -29,4 +29,10 @@ public interface NoticeService {
 
 	int selectBoardCnt(Criteria cri) throws Exception;
 
+	List<?> noticeDetailFile(Map<String, Object> map) throws Exception;
+
+	int noticeFileUploadMod(Map<String, Object> imgindexs) throws Exception;
+
+	void fileSeq(Map<String, Object> map) throws Exception;
+
 }

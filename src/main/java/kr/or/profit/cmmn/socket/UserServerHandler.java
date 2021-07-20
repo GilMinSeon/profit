@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.or.profit.service.DietService;
 import kr.or.profit.vo.ChatProfileVO;
 
-public class WebSocketHandler extends TextWebSocketHandler {
+public class UserServerHandler extends TextWebSocketHandler {
 
 	@Resource(name = "dietService")
 	private DietService dietService;

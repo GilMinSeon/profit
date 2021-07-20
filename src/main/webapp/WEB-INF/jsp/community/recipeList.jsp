@@ -47,7 +47,7 @@
 
 <body>
 
-	<!-- Breadcrumb Begi n -->
+	<!-- Breadcrumb Begin -->
 	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg">
 		<div class="container">
 			<div class="row">
@@ -75,7 +75,7 @@
 					<c:forEach var="recipeTopList" items="${recipeTopList}" varStatus="status">
 						<div class="col-lg-6">
 							<div class="team__item" style="padding-top: 10px; padding-bottom: 10px;">
-								<div class="classes__item__pic set-bg" data-setbg="${recipeTopList.filePath}">
+								<div class="classes__item__pic set-bg" data-setbg="${recipeTopList.filePath}" style="background-image: ${recipeTopList.filePath};">
 									<span>${recipeTopList.inDate}</span>
 								</div>
 								<div class="classes__item__text" style="padding-top: 10px; padding-bottom: 10px; padding-left: 0; padding-right: 0;">

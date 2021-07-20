@@ -123,32 +123,16 @@
 	    <property name="maxInMemorySize" value="1000000" />
 	    <property name="defaultEncoding" value="utf-8" />
 	</bean>
-
-    
-    
-    
-    <!-- 웹소켓 설정 -->
-    <!-- 
-    <bean id="WebSocketHandler" class="kr.or.profit.websocket.controller.WebSocketHandler" />
 	
+	<!-- 민선 웹소켓 설정 Start -->
+	<bean id="UserServerHandler" class="kr.or.profit.cmmn.socket.UserServerHandler" />
 	<websocket:handlers>
-	 <websocket:mapping handler="WebSocketHandler" path="/websocket/echo.do" />
+	 <websocket:mapping handler="UserServerHandler" path="/websocket/echo.do" />
 	 <websocket:handshake-interceptors>
 	      <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
 	 </websocket:handshake-interceptors>
 	</websocket:handlers>
-	 -->
-	
-	
-	<bean id="WebSocketHandler" class="kr.or.profit.cmmn.socket.WebSocketHandler" />
-
-	<websocket:handlers>
-	 <websocket:mapping handler="WebSocketHandler" path="/websocket/echo.do" />
-	 <websocket:handshake-interceptors>
-	      <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
-	 </websocket:handshake-interceptors>
-	</websocket:handlers>
-	
+	<!-- 웹소켓 End -->
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" />
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>

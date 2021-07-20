@@ -33,4 +33,10 @@ public interface NoticeMapper {
 	int noticeModDelFile(Map<String, Object> map) throws Exception;
 
 	int selectBoardCnt(Criteria cri) throws Exception;
+
+	List<?> noticeDetailFile(Map<String, Object> map) throws Exception;
+
+	int noticeFileUploadMod(Map<String, Object> map) throws Exception;
+
+	void fileSeq(Map<String, Object> map) throws Exception;
 }
