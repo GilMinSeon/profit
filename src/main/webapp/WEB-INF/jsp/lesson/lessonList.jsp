@@ -6,7 +6,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<script src="./resources/js/jquery-3.3.1.min.js"></script>
 
 <style>
 
@@ -57,11 +56,11 @@
     <!-- Breadcrumb End -->
     
 	<!-- Breadcrumb Begin -->
-	<section class="team spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12" style="height:60px;">
-                    <div class="section-title" style="text-align: left">
+			<section class="team spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-title" style="text-align: left">
                         <h3 style="font-weight: bold;">
                         	<span style="display: block;color:#444;font-size: 32px;">프로핏</span>
                         	<span style="display: block;color:#444;font-size: 32px;">추천프로그램👍🏻</span>
@@ -70,80 +69,221 @@
                         마음에 드는 운동프로그램을 선택하세요<br/>
                         <span class="blinking" style="color:red;">↓ AI의 추천 Pick</span>도 함께 둘러보세요
                      </div>
-                </div>
-            </div>
-            <br/><br/><br/><br/>
-            
-             <div class="row">
-                <div class="team__slider owl-carousel" >
-                    <div class="col-lg-6">
-                        <div class="team__item" style="padding-top:0px;padding-bottom: 10px;">
-                        <div class="classes__item__pic set-bg" data-setbg="" style="padding-top: 0px;">
-                            <span>dd</span>
-                        </div>
-                        <div class="classes__item__text" style="padding-top: 10px;padding-bottom: 10px; padding-left: 0;padding-right: 0;">
-                            <div style="text-align: right;">
-	                            <div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
-								</div>
-								<div style="display: inline-block;vertical-align:sub;">
-									<p style="margin:0;">dd&nbsp;&nbsp;</p>
-								</div>
-								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/newreply.png" style="width: 17px; height: 17px; opacity: 0.5;">
-								</div>
-								<div style="display: inline-block;vertical-align:sub;">
-									<p>dd&nbsp;&nbsp;</p>
-								</div>
-								<div style="display: inline-block; vertical-align: middle;">
-								
-<%-- 									<c:set var="goodFlag" value="${result.goodFlag}"/> --%>
-<%--                     				<c:if test="${goodFlag == '1' }"> --%>
-<!-- 									<img src="./resources/img/common/red_like.png" style="width: 17px; height: 15px;"> -->
-<%-- 									</c:if> --%>
-<%-- 									<c:if test="${goodFlag == '0' }"> --%>
-									<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
-<%-- 									</c:if> --%>
-									
-								</div>
-								<div style="display: inline-block;vertical-align:sub;">
-									<p>ss&nbsp;&nbsp;</p>
-								</div>
-								<div style="display: inline-block; vertical-align: middle;">
-								
-<%-- 									<c:set var="bookFlag" value="${result.bookFlag}"/> --%>
-<%--                     				<c:if test="${bookFlag == '1' }"> --%>
-<!-- 									<img src="./resources/img/common/yellow_bookmark.png" style="width: 12px; height: 16px;"> -->
-<%-- 									</c:if> --%>
-<%-- 									<c:if test="${bookFlag == '0' }"> --%>
-									<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
-<%-- 									</c:if> --%>
-									
-								</div>
-								<div style="display: inline-block;vertical-align:sub;">
-									<p>dd&nbsp;&nbsp;</p>
-								</div> 
-                            </div>
-                            <p style="font-weight: bold; color: #8B94B5;">카테고리 | <span>dd</span></p>
-							<h4 style="margin-bottom: 10px;">
-								<a style="font-size: 0.8em;font-weight: bold;">dd</a>
-							</h4>
-                            <div>
-								<div style="display: inline-block; vertical-align: middle;">
-									<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
-								</div>
-								<div style="display: inline-block;">
-									<h6 style="margin-bottom: 25px;color:#535353">dd</h6>
+				</div>
+			</div>
+			<div class="row">
+				<div class="team__slider owl-carousel owl-loaded owl-drag">
+					<div class="owl-stage-outer">
+						<div class="owl-stage" style="transform: translate3d(-1440px, 0px, 0px); transition: all 1.2s ease 0s; width: 2520px;">
+							<div class="owl-item cloned" style="width: 360px;">
+								<div class="col-lg-6">
+									<div class="team__item" style="padding-top: 10px; padding-bottom: 10px;">
+										<div class="classes__item__pic set-bg" data-setbg="./resources/img/classes/DwayneJohnson.jpg" style="background-image: url(&quot;./resources/img/deit_2.jpg&quot;);">
+										</div>
+										<div class="classes__item__text" style="padding-top: 10px; padding-bottom: 10px; padding-left: 0; padding-right: 0;">
+											<div style="text-align: right;">
+												<div style="display: inline-block;vertical-align:sub;float: left">
+													<p style="margin:0;">2021-09-09&nbsp;&nbsp;</p>
+												</div>
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
+												</div>
+												<div style="display: inline-block;vertical-align:sub;">
+													<p style="margin:0;">09&nbsp;&nbsp;</p>
+												</div>
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
+												</div>
+												<div style="display: inline-block;vertical-align:sub;">
+													<p>19&nbsp;&nbsp;</p>
+												</div>
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/like.png" style="width: 17px; height: 15px;">
+												</div>
+												<div style="display: inline-block;vertical-align:sub;">
+													<p>111&nbsp;&nbsp;</p>
+												</div>
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/bookmark.png" style="width: 12px; height: 16px;">
+												</div>
+												<div style="display: inline-block;vertical-align:sub;">
+													<p>43&nbsp;&nbsp;</p>
+												</div>
+											</div>
+											<div>
+											<p style="color:#CE60FA;">카테고리 | <span>운동</span>&nbsp;&nbsp; <span style="color:#FFB400;">맞춤형</span></p>
+											<h4 style="margin-bottom: 10px; font-size: 18px; color:#123;">
+												<strong>${result.lessonTitle}</strong>
+											</h4>
+											<div style="display: inline-block; vertical-align: middle;">
+												<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
+											</div>
+											&nbsp;
+											<div style="display: inline-block;">
+												<h6 style="margin-bottom: 1px;">나나</h6>
+											</div>
+											<hr>
+											<div id="price" style="display: inline-block;">
+												<span style="color:#D25A5A;display: block;"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.lessonPrice}" /> 원</span>
+												<span style="color: #444;display: block;">월  <fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.lessonPrice / 5}" />원 (5개월할부시) </span>
+											</div>
+											<div style="width: 60px;height: 60px; border-radius: 70%;overflow: hidden;display: inline-block; float:right;margin-right: 30px; ">
+												<img src="./resources/img/common/writer.PNG" style=" width: 100%;height: 100%;object-fit: cover;">
+											</div>
+										</div>
+										</div>
+									</div>
 								</div>
 							</div>
-							<a href="boardDetail.do?communitySeq=${result.communitySeq}"  class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+							<div class="owl-item" style="width: 360px;">
+								<div class="col-lg-6">
+									<div class="team__item" style="padding-top: 10px; padding-bottom: 10px;">
+										<div class="classes__item__pic set-bg" data-setbg="./resources/img/diet.jpg" style="background-image: url(&quot;./resources/img/diet.jpg&quot;);">
+											<span>20 Jun 2020</span>
+										</div>
+										<div class="classes__item__text" style="padding-top: 10px; padding-bottom: 10px; padding-left: 0; padding-right: 0;">
+											<div style="text-align: right;">
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/look.PNG" style="width: 30px; height: 20px; opacity: 0.5;">
+												</div>
+												<div style="display: inline-block;">
+													<p>1000</p>
+												</div>
+												|&nbsp;
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/reply.PNG" style="width: 24px; height: 19px; opacity: 0.5;">
+												</div>
+												<div style="display: inline-block;">
+													<p>2000</p>
+												</div>
+												|&nbsp;
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/good.PNG" style="width: 22px; height: 20px;">
+												</div>
+												<div style="display: inline-block;">
+													<p>400</p>
+												</div>
+											</div>
+											<br>
+											<h4 style="margin-bottom: 30px; font-weight: bold;">
+												<a href="#">가볍고 든든한 다이어트 한끼 식사</a>
+											</h4>
+											<div>
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
+												</div>
+												&nbsp;
+												<div style="display: inline-block;">
+													<h6 style="margin-bottom: 25px;">뽀미언니</h6>
+												</div>
+											</div>
+											<a href="lessionDetail" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="owl-item active" style="width: 360px;">
+								<div class="col-lg-6">
+									<div class="team__item" style="padding-top: 10px; padding-bottom: 10px;">
+										<div class="classes__item__pic set-bg" data-setbg="./resources/img/diet.jpg" style="background-image: url(&quot;./resources/img/diet.jpg&quot;);">
+											<span>20 Jun 2020</span>
+										</div>
+										<div class="classes__item__text" style="padding-top: 10px; padding-bottom: 10px; padding-left: 0; padding-right: 0;">
+											<div style="text-align: right;">
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/look.PNG" style="width: 30px; height: 20px; opacity: 0.5;">
+												</div>
+												<div style="display: inline-block;">
+													<p>1000</p>
+												</div>
+												|&nbsp;
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/reply.PNG" style="width: 24px; height: 19px; opacity: 0.5;">
+												</div>
+												<div style="display: inline-block;">
+													<p>2000</p>
+												</div>
+												|&nbsp;
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/good.PNG" style="width: 22px; height: 20px;">
+												</div>
+												<div style="display: inline-block;">
+													<p>400</p>
+												</div>
+											</div>
+											<br>
+											<h4 style="margin-bottom: 30px; font-weight: bold;">
+												<a href="#">가볍고 든든한 다이어트 한끼 식사</a>
+											</h4>
+											<div>
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
+												</div>
+												&nbsp;
+												<div style="display: inline-block;">
+													<h6 style="margin-bottom: 25px;">뽀미언니</h6>
+												</div>
+											</div>
+											<a href="lessionDetail" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="owl-item cloned" style="width: 360px;">
+								<div class="col-lg-6">
+									<div class="team__item" style="padding-top: 10px; padding-bottom: 10px;">
+										<div class="classes__item__pic set-bg" data-setbg="./resources/img/deit_2.jpg" style="background-image: url(&quot;./resources/img/deit_2.jpg&quot;);">
+											<span>20 Jun 2020</span>
+										</div>
+										<div class="classes__item__text" style="padding-top: 10px; padding-bottom: 10px; padding-left: 0; padding-right: 0;">
+											<div style="text-align: right;">
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/look.PNG" style="width: 30px; height: 20px; opacity: 0.5;">
+												</div>
+												<div style="display: inline-block;">
+													<p>1000</p>
+												</div>
+												|&nbsp;
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/reply.PNG" style="width: 24px; height: 19px; opacity: 0.5;">
+												</div>
+												<div style="display: inline-block;">
+													<p>2000</p>
+												</div>
+												|&nbsp;
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/good.PNG" style="width: 22px; height: 20px;">
+												</div>
+												<div style="display: inline-block;">
+													<p>400</p>
+												</div>
+											</div>
+											<br>
+											<h4 style="margin-bottom: 30px; font-weight: bold;">
+												<a href="#">가볍고 든든한 다이어트 한끼 식사</a>
+											</h4>
+											<div>
+												<div style="display: inline-block; vertical-align: middle;">
+													<img src="./resources/img/common/writer.PNG" style="width: 24px; height: 26px; opacity: 0.5;">
+												</div>
+												&nbsp;
+												<div style="display: inline-block;">
+													<h6 style="margin-bottom: 25px;">뽀미언니</h6>
+												</div>
+											</div>
+											<a href="lessionDetail" class="class-btn" style="width: 100%; text-align: center;">상세보기</a>
+										</div>
+									</div>
+								</div>
+							</div>
+<%-- 							</c:forEach> --%>
+						</div>
+					</div>
+					<div class="owl-dots disabled"></div>
+				</div>
+			</div>
+		</div>
+	</section>
 	<!-- Team Section End -->
 	
 	
