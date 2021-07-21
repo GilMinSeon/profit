@@ -113,6 +113,9 @@ public interface LessonService {
 	//강좌 추천ai
 	public List<Map<String, Object>> recommand(String lessonSeq) throws Exception;
 
+	 //댓글 수 가져오기
+	public Map<String, Object> selectReplyCnt(String lessonSeq) throws Exception;
+
 
 
 

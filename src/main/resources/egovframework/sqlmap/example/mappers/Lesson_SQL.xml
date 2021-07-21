@@ -473,6 +473,7 @@
 		C.IN_DATE, 
 		C.REPLY_SECRET_FLAG,
 		C.MEMBER_NICKNAME, 
+		C.MEMBER_GUBUN,
 		C.FILE_SEQ, 
 		D.FILE_PATH
         FROM
@@ -490,6 +491,7 @@
         IN_DATE, 
         REPLY_SECRET_FLAG,
         MEMBER_NICKNAME, 
+        MEMBER_GUBUN,
         FILE_SEQ
 		FROM
 		(
@@ -505,6 +507,7 @@
 		A.IN_DATE, 
 		A.REPLY_SECRET_FLAG,
 		B.MEMBER_NICKNAME, 
+		B.MEMBER_GUBUN,
 		B.FILE_SEQ
 		FROM
 		(
@@ -1030,5 +1033,24 @@
 			        order by recommand_seq
    
     </select>
+    
+<!-- 	댓글 수 가져오기 -->
+	<select id="selectReplyCnt" resultType="egovMap">
+	    SELECT 
+		count(*) as cnt
+		FROM
+		(
+		SELECT *
+		FROM REPLY
+		WHERE REPLY_DEL_FLAG='N'
+		START WITH REPLY_PARENT_SEQ IS NULL
+		CONNECT BY PRIOR REPLY_SEQ = REPLY_PARENT_SEQ
+		ORDER SIBLINGS BY IN_DATE DESC, REPLY_SEQ
+		) A
+		LEFT JOIN 
+		MEMBER B ON
+		(A.IN_USER_ID=B.MEMBER_ID)
+		WHERE lesson_seq = #{lessonSeq}
+	</select>
 	
 </mapper>

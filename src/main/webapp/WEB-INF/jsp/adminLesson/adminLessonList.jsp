@@ -168,10 +168,15 @@ function fn_switch(ele){
 				</thead>
 				<tbody>
 					<c:forEach var="result" items="${adminLessonList}" varStatus="status">
-					
+					<c:if test="${empty adminLessonList}">
+						<tr>
+							<td colspan="5" style="text-align: center;">강좌리스트가 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty adminLessonList}">
 					<tr>
 					 
-						<td>${status.count}
+						<td>${ (pageMaker.cri.page-1)*10 + (status.count)}
 						
 						 <input type="hidden" class="lessonSeq" name="lessonSeq${status.index}" value="${result.lessonSeq}">
 					    <input type="hidden" name="chkTog${status.index}" value="chkTog${status.index}">
@@ -207,6 +212,7 @@ function fn_switch(ele){
 							
 						</td>
 					</tr>
+					</c:if>
 					</c:forEach>
 				</tbody>
 			</table>

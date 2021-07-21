@@ -143,13 +143,19 @@ function fn_pdf(cnt){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty adminSalesList}">
+						<tr>
+							<td colspan="4" style="text-align: center;">이용권 결제/환불내역이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty adminSalesList}">
 					<c:forEach var="result" items="${adminSalesList}" varStatus="status">
 						<form id="frm${status.count}" action="salesAccountPdf.do" method="post">
 					<tr>
 						<td style="vertical-align: middle;">
 							<input type="hidden" class="yyyymm" name="yyyymm" value="${fn:substring(result.yyyymm,0,7)}"/>
 							<input type="hidden" class="gubun" name="gubun" value="${result.gubun}" />
-							${status.count}
+							${ (pageMaker.cri.page-1)*10 + (status.count)}
 						
 						</td>
 						<td style="vertical-align: middle;">
@@ -167,6 +173,7 @@ function fn_pdf(cnt){
 					</tr>
 						</form>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			

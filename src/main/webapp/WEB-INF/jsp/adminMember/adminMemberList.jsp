@@ -314,6 +314,12 @@ function fn_close(){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty memberList}">
+						<tr>
+							<td colspan="8" style="text-align: center;">회원내역이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty memberList}">
 					<c:forEach var="list" items="${memberList}" varStatus="status">
 					<tr onclick="fn_modalOpen('${list.memberId }')">
 						<td onclick="event.cancelBubble=true"><input type="checkbox" name="checkbox" onclick="doOpenCheck(this);" value="${list.memberId }" class="${list.blacklistFlag }"/></td>
@@ -332,6 +338,7 @@ function fn_close(){
 					</tr>
 					
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			

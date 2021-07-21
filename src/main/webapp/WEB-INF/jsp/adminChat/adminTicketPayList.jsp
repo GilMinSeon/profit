@@ -201,13 +201,19 @@ function fn_updTicketCnt(ele){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty adminTicketPayList}">
+						<tr>
+							<td colspan="7" style="text-align: center;">이용권 구매내역이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty adminTicketPayList}">
 					<c:forEach var="result" items="${adminTicketPayList}" varStatus="status">
 					<tr>
 						<td style="vertical-align: middle;">
 							<input type="hidden" class="buyTicketSeq" name="buyTicketSeq${status.index}" value="${result.buyTicketSeq}">
 							<input type="hidden" class="ticketCnt" name="ticketCnt${status.index}" value="${result.ticketCnt}">
 							<input type="hidden" class="ticketAvailFlag" name="ticketAvailFlag${status.index}" value="${result.ticketAvailFlag}">
-							${status.count}
+							${ (pageMaker.cri.page-1)*10 + (status.count)}
 						</td>
 						<td style="display: table-cell; vertical-align: middle">${result.inUserId}</td>
 						<td style="display: table-cell; vertical-align: middle">${result.memberName}</td>
@@ -225,6 +231,7 @@ function fn_updTicketCnt(ele){
 						</td>
 					</tr>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<!-- 페이징처리 -->

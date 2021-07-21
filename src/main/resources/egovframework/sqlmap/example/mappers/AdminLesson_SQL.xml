@@ -7,11 +7,11 @@
        
     	select rm, lesson_seq, lesson_title, lesson_private_flag,
 		lesson_category_name, member_id, member_name, member_gubun,
-		 in_date, buy_lesson_seq
+		 in_date
 		from
 		(
 		select rownum as rm, lesson_seq, lesson_title, lesson_private_flag,
-		lesson_category_name, member_id, member_name, member_gubun, in_date, buy_lesson_seq
+		lesson_category_name, member_id, member_name, member_gubun, in_date
 		from
 		(
 		select a.lesson_seq,
@@ -21,15 +21,12 @@
                c.member_id,
                c.member_name,
                c.member_gubun,
-               a.in_date,
-               d.buy_lesson_seq
+               a.in_date
             from lesson a
             left join lesson_category b on
             (a.lesson_category_seq = b.lesson_category_seq)
             left join member c on
             (a.in_user_id = c.member_id)
-            left join buy_lesson d on
-            (a.lesson_seq = d.lesson_seq)
 		where 1=1 
 		<if test="selStatus == '활성화'">
 		    and a.lesson_private_flag = 'N'
@@ -70,15 +67,14 @@
                c.member_id,
                c.member_name,
                c.member_gubun,
-               a.in_date,
-               d.buy_lesson_seq
+               a.in_date
+              
             from lesson a
             left join lesson_category b on
             (a.lesson_category_seq = b.lesson_category_seq)
             left join member c on
             (a.in_user_id = c.member_id)
-            left join buy_lesson d on
-            (a.lesson_seq = d.lesson_seq)
+           
 		where 1=1 
 		<if test="selStatus == '활성화'">
 		    and a.Lesson_Private_Flag = 'N'
