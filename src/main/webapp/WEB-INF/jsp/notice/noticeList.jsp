@@ -48,11 +48,11 @@
 					</thead>
 					<tbody>
 						<c:forEach var="data" items="${data}" varStatus="status">
-							<tr>
+							<tr style="cursor: pointer;" onclick="location.href='${path}noticeDetail.do?communitySeq=${data.communitySeq}'">
 								<th scope="row">${data.rn}</th>
 								<td colspan="5">
 									<form id="frm" action="commonHit.do">
-										<a href="${path}noticeDetail.do?communitySeq=${data.communitySeq}" style="text-decoration: none; color: blue;">${data.commonTitle} </a>
+										${data.commonTitle}
 									</form>
 								</td>
 								<c:if test="${data.fileCnt ne '0'}">
