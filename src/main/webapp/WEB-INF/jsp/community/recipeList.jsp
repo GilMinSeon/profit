@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="zxx">
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<script src="./resources/js/jquery-3.3.1.min.js"></script>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
-@media only screen and (min-width: 768px) {
-	.classes__filter form .class__filter__input {
-		width: calc(70% - 5px);
-		float: left;
-		margin-right: 30px;
-	}
+ @media only screen and (min-width: 768px) {
+ 	.classes__filter form .class__filter__input {
+ 		width: calc(70% - 5px);
+ 		float: left;
+ 		margin-right: 30px;
+ 	}
+ }
+
+ @media only screen and (max-width: 991px) {
+ 	.classes__filter form .class__filter__input {
+ 		width: 100%;
+ 		margin-right: 0;
+ 		margin-bottom: 20px;
+ 		float: none;
+ 	}
 }
 
-@media only screen and (max-width: 991px) {
-	.classes__filter form .class__filter__input {
-		width: 100%;
-		margin-right: 0;
-		margin-bottom: 20px;
-		float: none;
-	}
+.classes__item__text .class-btn:hover {
+    background: #ffffff;
+    border: 1px solid #5768AD;
+    color: #5768AD;
 }
-
 .classes__item__text .class-btn {
 	font-size: 17px;
 	font-weight: 700;
@@ -72,7 +77,7 @@
 			</div>
 			<div class="row">
 				<div class="team__slider owl-carousel">
-					<c:forEach var="recipeTopList" items="${recipeTopList}" varStatus="status">
+					<c:forEach var="recipeTopList" items="${result}" varStatus="status">
 						<div class="col-lg-6">
 							<div class="team__item" style="padding-top: 10px; padding-bottom: 10px;">
 								<div class="classes__item__pic set-bg" data-setbg="${recipeTopList.filePath}" style="background-image: ${recipeTopList.filePath};">
@@ -83,20 +88,20 @@
 										<div style="display: inline-block; vertical-align: middle;">
 											<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 										</div>
-										<!--조회수 -->
+<!-- 										조회수 -->
 										<div style="display: inline-block; vertical-align: sub;">
 											<p style="margin: 0;">${recipeTopList.commonHit}&nbsp;&nbsp;</p>
 										</div>
 										<div style="display: inline-block; vertical-align: middle;">
 											<img src="./resources/img/common/reply.PNG" style="width: 17px; height: 17px; opacity: 0.5;">
 										</div>
-										<!--댓글수 -->
+<!-- 										댓글수 -->
 										<div style="display: inline-block; vertical-align: sub;">
 											<p>${recipeTopList.cnt}&nbsp;&nbsp;</p>
 										</div>
 										<input type="hidden" value="${sessionScope.memberId }" id="sessionId">
 										<input type="hidden" value="${recipeTopList.communitySeq}" id="communitySeq">
-										<!-- 좋아요 이미지 찍히는 곳 -->
+<!-- 										좋아요 이미지 찍히는 곳 -->
 										<div style="display: inline-block; vertical-align: middle;" id="div_good_img">
 											<c:set var="recipeTopList" value="${recipeTopList}" />
 											<c:if test="${recipeTopList.goodFlag == '1' }">
@@ -107,12 +112,12 @@
 											</c:if>
 										</div>
 
-										<!-- 좋아요수 -->
+<!-- 										좋아요수 -->
 										<div style="display: inline-block; vertical-align: sub;" id="div_good_cnt">
 											<p>${recipeTopList.boardGood}&nbsp;&nbsp;</p>
 										</div>
 
-										<!-- 북마크 이미지 찍히는 곳 -->
+<!-- 										북마크 이미지 찍히는 곳 -->
 										<div style="display: inline-block; vertical-align: middle;" id="div_book_img">
 											<c:set var="recipeTopList" value="${recipeTopList}" />
 											<c:if test="${recipeTopList.bookFlag == '1' }">
@@ -123,7 +128,7 @@
 											</c:if>
 										</div>
 
-										<!-- 북마크수 -->
+<!-- 										북마크수 -->
 										<div style="display: inline-block; vertical-align: sub;" id="div_book_cnt">
 											<p>${recipeTopList.boardGood}&nbsp;&nbsp;</p>
 										</div>
@@ -196,6 +201,9 @@
 							<div class="classes__item__pic set-bg" data-setbg="${data.filePath}"></div>
 							<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
 								<div style="text-align: right;">
+									<div style="display: inline-block;vertical-align:sub;float: left">
+										<p style="margin:0;">${fn:substring(data.inDate,0,10)}&nbsp;&nbsp;</p>
+									</div>
 									<div style="display: inline-block; vertical-align: middle;">
 										<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 									</div>

@@ -165,7 +165,8 @@
 					</div>
 					<div style="text-align: right; margin-bottom: 5px; padding-right: 8px;">
 						<div style="display: inline-block; vertical-align: sub;">
-							<p style="margin: 0;">${data.inDate}&nbsp;&nbsp;</p>
+							<p style="margin: 0;"></p>
+							<p style="margin: 0;">작성자&nbsp;&nbsp; ${data.inUserId}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;입력일 &nbsp;&nbsp;${data.inDate}&nbsp;&nbsp;</p>
 						</div>
 					</div>
 					<hr style="color: #545454">
@@ -214,6 +215,7 @@
 								<c:if test="${not empty qnaDetailReply}">
 									<c:forEach var="qnaDetailReply" items="${qnaDetailReply}">
 										<!-- 댓글 달기 -->
+										<!-- 댓글 목록 -->
 										<form id="frm">
 											<div class="classes__sidebar__comment__pic">
 												<img src="${qnaDetailReply.filePath }" alt="">
@@ -221,13 +223,15 @@
 											<div class="classes__sidebar__comment__text">
 												<h6>
 													${qnaDetailReply.inUserId}&nbsp;&nbsp;&nbsp;&nbsp;
-													<a onclick="qnaDetailReplyAddAdd(${qnaDetailReply.replySeq})"> 답변작성 </a>
+													<a style="cursor: pointer;" onclick="qnaDetailReplyAddAdd(${qnaDetailReply.replySeq})"> 답변작성 </a>
 													<span style="font-size: 0.8em; color: gray; float: right; padding-right: 20px;">${qnaDetailReply.inDate}</span>
 												</h6>
 												<div style="margin-top: 20px;">
 													<p>
 														${qnaDetailReply.replyContent}
-														<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;" onclick="fn_reply_del(${qnaDetailReply.replySeq})">
+														<c:if test="${qnaDetailReply.inUserId eq sessionScope.memberId}">
+															<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;" onclick="fn_reply_del(${qnaDetailReply.replySeq})">
+														</c:if>
 													</p>
 												</div>
 											</div>
@@ -246,8 +250,9 @@
 														</h6>
 														<div style="margin-top: 20px;">
 															${qnaDetailReplyList.REPLY_CONTENT}
-															<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;" onclick="fn_reply_del(${qnaDetailReplyList.REPLY_SEQ})">
-
+															<c:if test="${qnaDetailReplyList.IN_USER_ID eq sessionScope.memberId}">
+																<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;" onclick="fn_reply_del(${qnaDetailReplyList.REPLY_SEQ})">
+															</c:if>
 														</div>
 													</div>
 													<br>

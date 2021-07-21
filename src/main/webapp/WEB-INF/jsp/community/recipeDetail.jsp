@@ -80,9 +80,7 @@
 	}
 	//대 댓글 등록 recipeReplyAdd
 	function fn_reipeReplyAdd_Add(replySeq) {
-		alert(replySeq);
 		var formData = new FormData($('#replyfrmAdd'+replySeq)[0]);
-		alert(replySeq);
 		$.ajax({
 			type : 'post',
 			url : 'recipeReplyAdd.do',
@@ -364,7 +362,7 @@
 				<div id="reply_area" class="col-lg-4 order-lg-1 order-2 replyarea" style="width: 100%; flex: 0 0 100%; max-width: 100%; padding-right: 0px; margin-left: 23px;">
 					<div class="blog__sidebar">
 						<div class="blog__sidebar__comment" style="overflow-x: hidden; height: 500px; padding: 10px;">
-							<h4>댓글</h4>
+							<h4>댓글(${data.cnt}개) </h4>
 							<div class="classes__sidebar__comment" style="border-bottom: 0">
 
 								<c:set var="recipeDetailReply" value="${recipeDetailReply}" />
@@ -372,7 +370,8 @@
 								<c:set var="recipeDetailMember" value="${recipeDetailMember}" />
 								<c:if test="${not empty recipeDetailReply}">
 									<c:forEach var="recipeDetailReply" items="${recipeDetailReply}">
-										<!-- 대글달기 -->
+										<!-- 댓글달기 -->
+										<!-- 댓글목록 -->
 										<form id="frm">
 											<div class="classes__sidebar__comment__pic">
 												<img src="${recipeDetailReply.FILE_PATH }" alt="">
@@ -382,7 +381,6 @@
 													${recipeDetailReply.IN_USER_ID}&nbsp;&nbsp;&nbsp;&nbsp;
 													<a style="font-size: 0.8em; color: gray; cursor:pointer;" onclick="recipeDetailReplyAddAdd(${recipeDetailReply.REPLY_SEQ})">
 														답글달기
-<%-- 														<c:out value="${recipeDetailReply.REPLY_SEQ}" /> --%>
 													</a>
 													<span style="font-size: 0.8em; color: gray; float: right; padding-right: 20px;">${recipeDetailReply.IN_DATE}</span>
 												</h6>
@@ -390,7 +388,9 @@
 													<p>
 														${recipeDetailReply.REPLY_CONTENT}
 														<c:set var="inUser" value="${sessionScope.memberId}" />
-														<img src="./resources/img/common/delete.png" style="width: 15px; height: 15px;" onclick="fn_reply_del(${recipeDetailReply.REPLY_SEQ})">
+														<c:if test="${recipeDetailReply.IN_USER_ID eq inUser}">
+															<img src="./resources/img/common/delete.png" width="15px" onclick="fn_reply_del(${recipeDetailReply.REPLY_SEQ})">
+														</c:if>
 													</p>
 												</div>
 											</div>
@@ -410,8 +410,9 @@
 														<div style="margin-top: 20px;">
 															${recipeDetailReplyList.REPLY_CONTENT}
 															<c:set var="inUser" value="${sessionScope.memberId}" />
-															<img src="./resources/img/common/delete.png" style="width: 15px; height: 15px;" onclick="fn_reply_del(${recipeDetailReplyList.REPLY_SEQ})">
-
+															<c:if test="${recipeDetailReplyList.IN_USER_ID eq inUser}">
+																<img src="./resources/img/common/delete.png" width="15px"  onclick="fn_reply_del(${recipeDetailReplyList.REPLY_SEQ})">
+															</c:if>
 														</div>
 													</div>
 													<br>
