@@ -521,18 +521,18 @@ $(document).ready(function(){
 			<div class="classes__item__text" style="text-align: right;">
 				<c:choose>
 					<c:when test="${buyer eq '1'}">
-						<a href="javascript:alert('이미 강의를 구매하셨습니다. \n하단의 커리큘럼에서 강의 영상을 봐주시거나 마이페이지에서 확인해주세요');" class="class-btn">강의구매</a>
+						<a href="javascript:alert('이미 강의를 구매하셨습니다. \n하단의 커리큘럼에서 강의 영상을 봐주시거나 마이페이지에서 확인해주세요');" class="class-btn" style="width:90px;text-align: center;">강의구매</a>
 					</c:when>
 					<c:when test="${buyer eq '0'}">
 	                	<span class="blinking" style="color:#ED2348;">강의를 구매하시면 커리큘럼 내에서 영상을 볼 수 있어요! → </span>&nbsp;
-						<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의구매</a>
+						<a href="buyLesson.do?lessonSeq=${resultList.lessonSeq}" class="class-btn" style="width:90px;text-align: center;">강의구매</a>
 					</c:when>
 				</c:choose>
-					<a href="lessonList.do" class="class-btn">목록</a>
+					<a href="lessonList.do" class="class-btn" style="width:90px;text-align: center;">목록</a>
 					<c:if test="${resultList.inUserId eq memberId}">
-						<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">수정</a>
-						<a href="#" onclick="fn_delLesson()" class="class-btn">비활성화</a>
-						<a href="classAdd.do?lessonSeq=${resultList.lessonSeq}" class="class-btn">강의추가</a>
+						<a href="lessonMod.do?lessonSeq=${resultList.lessonSeq}" class="class-btn" style="width:90px;text-align: center;">수정</a>
+						<a href="#" onclick="fn_delLesson()" class="class-btn" style="width:90px;text-align: center;">비활성화</a>
+						<a href="classAdd.do?lessonSeq=${resultList.lessonSeq}" class="class-btn" style="width:90px;text-align: center;">강의추가</a>
 					</c:if>
 			</div>
 		</div>
@@ -716,7 +716,7 @@ $(document).ready(function(){
                     <div class="blog__sidebar">
                         
                         <div class="blog__sidebar__comment" style="overflow-x:hidden;height: 500px;padding:10px;">
-                            <h4>댓글</h4>
+                            <h4>댓글(총 ${replyCnt.cnt} 개)</h4>
                             
 	                            <div class="classes__sidebar__comment" style="border-bottom: 0">
 	                                   <c:forEach var="result" items="${resultList['replyList']}" varStatus="status">
@@ -731,11 +731,15 @@ $(document).ready(function(){
 	                                    <h6>
 	                                    	<c:choose>
 	                                    		<c:when test="${result.replySecretFlag == 'N'}">
-	                                    			${result.memberNickname}&nbsp;&nbsp;&nbsp;&nbsp;
+	                                    			<c:if test="${result.memberGubun eq 'T'}">
+			                                    	<img src="./resources/img/common/trainer_icon.png" style="width: 25px; height: 25px;">
+			                                    	</c:if>
+	                                    			${result.memberNickname}&nbsp;
+	                                    			<c:if test="${result.memberGubun eq 'T'}">(트레이너)&nbsp;</c:if>
 	                                     			<c:if test="${result.replyDepth == 1}">
-	                                     				<a style="font-size: 0.8em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
+	                                     				<a style="font-size: 1.0em;color: gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
 	                                     			</c:if>
-	                                    		<span style="font-size: 0.9em;color: gray;float: right;padding-right: 20px;font-family:'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
+	                                    		<span style="font-size: 1.0em;color: gray;float: right;padding-right: 20px;font-family:'DM Sans', sans-serif;">${fn:substring(result.inDate,0,10)}</span>
 	                                    		</c:when>
 	                                    		
 	                                    		<c:when test="${(result.replySecretFlag == 'Y' && result.inUserId eq memberId) || (result.replySecretFlag == 'Y' && resultList.inUserId eq memberId)}">
@@ -788,8 +792,8 @@ $(document).ready(function(){
 				                                    <img src="${MyProfileImage}" alt="" >
 				                                </div>
 				                                <input type="checkbox" name="reSecret" value="비밀댓글">&nbsp;비밀댓글<br>
-			                                    <textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
-			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float:left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
+			                                    <textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width:67%;float:left;"></textarea>
+			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 100px;height: 48px;padding:0;float:left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
 			                                </div>
 			                            </div>
 	                                	<hr>
@@ -808,7 +812,7 @@ $(document).ready(function(){
 	                                </div>
                                     <input type="checkbox" name="secret" value="비밀댓글">&nbsp;비밀댓글<br>
                                     <textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 79%;float: left"></textarea>
-                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: right;margin-top: 15px;" onclick="fn_replyAdd()">댓글작성</button>
+                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 100px;height: 48px;padding:0;float: right;margin-top: 15px;" onclick="fn_replyAdd()">댓글작성</button>
                                 </div>
                                 
                             </div>

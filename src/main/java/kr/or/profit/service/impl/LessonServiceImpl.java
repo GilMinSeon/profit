@@ -223,6 +223,12 @@ public class LessonServiceImpl implements LessonService {
 		return lessonDAO.recommand(lessonSeq);
 	}
 
+	//댓글 수 가져오기
+	@Override
+	public Map<String, Object> selectReplyCnt(String lessonSeq) throws Exception {
+		return lessonDAO.selectReplyCnt(lessonSeq);
+	}
+
 	
 	
 	

@@ -114,6 +114,9 @@ public interface LessonMapper {
 	//강좌 추천 ai
 	List<Map<String, Object>> recommand(String lessonSeq) throws Exception;
 
+	//댓글 수 가져오기
+	Map<String, Object> selectReplyCnt(String lessonSeq) throws Exception;
+
 
 
 

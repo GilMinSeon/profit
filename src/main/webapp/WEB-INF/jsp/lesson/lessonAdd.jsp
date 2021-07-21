@@ -285,7 +285,7 @@ font-size: 14px;
 	display: inline-block;
 	padding: 14px 50px;
 	background: #ffffff;
-	border: none;
+	border: 1px solid #5768AD;
 	letter-spacing: 2px;
 	border-radius: 2px;
 	cursor: pointer;
@@ -296,6 +296,7 @@ background: #ffffff;
 	color: #5768AD;
 	cursor: pointer;
 }
+
 </style>
 </head>
 <body>
@@ -316,7 +317,7 @@ background: #ffffff;
 		<section class="classes spad">
 			<div style="text-align:center;">
 				<h3 style="padding-left: 15px; color: #263246; font-family: DM Sans, sans-serif; font-weight: 400; font-size: 1.5em;">강의를 등록해주세요 </h3><br/>
-				<p style="color: #E84D4D;">▶ 모든 사항은 반드시 입력해야 합니다.</p>
+				<p style="color: #E84D4D;">※ 모든 사항은 반드시 입력해야 합니다.</p>
 			</div>
 			<br />
 			<main role="main" class="container">
@@ -345,20 +346,20 @@ background: #ffffff;
 					<p>
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">제목 </label>
-						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="ex)1강 전신스트레칭">
+						    <input type="text" class="form-control" id="lessonTitle" name="lessonTitle" placeholder="ex)제목을 입력하세요" style="border: none;border-bottom: 1px solid #D5D4D4;height: 54px;font-size: 15px;">
 						</div>
 					</p>
 					<p>	
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">강의코멘트(부제목)</label>
-						    <input type="text" class="form-control" id="lessonTitleComment" name="lessonTitleComment" placeholder="ex)운동시작전 몸을 풀기위한 스트레칭 강의입니다...">
+						    <input type="text" class="form-control" id="lessonTitleComment" name="lessonTitleComment" placeholder="ex)강의코멘트 (부제목)을 입력하세요" style="border: none;border-bottom: 1px solid #D5D4D4;height: 54px;font-size: 15px;">
 						</div>
 					</p>
 					
 					<p>	
 						<div class="form-group">
 							<label for="lessonPrice" style="float:left;">강의기간 </label>
-						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)1,2,3,4...">
+						    <input type="text" class="form-control" id="lessonMonth" name="lessonMonth" placeholder="ex)1,2,3,4..." style="border: none;border-bottom: 1px solid #D5D4D4;height: 54px;font-size: 15px;">
 						</div>
 					</p>
 					
@@ -413,13 +414,13 @@ background: #ffffff;
 						
 						<p>
 							<label for="lessonPrice" style="float:left;">강의소개 </label>
-							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."></textarea>
+							<textarea class="form-control" rows="9" id="lessonIntro" name="lessonIntro" placeholder="강의소개를 입력하세요" style="border: none;border-bottom: 1px solid #D5D4D4;"></textarea>
 						</p>
 						
 						<p>
 							<div class="form-group">
 								<label for="lessonPrice" style="float:left;">강의가격 </label>
-							    <input type="text" class="form-control" id="lessonPrice" name="lessonPrice"  placeholder="ex)530000">
+							    <input type="text" class="form-control" id="lessonPrice" name="lessonPrice"  placeholder="ex)530000" style="border: none;border-bottom: 1px solid #D5D4D4;height: 54px;font-size: 15px;background-color: none;">
 							</div>
 						</p>
 						
@@ -440,7 +441,7 @@ background: #ffffff;
 								</div>
 						</p>
 						
-					<br />
+					<br /><br/><br/>
 					<div style="text-align: right;">
                              <button type="button" id="hover_btn"  class="site-btn_s" onclick="fn_submit()">등록</button>
                     </div>

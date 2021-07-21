@@ -144,9 +144,9 @@ function fn_insSales(){
 						<td>${status.count}</td>
 						<td>${result.trainerId}</td>
 						<td>${result.cnt} 건</td>
-						<td>${result.sum} 원</td>
-						<td>${result.fee} 원</td>
-						<td >${result.realamount} 원</td>
+						<td><fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.sum}" /> 원</td>
+						<td><fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.fee}" /> 원</td>
+						<td ><fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.realamount}" /> 원</td>
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -154,10 +154,9 @@ function fn_insSales(){
 			<br>
 			<div style="width: 100%;text-align: right;padding-right: 20px;font-weight: bold;">
 			
-				
-			<div>총 수수료합계&nbsp;:&nbsp;<span id="totalfee" style="background-color:#FFD2D7;">${totalPrice[0]['totalfee']} </span>원</div>
-			<div>총 실수령액합계&nbsp;:&nbsp;<span id="totalrealamount" style="background-color:#FFD2D7;">${totalPrice[0]['totalrealamount']} </span>원</div>
-			<div>총 금액합계&nbsp;:&nbsp;<span style="background-color:#FFD2D7;">${totalPrice[0]['total']} </span>원</div>
+			<div>총 수수료합계&nbsp;:&nbsp;<span id="totalfee" style="background-color:#FFD2D7;"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${totalPrice[0]['totalfee']}" /> </span>원</div>
+			<div>총 실수령액합계&nbsp;:&nbsp;<span id="totalrealamount" style="background-color:#FFD2D7;"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${totalPrice[0]['totalrealamount']}" /> </span>원</div>
+			<div>총 금액합계&nbsp;:&nbsp;<span style="background-color:#FFD2D7;"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${totalPrice[0]['total']}" /></span>원</div>
 					
 					
 					

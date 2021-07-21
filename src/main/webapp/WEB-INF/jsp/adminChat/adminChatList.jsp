@@ -111,6 +111,12 @@ $(document).ready(function(){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty chatList}">
+						<tr>
+							<td colspan="6" style="text-align: center;">이용권 결제/환불내역이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty chatList}">
 					<c:forEach var="result" items="${chatList}" varStatus="status">
 					<tr>
 						<td>${status.count}</td>
@@ -125,6 +131,7 @@ $(document).ready(function(){
 						</td>
 					</tr>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<!-- 페이징처리 -->

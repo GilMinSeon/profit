@@ -168,7 +168,12 @@ function fn_switch(ele){
 				</thead>
 				<tbody>
 					<c:forEach var="result" items="${adminLessonList}" varStatus="status">
-					
+					<c:if test="${empty adminLessonList}">
+						<tr>
+							<td colspan="5" style="text-align: center;">강좌리스트가 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty adminLessonList}">
 					<tr>
 					 
 						<td>${status.count}
@@ -207,6 +212,7 @@ function fn_switch(ele){
 							
 						</td>
 					</tr>
+					</c:if>
 					</c:forEach>
 				</tbody>
 			</table>

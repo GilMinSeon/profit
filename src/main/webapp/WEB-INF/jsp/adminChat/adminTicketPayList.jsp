@@ -201,6 +201,12 @@ function fn_updTicketCnt(ele){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty adminTicketPayList}">
+						<tr>
+							<td colspan="7" style="text-align: center;">이용권 구매내역이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty adminTicketPayList}">
 					<c:forEach var="result" items="${adminTicketPayList}" varStatus="status">
 					<tr>
 						<td style="vertical-align: middle;">
@@ -225,6 +231,7 @@ function fn_updTicketCnt(ele){
 						</td>
 					</tr>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<!-- 페이징처리 -->
