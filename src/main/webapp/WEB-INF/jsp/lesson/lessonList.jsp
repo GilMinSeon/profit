@@ -164,13 +164,13 @@
 								<select name="selCate" id="selCate">
 									<option value="">카테고리</option>
 									<option value="헬스" 
-										<c:if test="${selCate eq '헬스'}">selected</c:if>>헬스</option>
+										<c:if test="${pageMaker.cri.selCate eq '헬스'}">selected</c:if>>헬스</option>
 									<option value="필라테스"
-										<c:if test="${selCate eq '필라테스'}">selected</c:if>>필라테스</option>
+										<c:if test="${pageMaker.cri.selCate eq '필라테스'}">selected</c:if>>필라테스</option>
 									<option value="요가"
-										<c:if test="${selCate eq '요가'}">selected</c:if>>요가</option>
+										<c:if test="${pageMaker.cri.selCate eq '요가'}">selected</c:if>>요가</option>
 									<option value="맨몸운동"
-										<c:if test="${selCate eq '맨몸운동'}">selected</c:if>>맨몸운동</option>
+										<c:if test="${pageMaker.cri.selCate eq '맨몸운동'}">selected</c:if>>맨몸운동</option>
 								</select>
 							</div>
 							<div class="class__filter__select">
@@ -178,16 +178,16 @@
 								<select name="selLev" id="selLev"> 
 									<option value="">전체</option>
 									<option value="조회순"
-										<c:if test="${selLev eq '조회순'}">selected</c:if>>조회순</option>
+										<c:if test="${pageMaker.cri.selLev eq '조회순'}">selected</c:if>>조회순</option>
 									<option value="좋아요순"
-										<c:if test="${selLev eq '좋아요순'}">selected</c:if>>좋아요순</option>
+										<c:if test="${pageMaker.cri.selLev eq '좋아요순'}">selected</c:if>>좋아요순</option>
 									<option value="댓글순"
-										<c:if test="${selLev eq '댓글순'}">selected</c:if>>댓글순</option>
+										<c:if test="${pageMaker.cri.selLev eq '댓글순'}">selected</c:if>>댓글순</option>
 								</select>
 							</div>
 							<div class="class__filter__input">
 								<p>Search:</p>
-								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${keyword}">
+								<input type="text" placeholder="검색" id="keyword" name="keyword" value="${pageMaker.cri.keyword}">
 							</div>
 							<div class="class__filter__btn">
 								<button type="submit" style="cursor:pointer;">

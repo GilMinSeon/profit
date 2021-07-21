@@ -105,22 +105,22 @@ function fn_pdf(cnt){
                            <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
 								<p>날짜 검색</p>
 								<input type="text" placeholder="검색" id="mydate" style="width: 100%;cursor: pointer;" 
-									value="${selDate}" name="selDate" id="selDate">
+									value="${pageMaker.cri.selDate}" name="selDate" id="selDate">
 							</div>
 							<div class="class__filter__select" style="width: 150px;">
                                 <p>카테고리</p>
                                 <select name="selGubun">
-                                    <option <c:if test="${selGubun eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selGubun eq '온라인클래스'}">selected</c:if>>온라인클래스</option>
-                                    <option <c:if test="${selGubun eq '채팅'}">selected</c:if>>채팅</option>
+                                    <option <c:if test="${pageMaker.cri.selGubun eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selGubun eq '온라인클래스'}">selected</c:if>>온라인클래스</option>
+                                    <option <c:if test="${pageMaker.cri.selGubun eq '채팅'}">selected</c:if>>채팅</option>
                                 </select>
                             </div>
                             <div class="class__filter__select" style="width: 150px;">
                                 <p>상태</p>
                                 <select name="selStatus">
-                                    <option <c:if test="${selStatus eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selStatus eq '정산'}">selected</c:if>>정산</option>
-                                    <option <c:if test="${selStatus eq '미정산'}">selected</c:if>>미정산</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '정산'}">selected</c:if>>정산</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '미정산'}">selected</c:if>>미정산</option>
                                 </select>
                                 
                             </div>
@@ -143,13 +143,19 @@ function fn_pdf(cnt){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty adminSalesList}">
+						<tr>
+							<td colspan="4" style="text-align: center;">이용권 결제/환불내역이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty adminSalesList}">
 					<c:forEach var="result" items="${adminSalesList}" varStatus="status">
 						<form id="frm${status.count}" action="salesAccountPdf.do" method="post">
 					<tr>
 						<td style="vertical-align: middle;">
 							<input type="hidden" class="yyyymm" name="yyyymm" value="${fn:substring(result.yyyymm,0,7)}"/>
 							<input type="hidden" class="gubun" name="gubun" value="${result.gubun}" />
-							${status.count}
+							${ (pageMaker.cri.page-1)*10 + (status.count)}
 						
 						</td>
 						<td style="vertical-align: middle;">
@@ -167,6 +173,7 @@ function fn_pdf(cnt){
 					</tr>
 						</form>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			

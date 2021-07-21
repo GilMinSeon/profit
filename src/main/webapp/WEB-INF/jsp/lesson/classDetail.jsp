@@ -250,10 +250,10 @@ $(document).ready(function(){
 							</tbody>
 						</table>
 						<div class="classes__item__text" style="text-align: right;">
-							<a href="javascript:history.back();" class="class-btn">목록</a>
+							<a href="javascript:history.back();" class="class-btn" style="width:120px;text-align: center;background-color: white;border:1px solid #5768AD;">목록</a>
 							<c:choose>
 								<c:when test="${rightTrainer eq '1'}">
-									<input type="button" onclick="fn_delClass()" class="class-btn" style="cursor:pointer;" value="삭제">
+									<input type="button" onclick="fn_delClass()" class="class-btn" style="cursor:pointer;width:120px;background-color: white;border:1px solid #5768AD;" value="삭제" >
 								</c:when>
 								<c:when test="${rightTrainer eq '0'}">
 								

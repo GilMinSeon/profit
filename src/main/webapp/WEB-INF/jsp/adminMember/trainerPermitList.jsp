@@ -237,6 +237,12 @@ function getCurrentDate(){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty processList}">
+						<tr>
+							<td colspan="8" style="text-align: center;">트레이너 신청내역이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty processList}">
 					<c:forEach var="list" items="${processList}" varStatus="status">
 					<tr <c:if test="${list.processStatus eq 'A' }">onclick="fn_change(${list.processSeq })"</c:if>
 						onclick="location.href='trainerPermitDetail.do?processSeq=${list.processSeq}' ">
@@ -260,6 +266,7 @@ function getCurrentDate(){
 						</td>
 					</tr>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			

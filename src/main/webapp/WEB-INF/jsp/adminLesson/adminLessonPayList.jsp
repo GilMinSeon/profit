@@ -65,27 +65,27 @@ $(document).ready(function(){
                             <div class="class__filter__select" style="width: 150px;">
                                 <p>상태</p>
                                 <select name="selStatus">
-                                    <option <c:if test="${selStatus eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selStatus eq '결제'}">selected</c:if>>결제</option>
-                                    <option <c:if test="${selStatus eq '환불'}">selected</c:if>>환불</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '결제'}">selected</c:if>>결제</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '환불'}">selected</c:if>>환불</option>
                                 </select>
                                 
                             </div>
                             <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
 								<p>날짜</p>
-								<input type="text" name="selDate" value="${selDate}" placeholder="검색" id="mydate" style="width: 100%;cursor: pointer;">
+								<input type="text" name="selDate" value="${pageMaker.cri.selDate}" placeholder="검색" id="mydate" style="width: 100%;cursor: pointer;">
 							</div>
 							<div class="class__filter__select" style="width: 150px;">
                                 <p>검색조건</p>
                                 <select name="selIdentity">
-                                    <option <c:if test="${selIdentity eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selIdentity eq '이름'}">selected</c:if> >이름</option>
-                                    <option <c:if test="${selIdentity eq '아이디'}">selected</c:if>>아이디</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '이름'}">selected</c:if> >이름</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '아이디'}">selected</c:if>>아이디</option>
                                 </select>
                             </div>
 							<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
 								<p>검색어</p>
-								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;cursor: pointer;" value="${searchKeyword}">
+								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;cursor: pointer;" value="${pageMaker.cri.searchKeyword}">
 								<div class="class__filter__btn">
                                 <button style="cursor: pointer;"><i class="fa fa-search"></i></button>
                             </div>
@@ -108,9 +108,15 @@ $(document).ready(function(){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty adminLessonPayList}">
+						<tr>
+							<td colspan="7" style="text-align: center;">결제/환불내역이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty adminLessonPayList}">
 					<c:forEach var="result" items="${adminLessonPayList}" varStatus="status">
 					<tr>
-						<td>${status.count}</td>
+						<td>${ (pageMaker.cri.page-1)*10 + (status.count)}</td>
 						<td>${result.memberId}</td>
 						<td>${result.memberName}</td>
 						<td colspan="2">
@@ -128,6 +134,7 @@ $(document).ready(function(){
 						</td>
 					</tr>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<!-- 페이징처리 -->

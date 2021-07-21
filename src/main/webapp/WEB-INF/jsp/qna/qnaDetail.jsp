@@ -51,155 +51,90 @@
 	padding-bottom: 170px;
 	margin-top: -50px;
 }
-
-#tb1{
-	border: 1px solid #D7D8D8;
-	width: 70%;
-	margin-left: auto;
-	margin-right: auto;
-	font-size: 1.2em;
-}
-
-#tb1 tr td{
-	padding: 20px;
-	text-align: center;
-	border: 1px solid #D7D8D8;
-	background-color: white;
-}
-
-#tb1 tr th{
-	padding: 20px;
-	text-align: center;
-	border: 1px solid #D7D8D8;
-	width: 15%;
-	background-color: #ECF6FE;
-}
 </style>
 <script type="text/javascript">
 	//댓글 등록
-	function fn_replyAdd(){
-	var formData = new FormData($('#replyfrm')[0]);
+	function fn_reipeReplyAdd() {
+		var formData = new FormData($('#replyfrm')[0]);
 		$.ajax({
 			type : 'post',
-			url : 'qnaReplyAddAjax.do',
+			url : 'qnaReplyInsert.do',
 			data : formData,
 			processData : false,
 			contentType : false,
-			async:false,
-			dataType:"text",
-			success : function(data){
-				if(data=="ok"){
-					alert("댓글이 정상적으로 등록되었습니다.");
+			async : false,
+			dataType : "text",
+			success : function(data) {
+				if (data == "ok") {
+					alert("답변이 정상적으로 등록되었습니다.");
 					$("textarea[name=replyContent]").val('');
 					$(".replyarea").load(location.href + " .replyarea");
-				}else if(data=="ng"){
-					alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
-				}else{
-					alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
+				} else if (data == "ng") {
+					alert("답변을 다시 입력해주세요 .");
+				} else {
+					alert("답변을 다시 입력해주세요 .");
 				}
-			},
-			error : function(error){
-				alert("등록이 실패하였습니다. 다시 시도해 주세요.");
-				console.log(error);
-				console.log(error.status);
 			}
 		})
+
 	}
-	function fn_rereply(cnt){
-		var formData = new FormData($('#frm'+ cnt)[0]);
-		
+	//대 댓글 등록 qnaReplyAdd
+	function fn_reipeReplyAdd_Add(replySeq) {
+		var formData = new FormData($('#replyfrmAdd'+replySeq)[0]);
 		$.ajax({
 			type : 'post',
-			url : 'qnaRereplyAddAjax.do',
+			url : 'qnaReplyAdd.do',
 			data : formData,
 			processData : false,
 			contentType : false,
-			async:false,
-			dataType:"text",
-			success : function(data){
-				if(data=="ok"){
-					alert("댓글이 정상적으로 등록되었습니다.");
+			async : false,
+			dataType : "text",
+			success : function(data) {
+				if (data == "ok") {
+					alert("답변이 정상적으로 등록되었습니다.");
 					$("textarea[name=replyContent]").val('');
 					$(".replyarea").load(location.href + " .replyarea");
-				}else if(data=="ng"){
-					alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
-				}else{
-					alert("댓글 등록이 실패하였습니다. 다시 시도해주세요");
+				} else if (data == "ng") {
+					alert("답변을 다시 입력해주세요 .");
+				} else {
+					alert("답변을 다시 입력해주세요 .");
 				}
-			},
-			error : function(error){
-				alert("등록이 실패하였습니다. 다시 시도해 주세요.");
-				console.log(error);
-				console.log(error.status);
 			}
-			
-			
 		})
 	}
 
-	function fn_reply_del(seq){
-		var result = confirm("정말 댓글을 삭제하시겠습니까?");
-		if(result){
-			var params = "replySeq="+ seq;
+	//댓글 삭제
+	function fn_reply_del(replySeq) {
+		var result = confirm("정말 답변을 삭제하시겠습니까?" + replySeq);
+		if (result) {
+			var replySeq = "replySeq=" + replySeq;
 			$.ajax({
-				type:"POST",
-				async:false,
-				url:"QnaReplyDelAjax.do",
-				data:params,
-				success : function(data){
-					if(data=="ok"){
-						alert("댓글이 정상적으로 삭제되었습니다.");
+				type : 'POST',
+				async : false,
+				url : 'qnaReplyDelete.do',
+				data : replySeq,
+				success : function(data) {
+					if (data == "ok") {
+						alert("답변이 정상적으로 삭제되었습니다.");
 						$("textarea[name=replyContent]").val('');
 						$(".replyarea").load(location.href + " .replyarea");
-					}else if(data=="ng"){
-						alert("댓글 삭제가 실패하였습니다. 다시 시도해주세요");
-					}else{
-						alert("댓글 삭제가 실패하였습니다. 다시 시도해주세요");
+					} else if (data == "ng") {
+						alert("답변 삭제중 문제 발생.");
+					} else {
+						alert("답변 삭제중 문제 발생.");
 					}
-				},
-				error : function(error){
-					alert("삭제가 실패하였습니다. 다시 시도해 주세요.");
-					console.log(error);
-					console.log(error.status);
 				}
-			});
-		
-		}
-		
-	}
-
-	function fn_boardDel(seq){
-		var result = confirm("정말 글을 삭제하시겠습니까?");
-		if(result){
-			var params = "communitySeq="+ seq;
-			$.ajax({
-				type:"POST",
-				async:false,
-				url:"BoardDelAjax.do",
-				data:params,
-				success : function(data){
-					if(data=="ok"){
-						alert("글이 정상적으로 삭제되었습니다.");
-						location.href="boardList.do"
-					}else if(data=="ng"){
-						alert("글 삭제가 실패하였습니다. 다시 시도해주세요");
-					}else{
-						alert("글 삭제가 실패하였습니다. 다시 시도해주세요");
-					}
-				},
-				error : function(error){
-					alert("삭제가 실패하였습니다. 다시 시도해 주세요.");
-					console.log(error);
-					console.log(error.status);
-				}
-			});
-		
+			})
 		}
 	}
-	
-	function fn_toggle(cnt){
-		$("#rereply_div"+ cnt).toggle("fast");
-	}
+	//대 댓글 창
+	function qnaDetailReplyAddAdd(replySeq) {
+		if($('.replyfrmAdd'+replySeq).css('display') == 'none'){
+			$('.replyfrmAdd'+replySeq).css('display','block');
+		} else {
+			$('.replyfrmAdd'+replySeq).css('display','none')
+		}
+	};
 
 
 </script>
@@ -221,31 +156,35 @@
 
 	<!-- Blog Details Section Begin -->
 	<section class="blog-details spad">
-		<div>
-			<table id="tb1">
-				<tr>
-					<th>제목</th>
-					<td>${qnaDetail['commonTitle']}</td>
-				</tr>
-				
-				<tr>
-					<th>작성자</th>
-					<td>${qnaDetail['inUserId']}</td>
-				</tr>
-				
-				<tr>
-					<th>작성일</th>
-					  <c:set var = "str" value = "${qnaDetail['inDate']}"/>
-     				  <c:set var = "date1" value = "${fn:substring(str, 0, 10)}" />
-     				  <c:set var = "date2" value = "${fn:substring(str, 10, 20)}" />
-					<td>${date1}&nbsp;&nbsp;&nbsp;${date2}</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					${qnaDetail['commonContent']}
-					</td>
-				</tr>
-			</table>
+		<c:set var="data" value="${data}" />
+		<div class="container">
+			<div class="row" style="justify-content: center">
+				<div class="col-lg-8 order-lg-2 order-1" style="background-color: white; padding: 30px; border: 1px solid #ebecef; border-radius: 10px; display: left;">
+					<div style="margin-bottom: 30px;">
+						<span style="font-size: 1.3em; font-weight: bold; color: #545454">${data.commonTitle}</span>
+					</div>
+					<div style="text-align: right; margin-bottom: 5px; padding-right: 8px;">
+						<div style="display: inline-block; vertical-align: sub;">
+							<p style="margin: 0;"></p>
+							<p style="margin: 0;">작성자&nbsp;&nbsp; ${data.inUserId}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;입력일 &nbsp;&nbsp;${data.inDate}&nbsp;&nbsp;</p>
+						</div>
+					</div>
+					<hr style="color: #545454">
+					<div class="blog__details">
+						<div style="width: auto; height: auto; min-height: 100px;">${data.commonContent}</div>
+						<div style="text-align: right;">
+							<div class="classes__item__text" style="text-align: center;">
+								<a href="qnaList.do" class="class-btn" style="text-align: center;">목 록</a>
+								<c:set var="inUser" value="${sessionScope.memberId}" />
+								<c:if test="${data.inUserId == inUser}">
+									<a href="${path}qnaMod.do?communitySeq=${data.communitySeq}" class="class-btn">수정</a>
+									<a href="${path}qnaDelete.do?communitySeq=${data.communitySeq}" class="class-btn">삭제</a>
+								</c:if>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 	<!-- Blog Details Section End -->
@@ -254,84 +193,125 @@
 
 
 	<!-- Leave Comment Begin -->
-    <div class="leave-comment spad">
-        <div class="container">
-            <div class="row">
-                <div id="reply_area" class="col-lg-4 order-lg-1 order-2 replyarea" style="width: 100%;flex: 0 0 100%;max-width: 100%;padding-right: 0px;margin-left: 23px;">
-                
-                    <div class="blog__sidebar">
-                        
-                        <div class="blog__sidebar__comment" style="overflow-x:hidden;height: 500px;padding:10px;">
-                            <h4>댓글(총 ${qnaDetail['replyCnt']}개)</h4>
-	                            <div class="classes__sidebar__comment" style="border-bottom: 0">
-	                                   <c:forEach var="result" items="${qnaDetail['replyList']}" varStatus="status">
-	                                <form id="frm${status.count}">
-	                                <input type="hidden" name="communitySeq" value="${result.communitySeq}">
-	                                <c:if test="${empty result.replyParentSeq}"><c:set var="cnt" value="${result.replySeq}" /></c:if>
-									<input type="hidden" name="replyParentSeq" value="${cnt}">
-	                                <div class="classes__sidebar__comment__pic" style="<c:if test="${result.replyDepth == 2}">margin-left:100px;</c:if>">
-	                                    <img src="${result.filePath}" alt="">
-	                                </div>
-	                                <div class="classes__sidebar__comment__text">
-	                                    
-	                                    <h6>
-		                                    <c:if test="${result.memberGubun eq 'T'}">
-	                                    	<img src="./resources/img/common/trainer_icon.png" style="width: 25px; height: 25px;">
-	                                    	</c:if>
-	                                     	${result.memberNickname}&nbsp;
-	                                     	<c:if test="${result.memberGubun eq 'T'}">(트레이너)&nbsp;</c:if>
-	                                     	<c:if test="${result.replyDepth == 1}">
-	                                     	<a style="font-size:0.8em;color:gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
-	                                     	</c:if>
-	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">${fn:substring(result.inDate,0,10)}</span>   
-	                                    </h6>   
-	                                    <div style="margin-top: 20px;">
-		                                    <p>${result.replyContent}
-		                                    <c:if test="${result.inUserId eq memberId}">
-		                                    <img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;margin-left: 20px;"onclick="fn_reply_del(${result.replySeq})">
+	<!-- 	댓글 부분 -->
+	<div class="leave-comment spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="leave__comment__text">
+						<h2>🕵️‍♀관리자의 답변입니다.</h2>
+					</div>
+
+				</div>
+				<div id="reply_area" class="col-lg-4 order-lg-1 order-2 replyarea" style="width: 100%; flex: 0 0 100%; max-width: 100%; padding-right: 0px; margin-left: 23px;">
+					<div class="blog__sidebar">
+						<div class="blog__sidebar__comment" style="overflow-x: hidden; height: 500px; padding: 10px;">
+							<h4>답변</h4>
+							<div class="classes__sidebar__comment" style="border-bottom: 0">
+
+								<c:set var="qnaDetailReply" value="${qnaDetailReply}" />
+								<c:set var="qnaDetailReplyList" value="${qnaDetailReplyList}" />
+								<c:set var="qnaDetailMember" value="${qnaDetailMember}" />
+								<c:if test="${not empty qnaDetailReply}">
+									<c:forEach var="qnaDetailReply" items="${qnaDetailReply}">
+										<!-- 댓글 달기 -->
+										<!-- 댓글 목록 -->
+										<form id="frm">
+											<div class="classes__sidebar__comment__pic">
+												<img src="${qnaDetailReply.filePath }" alt="">
+											</div>
+											<div class="classes__sidebar__comment__text">
+												<h6>
+													${qnaDetailReply.inUserId}&nbsp;&nbsp;&nbsp;&nbsp;
+													<a style="cursor: pointer;" onclick="qnaDetailReplyAddAdd(${qnaDetailReply.replySeq})"> 답변작성 </a>
+													<span style="font-size: 0.8em; color: gray; float: right; padding-right: 20px;">${qnaDetailReply.inDate}</span>
+												</h6>
+												<div style="margin-top: 20px;">
+													<p>
+														${qnaDetailReply.replyContent}
+														<c:if test="${qnaDetailReply.inUserId eq sessionScope.memberId}">
+															<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;" onclick="fn_reply_del(${qnaDetailReply.replySeq})">
+														</c:if>
+													</p>
+												</div>
+											</div>
+											<br>
+										</form>
+										<!--대 댓글 목록 -->
+										<c:forEach var="qnaDetailReplyList" items="${qnaDetailReplyList}">
+											<c:if test="${qnaDetailReply.replySeq eq qnaDetailReplyList.REPLY_PARENT_SEQ}">
+												<form id="frm" style="margin-left: 100px;">
+													<div class="classes__sidebar__comment__pic">
+														<img src="${qnaDetailReplyList.FILE_PATH}" alt="">
+													</div>
+													<div class="classes__sidebar__comment__text">
+														<h6>
+															${qnaDetailReplyList.IN_USER_ID}&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-size: 0.8em; color: gray; float: right; padding-right: 20px;">${qnaDetailReplyList.IN_DATE}</span>
+														</h6>
+														<div style="margin-top: 20px;">
+															${qnaDetailReplyList.REPLY_CONTENT}
+															<c:if test="${qnaDetailReplyList.IN_USER_ID eq sessionScope.memberId}">
+																<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;" onclick="fn_reply_del(${qnaDetailReplyList.REPLY_SEQ})">
+															</c:if>
+														</div>
+													</div>
+													<br>
+												</form>
 											</c:if>
-		                                    </p>
-	                                	</div>
-	                                </div><br>
-	                                <c:if test="${result.replyNextDepth == 1 || empty result.replyNextDepth}">
-	                                	<div class="row" >
-			                                <div id="rereply_div${cnt}" class="col-lg-12" style="margin-top: 15px;margin-left: 100px;display: none;">
-				                                <div class="classes__sidebar__comment__pic">
-				                                    <img src="${qnaDetail['MyProfileImage']}" alt="" >
-				                                </div>
-			                                    <textarea id="reply" name="replyContent" placeholder="답글을 입력해 주세요." style="width: 67%;float: left"></textarea>
-			                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: left;margin-top: 15px;margin-left: 5px;" onclick="fn_rereply(${status.count})">답글작성</button>
-			                                </div>
-			                            </div>
-	                                	<hr>
-	                                </c:if>
-	                                </form>
-	                                </c:forEach>
-	                            </div>
-                            <form id="replyfrm">
-                            <input type="hidden" name="communitySeq" value="${qnaDetail['communitySeq']}">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                </div>
-                                <div class="col-lg-12">
-	                                <div class="classes__sidebar__comment__pic">
-	                                    <img src="${qnaDetail['MyProfileImage']}" alt="">
-	                                </div>
-                                    <textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 79%;float: left"></textarea>
-                                    <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: right;margin-top: 15px;" onclick="fn_replyAdd()">댓글작성</button>
-                                </div>
-                                
-                            </div>
-                        </form>
-                        </div>
-                    </div>
-                </div>
-                
-                
-            </div>
-        </div>
-    </div>
-    <!-- Leave Comment End -->
+										</c:forEach>
+										<!-- 대 댓글 달기 -->
+										<form class="replyfrmAdd${qnaDetailReply.replySeq}" id="replyfrmAdd${qnaDetailReply.replySeq}" style="display: none;">
+											<input type="hidden" name="replySeq" value="${qnaDetailReply.replySeq}">
+											<input type="hidden" name="communitySeq" value="${data.communitySeq}">
+											<input type="hidden" name="memberId" value="${sessionScope.memberId}">
+											<div class="row">
+												<div class="col-lg-12"></div>
+												<div class="col-lg-12" style="margin-top: 15px; margin-left: 100px;">
+													<div class="classes__sidebar__comment__pic">
+														<img src="${qnaDetailMember.FILE_PATH}" alt="" style="max-width: 70px; float: left;">
+													</div>
+													<textarea id="reply" name="replyContent" placeholder="답변을 입력해 주세요." style="width: 67%; float: left"></textarea>
+													<input type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: left; margin-top: 15px; margin-left: 5px;" onclick="fn_reipeReplyAdd_Add(${qnaDetailReply.replySeq})" value="답변작성">
+												</div>
+											</div>
+										</form>
+										<hr>
+									</c:forEach>
+								</c:if>
+								<c:if test="${empty qnaDetailReply}">
+									<form id="frm">
+										<div class="classes__sidebar__comment__text">
+											<div style="margin-top: 20px;">
+												<input type="hidden" />
+												<p>답변이 없습니다.</p>
+											</div>
+										</div>
+										<br>
+										<hr>
+									</form>
+								</c:if>
+							</div>
+							<!-- 답변 등록 -->
+							<form id="replyfrm">
+								<input type="hidden" name="communitySeq" value="${data.communitySeq}">
+								<input type="hidden" name="memberId" value="${sessionScope.memberId}">
+								<div class="row">
+									<div class="col-lg-12"></div>
+									<div class="col-lg-12">
+										<div class="classes__sidebar__comment__pic">
+											<img src="${qnaDetailMember.FILE_PATH}" alt="">
+										</div>
+										<textarea id="reply" name="replyContent" placeholder="답변을 입력해 주세요." style="width: 79%; float: left"></textarea>
+										<input type="button" class="site-btn" style="font-size: 1.05em; width: 120px; height: 48px; padding: 0; float: right; margin-top: 15px;" onclick="fn_reipeReplyAdd()" value="답변등록">
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 	<!-- Js Plugins -->

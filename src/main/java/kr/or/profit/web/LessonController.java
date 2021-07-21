@@ -88,9 +88,6 @@ public class LessonController {
 	   
 	  cri.setPerPageNum(9);
 	  cri.setMemberId(memberId);
-	  cri.setKeyword(keyword);
-	  cri.setSelLev(selLev);
-	  cri.setSelCate(selCate);
 	  
       List<?> lessonList = lessonService.selectLessonList(cri);
       model.addAttribute("resultList", lessonList);
@@ -206,7 +203,11 @@ public class LessonController {
       lessonDetailList.put("replyList", replyList);
       model.addAttribute("resultList", lessonDetailList);
       System.out.println("resultList " + model.toString());
-      
+    
+    //댓글 수 가져오기
+	  Map<String,Object> replyCnt = lessonService.selectReplyCnt(lessonSeq);
+	  model.addAttribute("replyCnt", replyCnt);
+      System.out.println("댓글 수 가져오니 " + model.toString());
     //댓글 내 프로필 사진 이미지 정보
       String myprofile = lessonService.selectMyProfile(memberId);
       System.out.println("기본이미지 : " + myprofile);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zxx">
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8">
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -207,7 +208,7 @@ function buyLessonAddAjax(lessonTitle, lessonPrice, lessonSeq, lessonMonth){
                                             	${result.lessonTitle}
                                             </td>
                                             <td style="display:table-cell; vertical-align: middle;">${result.lessonMonth}</td>
-                                            <td style="display:table-cell; vertical-align: middle;">${result.lessonPrice}</td>
+                                            <td style="display:table-cell; vertical-align: middle;"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.lessonPrice}" /></td>
                                         </tr>
                                                                             </tbody>
                                 </table>
@@ -224,7 +225,7 @@ function buyLessonAddAjax(lessonTitle, lessonPrice, lessonSeq, lessonMonth){
                                             
                                             
                                             <tr style="text-align: right;">
-                                                <td>총 합계 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: #FBEDB5;padding: 3px;">${result.lessonPrice}원(&#8361;)</span></td>
+                                                <td>총 합계 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: #FBEDB5;padding: 3px;"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${result.lessonPrice}" /> 원(&#8361;)</span></td>
                                             </tr>
                                         </tbody>
                                         

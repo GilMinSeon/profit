@@ -270,6 +270,8 @@
 			REPLY_DEL_FLAG = 'N'
 		AND
 			REPLY_DEPTH = '0'
+		ORDER by
+            A.IN_DATE DESC
 	</select>
 
 	<!-- 	댓글 삭제 -->
@@ -337,6 +339,8 @@
 			REPLY_DEPTH = '1'
 		AND
 			REPLY_DEL_FLAG = 'N'
+		ORDER by
+            A.IN_DATE DESC
 
 	</select>
 

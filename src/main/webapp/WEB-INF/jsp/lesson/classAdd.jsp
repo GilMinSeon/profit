@@ -202,7 +202,7 @@ background: #ffffff;
 						<div class="form-group">
 							<h5 style="display: inline; float: left; color: black;">상세 강의명</h5>
 						    &nbsp;
-						    <input type="text" class="form-control" id="lessonDetailTitle" name="lessonDetailTitle" placeholder="ex)1강 전신스트레칭">
+						    <input type="text" class="form-control" id="lessonDetailTitle" name="lessonDetailTitle" placeholder="ex)1강 전신스트레칭" style="border: none;border-bottom: 1px solid #D5D4D4;height: 54px;font-size: 15px;">
 						</div>
 					</p>
 					<br/>
@@ -211,7 +211,7 @@ background: #ffffff;
 						<div class="form-group">
 							<h5 style="display: inline; float: left; color: black;">상세 강의내용</h5>
 						    &nbsp;
-						    <textarea class="form-control" rows="9" id="lessonDetailContent" name="lessonDetailContent" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."></textarea>
+						    <textarea class="form-control" rows="9" id="lessonDetailContent" name="lessonDetailContent" placeholder="ex)우리의 클래스를 시작하기전에 몸을 제대로 풀고 시작해봅니다....."  style="border: none;border-bottom: 1px solid #D5D4D4;font-size: 15px;"></textarea>
 						</div>
 					</p>
 					<br/>
