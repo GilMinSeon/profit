@@ -105,22 +105,22 @@ function fn_pdf(cnt){
                            <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
 								<p>날짜 검색</p>
 								<input type="text" placeholder="검색" id="mydate" style="width: 100%;cursor: pointer;" 
-									value="${selDate}" name="selDate" id="selDate">
+									value="${pageMaker.cri.selDate}" name="selDate" id="selDate">
 							</div>
 							<div class="class__filter__select" style="width: 150px;">
                                 <p>카테고리</p>
                                 <select name="selGubun">
-                                    <option <c:if test="${selGubun eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selGubun eq '온라인클래스'}">selected</c:if>>온라인클래스</option>
-                                    <option <c:if test="${selGubun eq '채팅'}">selected</c:if>>채팅</option>
+                                    <option <c:if test="${pageMaker.cri.selGubun eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selGubun eq '온라인클래스'}">selected</c:if>>온라인클래스</option>
+                                    <option <c:if test="${pageMaker.cri.selGubun eq '채팅'}">selected</c:if>>채팅</option>
                                 </select>
                             </div>
                             <div class="class__filter__select" style="width: 150px;">
                                 <p>상태</p>
                                 <select name="selStatus">
-                                    <option <c:if test="${selStatus eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selStatus eq '정산'}">selected</c:if>>정산</option>
-                                    <option <c:if test="${selStatus eq '미정산'}">selected</c:if>>미정산</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '정산'}">selected</c:if>>정산</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '미정산'}">selected</c:if>>미정산</option>
                                 </select>
                                 
                             </div>

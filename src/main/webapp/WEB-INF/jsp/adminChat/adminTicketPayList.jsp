@@ -156,28 +156,28 @@ function fn_updTicketCnt(ele){
                             <div class="class__filter__select" style="width: 150px;">
                                 <p>종류</p>
                                 <select name="selStatus">
-                                    <option <c:if test="${selStatus eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selStatus eq '1회권'}">selected</c:if>>1회권</option>
-                                    <option <c:if test="${selStatus eq '3회권'}">selected</c:if>>3회권</option>
-                                    <option <c:if test="${selStatus eq '5회권'}">selected</c:if>>5회권</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '1회권'}">selected</c:if>>1회권</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '3회권'}">selected</c:if>>3회권</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '5회권'}">selected</c:if>>5회권</option>
                                 </select>
                                 
                             </div>
                             <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
 								<p>날짜</p>
-								<input type="text" name="selDate" value="${selDate}" placeholder="검색" id="mydate" style="width: 100%;">
+								<input type="text" name="selDate" value="${pageMaker.cri.selDate}" placeholder="검색" id="mydate" style="width: 100%;">
 							</div>
 							<div class="class__filter__select" style="width: 150px;">
                                 <p>검색조건</p>
                                 <select name="selIdentity">
-                                    <option <c:if test="${selIdentity eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selIdentity eq '이름'}">selected</c:if> >이름</option>
-                                    <option <c:if test="${selIdentity eq '아이디'}">selected</c:if>>아이디</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '이름'}">selected</c:if> >이름</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '아이디'}">selected</c:if>>아이디</option>
                                 </select>
                             </div>
 							<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
 								<p>검색어</p>
-								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;" value="${searchKeyword}">
+								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;" value="${pageMaker.cri.searchKeyword}">
 								<div class="class__filter__btn">
                                 <button><i class="fa fa-search"></i></button>
                             </div>

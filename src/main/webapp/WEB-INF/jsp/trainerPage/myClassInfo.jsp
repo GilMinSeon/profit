@@ -374,7 +374,7 @@ function fn_show2(){
             
             <!-- counter -->
             <div class="col-md-3 col-sm-6 text-center counter-section wow fadeInUp animated" data-wow-duration="1200ms" style="visibility: visible; animation-duration: 1200ms; animation-name: fadeInUp;"> 
-            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;">
+            	<img src="./resources/img/common/money2.png" style="width: 40px;height: 40px;" onclick="location.href='chatAccountInfo.do'">
             	<span class="timer counter alt-font appear" data-to="600" data-speed="7000" onclick="fn_today()" style="cursor: pointer">${todayNumberList.statusDate }</span> 
             	<p class="counter-title" style="margin-top: 10px;">상담 정산 내역</p>
             </div> 
@@ -459,6 +459,12 @@ function fn_show2(){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty classList}">
+						<tr>
+							<td colspan="6" style="text-align: center;font-size: 18px;">등록된 강의가 존재하지 않습니다. </td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty classList}">
 					<c:forEach var="result" items="${classList}" varStatus="status">
 					     
 					<tr>
@@ -492,6 +498,7 @@ function fn_show2(){
 						</td>
 					</tr>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<br>

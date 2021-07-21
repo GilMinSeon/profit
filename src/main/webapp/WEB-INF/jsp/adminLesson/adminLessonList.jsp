@@ -125,27 +125,27 @@ function fn_switch(ele){
                             <div class="class__filter__select" style="width: 150px;">
                                 <p>상태</p>
                                 <select name="selStatus">
-                                    <option <c:if test="${selStatus eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selStatus eq '활성화'}">selected</c:if>>활성화</option>
-                                    <option <c:if test="${selStatus eq '비활성화'}">selected</c:if>>비활성화</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '활성화'}">selected</c:if>>활성화</option>
+                                    <option <c:if test="${pageMaker.cri.selStatus eq '비활성화'}">selected</c:if>>비활성화</option>
                                 </select>
                                 
                             </div>
                             <div id="searchDiv" class="class__filter__input" style="margin-right: 28px;width: 150px;">
 								<p>날짜</p>
-								<input type="text" name="selDate" value="${selDate}" placeholder="검색" id="mydate" style="width: 100%;">
+								<input type="text" name="selDate" value="${pageMaker.cri.selDate}" placeholder="검색" id="mydate" style="width: 100%;">
 							</div>
 							<div class="class__filter__select" style="width: 150px;">
                                 <p>검색조건</p>
                                 <select name="selIdentity">
-                                    <option <c:if test="${selIdentity eq '전체'}">selected</c:if>>전체</option>
-                                    <option <c:if test="${selIdentity eq '이름'}">selected</c:if> >이름</option>
-                                    <option <c:if test="${selIdentity eq '아이디'}">selected</c:if>>아이디</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '전체'}">selected</c:if>>전체</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '이름'}">selected</c:if> >이름</option>
+                                    <option <c:if test="${pageMaker.cri.selIdentity eq '아이디'}">selected</c:if>>아이디</option>
                                 </select>
                             </div>
 							<div id="searchDiv" class="class__filter__input"  style="margin-right: 20px;width: 350px;">
 								<p>검색어</p>
-								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;" value="${searchKeyword}">
+								<input type="text" name="searchKeyword" placeholder="검색" style="width: 100%;" value="${pageMaker.cri.searchKeyword}">
 								<div class="class__filter__btn">
                                 <button><i class="fa fa-search"></i></button>
                             </div>
@@ -167,13 +167,13 @@ function fn_switch(ele){
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="result" items="${adminLessonList}" varStatus="status">
 					<c:if test="${empty adminLessonList}">
 						<tr>
 							<td colspan="5" style="text-align: center;">강좌리스트가 존재하지 않습니다.</td>
 						</tr>
 					</c:if>
 					<c:if test="${!empty adminLessonList}">
+					<c:forEach var="result" items="${adminLessonList}" varStatus="status">
 					<tr>
 					 
 						<td>${ (pageMaker.cri.page-1)*10 + (status.count)}
@@ -212,8 +212,8 @@ function fn_switch(ele){
 							
 						</td>
 					</tr>
-					</c:if>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<!-- 페이징처리 -->

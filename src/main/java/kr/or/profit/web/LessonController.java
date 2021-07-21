@@ -88,9 +88,6 @@ public class LessonController {
 	   
 	  cri.setPerPageNum(9);
 	  cri.setMemberId(memberId);
-	  cri.setKeyword(keyword);
-	  cri.setSelLev(selLev);
-	  cri.setSelCate(selCate);
 	  
       List<?> lessonList = lessonService.selectLessonList(cri);
       model.addAttribute("resultList", lessonList);

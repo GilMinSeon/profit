@@ -159,7 +159,7 @@
                                 
                                 <li><a href="#">채팅관리</a>
                                     <ul class="dropdown">
-                                        <li><a href="adminTicketPayList.do">이용권 사용내역</a></li>
+                                        <li><a href="adminTicketPayList.do">이용권 구매내역</a></li>
                                         <li><a href="adminChatList.do">결제/환불내역</a></li>
                                         <li><a href="#">채팅통계</a></li>
                                     </ul>
