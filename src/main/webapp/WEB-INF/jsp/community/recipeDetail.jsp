@@ -80,10 +80,12 @@
 	}
 	//대 댓글 등록 recipeReplyAdd
 	function fn_reipeReplyAdd_Add(replySeq) {
+		alert(replySeq);
 		var formData = new FormData($('#replyfrmAdd'+replySeq)[0]);
+		alert(replySeq);
 		$.ajax({
 			type : 'post',
-			url : 'recipeaddBookgood.do',
+			url : 'recipeReplyAdd.do',
 			data : formData,
 			processData : false,
 			contentType : false,
@@ -111,7 +113,7 @@
 			$.ajax({
 				type : 'POST',
 				async : false,
-				url : 'reciperemoveBookgood.do',
+				url : 'recipeReplyDelete.do',
 				data : replySeq,
 				success : function(data) {
 					if (data == "ok") {
@@ -378,9 +380,9 @@
 											<div class="classes__sidebar__comment__text">
 												<h6>
 													${recipeDetailReply.IN_USER_ID}&nbsp;&nbsp;&nbsp;&nbsp;
-													<a style="font-size: 0.8em; color: gray;" onclick="recipeDetailReplyAddAdd(${recipeDetailReply.REPLY_SEQ})">
+													<a style="font-size: 0.8em; color: gray; cursor:pointer;" onclick="recipeDetailReplyAddAdd(${recipeDetailReply.REPLY_SEQ})">
 														답글달기
-														<c:out value="${recipeDetailReply.REPLY_SEQ}" />
+<%-- 														<c:out value="${recipeDetailReply.REPLY_SEQ}" /> --%>
 													</a>
 													<span style="font-size: 0.8em; color: gray; float: right; padding-right: 20px;">${recipeDetailReply.IN_DATE}</span>
 												</h6>
@@ -388,7 +390,7 @@
 													<p>
 														${recipeDetailReply.REPLY_CONTENT}
 														<c:set var="inUser" value="${sessionScope.memberId}" />
-														<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;" onclick="fn_reply_del(${recipeDetailReply.REPLY_SEQ})">
+														<img src="./resources/img/common/delete.png" style="width: 15px; height: 15px;" onclick="fn_reply_del(${recipeDetailReply.REPLY_SEQ})">
 													</p>
 												</div>
 											</div>
@@ -408,7 +410,7 @@
 														<div style="margin-top: 20px;">
 															${recipeDetailReplyList.REPLY_CONTENT}
 															<c:set var="inUser" value="${sessionScope.memberId}" />
-															<img src="./resources/img/common/delete.png" style="width: 15px; height: 15x;" onclick="fn_reply_del(${recipeDetailReplyList.REPLY_SEQ})">
+															<img src="./resources/img/common/delete.png" style="width: 15px; height: 15px;" onclick="fn_reply_del(${recipeDetailReplyList.REPLY_SEQ})">
 
 														</div>
 													</div>

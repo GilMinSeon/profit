@@ -129,8 +129,7 @@
 	}
 </script>
 </head>
-<body style="padding-top: 5rem;">
-
+<body>
 	<!-- Breadcrumb Begi -->
 	<section class="breadcrumb-option set-bg" data-setbg="./resources/img/breadcrumb.jpg" style="background-image: url(&quot;./resources/img/breadcrumb.jpg&quot;);">
 		<div class="container">

@@ -93,6 +93,11 @@ public class RecipeController {
 		List<?> recipeNewList = recipeService.recipeNewList();
 		List<?> recipeGoodList = recipeService.recipeGoodList();
 		Map<String, Object> boardDetail = communityService.selectBoardDetail(paramVO);
+
+		System.out.println("댓글" + recipeDetailReply);
+		System.out.println("대 댓 글" + recipeDetailReplyList);
+
+
 		model.addAttribute("data", recipeDetail);
 		model.addAttribute("recipeDetailReply", recipeDetailReply);
 		model.addAttribute("recipeDetailReplyList", recipeDetailReplyList);
