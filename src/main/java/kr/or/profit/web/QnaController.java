@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,8 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.profit.service.CommunityService;
 import kr.or.profit.service.QnaService;
+import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.PageMaker;
+import kr.or.profit.vo.ReplyVO;
 
 @Controller
 public class QnaController {
@@ -34,18 +37,13 @@ public class QnaController {
 	private CommunityService communityService;
 
 	/**
-	 * 관리자 목록(listAll)
+	 * 문의하기 목록(qnaList)
 	 *
 	 * @author 박상빈
-	 * @param map, ssion, model map 사용안함 memberId 로그인 아이디 가지고옴 model로 리턴
-	 * @return "qna/qnaList"
+	 * @param HttpSession, Criteria, ModelMap
+	 * @return String
 	 * @exception Exception
 	 */
-	//	public List<?> listAll(@RequestParam Map<String, Object> map, HttpSession ssion, ModelMap model) throws Exception {
-	//		List<?> qnaList = qnaService.qnaListAll();
-	//		return qnaList;
-	//	}
-
 	/**
 	 * 문의하기 목록(qnaList)
 	 *
@@ -57,266 +55,174 @@ public class QnaController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "qnaList.do", method = RequestMethod.GET)
-	public String qnaList(HttpSession ssion, Criteria cri, ModelMap model) throws Exception {
-		System.out.println("문의하기 목록옴 ");
-		String memberId = (String) ssion.getAttribute("memberId");
+	public String qnaList(HttpServletRequest request, Criteria cri, ModelMap model) throws Exception {
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
+		String memberGubun = (String) session.getAttribute("memberGubun");
 		if (memberId == null) {
 			memberId = "";
 		}
-
+		if ( memberGubun == null) {
+			memberGubun = "";
+		}
+		System.out.println("memberId : " +  memberId);
+		System.out.println("memberGubun : " +  memberGubun);
+		
 		cri.setMemberId(memberId);
-
-		System.out.println("레시피 목록 온다" + memberId);
-		List<?> qnaList = qnaService.qnaList(cri);
-		System.out.println("문의하기 목록돌아옴" + qnaList);
-		model.addAttribute("data", qnaList);
-
-		// 페이징처리
+		cri.setPerPageNum(10);
+		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-
-		// 전체 글 개수 세팅 - 검색결과과 무관하게 페이징 생성 => 수정필요 => 수정 완
-		pageMaker.setTotalCount(qnaService.selectBoardCnt(cri));
-
-		System.out.println(qnaService.selectBoardCnt(cri) + "가져오는 개수!!!!!!!!!!!!");
-
-		model.addAttribute("pageMaker", pageMaker);
+		
+		if(memberGubun.equals("A")) {
+			List<Map<String,Object>> qnaList = qnaService.selectAdminQnaList(cri);
+			model.addAttribute("qnaList", qnaList);
+			//전체글 개수
+			pageMaker.setTotalCount(qnaService.selectAdminQnaCnt(cri)); 
+		}else {
+			List<Map<String,Object>> qnaList = qnaService.selectUserQnaList(cri);
+			model.addAttribute("qnaList", qnaList);
+			//전체글 개수
+			pageMaker.setTotalCount(qnaService.selectUserQnaCnt(cri)); 
+		}
+		
+		model.addAttribute("pageMaker" , pageMaker);
+		System.out.println(model.toString());
 		return "qna/qnaList";
-	}
-
-	/**
-	 * 문의하기 add화면(qnaAdd)
-	 *
-	 * @author 박상빈
-	 * @param
-	 * @return "qna/qnaAdd"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "qnaAdd.do", method = RequestMethod.GET)
-	public String qnaAdd() throws Exception {
-		return "qna/qnaAdd";
-	}
-
-	/**
-	 * 문의하기 등록(qnaInsert)
-	 *
-	 * @author 박상빈
-	 * @param ssion    로그인중인 아이디 가지고옴
-	 * @param map      Qna_SQL.xml로 아이디 가지고감
-	 * @param response html을 java에서 실행하기위해 사용
-	 * @param model    data변수명에 qnaList를 가지고 html으로간다
-	 * @return "qna/qnaList"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "qnaAdd.do", method = RequestMethod.POST)
-	public void qnaInsert(@RequestParam Map<String, Object> map, ModelMap model, HttpSession ssion, HttpServletResponse response) throws Exception {
-		String memberId = (String) ssion.getAttribute("memberId");
-		map.put("memberId", memberId);
-		System.out.println("문의하 등록" + map);
-		int qnaInsert = qnaService.qnaInsert(map);
-		System.out.println("문의하기 등록하고 옴" + qnaInsert);
-
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("<script>alert('문의하기가 등록 되었습니다'); location.href='qnaList.do';</script>");
-		out.flush();
 	}
 
 	/**
 	 * 문의하기 상세보기/답변 목록(qnaDetail)
 	 *
 	 * @author 박상빈
-	 * @param map, ssion
-	 * @param data, qnaReply, qnaDetailReplyList, qnaDetailMember
-	 * @return "qna/qnaDetail"
+	 * @param Map, HttpSession, ModelMap
+	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "qnaDetail.do", method = RequestMethod.GET)
-	public String qnaDetail(@RequestParam Map<String, Object> map, HttpSession ssion, ModelMap model) throws Exception {
-		map.put("memberId", ssion.getAttribute("memberId"));
-		System.out.println("문의하기 상세화면옴" + map);
+	public String qnaDetail(@ModelAttribute("communityVO") CommunityVO communityVO, Model model,
+			HttpServletRequest request) throws Exception {
+			HttpSession session = request.getSession();
+			String memberId = (String) session.getAttribute("memberId");
+			String communitySeq = communityVO.getCommunitySeq();
 
-		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
-		List<?> qnaDetailReply = qnaService.qnaDetailReply(map);
-		List<?> qnaDetailReplyList = qnaService.qnaDetailReplyList(map);
-		Map<String, Object> qnaDetailMember = qnaService.qnaDetailMember(map);
-
-		System.out.println("문의하기 상세보기" + qnaDetail);
-		System.out.println("댓글돌아 옴 = " + qnaDetailReply);
-		System.out.println("대  댓글돌아옴 = " + qnaDetailReplyList);
-		System.out.println("멤버 돌아옴 = " + qnaDetailMember);
-
-		model.addAttribute("data", qnaDetail);
-		model.addAttribute("qnaDetailReply", qnaDetailReply);
-		model.addAttribute("qnaDetailReplyList", qnaDetailReplyList);
-		model.addAttribute("qnaDetailMember", qnaDetailMember);
+			CommunityVO paramVO = new CommunityVO();
+			paramVO.setMemberId(memberId);
+			paramVO.setCommunitySeq(communitySeq);
+			
+			//문의하기 상세
+			Map<String, Object> qnaDetail = qnaService.selectQnaDetail(paramVO);
+			model.addAttribute("qnaDetail",qnaDetail);
+			
+			//댓글 프로필 사진
+			String myprofile = qnaService.selectQnaMyProfile(memberId);
+			System.out.println("기본이미지 : " + myprofile);
+			qnaDetail.put("MyProfileImage", myprofile);
+			
+			// 댓글 목록
+			List<Map<String, Object>> replyList = qnaService.selectQnaReplyList(communitySeq);
+			qnaDetail.put("replyList", replyList);
+			
+			//댓글 수 가져오기
+			Map<String,Object> replyCnt = qnaService.selectQnaReplyCnt(communitySeq);
+			qnaDetail.put("replyCnt", replyCnt.get("cnt"));
+			
+			
+			System.out.println(model.toString());
+			
 		return "qna/qnaDetail";
 	}
-
-	/**
-	 * 문의하기 수정 화면(qnaMod)
-	 *
-	 * @author 박상빈
-	 * @param map   Qna_SQL.xml로 communitySeq 가지고감
-	 * @param model data변수명에 qnaDetail를 가지고 html으로간다
-	 * @return "qna/qnaMod"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "qnaMod.do", method = RequestMethod.GET)
-	public String qnaMod(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
-		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
-		model.addAttribute("data", qnaDetail);
-		return "qna/qnaMod";
-	}
-
-	/**
-	 * 문의하기 수정(qnaUpdate)
-	 *
-	 * @author 박상빈
-	 * @param map   Qna_SQL.xml로 communitySeq 가지고감
-	 * @param model data변수명에 qnaDetail를 가지고 html으로간다 qnaDetail 화면 새로고침을 위해 파라미터로 communitySeq가지고 qnaDetail.do로 간다 redirect:"(새로고칠 화면.jsp) 화면이름 이름"
-	 * @return "redirect:qnaDetail.do?communitySeq="+map.get("communitySeq");
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "qnaMod.do", method = RequestMethod.POST)
-	public void qnaUpdate(@RequestParam Map<String, Object> map, ModelMap model, HttpServletResponse response) throws Exception {
-
-		int qnaUpdate = qnaService.qnaUpdate(map);
-
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("<script>alert('문의하기가 수정 되었습니다'); location.href='qnaList.do';</script>");
-		out.flush();
-	}
-
-	/**
-	 * 문의하기 글 삭제(qnaAdd)
-	 *
-	 * @author 박상빈
-	 * @param map     qnaDetail에서 해당 communitySeq 가지고옴
-	 * @param qnaList qnaList갈때 리스트 뿌릴거(여기서 않가지고가면 않나옴)
-	 * @return "qna/qnaList"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "qnaDelete.do", method = RequestMethod.GET)
-	public void qnaDelete(@RequestParam Map<String, Object> map, ModelMap model, HttpSession ssion, HttpServletResponse response) throws Exception {
-		String memberId = (String) ssion.getAttribute("memberId");
-		map.put("memberId", memberId);
-
-		int qnaDelete = qnaService.qnaDelete(map);
-
-		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("<script>alert('문의하기가 삭제 되었습니다');location.href='qnaList.do';</script>");
-		out.flush();
-	}
-
-	/**
-	 * 게시판 이미지 업로드
-	 *
-	 * @author 박상빈
-	 * @param MultipartFile,HttpServletRequest,HttpServletResponse
-	 * @return 이미지, file.transferTo(f); = 함수로 f에담아서 넘겨주는 듯하다
-	 * @throws Exception
-	 */
-
-	@RequestMapping(value = "qnaProfileImage.do", method = RequestMethod.POST)
+	
+	@RequestMapping(value = "qnaReplyAddAjax.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public void qnaProfileImage(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		response.setContentType("text/html;charset=utf-8");
-		System.out.println("휴...");
-		PrintWriter out = response.getWriter();
-		// 업로드할 폴더 경로
-		String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
-		UUID uuid = UUID.randomUUID();
+	public String replyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
 
-		// 업로드할 파일 이름
-		String org_filename = file.getOriginalFilename();
-		String str_filename = uuid.toString() + "_" + org_filename;
+		String communitySeq = request.getParameter("communitySeq");
+		String replyContent = request.getParameter("replyContent");
 
-		System.out.println("원본 파일명 : " + org_filename);
-		System.out.println("저장할 파일명 : " + str_filename);
+		System.out.println("communitySeq : " + communitySeq);
+		System.out.println("replyContent : " + replyContent);
 
-		String filepath = "\\\\192.168.41.6\\upload\\profit" + "\\" + str_filename;
-		System.out.println("파일경로 : " + filepath);
-		String finalpath = "http://192.168.41.6:9999/upload/profit/" + str_filename;
-		System.out.println("최종경로 : " + finalpath);
+		ReplyVO replyvo = new ReplyVO();
+		replyvo.setCommunitySeq(communitySeq);
+		replyvo.setReplyContent(replyContent);
+		replyvo.setInUserId(memberId);
+		replyvo.setUpUserId(memberId);
 
-		File f = new File(filepath);
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-		file.transferTo(f);
-		out.println(finalpath);
-		out.close();
-	}
-	//==================================================================================================================================
-	//댓글부분
-
-	/**
-	 * 댓글 등록(qnaReplyInsert)
-	 *
-	 * @author 박상빈
-	 * @param map qnaReplyInsert 를 Qna_SQL.xml로 보낸다
-	 * @return "msg"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "qnaReplyInsert.do", method = RequestMethod.POST)
-	@ResponseBody
-	public String qnaReplyInsert(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
-		int qnaReplyInsert = qnaService.qnaReplyInsert(map);
+		int insertResult = qnaService.insertQnaReply(replyvo);
 
 		String msg = "ng";
 
-		if (qnaReplyInsert > 0) {
+		if (insertResult > 0) {
 			msg = "ok";
 		}
 		return msg;
 	}
+	
+	
+	@RequestMapping(value = "qnaRereplyAddAjax.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String rereplyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		String memberId = (String) session.getAttribute("memberId");
 
+		String communitySeq = request.getParameter("communitySeq");
+		String replyContent = request.getParameter("replyContent");
+		String replyParentSeq = request.getParameter("replyParentSeq");
+
+		System.out.println("communitySeq : " + communitySeq);
+		System.out.println("replyContent : " + replyContent);
+		System.out.println("replyParentSeq : " + replyParentSeq);
+
+		ReplyVO replyvo = new ReplyVO();
+		replyvo.setCommunitySeq(communitySeq);
+		replyvo.setReplyContent(replyContent);
+		replyvo.setReplyParentSeq(replyParentSeq);
+		replyvo.setInUserId(memberId);
+		replyvo.setUpUserId(memberId);
+
+		int insertResult = qnaService.insertQnaRereply(replyvo);
+
+		String msg = "ng";
+
+		if (insertResult > 0) {
+			msg = "ok";
+		}
+		return msg;
+	}
+	
+	
+	@RequestMapping(value = "QnaReplyDelAjax.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String QnaReplyDelAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		String replySeq = request.getParameter("replySeq");
+		System.out.println("replySeq : " + replySeq);
+		int deleteResult = qnaService.deleteQnaReply(replySeq);
+
+		String msg = "ng";
+
+		if (deleteResult > 0) {
+			msg = "ok";
+		}
+		return msg;
+	}
+	
 	/**
-	 * 댓글 삭제(qnaReplyDelete)
+	 * 문의하기 등록(qnaAdd)
 	 *
 	 * @author 박상빈
-	 * @param map qnaReplyInsert 를 Qna_SQL.xml로 보낸다
-	 * @return "msg"
+	 * @param
+	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "qnaReplyDelete.do", method = RequestMethod.POST)
-	@ResponseBody
-	public String qnaReplyDelete(@RequestParam Map<String, Object> map, ModelMap model, HttpServletRequest request) throws Exception {
-
-		int qnaReplyDelete = qnaService.qnaReplyDelete(map);
-
-		String msg = "ng";
-		if (qnaReplyDelete > 0) {
-			msg = "ok";
-		}
-		return msg;
+	@RequestMapping(value = "qnaAdd.do", method = RequestMethod.GET)
+	public String qnaAdd() throws Exception {
+		return "qna/qnaAdd";
 	}
+	
 
-	/**
-	 * 문의하기 대 댓글 등록(qnaReply)
-	 *
-	 * @author 박상빈
-	 * @param map
-	 * @return msg
-	 * @throws Exception
-	 */
-
-	@RequestMapping(value = "qnaReplyAdd.do", method = RequestMethod.POST)
-	@ResponseBody
-	public String qnaReplyAdd(@RequestParam Map<String, Object> map, Model model) throws Exception {
-
-		System.out.println("대댓글 옴" + map);
-		int qnaReplyAdd = qnaService.qnaReplyAdd(map);
-
-		String msg = "ng";
-		if (qnaReplyAdd > 0) {
-			msg = "ok";
-		}
-
-		return msg;
-	}
 
 }
