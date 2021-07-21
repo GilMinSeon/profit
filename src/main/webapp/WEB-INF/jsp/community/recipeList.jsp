@@ -81,7 +81,7 @@
 								<div class="classes__item__text" style="padding-top: 10px; padding-bottom: 10px; padding-left: 0; padding-right: 0;">
 									<div style="text-align: right;">
 										<div style="display: inline-block; vertical-align: middle;">
-											<img src="./resources/img/common/hit.png" style="width: 30px; height: 20px; opacity: 0.5;">
+											<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 										</div>
 										<!--조회수 -->
 										<div style="display: inline-block; vertical-align: sub;">
