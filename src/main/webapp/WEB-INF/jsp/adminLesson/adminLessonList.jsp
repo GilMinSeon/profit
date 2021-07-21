@@ -176,7 +176,7 @@ function fn_switch(ele){
 					<c:if test="${!empty adminLessonList}">
 					<tr>
 					 
-						<td>${status.count}
+						<td>${ (pageMaker.cri.page-1)*10 + (status.count)}
 						
 						 <input type="hidden" class="lessonSeq" name="lessonSeq${status.index}" value="${result.lessonSeq}">
 					    <input type="hidden" name="chkTog${status.index}" value="chkTog${status.index}">

@@ -213,7 +213,7 @@ function fn_updTicketCnt(ele){
 							<input type="hidden" class="buyTicketSeq" name="buyTicketSeq${status.index}" value="${result.buyTicketSeq}">
 							<input type="hidden" class="ticketCnt" name="ticketCnt${status.index}" value="${result.ticketCnt}">
 							<input type="hidden" class="ticketAvailFlag" name="ticketAvailFlag${status.index}" value="${result.ticketAvailFlag}">
-							${status.count}
+							${ (pageMaker.cri.page-1)*10 + (status.count)}
 						</td>
 						<td style="display: table-cell; vertical-align: middle">${result.inUserId}</td>
 						<td style="display: table-cell; vertical-align: middle">${result.memberName}</td>

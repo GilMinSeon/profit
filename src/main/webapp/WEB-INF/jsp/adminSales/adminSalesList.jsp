@@ -155,7 +155,7 @@ function fn_pdf(cnt){
 						<td style="vertical-align: middle;">
 							<input type="hidden" class="yyyymm" name="yyyymm" value="${fn:substring(result.yyyymm,0,7)}"/>
 							<input type="hidden" class="gubun" name="gubun" value="${result.gubun}" />
-							${status.count}
+							${ (pageMaker.cri.page-1)*10 + (status.count)}
 						
 						</td>
 						<td style="vertical-align: middle;">

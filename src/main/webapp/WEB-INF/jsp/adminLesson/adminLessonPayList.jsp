@@ -116,7 +116,7 @@ $(document).ready(function(){
 					<c:if test="${!empty adminLessonPayList}">
 					<c:forEach var="result" items="${adminLessonPayList}" varStatus="status">
 					<tr>
-						<td>${status.count}</td>
+						<td>${ (pageMaker.cri.page-1)*10 + (status.count)}</td>
 						<td>${result.memberId}</td>
 						<td>${result.memberName}</td>
 						<td colspan="2">

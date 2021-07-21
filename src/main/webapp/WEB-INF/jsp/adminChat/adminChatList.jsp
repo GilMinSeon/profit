@@ -119,7 +119,7 @@ $(document).ready(function(){
 					<c:if test="${!empty chatList}">
 					<c:forEach var="result" items="${chatList}" varStatus="status">
 					<tr>
-						<td>${status.count}</td>
+						<td>${ (pageMaker.cri.page-1)*10 + (status.count)}</td>
 						<td>${result.inUserId}</td>
 						<td>${result.memberName}</td>
 						<td>${result.ticketName}</td>
