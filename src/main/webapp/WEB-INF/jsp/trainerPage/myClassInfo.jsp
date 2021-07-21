@@ -459,6 +459,12 @@ function fn_show2(){
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${empty classList}">
+						<tr>
+							<td colspan="6" style="text-align: center;font-size: 18px;">등록된 강의가 존재하지 않습니다. </td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty classList}">
 					<c:forEach var="result" items="${classList}" varStatus="status">
 					     
 					<tr>
@@ -492,6 +498,7 @@ function fn_show2(){
 						</td>
 					</tr>
 					</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<br>
