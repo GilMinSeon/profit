@@ -32,6 +32,10 @@ public interface AdminLessonMapper {
 	//온라인클래스 결제/환불내역 전체 글개수
 	int adminLessonPayListCnt(Criteria cri) throws Exception;
 	
+	//온라인 클래스 최근 7일 인기강좌
+	Map<String, Object> lessonPopularDays() throws Exception;
+	
+	
 	//온라인 클래스 최근 7일 수익
 	Map<String, Object> lessonPriceDays() throws Exception;
 	
@@ -74,7 +78,17 @@ public interface AdminLessonMapper {
 	//누적 좋아요순
 	List<Map<String, Object>> goodRank() throws Exception;
 	
+	//누적 조회순
+	List<Map<String, Object>> viewRank() throws Exception;
+	
 	//누적 인기강좌 순위
 	List<Map<String, Object>> lessonRank() throws Exception;
+
+	
+
+	
+
+	
+
 
 }
