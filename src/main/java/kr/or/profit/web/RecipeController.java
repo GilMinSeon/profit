@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -23,7 +22,6 @@ import kr.or.profit.vo.BookgoodVO;
 import kr.or.profit.vo.CommunityVO;
 import kr.or.profit.vo.Criteria;
 import kr.or.profit.vo.PageMaker;
-import kr.or.profit.vo.QnaVO;
 
 @Controller
 public class RecipeController {
@@ -41,10 +39,9 @@ public class RecipeController {
 	 * @return String
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "recipeList.do", method = {RequestMethod.GET, RequestMethod.POST })
-	public String recipeList(Model model, HttpSession ssion, Criteria cri,
-			@RequestParam(value = "selLev", required = false) String selLev,
-			@RequestParam(value = "keyword", required = false) String keyword) throws Exception {
+	@RequestMapping(value = "recipeList.do", method = {
+			RequestMethod.GET, RequestMethod.POST })
+	public String recipeList(Model model, HttpSession ssion, Criteria cri, @RequestParam(value = "selLev", required = false) String selLev, @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
 		String memberId = (String) ssion.getAttribute("memberId");
 		if (memberId == null) {
 			memberId = "";
@@ -54,7 +51,7 @@ public class RecipeController {
 		cri.setKeyword(keyword);
 		//인기글
 		List<?> recipeTopList = recipeService.recipeTopList(memberId);
-		model.addAttribute("recipeTopList", recipeTopList);
+		model.addAttribute("result", recipeTopList);
 		//레시피 목록
 		List<?> recipeList = recipeService.recipeList(cri);
 		model.addAttribute("data", recipeList);
@@ -82,6 +79,7 @@ public class RecipeController {
 	@RequestMapping(value = "recipeDetail.do", method = RequestMethod.GET)
 	public String recipeDetail(@RequestParam Map<String, Object> map, HttpSession ssion, Model model) throws Exception {
 		map.put("memberId", ssion.getAttribute("memberId"));
+		String communitySeq = (String) map.get("communitySeq");
 		CommunityVO paramVO = new CommunityVO();
 		paramVO.setMemberId((String) (map.get("memberId")));
 		paramVO.setCommunitySeq((String) (map.get("communitySeq")));
@@ -93,10 +91,6 @@ public class RecipeController {
 		List<?> recipeNewList = recipeService.recipeNewList();
 		List<?> recipeGoodList = recipeService.recipeGoodList();
 		Map<String, Object> boardDetail = communityService.selectBoardDetail(paramVO);
-
-		System.out.println("댓글" + recipeDetailReply);
-		System.out.println("대 댓 글" + recipeDetailReplyList);
-
 
 		model.addAttribute("data", recipeDetail);
 		model.addAttribute("recipeDetailReply", recipeDetailReply);
@@ -345,7 +339,8 @@ public class RecipeController {
 	 * @return String
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "recipeListCategorie.do", method = {RequestMethod.POST })
+	@RequestMapping(value = "recipeListCategorie.do", method = {
+			RequestMethod.POST })
 	public String recipeListCategorie(@RequestParam Map<String, Object> map, HttpSession ssion, Model model) throws Exception {
 		String memberId = (String) ssion.getAttribute("memberId");
 		if (memberId == null) {
