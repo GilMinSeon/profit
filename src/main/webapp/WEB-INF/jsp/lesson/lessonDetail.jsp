@@ -640,14 +640,21 @@ $(document).ready(function(){
 							<span style="font-weight: bold; color: #8B94B5; font-size:17px;">${resultClassList[0].lessonCategoryName}</span>
 							<br/><br/>
 							<table class="table table-hover" style="text-align: center;">
-								<tbody>
+								<thead>
 									<tr style="background-color:rgb(211,197,245,0.5);">
 										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">번호</th>
 										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">썸네일</th>
 										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">상세 강의 명</th>
-										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">재생시간</th>
 										<th style="color:#4D4D4D;font-size:15px;font-family: 'DM Sans', sans-serif;font-weight: bold;">등록일</th>
 									</tr>
+								</thead>
+								<tbody>
+								<c:if test="${empty resultClassList}">
+									<tr>
+										<td colspan="5" style="text-align: center;font-size: 18px;">아직 상세강의가 존재하지 않습니다. </td>
+									</tr>
+								</c:if>
+								<c:if test="${!empty resultClassList}">
 								<c:forEach var="rclassList" items="${resultClassList}" varStatus="status">
 									<c:choose>
 										<c:when test="${rclassList.inUserId eq memberId || buyer eq '1'}">
@@ -657,7 +664,6 @@ $(document).ready(function(){
 													<img alt="" src="http://192.168.41.6:9999/upload/profit/${rclassList.fileSaveName}" style="width:100px;height: 90px;object-fit:cover;">
 												</td>
 												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.lessonDetailTitle}</td>
-												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">20:32</td>
 												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.inDate}</td>
 											</tr>
 										</c:when>
@@ -668,13 +674,13 @@ $(document).ready(function(){
 													<img alt="" src="http://192.168.41.6:9999/upload/profit/${rclassList.fileSaveName}" style="width:100px;height: 90px;object-fit:cover;">
 												</td>
 												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.lessonDetailTitle}</td>
-												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">20:32</td>
 												<td style="vertical-align: middle;font-size:15px;font-family: 'DM Sans', sans-serif;">${rclassList.inDate}</td>
 											</tr>
 										</c:when>
 									
 									</c:choose>
 								</c:forEach>
+								</c:if>
 								</tbody>
 							</table>
 							

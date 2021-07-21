@@ -65,7 +65,7 @@ li a:hover {
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="breadcrumb__text">
-						<h2>이용권 구매내역</h2>
+						<h2>이용권 사용내역</h2>
 
 					</div>
 				</div>
@@ -129,7 +129,7 @@ li a:hover {
 								<div class="row">
 									<div class="col-lg-12">
 									<div style="text-align: center;">
-										<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">이용권 구매내역</h4>
+										<h4 style="font-family: DM Sans, sans-serif;color: #111111;font-weight: 400;">이용권 사용내역</h4>
 										<br/>
 										<p style="font-family: DM Sans, sans-serif;font-size: 1.2em;color:#5768AD;">자신이 구매한 이용권의 정보를 확인하세요.</p>
 										<p style="color:#5768AD;">▶ 이용권에 관련한 궁금 사항은 <span style="color:#FC7F65;">문의하기</span>에 남겨주세요.</p>
