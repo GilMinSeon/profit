@@ -201,6 +201,9 @@
 							<div class="classes__item__pic set-bg" data-setbg="${data.filePath}"></div>
 							<div class="classes__item__text" style="padding-left: 5px; padding-right: 5px;">
 								<div style="text-align: right;">
+									<div style="display: inline-block;vertical-align:sub;float: left">
+										<p style="margin:0;">${fn:substring(data.inDate,0,10)}&nbsp;&nbsp;</p>
+									</div>
 									<div style="display: inline-block; vertical-align: middle;">
 										<img src="./resources/img/common/hit.png" style="width: 19px; height: 12px; opacity: 0.5;">
 									</div>
