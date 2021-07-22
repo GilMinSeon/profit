@@ -198,102 +198,134 @@ $(document).ready(function() {
 	$("#lessonChart").hide();
 	$("#viewChart").hide();
 	
+
 	var context = document
-    .getElementById('myChart')
-    .getContext('2d');
-var myChart = new Chart(context, {
-    type: 'bar', // 차트의 형태
-    data: { // 차트에 들어갈 데이터
-        labels: [
-            //x 축
-        	"${lessonPopularDays['cal7']}",
-            "${lessonPopularDays['cal6']}",
-            "${lessonPopularDays['cal5']}",
-            "${lessonPopularDays['cal4']}",
-            "${lessonPopularDays['cal3']}",
-            "${lessonPopularDays['cal2']}",
-            "${lessonPopularDays['cal1']}"
-        ],
-        
-        datasets: [  { //데이터
-                label: '전체 회원', //차트 제목
-                fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-                data: [
-                    ${lessonPopularDays[0]['cal1']},
-                    ${lessonPopularDays[1]['cal1']},
-                    ${lessonPopularDays[2]['cal1']},
-                    ${lessonPopularDays[3]['cal1']},
-                    ${lessonPopularDays[4]['cal1']},
-                    ${lessonPopularDays[5]['cal1']},
-                    ${lessonPopularDays[6]['cal1']}
-               	 //x축 label에 대응되는 데이터 값
-                ],
-                backgroundColor: [
-                    //색상
-                	'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 152, 0, 0.2)',
-                    'rgba(75, 176, 80, 0.2)'
-                ],
-                borderColor: [
-                    //경계선 색상
-                	'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 152, 0, 1)',
-                    'rgba(75, 176, 80, 1)'
-                ],
-                borderWidth: 1 //경계선 굵기
-            } 
-        ]
-    },
-    options: {
-        scales: {
-            yAxes: [
-                {
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }
-            ]
-        }
-    }
- });
- 
- 
- 
- 
+	.getElementById('myChart')
+	.getContext('2d');
+	var myChart = new Chart(context, {
+	type: 'bar', // 차트의 형태
+	data: { // 차트에 들어갈 데이터
+	    labels: [
+	        //x 축
+	    	"${lessonPopularDays[0]['lessonTitle']}",
+	        "${lessonPopularDays[1]['lessonTitle']}",
+	        "${lessonPopularDays[2]['lessonTitle']}",
+	        "${lessonPopularDays[3]['lessonTitle']}",
+	        "${lessonPopularDays[4]['lessonTitle']}",
+	        "${lessonPopularDays[5]['lessonTitle']}",
+	        "${lessonPopularDays[6]['lessonTitle']}",
+	        "${lessonPopularDays[7]['lessonTitle']}"
+	    ],
+	    datasets: [
+	        { //데이터
+	            label: "전체", //차트 제목
+	            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+	            data: [
+	                
+	            	${lessonPopularDays[0]['cnt']},
+	                ${lessonPopularDays[1]['cnt']},
+	                ${lessonPopularDays[2]['cnt']},
+	                ${lessonPopularDays[3]['cnt']},
+	                ${lessonPopularDays[4]['cnt']},
+	                ${lessonPopularDays[5]['cnt']},
+	                ${lessonPopularDays[6]['cnt']},
+	                ${lessonPopularDays[7]['cnt']}
+	                //x축 label에 대응되는 데이터 값
+	            ],
+	            backgroundColor: [
+	                //색상
+	                'rgba(255, 99, 132, 0.2)',
+	                'rgba(54, 162, 235, 0.2)',
+	                'rgba(255, 206, 86, 0.2)',
+	                'rgba(75, 192, 192, 0.2)',
+	                'rgba(153, 102, 255, 0.2)',
+	                'rgba(255, 152, 0, 0.2)',
+	                'rgba(75, 176, 80, 0.2)',
+	                'rgba(244, 67, 54, 0.2)'
+	            ],
+	            borderColor: [
+	                //경계선 색상
+	                'rgba(255, 99, 132, 1)',
+	                'rgba(54, 162, 235, 1)',
+	                'rgba(255, 206, 86, 1)',
+	                'rgba(75, 192, 192, 1)',
+	                'rgba(153, 102, 255, 1)',
+	                'rgba(255, 152, 0, 1)',
+	                'rgba(75, 176, 80, 1)',
+	                'rgba(244, 67, 54, 1)'
+	            ],
+	            borderWidth: 1 //경계선 굵기
+	        } 
+	        
+	    ]
+	},
+	options: {
+	    legend: {
+	        display: false
+	    },
+	    tooltips: {
+	        callbacks: {
+	           label: function(tooltipItem) {
+	                  return tooltipItem.yLabel;
+	           }
+	        }
+	    },
+	    scales: {
+	        yAxes: [
+	            {
+	                ticks: {
+	                    beginAtZero: true
+	                }
+	            }
+	        ],
+	        xAxes: [ {
+	    	    display: true,
+	    	    position: 'bottom',
+	    	    ticks: {
+	    	       stepSize: 20,
+	    	       min: 0,
+	    	       max: 140
+	    	    }
+	        }
+	    	]
+	    }
+	}
+	});
+	
+	
+
  
 var context = document
 .getElementById('myChart2')
 .getContext('2d');
 var myChart2 = new Chart(context, {
-type: 'line', // 차트의 형태
+type: 'bar', // 차트의 형태
 data: { // 차트에 들어갈 데이터
     labels: [
         //x 축
-       "4주전",
-       "3주전",
-       "2주전",
-       "1주전",
-       "이번주",
+    	"${lessonPopularWeeks[0]['lessonTitle']}",
+        "${lessonPopularWeeks[1]['lessonTitle']}",
+        "${lessonPopularWeeks[2]['lessonTitle']}",
+        "${lessonPopularWeeks[3]['lessonTitle']}",
+        "${lessonPopularWeeks[4]['lessonTitle']}",
+        "${lessonPopularWeeks[5]['lessonTitle']}",
+        "${lessonPopularWeeks[6]['lessonTitle']}",
+        "${lessonPopularWeeks[7]['lessonTitle']}"
     ],
     datasets: [
         { //데이터
-            label: '여자 회원', //차트 제목
+            label: "전체", //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
                 
-            	${lessonPriceWeeksF['f5']},
-                ${lessonPriceWeeksF['f4']},
-                ${lessonPriceWeeksF['f3']},
-                ${lessonPriceWeeksF['f2']},
-                ${lessonPriceWeeksF['f1']}
+            	${lessonPopularWeeks[0]['cnt']},
+                ${lessonPopularWeeks[1]['cnt']},
+                ${lessonPopularWeeks[2]['cnt']},
+                ${lessonPopularWeeks[3]['cnt']},
+                ${lessonPopularWeeks[4]['cnt']},
+                ${lessonPopularWeeks[5]['cnt']},
+                ${lessonPopularWeeks[6]['cnt']},
+                ${lessonPopularWeeks[7]['cnt']}
                 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
@@ -302,7 +334,10 @@ data: { // 차트에 들어갈 데이터
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 152, 0, 0.2)',
+                'rgba(75, 176, 80, 0.2)',
+                'rgba(244, 67, 54, 0.2)'
             ],
             borderColor: [
                 //경계선 색상
@@ -310,71 +345,27 @@ data: { // 차트에 들어갈 데이터
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
-            ],
-            borderWidth: 1 //경계선 굵기
-        } ,
-        { //데이터
-            label: '남자 회원', //차트 제목
-            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-            data: [
-                ${lessonPriceWeeksM['m5']},
-                ${lessonPriceWeeksM['m4']},
-                ${lessonPriceWeeksM['m3']},
-                ${lessonPriceWeeksM['m2']},
-                ${lessonPriceWeeksM['m1']}
-           	 //x축 label에 대응되는 데이터 값
-            ],
-            backgroundColor: [
-                //색상
-                'rgba(102, 204, 255, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
-            ],
-            borderColor: [
-                //경계선 색상
-                'rgba(102, 204, 255, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
-            ],
-            borderWidth: 1 //경계선 굵기
-        } ,
-        { //데이터
-            label: '전체 회원', //차트 제목
-            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-            data: [
-                ${lessonPriceWeeks['week5']},
-                ${lessonPriceWeeks['week4']},
-                ${lessonPriceWeeks['week3']},
-                ${lessonPriceWeeks['week2']},
-                ${lessonPriceWeeks['week1']}
-           	 //x축 label에 대응되는 데이터 값
-            ],
-            backgroundColor: [
-                //색상
-                'rgba(101, 199, 105, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
-            ],
-            borderColor: [
-                //경계선 색상
-                'rgba(101, 199, 105, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 152, 0, 1)',
+                'rgba(75, 176, 80, 1)',
+                'rgba(244, 67, 54, 1)'
             ],
             borderWidth: 1 //경계선 굵기
         } 
+        
     ]
 },
 options: {
+    legend: {
+        display: false
+    },
+    tooltips: {
+        callbacks: {
+           label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+           }
+        }
+    },
     scales: {
         yAxes: [
             {
@@ -393,27 +384,33 @@ var context = document
 .getElementById('myChart3')
 .getContext('2d');
 var myChart3 = new Chart(context, {
-type: 'line', // 차트의 형태
+type: 'bar', // 차트의 형태
 data: { // 차트에 들어갈 데이터
     labels: [
         //x 축
-       ${lessonPriceMonths['cal5']},
-       ${lessonPriceMonths['cal4']},
-       ${lessonPriceMonths['cal3']},
-       ${lessonPriceMonths['cal2']},
-       ${lessonPriceMonths['cal1']},
+    	"${lessonPopularMonths[0]['lessonTitle']}",
+        "${lessonPopularMonths[1]['lessonTitle']}",
+        "${lessonPopularMonths[2]['lessonTitle']}",
+        "${lessonPopularMonths[3]['lessonTitle']}",
+        "${lessonPopularMonths[4]['lessonTitle']}",
+        "${lessonPopularMonths[5]['lessonTitle']}",
+        "${lessonPopularMonths[6]['lessonTitle']}",
+        "${lessonPopularMonths[7]['lessonTitle']}"
     ],
     datasets: [
         { //데이터
-            label: '여자 회원', //차트 제목
+            label: "전체", //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
                 
-            	${lessonPriceMonthsF['f5']},
-                ${lessonPriceMonthsF['f4']},
-                ${lessonPriceMonthsF['f3']},
-                ${lessonPriceMonthsF['f2']},
-                ${lessonPriceMonthsF['f1']}
+            	${lessonPopularMonths[0]['cnt']},
+                ${lessonPopularMonths[1]['cnt']},
+                ${lessonPopularMonths[2]['cnt']},
+                ${lessonPopularMonths[3]['cnt']},
+                ${lessonPopularMonths[4]['cnt']},
+                ${lessonPopularMonths[5]['cnt']},
+                ${lessonPopularMonths[6]['cnt']},
+                ${lessonPopularMonths[7]['cnt']}
                 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
@@ -422,7 +419,10 @@ data: { // 차트에 들어갈 데이터
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 152, 0, 0.2)',
+                'rgba(75, 176, 80, 0.2)',
+                'rgba(244, 67, 54, 0.2)'
             ],
             borderColor: [
                 //경계선 색상
@@ -430,71 +430,27 @@ data: { // 차트에 들어갈 데이터
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
-            ],
-            borderWidth: 1 //경계선 굵기
-        } ,
-        { //데이터
-            label: '남자 회원', //차트 제목
-            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-            data: [
-                ${lessonPriceMonthsM['m5']},
-                ${lessonPriceMonthsM['m4']},
-                ${lessonPriceMonthsM['m3']},
-                ${lessonPriceMonthsM['m2']},
-                ${lessonPriceMonthsM['m1']}
-           	 //x축 label에 대응되는 데이터 값
-            ],
-            backgroundColor: [
-                //색상
-                'rgba(102, 204, 255, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
-            ],
-            borderColor: [
-                //경계선 색상
-                'rgba(102, 204, 255, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
-            ],
-            borderWidth: 1 //경계선 굵기
-        } ,
-        { //데이터
-            label: '전체 회원', //차트 제목
-            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-            data: [
-                ${lessonPriceMonths['month5']},
-                ${lessonPriceMonths['month4']},
-                ${lessonPriceMonths['month3']},
-                ${lessonPriceMonths['month2']},
-                ${lessonPriceMonths['month1']}
-           	 //x축 label에 대응되는 데이터 값
-            ],
-            backgroundColor: [
-                //색상
-                'rgba(101, 199, 105, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
-            ],
-            borderColor: [
-                //경계선 색상
-                'rgba(101, 199, 105, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 152, 0, 1)',
+                'rgba(75, 176, 80, 1)',
+                'rgba(244, 67, 54, 1)'
             ],
             borderWidth: 1 //경계선 굵기
         } 
+        
     ]
 },
 options: {
+    legend: {
+        display: false
+    },
+    tooltips: {
+        callbacks: {
+           label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+           }
+        }
+    },
     scales: {
         yAxes: [
             {
@@ -993,10 +949,10 @@ function fn_show9(){
 								style="border: 1px solid; float: left; width: 30%;">최근
 								7일</label> <input type="radio" name="static" id="week" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show2()">
-							<label for="week" style="border: 1px solid; width: 30%;">주별</label>
+							<label for="week" style="border: 1px solid; width: 30%;">최근 일주일</label>
 							<input type="radio" name="static" id="month" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show3()">
-							<label for="month" style="border: 1px solid; width: 30%;">월별</label>
+							<label for="month" style="border: 1px solid; width: 30%;">최근 6개월</label>
 						</div>
 						<div style="width: 900px; height: 550px;">
 							<!--차트가 그려질 부분-->

@@ -66,64 +66,22 @@ public class AdminLessonServiceImpl implements AdminLessonService {
 	
 	//온라인 클래스 최근 7일 인기강좌
 	@Override
-	public Map<String, Object> lessonPopularDays() throws Exception {
+	public List<Map<String, Object>> lessonPopularDays() throws Exception {
 		return adminLessonDAO.lessonPopularDays();
 	}
 	
-	
-	//온라인 클래스 최근 7일 수익
+	//온라인 클래스 최근 5주 인기강좌
 	@Override
-	public Map<String, Object> lessonPriceDays() throws Exception{
-		return adminLessonDAO.lessonPriceDays();
+	public List<Map<String,Object>> lessonPopularWeeks() throws Exception {
+		return adminLessonDAO.lessonPopularWeeks();
 	}
 	
-	//온라인 클래스 최근 7일 수익(남자)
+	//온라인 클래스 최근 6개월 인기강좌
 	@Override
-	public Map<String, Object> lessonPriceDaysM() throws Exception {
-		return adminLessonDAO.lessonPriceDaysM();
+	public List<Map<String,Object>> lessonPopularMonths() throws Exception {
+		return adminLessonDAO.lessonPopularMonths();
 	}
 	
-	//온라인 클래스 최근 7일 수익(여자)
-	@Override
-	public Map<String, Object> lessonPriceDaysF() throws Exception {
-		return adminLessonDAO.lessonPriceDaysF();
-	}
-
-	//온라인 클래스 최근 5주 수익
-	@Override
-	public Map<String, Object> lessonPriceWeeks() throws Exception {
-		return adminLessonDAO.lessonPriceWeeks();
-	}
-	
-	//온라인 클래스 최근 5주 수익(남자)
-	@Override
-	public Map<String, Object> lessonPriceWeeksM() throws Exception {
-		return adminLessonDAO.lessonPriceWeeksM();
-	}
-	
-	//온라인 클래스 최근 5주 수익(여자)
-	@Override
-	public Map<String, Object> lessonPriceWeeksF() throws Exception {
-		return adminLessonDAO.lessonPriceWeeksF();
-	}
-	
-	//온라인 클래스 최근 6개월 수익
-	@Override
-	public Map<String, Object> lessonPriceMonths() throws Exception {
-		return adminLessonDAO.lessonPriceMonths();
-	}
-	
-	//온라인 클래스 최근 6개월 수익(남자)
-	@Override
-	public Map<String, Object> lessonPriceMonthsM() throws Exception {
-		return adminLessonDAO.lessonPriceMonthsM();
-	}
-
-	//온라인 클래스 최근 6개월 수익(여자)
-	@Override
-	public Map<String, Object> lessonPriceMonthsF() throws Exception {
-		return adminLessonDAO.lessonPriceMonthsF();
-	}
 
 	//신규강좌(일주일) 구매 TOP5
 	@Override
@@ -166,6 +124,10 @@ public class AdminLessonServiceImpl implements AdminLessonService {
 	public List<Map<String, Object>> lessonRank() throws Exception {
 		return adminLessonDAO.lessonRank();
 	}
+
+
+
+
 
 
 

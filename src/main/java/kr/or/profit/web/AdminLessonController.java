@@ -174,45 +174,52 @@ public class AdminLessonController {
 	public String adminLessonStat(Locale locale, Model model) throws Exception{
 	   
 	   //온라인 클래스 최근 7일 인기강좌
-	   Map<String,Object> sevenDays = adminLessonService.lessonPopularDays();
+	   List<Map<String,Object>> sevenDays = adminLessonService.lessonPopularDays();
 	   model.addAttribute("lessonPopularDays", sevenDays);
 	   
+	   //온라인 클래스 최근 5주 인기강좌
+	   List<Map<String,Object>> fiveWeeks = adminLessonService.lessonPopularWeeks();
+	   model.addAttribute("lessonPopularWeeks", fiveWeeks);
+	   
+	   //온라인 클래스 최근 6개월 인기강좌
+	   List<Map<String,Object>> sixMonths = adminLessonService.lessonPopularMonths();
+	   model.addAttribute("lessonPopularMonths", sixMonths);
 	   
 	   //온라인 클래스 최근 7일 수익
-	   Map<String,Object> sevenDays1 = adminLessonService.lessonPriceDays();
-	   model.addAttribute("lessonPriceDays", sevenDays1);
+//	   Map<String,Object> sevenDays = adminLessonService.lessonPriceDays();
+//	   model.addAttribute("lessonPriceDays", sevenDays);
 	   
 	   //온라인 클래스 최근 7일 수익(남자)
-	   Map<String,Object> sevenDaysM = adminLessonService.lessonPriceDaysM();
-	   model.addAttribute("lessonPriceDaysM" , sevenDaysM);
+//	   Map<String,Object> sevenDaysM = adminLessonService.lessonPriceDaysM();
+//	   model.addAttribute("lessonPriceDaysM" , sevenDaysM);
 	   
 	   //온라인 클래스 최근 7일 수익(여자)
-	   Map<String,Object> sevenDaysF = adminLessonService.lessonPriceDaysF();
-	   model.addAttribute("lessonPriceDaysF" , sevenDaysF);
+//	   Map<String,Object> sevenDaysF = adminLessonService.lessonPriceDaysF();
+//	   model.addAttribute("lessonPriceDaysF" , sevenDaysF);
 	   
 	   //온라인 클래스 최근 5주 수익
-	   Map<String,Object> fiveWeeks = adminLessonService.lessonPriceWeeks();
-	   model.addAttribute("lessonPriceWeeks" , fiveWeeks);
+//	   Map<String,Object> fiveWeeks = adminLessonService.lessonPriceWeeks();
+//	   model.addAttribute("lessonPriceWeeks" , fiveWeeks);
 	   
 	   //온라인 클래스 최근 5주 수익(남자)
-	   Map<String,Object> fiveWeeksM = adminLessonService.lessonPriceWeeksM();
-	   model.addAttribute("lessonPriceWeeksM" , fiveWeeksM);
-	   
+//	   Map<String,Object> fiveWeeksM = adminLessonService.lessonPriceWeeksM();
+//	   model.addAttribute("lessonPriceWeeksM" , fiveWeeksM);
+//	   
 	   //온라인 클래스 최근 5주 수익(여자)
-	   Map<String,Object> fiveWeeksF = adminLessonService.lessonPriceWeeksF();
-	   model.addAttribute("lessonPriceWeeksF" , fiveWeeksF);
+//	   Map<String,Object> fiveWeeksF = adminLessonService.lessonPriceWeeksF();
+//	   model.addAttribute("lessonPriceWeeksF" , fiveWeeksF);
 	   
 	   //온라인 클래스 최근 6개월 수익
-	   Map<String,Object> sixMonths = adminLessonService.lessonPriceMonths();
-	   model.addAttribute("lessonPriceMonths" , sixMonths);
+//	   Map<String,Object> sixMonths = adminLessonService.lessonPriceMonths();
+//	   model.addAttribute("lessonPriceMonths" , sixMonths);
 	   
 	   //온라인 클래스 최근 6개월 수익(남자)
-	   Map<String,Object> sixMonthsM = adminLessonService.lessonPriceMonthsM();
-	   model.addAttribute("lessonPriceMonthsM" , sixMonthsM);
+//	   Map<String,Object> sixMonthsM = adminLessonService.lessonPriceMonthsM();
+//	   model.addAttribute("lessonPriceMonthsM" , sixMonthsM);
 	   
 	   //온라인 클래스 최근 6개월 수익(여자)
-	   Map<String,Object> sixMonthsF = adminLessonService.lessonPriceMonthsF();
-	   model.addAttribute("lessonPriceMonthsF" , sixMonthsF);
+//	   Map<String,Object> sixMonthsF = adminLessonService.lessonPriceMonthsF();
+//	   model.addAttribute("lessonPriceMonthsF" , sixMonthsF);
 	   
 	   //신규강좌(일주일) 구매 TOP5
 	   List<Map<String,Object>> buyTop5 = adminLessonService.newTop5();

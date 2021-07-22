@@ -31,34 +31,14 @@ public interface AdminLessonService {
 	int adminLessonPayListCnt(Criteria cri) throws Exception;
 	
 	//온라인 클래스 최근 7일 인기강좌
-	Map<String, Object> lessonPopularDays() throws Exception;
+	List<Map<String, Object>> lessonPopularDays() throws Exception;
 	
-	//온라인 클래스 최근 7일 수익
-	Map<String, Object> lessonPriceDays() throws Exception;
+	//온라인 클래스 최근 5주 인기강좌
+	List<Map<String,Object>> lessonPopularWeeks() throws Exception;
 	
-	//온라인 클래스 최근 7일 수익(남자)
-	Map<String, Object> lessonPriceDaysM() throws Exception;
+	//온라인 클래스 최근 6개월 인기강좌
+	List<Map<String,Object>> lessonPopularMonths() throws Exception;
 	
-	//온라인 클래스 최근 7일 수익(여자)
-	Map<String, Object> lessonPriceDaysF() throws Exception;
-	
-	//온라인 클래스 최근 5주 수익
-	Map<String, Object> lessonPriceWeeks() throws Exception;
-	
-	//온라인 클래스 최근 5주 수익(남자)
-	Map<String, Object> lessonPriceWeeksM() throws Exception;
-	
-	//온라인 클래스 최근 5주 수익(여자)
-	Map<String, Object> lessonPriceWeeksF() throws Exception;
-	
-	//온라인 클래스 최근 6개월 수익
-	Map<String, Object> lessonPriceMonths() throws Exception;
-	
-	//온라인 클래스 최근 6개월 수익(남자)
-	Map<String, Object> lessonPriceMonthsM() throws Exception;
-	
-	//온라인 클래스 최근 6개월 수익(여자)
-	Map<String, Object> lessonPriceMonthsF() throws Exception;
 	
 	//신규강좌(일주일) 구매 TOP5
 	List<Map<String,Object>> newTop5() throws Exception;
@@ -80,6 +60,10 @@ public interface AdminLessonService {
 
 	//누적 인기강좌 순위
 	List<Map<String, Object>> lessonRank() throws Exception;
+
+
+
+
 
 	
 

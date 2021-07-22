@@ -1008,7 +1008,7 @@
     
 <!-- 	 강좌 추천 ai -->
 	<select id="recommand" parameterType="String" resultType="egovMap">
-        select *
+         select *
 			from(
 			    select a.recommand_seq,
 			           a.recommand_detail_seq,
@@ -1026,11 +1026,12 @@
 			        and b.in_user_id = c.member_id(+)
 			        and b.lesson_category_seq = d.lesson_category_seq(+)
 			        and b.file_seq = e.file_seq(+)
-			        and a.lesson_seq = #{lessonSeq}
-			        and rownum &lt; 6
-			        order by recommand_seq desc
+			        and a.lesson_seq = '23'
+			        
+			        order by to_number(recommand_seq) desc 
 			        )
-			        order by recommand_seq
+                    where rownum &lt; 6
+			        order by recommand_seq desc
    
     </select>
     
