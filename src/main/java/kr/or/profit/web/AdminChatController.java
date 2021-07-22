@@ -185,8 +185,11 @@ public class AdminChatController {
    }
 	
 	
-	
-	
+	@RequestMapping(value = "adminChatStat.do", method = RequestMethod.GET)
+	public String adminChatStat(Locale locale, Model model) {
+
+		return "adminChat/adminChatStat";
+	}
 	
 	@RequestMapping(value = "adminChatDetail.do", method = RequestMethod.GET)
 	public String adminChatDetail(Locale locale, Model model) {
