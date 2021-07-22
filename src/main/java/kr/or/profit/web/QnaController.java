@@ -44,16 +44,6 @@ public class QnaController {
 	 * @return String
 	 * @exception Exception
 	 */
-	/**
-	 * 문의하기 목록(qnaList)
-	 *
-	 * @author 박상빈
-	 * @param ssion memberId 로그인 아이디 가지고옴
-	 * @param map   아이디를 가지고 Qna_SQL.xml 간다
-	 * @param model data변수명에 qnaList를 가지고 html으로간다
-	 * @return "qna/qnaList"
-	 * @exception Exception
-	 */
 	@RequestMapping(value = "qnaList.do", method = RequestMethod.GET)
 	public String qnaList(HttpServletRequest request, Criteria cri, ModelMap model) throws Exception {
 		HttpSession session = request.getSession();
@@ -67,25 +57,25 @@ public class QnaController {
 		}
 		System.out.println("memberId : " +  memberId);
 		System.out.println("memberGubun : " +  memberGubun);
-		
+
 		cri.setMemberId(memberId);
 		cri.setPerPageNum(10);
-		
+
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
-		
+
 		if(memberGubun.equals("A")) {
 			List<Map<String,Object>> qnaList = qnaService.selectAdminQnaList(cri);
 			model.addAttribute("qnaList", qnaList);
 			//전체글 개수
-			pageMaker.setTotalCount(qnaService.selectAdminQnaCnt(cri)); 
+			pageMaker.setTotalCount(qnaService.selectAdminQnaCnt(cri));
 		}else {
 			List<Map<String,Object>> qnaList = qnaService.selectUserQnaList(cri);
 			model.addAttribute("qnaList", qnaList);
 			//전체글 개수
-			pageMaker.setTotalCount(qnaService.selectUserQnaCnt(cri)); 
+			pageMaker.setTotalCount(qnaService.selectUserQnaCnt(cri));
 		}
-		
+
 		model.addAttribute("pageMaker" , pageMaker);
 		System.out.println(model.toString());
 		return "qna/qnaList";
@@ -109,30 +99,31 @@ public class QnaController {
 			CommunityVO paramVO = new CommunityVO();
 			paramVO.setMemberId(memberId);
 			paramVO.setCommunitySeq(communitySeq);
-			
+
 			//문의하기 상세
 			Map<String, Object> qnaDetail = qnaService.selectQnaDetail(paramVO);
 			model.addAttribute("qnaDetail",qnaDetail);
-			
+
 			//댓글 프로필 사진
 			String myprofile = qnaService.selectQnaMyProfile(memberId);
 			System.out.println("기본이미지 : " + myprofile);
 			qnaDetail.put("MyProfileImage", myprofile);
-			
+
 			// 댓글 목록
 			List<Map<String, Object>> replyList = qnaService.selectQnaReplyList(communitySeq);
 			qnaDetail.put("replyList", replyList);
-			
+
 			//댓글 수 가져오기
 			Map<String,Object> replyCnt = qnaService.selectQnaReplyCnt(communitySeq);
 			qnaDetail.put("replyCnt", replyCnt.get("cnt"));
-			
-			
+
+
 			System.out.println(model.toString());
-			
+
 		return "qna/qnaDetail";
 	}
-	
+
+
 	@RequestMapping(value = "qnaReplyAddAjax.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String replyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -160,8 +151,8 @@ public class QnaController {
 		}
 		return msg;
 	}
-	
-	
+
+
 	@RequestMapping(value = "qnaRereplyAddAjax.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String rereplyAddAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -192,8 +183,8 @@ public class QnaController {
 		}
 		return msg;
 	}
-	
-	
+
+
 	@RequestMapping(value = "QnaReplyDelAjax.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String QnaReplyDelAjax(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -209,7 +200,7 @@ public class QnaController {
 		}
 		return msg;
 	}
-	
+
 	/**
 	 * 문의하기 등록(qnaAdd)
 	 *
@@ -222,7 +213,57 @@ public class QnaController {
 	public String qnaAdd() throws Exception {
 		return "qna/qnaAdd";
 	}
-	
 
+	/**
+	 * 문의하기 수정(qnaMod)
+	 *
+	 * @author 박상빈
+	 * @param Map, ModelMap
+	 * @return String
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "qnaMod.do", method = RequestMethod.GET)
+	public String qnaMod(@RequestParam Map<String, Object> map, ModelMap model) throws Exception {
+		System.out.println("온다");
+		Map<String, Object> qnaDetail = qnaService.qnaDetail(map);
+		model.addAttribute("data", qnaDetail);
+		return "qna/qnaMod";
+	}
+
+	/**
+	 * 문의하기 수정(qnaMod)
+	 *
+	 * @author 박상빈
+	 * @param Map, HttpServletResponse
+	 * @return
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "qnaMod.do", method = RequestMethod.POST)
+	public void qnaUpdate(@RequestParam Map<String, Object> map, HttpServletResponse response) throws Exception {
+		int qnaUpdate = qnaService.qnaUpdate(map);
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.println("<script>alert('문의하기가 수정 되었습니다'); location.href='qnaList.do';</script>");
+		out.flush();
+	}
+
+	/**
+	 * 문의하기 글 삭제(qnaDelete)
+	 *
+	 * @author 박상빈
+	 * @param Map, HttpSession, HttpServletResponse
+	 * @return
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "qnaDelete.do", method = RequestMethod.GET)
+	public void qnaDelete(@RequestParam Map<String, Object> map, HttpSession ssion, HttpServletResponse response) throws Exception {
+		String memberId = (String) ssion.getAttribute("memberId");
+		map.put("memberId", memberId);
+		int qnaDelete = qnaService.qnaDelete(map);
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		out.println("<script>alert('문의하기가 삭제 되었습니다');location.href='qnaList.do';</script>");
+		out.flush();
+	}
 
 }

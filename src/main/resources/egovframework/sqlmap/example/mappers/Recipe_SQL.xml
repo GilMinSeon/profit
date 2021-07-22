@@ -128,6 +128,8 @@
                 REPLY B
             WHERE
                 A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+            AND
+                B.REPLY_DEL_FLAG = 'N'
                 ) CNT,
 		    A.COMMUNITY_SEQ,
 			A.COMMON_SEQ,
@@ -270,8 +272,19 @@
 			REPLY_DEL_FLAG = 'N'
 		AND
 			REPLY_DEPTH = '0'
+        GROUP BY
+            REPLY_SEQ,
+		    COMMUNITY_SEQ,
+		    REPLY_CONTENT,
+		    REPLY_DEL_FLAG,
+		    REPLY_PARENT_SEQ,
+		    REPLY_DEPTH,
+		    A.IN_USER_ID,
+		    B.FILE_SEQ,
+		    C.FILE_PATH,
+            A.IN_DATE
 		ORDER by
-            A.IN_DATE DESC
+           A.IN_DATE DESC
 	</select>
 
 	<!-- 	댓글 삭제 -->
@@ -339,6 +352,17 @@
 			REPLY_DEPTH = '1'
 		AND
 			REPLY_DEL_FLAG = 'N'
+        GROUP BY
+            REPLY_SEQ,
+		    COMMUNITY_SEQ,
+		    REPLY_CONTENT,
+		    REPLY_DEL_FLAG,
+		    REPLY_PARENT_SEQ,
+		    REPLY_DEPTH,
+		    A.IN_USER_ID,
+		    B.FILE_SEQ,
+		    C.FILE_PATH,
+            A.IN_DATE
 		ORDER by
             A.IN_DATE DESC
 

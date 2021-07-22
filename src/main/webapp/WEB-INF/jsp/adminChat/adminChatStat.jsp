@@ -97,90 +97,6 @@ a:hover, a:focus {
 
 <script type="text/javascript">
 
-function fn_switch(ele){
-	
-	var msg = "ok";
-	
-	if(msg=="ok"){
-		var save = confirm("해당강의의 상태를 바꾸시겠습니까?");
-		if(save == true){
-			
-			vtr = $(ele).parents('tr');
-			lessonSeq = $(vtr).find('.lessonSeq').val();
-			lessonPrivateFlag = $(vtr).find('.lessonPrivateFlag').val();
-			upUserId = $(vtr).find('.upUserId').val();
-			console.log(lessonSeq)
-			console.log(lessonPrivateFlag)
-			console.log(upUserId);
-			
-			var param = "";
-				param += "dummy=" + Math.random();
-				param += "&lessonSeq=" + lessonSeq;
-				param += "&lessonPrivateFlag=" + lessonPrivateFlag;
-				param += "&upUserId=" + upUserId;
-				
-			console.log("param " + param);
-				
-			$.ajax({
-				type : 'post',
-				url : 'updTrainerLessonAjax.do',
-				data : param,
-				async:false,
-				dataType:"text",
-				success : function(data){
-					if(data=="ok"){
-						alert("수정이 정상적으로 완료되었습니다.");
-						location.reload();
-					}else if(data=="ng"){
-						alert("수정에 실패하였습니다. 다시 시도해주세요");
-						location.reload();
-					}else if(data=="A"){
-						alert("관리자가 해당 강의를 비활성화 하였습니다. 관리자에게 문의하세요.");
-						location.reload();
-					}
-			    },
-				error : function(error){
-					alert("수정에 실패하였습니다. 다시 시도해 주세요.");
-					location.reload();
-					console.log(error);
-					console.log(error.status);
-				}
-				
-				
-			}); //ajax
-			
-		}//if save 
-		else{
-			alert("수정이 취소되었습니다.");
-			location.reload();
-		}
-	}  //if msg
-	
- }//function
-
-function fn_change(processSeq){
-	if (confirm("신청서를 검토하시겠습니까?") == true){
-		$.ajax({
-			type : "POST",
-			data : "processSeq=" + processSeq,
-			url : "updateStatusBAjax.do",
-			dataType : "text", 
-			success : function(result) {
-				if (result == "ok") {
-					location.href="trainerPermitDetail.do?processSeq="+processSeq+" "
-				} else {
-					alert("문제가 발생하였습니다. 잠시 후 다시 시도해주세요")
-				}
-			},
-			error : function() {
-				alert("오류발생");
-			}
-		})
-	} else{  
-	    return;
-	}
-}
-
 
 $(document).ready(function() {
 	$("input:radio[id='day']").prop("checked", true);  
@@ -1054,7 +970,7 @@ function fn_show9(){
 
 		<div class="container">
 			<h3 style="text-align: center; cursor: pointer;"
-				onclick="location.href='trainerPermitList.do'">온라인클래스 강좌 통계</h3>
+				onclick="location.href='trainerPermitList.do'">1:1 상담 통계</h3>
 			<br>
 			<div class="row" style="margin-bottom: 30px; margin-top: 30px;">
 
@@ -1068,7 +984,7 @@ function fn_show9(){
 				<div class="row">
 					<span
 						style="font-weight: bold; font-size: 1.1em; padding-left: 30px;">*
-						온라인 클래스 수익현황 </span><br>
+						전체 채팅 건수 </span><br>
 					<br>
 					<div class="r_gender">
 
@@ -1079,10 +995,10 @@ function fn_show9(){
 								style="border: 1px solid; float: left; width: 30%;">최근
 								7일</label> <input type="radio" name="static" id="week" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show2()">
-							<label for="week" style="border: 1px solid; width: 30%;">주별</label>
+							<label for="week" style="border: 1px solid; width: 30%;">최근 한달</label>
 							<input type="radio" name="static" id="month" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show3()">
-							<label for="month" style="border: 1px solid; width: 30%;">월별</label>
+							<label for="month" style="border: 1px solid; width: 30%;">최근 6개월</label>
 						</div>
 						<div style="width: 900px; height: 550px;">
 							<!--차트가 그려질 부분-->
