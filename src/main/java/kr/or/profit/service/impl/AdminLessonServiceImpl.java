@@ -64,6 +64,13 @@ public class AdminLessonServiceImpl implements AdminLessonService {
 		return adminLessonDAO.adminLessonPayListCnt(cri);
 	}
 	
+	//온라인 클래스 최근 7일 인기강좌
+	@Override
+	public Map<String, Object> lessonPopularDays() throws Exception {
+		return adminLessonDAO.lessonPopularDays();
+	}
+	
+	
 	//온라인 클래스 최근 7일 수익
 	@Override
 	public Map<String, Object> lessonPriceDays() throws Exception{
@@ -148,11 +155,25 @@ public class AdminLessonServiceImpl implements AdminLessonService {
 		return adminLessonDAO.goodRank();
 	}
 	
+	//누적 조회순
+	@Override
+	public List<Map<String, Object>> viewRank() throws Exception {
+		return adminLessonDAO.viewRank();
+	}
+	
 	//누적 인기강좌 순위
 	@Override
 	public List<Map<String, Object>> lessonRank() throws Exception {
 		return adminLessonDAO.lessonRank();
 	}
+
+
+
+	
+
+	
+
+	
 	
 	
 	

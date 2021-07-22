@@ -196,124 +196,57 @@ $(document).ready(function() {
 	$("input:radio[id='bookmark']").prop("checked", true);  
 	$("#bookmarkChart").show();
 	$("#lessonChart").hide();
-	$("#trainerChart").hide();
+	$("#viewChart").hide();
 	
 	var context = document
     .getElementById('myChart')
     .getContext('2d');
 var myChart = new Chart(context, {
-    type: 'line', // 차트의 형태
+    type: 'bar', // 차트의 형태
     data: { // 차트에 들어갈 데이터
         labels: [
             //x 축
-           '${lessonPriceDays['cal7']}',
-           '${lessonPriceDays['cal6']}',
-           '${lessonPriceDays['cal5']}',
-           '${lessonPriceDays['cal4']}',
-           '${lessonPriceDays['cal3']}',
-           '${lessonPriceDays['cal2']}',
-           '${lessonPriceDays['cal1']}'
+        	"${lessonPopularDays['cal7']}",
+            "${lessonPopularDays['cal6']}",
+            "${lessonPopularDays['cal5']}",
+            "${lessonPopularDays['cal4']}",
+            "${lessonPopularDays['cal3']}",
+            "${lessonPopularDays['cal2']}",
+            "${lessonPopularDays['cal1']}"
         ],
-        datasets: [
-            { //데이터
-                label: '여자 회원', //차트 제목
-                fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-                data: [
-                    
-                	${lessonPriceDaysF['f7']},
-                    ${lessonPriceDaysF['f6']},
-                    ${lessonPriceDaysF['f5']},
-                    ${lessonPriceDaysF['f4']},
-                    ${lessonPriceDaysF['f3']},
-                    ${lessonPriceDaysF['f2']},
-                    ${lessonPriceDaysF['f1']}
-                    //x축 label에 대응되는 데이터 값
-                ],
-                backgroundColor: [
-                    //색상
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    //경계선 색상
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1 //경계선 굵기
-            } ,
-            { //데이터
-                label: '남자 회원', //차트 제목
-                fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-                data: [
-                    ${lessonPriceDaysM['m7']},
-                    ${lessonPriceDaysM['m6']},
-                    ${lessonPriceDaysM['m5']},
-                    ${lessonPriceDaysM['m4']},
-                    ${lessonPriceDaysM['m3']},
-                    ${lessonPriceDaysM['m2']},
-                    ${lessonPriceDaysM['m1']}
-               	 //x축 label에 대응되는 데이터 값
-                ],
-                backgroundColor: [
-                    //색상
-                    'rgba(102, 204, 255, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    //경계선 색상
-                    'rgba(102, 204, 255, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1 //경계선 굵기
-            } ,
-            { //데이터
+        
+        datasets: [  { //데이터
                 label: '전체 회원', //차트 제목
                 fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
                 data: [
-                    ${lessonPriceDays['day7']},
-                    ${lessonPriceDays['day6']},
-                    ${lessonPriceDays['day5']},
-                    ${lessonPriceDays['day4']},
-                    ${lessonPriceDays['day3']},
-                    ${lessonPriceDays['day2']},
-                    ${lessonPriceDays['day1']},
+                    ${lessonPopularDays[0]['cal1']},
+                    ${lessonPopularDays[1]['cal1']},
+                    ${lessonPopularDays[2]['cal1']},
+                    ${lessonPopularDays[3]['cal1']},
+                    ${lessonPopularDays[4]['cal1']},
+                    ${lessonPopularDays[5]['cal1']},
+                    ${lessonPopularDays[6]['cal1']}
                	 //x축 label에 대응되는 데이터 값
                 ],
                 backgroundColor: [
                     //색상
-                    'rgba(101, 199, 105, 0.2)',
+                	'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(255, 206, 86, 0.2)',
                     'rgba(75, 192, 192, 0.2)',
                     'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 152, 0, 0.2)',
+                    'rgba(75, 176, 80, 0.2)'
                 ],
                 borderColor: [
                     //경계선 색상
-                    'rgba(101, 199, 105, 1)',
+                	'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
                     'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgba(255, 152, 0, 1)',
+                    'rgba(75, 176, 80, 1)'
                 ],
                 borderWidth: 1 //경계선 굵기
             } 
@@ -897,64 +830,44 @@ var context = document
 .getElementById('myChart9')
 .getContext('2d');
 var myChart9 = new Chart(context, {
-type: 'bar', // 차트의 형태
+type: 'doughnut', // 차트의 형태
 data: { // 차트에 들어갈 데이터
     labels: [
         //x 축
-       "${lessonRank[0]['lessonTitle']}",
-       "${lessonRank[1]['lessonTitle']}",
-       "${lessonRank[2]['lessonTitle']}",
-       "${lessonRank[3]['lessonTitle']}",
-       "${lessonRank[4]['lessonTitle']}",
-       "${lessonRank[5]['lessonTitle']}",
-       "${lessonRank[6]['lessonTitle']}",
-       "${lessonRank[7]['lessonTitle']}",
-       "${lessonRank[8]['lessonTitle']}",
-       "${lessonRank[9]['lessonTitle']}"
+       "${viewRank[0]['lessonTitle']}",
+       "${viewRank[1]['lessonTitle']}",
+       "${viewRank[2]['lessonTitle']}",
+       "${viewRank[3]['lessonTitle']}",
+       "${viewRank[4]['lessonTitle']}"
     ],
     datasets: [
         { //데이터
-            label: "1위", //차트 제목
+            label: "조회순", //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
                 
-            	${lessonRank[0]['cnt']},
-            	${lessonRank[1]['cnt']},
-            	${lessonRank[2]['cnt']},
-            	${lessonRank[3]['cnt']},
-            	${lessonRank[4]['cnt']},
-            	${lessonRank[5]['cnt']},
-            	${lessonRank[6]['cnt']},
-            	${lessonRank[7]['cnt']},
-            	${lessonRank[8]['cnt']},
-            	${lessonRank[9]['cnt']}
+            	${viewRank[0]['lessonHit']},
+            	${viewRank[1]['lessonHit']},
+            	${viewRank[2]['lessonHit']},
+            	${viewRank[3]['lessonHit']},
+            	${viewRank[4]['lessonHit']}
                 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
                 //색상
-                'rgba(255, 99, 132, 0.2)',
+            	'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 152, 0, 0.2)',
-                'rgba(75, 176, 80, 0.2)',
-                'rgba(244, 67, 54, 0.2)',
-                'rgba(0, 150, 136, 0.2)',
-                'rgba(63, 81, 181, 0.2)'
+                'rgba(153, 102, 255, 0.2)'
             ],
             borderColor: [
                 //경계선 색상
-                'rgba(255, 99, 132, 1)',
+            	'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 152, 0, 1)',
-                'rgba(75, 176, 80, 1)',
-                'rgba(244, 67, 54, 1)',
-                'rgba(0, 150, 136, 1)',
-                'rgba(63, 81, 181, 1)'
+                'rgba(153, 102, 255, 1)'
             ],
             borderWidth: 1 //경계선 굵기
         } 
@@ -962,6 +875,7 @@ data: { // 차트에 들어갈 데이터
     ]
 },
 options: {
+	responsive: false,
     scales: {
         yAxes: [
             {
@@ -1019,19 +933,19 @@ function fn_show6(){
 function fn_show7(){
 	$("#bookmarkChart").show();
 	$("#lessonChart").hide();
-	$("#trainerChart").hide();
+	$("#viewChart").hide();
 }
 
 function fn_show8(){
 	$("#bookmarkChart").hide();
 	$("#lessonChart").show();
-	$("#trainerChart").hide();
+	$("#viewChart").hide();
 }
 
 function fn_show9(){
 	$("#bookmarkChart").hide();
 	$("#lessonChart").hide();
-	$("#trainerChart").show();
+	$("#viewChart").show();
 }
 
 
@@ -1068,7 +982,7 @@ function fn_show9(){
 				<div class="row">
 					<span
 						style="font-weight: bold; font-size: 1.1em; padding-left: 30px;">*
-						온라인 클래스 수익현황 </span><br>
+						 온라인클래스 인기강좌 현황 </span><br>
 					<br>
 					<div class="r_gender">
 
@@ -1166,10 +1080,10 @@ function fn_show9(){
 								checked> <label for="bookmark"
 								style="border: 1px solid; float: left; width: 30%;">북마크 순위</label> <input type="radio" name="static2" id="lesson" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show8()">
-							<label for="lesson" style="border: 1px solid; width: 30%;">좋아요순위</label>
+							<label for="lesson" style="border: 1px solid; width: 30%;">좋아요 순위</label>
 							<input type="radio" name="static2" id="trainer" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show9()">
-							<label for="trainer" style="border: 1px solid; width: 30%;">인기강좌</label>
+							<label for="trainer" style="border: 1px solid; width: 30%;">조회수 순위</label>
 						</div>
 						<div style="width: 900px; height: 550px;">
 							<!--차트가 그려질 부분-->
@@ -1179,8 +1093,8 @@ function fn_show9(){
 							<div id="lessonChart">
 								<canvas id="myChart8" style="height:500px; width:500px;margin-left:210px;"></canvas>
 							</div>
-							<div id="trainerChart">
-								<canvas id="myChart9"></canvas>
+							<div id="viewChart">
+								<canvas id="myChart9" style="height:500px; width:500px;margin-left:210px;"></canvas>
 							</div>
 						</div>
 

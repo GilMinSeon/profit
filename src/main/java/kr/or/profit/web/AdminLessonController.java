@@ -173,9 +173,14 @@ public class AdminLessonController {
    @RequestMapping(value = "adminLessonStat.do", method = RequestMethod.GET)
 	public String adminLessonStat(Locale locale, Model model) throws Exception{
 	   
+	   //온라인 클래스 최근 7일 인기강좌
+	   Map<String,Object> sevenDays = adminLessonService.lessonPopularDays();
+	   model.addAttribute("lessonPopularDays", sevenDays);
+	   
+	   
 	   //온라인 클래스 최근 7일 수익
-	   Map<String,Object> sevenDays = adminLessonService.lessonPriceDays();
-	   model.addAttribute("lessonPriceDays", sevenDays);
+	   Map<String,Object> sevenDays1 = adminLessonService.lessonPriceDays();
+	   model.addAttribute("lessonPriceDays", sevenDays1);
 	   
 	   //온라인 클래스 최근 7일 수익(남자)
 	   Map<String,Object> sevenDaysM = adminLessonService.lessonPriceDaysM();
@@ -228,6 +233,10 @@ public class AdminLessonController {
 	   //누적 좋아요순
 	   List<Map<String,Object>> goodRank = adminLessonService.goodRank();
 	   model.addAttribute("goodRank" , goodRank );
+	   
+	   //누적 조회순
+	   List<Map<String,Object>> viewRank = adminLessonService.viewRank();
+	   model.addAttribute("viewRank" , viewRank );
 	   
 	   //누적 인기강좌 순위
 	   List<Map<String,Object>> lessonRank = adminLessonService.lessonRank();

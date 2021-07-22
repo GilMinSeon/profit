@@ -242,6 +242,138 @@
 	    
 	</select>
     
+    <select id="lessonPopularDays" resultType="egovMap">
+             select *
+		from
+        (
+        select to_char(sysdate,'yyyy-mm-dd') as cal1
+        from dual
+        ),
+		(
+		select count(a.buy_lesson_seq) as day1,
+        a.lesson_seq, 
+        CASE
+		WHEN
+		LENGTH( b.lesson_title) > 10 THEN SUBSTR( b.lesson_title, 0, 10) ||
+		'...'
+		ELSE  b.lesson_title
+		END AS LESSON_TITLE   
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate,'yyyymmdd')  
+        and rownum = 1
+        group by a.lesson_seq, lesson_title
+        order by day1 desc
+		),
+		(
+		select to_char(sysdate-1,'yyyy-mm-dd') as cal2,count(a.buy_lesson_seq) as day2,
+        a.lesson_seq, 
+        CASE
+		WHEN
+		LENGTH( b.lesson_title) > 10 THEN SUBSTR( b.lesson_title, 0, 10) ||
+		'...'
+		ELSE  b.lesson_title
+		END AS LESSON_TITLE 
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-1,'yyyymmdd')
+        and rownum = 1
+		group by to_char(sysdate-1,'yyyy-mm-dd'),a.lesson_seq,LESSON_TITLE
+         order by day2 desc
+		),
+		(
+		select to_char(sysdate-2,'yyyy-mm-dd') as cal3,count(a.buy_lesson_seq) as day3,
+        a.lesson_seq, 
+        CASE
+		WHEN
+		LENGTH( b.lesson_title) > 10 THEN SUBSTR( b.lesson_title, 0, 10) ||
+		'...'
+		ELSE  b.lesson_title
+		END AS LESSON_TITLE 
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-2,'yyyymmdd')
+        and rownum = 1
+		group by to_char(sysdate-2,'yyyy-mm-dd'),a.lesson_seq,LESSON_TITLE
+        order by day3 desc
+		),
+		(
+		select to_char(sysdate-3,'yyyy-mm-dd') as cal4,count(a.buy_lesson_seq) as day4,
+        a.lesson_seq, 
+        CASE
+		WHEN
+		LENGTH( b.lesson_title) > 10 THEN SUBSTR( b.lesson_title, 0, 10) ||
+		'...'
+		ELSE  b.lesson_title
+		END AS LESSON_TITLE 
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-3,'yyyymmdd')
+        and rownum = 1
+		group by to_char(sysdate-3,'yyyy-mm-dd'),a.lesson_seq,LESSON_TITLE
+        order by day4 desc
+       ),
+		(
+		select to_char(sysdate-4,'yyyy-mm-dd') as cal5,count(a.buy_lesson_seq) as day5,
+         a.lesson_seq, 
+        CASE
+		WHEN
+		LENGTH( b.lesson_title) > 10 THEN SUBSTR( b.lesson_title, 0, 10) ||
+		'...'
+		ELSE  b.lesson_title
+		END AS LESSON_TITLE 
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-4,'yyyymmdd')
+        and rownum = 1
+		group by to_char(sysdate-4,'yyyy-mm-dd'),a.lesson_seq,LESSON_TITLE
+        order by day5 desc
+		),
+		(
+		select to_char(sysdate-5,'yyyy-mm-dd') as cal6,count(a.buy_lesson_seq) as day6,
+         a.lesson_seq, 
+        CASE
+		WHEN
+		LENGTH( b.lesson_title) > 10 THEN SUBSTR( b.lesson_title, 0, 10) ||
+		'...'
+		ELSE  b.lesson_title
+		END AS LESSON_TITLE 
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-5,'yyyymmdd')
+        and rownum = 1
+		group by to_char(sysdate-5,'yyyy-mm-dd'),a.lesson_seq,LESSON_TITLE
+        order by day6 desc
+		) ,
+		(
+		select to_char(sysdate-6,'yyyy-mm-dd') as cal7,count(a.buy_lesson_seq) as day7,
+        a.lesson_seq, 
+        CASE
+		WHEN
+		LENGTH( b.lesson_title) > 10 THEN SUBSTR( b.lesson_title, 0, 10) ||
+		'...'
+		ELSE  b.lesson_title
+		END AS LESSON_TITLE 
+		from buy_lesson a , lesson b
+		where a.lesson_seq = b.lesson_seq(+)
+		and a.lesson_refund_flag = 'N' 
+		and to_char(a.in_date,'yyyymmdd') = to_char(sysdate-6,'yyyymmdd')
+        and rownum = 1
+		group by to_char(sysdate-6,'yyyy-mm-dd'),a.lesson_seq,LESSON_TITLE
+		 order by day7 desc
+        ) 
+        
+    </select>
+    
+    
+    
+<!--     여기지워 -->
     <select id="lessonPriceDays" resultType="egovMap">
         
          select *
@@ -940,6 +1072,32 @@
 		and a.lesson_seq = b.lesson_seq(+)
 		group by a.lesson_seq,b.lesson_title
 		order by cnt desc
+		)
+		)
+		where rn between 1 and 5
+	    
+	</select>
+	
+	<select id="viewRank" resultType="egovMap" >
+	    select *
+		from
+		(
+		select rownum as rn, lesson_seq, lesson_title,lesson_hit
+		from
+		(
+		select lesson_seq, 
+		CASE
+		WHEN
+		LENGTH(LESSON_TITLE) > 10 THEN SUBSTR(LESSON_TITLE, 0, 10) ||
+		'...'
+		ELSE LESSON_TITLE
+		END AS LESSON_TITLE,
+        lesson_hit
+		from  lesson 
+		where lesson_seq is not null
+        and lesson_private_flag = 'N'
+
+		order by lesson_hit desc
 		)
 		)
 		where rn between 1 and 5
