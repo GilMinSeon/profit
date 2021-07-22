@@ -186,8 +186,45 @@ public class AdminChatController {
 	
 	
 	@RequestMapping(value = "adminChatStat.do", method = RequestMethod.GET)
-	public String adminChatStat(Locale locale, Model model) {
+	public String adminChatStat(Locale locale, Model model) throws Exception {
 
+	   //채팅개수 최근 7일
+	   Map<String,Object> sevenDays = adminChatService.ChatDays();
+	   model.addAttribute("ChatDays", sevenDays);
+		   
+	   //채팅개수 최근 7일 (남자)
+	   Map<String,Object> sevenDaysM = adminChatService.ChatDaysM();
+	   model.addAttribute("ChatDaysM" , sevenDaysM);
+		   
+	   //채팅개수 최근 7일 (여자)
+	   Map<String,Object> sevenDaysF = adminChatService.ChatDaysF();
+	   model.addAttribute("ChatDaysF" , sevenDaysF);
+		   
+	   //채팅개수 최근 5주
+	   Map<String,Object> fiveWeeks = adminChatService.chatWeeks();
+	   model.addAttribute("chatWeeks" , fiveWeeks);
+		   
+	   //채팅개수 최근 5주 (남자)
+	   Map<String,Object> fiveWeeksM = adminChatService.chatWeeksM();
+	   model.addAttribute("chatWeeksM" , fiveWeeksM);
+		   
+	   //채팅개수 최근 5주 (여자)
+	   Map<String,Object> fiveWeeksF = adminChatService.chatWeeksF();
+	   model.addAttribute("chatWeeksF" , fiveWeeksF);
+		   
+	   //채팅건수 최근6개월 
+//	   Map<String,Object> sixMonths = adminChatService.chatMonths();
+//	   model.addAttribute("chatMonths" , sixMonths);
+		   
+	   //채팅건수 최근 6개월 (남자)
+//	   Map<String,Object> sixMonthsM = adminChatService.chatMonthsM();
+//	   model.addAttribute("chatMonthsM" , sixMonthsM);
+		   
+	   //채팅건수 최근 6개월(여자)
+//	   Map<String,Object> sixMonthsF = adminChatService.chatMonthsF();
+//	   model.addAttribute("chatMonthsF" , sixMonthsF);
+	   
+	   
 		return "adminChat/adminChatStat";
 	}
 	

@@ -221,7 +221,6 @@ $(document).ready(function() {
 	            label: "전체", //차트 제목
 	            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
 	            data: [
-	                
 	            	${lessonPopularDays[0]['cnt']},
 	                ${lessonPopularDays[1]['cnt']},
 	                ${lessonPopularDays[2]['cnt']},
@@ -278,16 +277,6 @@ $(document).ready(function() {
 	                }
 	            }
 	        ],
-	        xAxes: [ {
-	    	    display: true,
-	    	    position: 'bottom',
-	    	    ticks: {
-	    	       stepSize: 20,
-	    	       min: 0,
-	    	       max: 140
-	    	    }
-	        }
-	    	]
 	    }
 	}
 	});
@@ -317,7 +306,6 @@ data: { // 차트에 들어갈 데이터
             label: "전체", //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
-                
             	${lessonPopularWeeks[0]['cnt']},
                 ${lessonPopularWeeks[1]['cnt']},
                 ${lessonPopularWeeks[2]['cnt']},
@@ -402,7 +390,6 @@ data: { // 차트에 들어갈 데이터
             label: "전체", //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
-                
             	${lessonPopularMonths[0]['cnt']},
                 ${lessonPopularMonths[1]['cnt']},
                 ${lessonPopularMonths[2]['cnt']},

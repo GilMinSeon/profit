@@ -54,5 +54,65 @@ public class AdminChatServiceImpl implements AdminChatService {
 		return adminChatDAO.updTicketCnt(vo);
 	}
 
+	//채팅개수 최근 7일
+	@Override
+	public Map<String, Object> ChatDays() throws Exception {
+		return adminChatDAO.ChatDays();
+	}
+
+	//채팅개수 최근 7일 수익(남자)
+	@Override
+	public Map<String, Object> ChatDaysM() throws Exception {
+		return adminChatDAO.ChatDaysM();
+	}
+
+	//채팅개수 최근 7일 (여자)
+	@Override
+	public Map<String, Object> ChatDaysF() throws Exception {
+		return adminChatDAO.ChatDaysF();
+	}
+
+	//채팅개수 최근 5주 수익
+	@Override
+	public Map<String, Object> chatWeeks() throws Exception {
+		return adminChatDAO.chatWeeks();
+	}
+
+	//채팅개수 최근 5주 (남자)
+	@Override
+	public Map<String, Object> chatWeeksM() throws Exception {
+		return adminChatDAO.chatWeeksM();
+	}
+
+	//채팅개수 최근 5주 (여자)
+	@Override
+	public Map<String, Object> chatWeeksF() throws Exception {
+		return adminChatDAO.chatWeeksF();
+	}
+
+	//채팅건수 최근6개월 
+	@Override
+	public Map<String, Object> chatMonths() throws Exception {
+		return adminChatDAO.chatMonths();
+	}
+
+	//채팅건수 최근 6개월 (남자)
+	@Override
+	public Map<String, Object> chatMonthsM() throws Exception {
+		return adminChatDAO.chatMonthsM();
+	}
+
+	//채팅건수 최근 6개월(여자)
+	@Override
+	public Map<String, Object> chatMonthsF() throws Exception {
+		return adminChatDAO.chatMonthsF();
+	}
+
+	
+
+
+	
+	
+
 
 }

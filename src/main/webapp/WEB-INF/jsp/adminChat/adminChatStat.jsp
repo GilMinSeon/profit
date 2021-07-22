@@ -122,13 +122,13 @@ var myChart = new Chart(context, {
     data: { // 차트에 들어갈 데이터
         labels: [
             //x 축
-           '${lessonPriceDays['cal7']}',
-           '${lessonPriceDays['cal6']}',
-           '${lessonPriceDays['cal5']}',
-           '${lessonPriceDays['cal4']}',
-           '${lessonPriceDays['cal3']}',
-           '${lessonPriceDays['cal2']}',
-           '${lessonPriceDays['cal1']}'
+           '${ChatDays['day7']}',
+           '${ChatDays['day6']}',
+           '${ChatDays['day5']}',
+           '${ChatDays['day4']}',
+           '${ChatDays['day3']}',
+           '${ChatDays['day2']}',
+           '${ChatDays['day1']}'
         ],
         datasets: [
             { //데이터
@@ -136,13 +136,13 @@ var myChart = new Chart(context, {
                 fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
                 data: [
                     
-                	${lessonPriceDaysF['f7']},
-                    ${lessonPriceDaysF['f6']},
-                    ${lessonPriceDaysF['f5']},
-                    ${lessonPriceDaysF['f4']},
-                    ${lessonPriceDaysF['f3']},
-                    ${lessonPriceDaysF['f2']},
-                    ${lessonPriceDaysF['f1']}
+                	${ChatDaysF['cnt7']},
+                    ${ChatDaysF['cnt6']},
+                    ${ChatDaysF['cnt5']},
+                    ${ChatDaysF['cnt4']},
+                    ${ChatDaysF['cnt3']},
+                    ${ChatDaysF['cnt2']},
+                    ${ChatDaysF['cnt1']}
                     //x축 label에 대응되는 데이터 값
                 ],
                 backgroundColor: [
@@ -171,13 +171,13 @@ var myChart = new Chart(context, {
                 label: '남자 회원', //차트 제목
                 fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
                 data: [
-                    ${lessonPriceDaysM['m7']},
-                    ${lessonPriceDaysM['m6']},
-                    ${lessonPriceDaysM['m5']},
-                    ${lessonPriceDaysM['m4']},
-                    ${lessonPriceDaysM['m3']},
-                    ${lessonPriceDaysM['m2']},
-                    ${lessonPriceDaysM['m1']}
+                    ${ChatDaysM['cnt7']},
+                    ${ChatDaysM['cnt6']},
+                    ${ChatDaysM['cnt5']},
+                    ${ChatDaysM['cnt4']},
+                    ${ChatDaysM['cnt3']},
+                    ${ChatDaysM['cnt2']},
+                    ${ChatDaysM['cnt1']}
                	 //x축 label에 대응되는 데이터 값
                 ],
                 backgroundColor: [
@@ -204,13 +204,13 @@ var myChart = new Chart(context, {
                 label: '전체 회원', //차트 제목
                 fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
                 data: [
-                    ${lessonPriceDays['day7']},
-                    ${lessonPriceDays['day6']},
-                    ${lessonPriceDays['day5']},
-                    ${lessonPriceDays['day4']},
-                    ${lessonPriceDays['day3']},
-                    ${lessonPriceDays['day2']},
-                    ${lessonPriceDays['day1']},
+                    ${ChatDays['cnt7']},
+                    ${ChatDays['cnt6']},
+                    ${ChatDays['cnt5']},
+                    ${ChatDays['cnt4']},
+                    ${ChatDays['cnt3']},
+                    ${ChatDays['cnt2']},
+                    ${ChatDays['cnt1']},
                	 //x축 label에 대응되는 데이터 값
                 ],
                 backgroundColor: [
@@ -271,12 +271,11 @@ data: { // 차트에 들어갈 데이터
             label: '여자 회원', //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
-                
-            	${lessonPriceWeeksF['f5']},
-                ${lessonPriceWeeksF['f4']},
-                ${lessonPriceWeeksF['f3']},
-                ${lessonPriceWeeksF['f2']},
-                ${lessonPriceWeeksF['f1']}
+                ${chatWeeksF['week5']},
+                ${chatWeeksF['week4']},
+                ${chatWeeksF['week3']},
+                ${chatWeeksF['week2']},
+                ${chatWeeksF['week1']}
                 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
@@ -285,7 +284,7 @@ data: { // 차트에 들어갈 데이터
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
+                'rgba(153, 102, 255, 1)'
             ],
             borderColor: [
                 //경계선 색상
@@ -301,11 +300,11 @@ data: { // 차트에 들어갈 데이터
             label: '남자 회원', //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
-                ${lessonPriceWeeksM['m5']},
-                ${lessonPriceWeeksM['m4']},
-                ${lessonPriceWeeksM['m3']},
-                ${lessonPriceWeeksM['m2']},
-                ${lessonPriceWeeksM['m1']}
+                ${chatWeeksM['week5']},
+                ${chatWeeksM['week4']},
+                ${chatWeeksM['week3']},
+                ${chatWeeksM['week2']},
+                ${chatWeeksM['week1']}
            	 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
@@ -314,7 +313,7 @@ data: { // 차트에 들어갈 데이터
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
+                'rgba(153, 102, 255, 1)'
             ],
             borderColor: [
                 //경계선 색상
@@ -330,11 +329,11 @@ data: { // 차트에 들어갈 데이터
             label: '전체 회원', //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
-                ${lessonPriceWeeks['week5']},
-                ${lessonPriceWeeks['week4']},
-                ${lessonPriceWeeks['week3']},
-                ${lessonPriceWeeks['week2']},
-                ${lessonPriceWeeks['week1']}
+                ${chatWeeks['cnt5']},
+                ${chatWeeks['cnt4']},
+                ${chatWeeks['cnt3']},
+                ${chatWeeks['cnt2']},
+                ${chatWeeks['cnt1']}
            	 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
@@ -343,7 +342,7 @@ data: { // 차트에 들어갈 데이터
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
+                'rgba(153, 102, 255, 1)'
             ],
             borderColor: [
                 //경계선 색상
@@ -380,40 +379,47 @@ type: 'line', // 차트의 형태
 data: { // 차트에 들어갈 데이터
     labels: [
         //x 축
-       ${lessonPriceMonths['cal5']},
-       ${lessonPriceMonths['cal4']},
-       ${lessonPriceMonths['cal3']},
-       ${lessonPriceMonths['cal2']},
-       ${lessonPriceMonths['cal1']},
+    	"6달 전",
+    	"5달 전",
+    	"4달 전",
+        "3달 전",
+        "2달 전",
+        "1달 전",
+        "이번달",
     ],
     datasets: [
         { //데이터
             label: '여자 회원', //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
-                
-            	${lessonPriceMonthsF['f5']},
-                ${lessonPriceMonthsF['f4']},
-                ${lessonPriceMonthsF['f3']},
-                ${lessonPriceMonthsF['f2']},
-                ${lessonPriceMonthsF['f1']}
+                ${chatMonthsF['f4']},
+                ${chatMonthsF['f4']},
+                ${chatMonthsF['f4']},
+                ${chatMonthsF['f4']},
+                ${chatMonthsF['f3']},
+                ${chatMonthsF['f2']},
+                ${chatMonthsF['f1']}
                 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
                 //색상
-                'rgba(255, 99, 132, 0.2)',
+            	'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
             ],
             borderColor: [
                 //경계선 색상
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
+            	'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
             ],
             borderWidth: 1 //경계선 굵기
         } ,
@@ -421,28 +427,31 @@ data: { // 차트에 들어갈 데이터
             label: '남자 회원', //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
-                ${lessonPriceMonthsM['m5']},
-                ${lessonPriceMonthsM['m4']},
-                ${lessonPriceMonthsM['m3']},
-                ${lessonPriceMonthsM['m2']},
-                ${lessonPriceMonthsM['m1']}
+                ${chatMonthsM['m4']},
+                ${chatMonthsM['m3']},
+                ${chatMonthsM['m2']},
+                ${chatMonthsM['m1']}
            	 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
                 //색상
-                'rgba(102, 204, 255, 0.2)',
+            	'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
             ],
             borderColor: [
                 //경계선 색상
-                'rgba(102, 204, 255, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
+            	'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
             ],
             borderWidth: 1 //경계선 굵기
         } ,
@@ -450,28 +459,31 @@ data: { // 차트에 들어갈 데이터
             label: '전체 회원', //차트 제목
             fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
             data: [
-                ${lessonPriceMonths['month5']},
-                ${lessonPriceMonths['month4']},
-                ${lessonPriceMonths['month3']},
-                ${lessonPriceMonths['month2']},
-                ${lessonPriceMonths['month1']}
+                ${chatMonths['month4']},
+                ${chatMonths['month3']},
+                ${chatMonths['month2']},
+                ${chatMonths['month1']}
            	 //x축 label에 대응되는 데이터 값
             ],
             backgroundColor: [
                 //색상
-                'rgba(101, 199, 105, 0.2)',
+            	'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
             ],
             borderColor: [
                 //경계선 색상
-                'rgba(101, 199, 105, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)'
+            	'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
             ],
             borderWidth: 1 //경계선 굵기
         } 
@@ -984,7 +996,7 @@ function fn_show9(){
 				<div class="row">
 					<span
 						style="font-weight: bold; font-size: 1.1em; padding-left: 30px;">*
-						전체 채팅 건수 </span><br>
+						채팅 건수 </span><br>
 					<br>
 					<div class="r_gender">
 
@@ -1027,7 +1039,7 @@ function fn_show9(){
 				<div class="row">
 					<span
 						style="font-weight: bold; font-size: 1.1em; padding-left: 30px;">*
-						신규 강좌(최근 일주일) </span><br>
+						채팅 인기 트레이너 현황 </span><br>
 					<br>
 					<div class="r_gender">
 
@@ -1035,15 +1047,15 @@ function fn_show9(){
 							<input type="radio" name="static1" id="buy" value=""
 								autocomplete="off" style="opacity: 0;" checked
 								onclick="fn_show4()"> <label for="buy"
-								style="border: 1px solid; float: left; width: 30%;">신규강좌
-								구매 TOP5</label> <input type="radio" name="static1" id="category"
+								style="border: 1px solid; float: left; width: 30%;">최근 7일
+								</label> <input type="radio" name="static1" id="category"
 								value="" autocomplete="off" style="opacity: 0;"
 								onclick="fn_show5()"> <label for="category"
-								style="border: 1px solid; width: 30%;">카테고리별 신규 강좌 등록
-								비율</label> <input type="radio" name="static1" id="new" value=""
+								style="border: 1px solid; width: 30%;">최근 한달
+								</label> <input type="radio" name="static1" id="new" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show6()">
-							<label for="new" style="border: 1px solid; width: 30%;">신규강좌
-								등록수</label>
+							<label for="new" style="border: 1px solid; width: 30%;">최근 6개월
+								</label>
 						</div>
 						<div style="width: 900px; height: 550px;">
 							<div id="buyChart">
@@ -1072,7 +1084,7 @@ function fn_show9(){
 				<div class="row">
 					<span
 						style="font-weight: bold; font-size: 1.1em; padding-left: 30px;">*
-						누적 조회</span><br>
+						채팅 여부 비율 현황</span><br>
 					<br>
 					<div class="r_gender">
 
@@ -1080,12 +1092,12 @@ function fn_show9(){
 							<input type="radio" name="static2" id="bookmark" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show7()"
 								checked> <label for="bookmark"
-								style="border: 1px solid; float: left; width: 30%;">북마크 순위</label> <input type="radio" name="static2" id="lesson" value=""
+								style="border: 1px solid; float: left; width: 30%;">최근 7일</label> <input type="radio" name="static2" id="lesson" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show8()">
-							<label for="lesson" style="border: 1px solid; width: 30%;">좋아요순위</label>
+							<label for="lesson" style="border: 1px solid; width: 30%;">최근 한달</label>
 							<input type="radio" name="static2" id="trainer" value=""
 								autocomplete="off" style="opacity: 0;" onclick="fn_show9()">
-							<label for="trainer" style="border: 1px solid; width: 30%;">인기강좌</label>
+							<label for="trainer" style="border: 1px solid; width: 30%;">최근 6개월</label>
 						</div>
 						<div style="width: 900px; height: 550px;">
 							<!--차트가 그려질 부분-->
