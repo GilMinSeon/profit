@@ -128,6 +128,8 @@
                 REPLY B
             WHERE
                 A.COMMUNITY_SEQ = B.COMMUNITY_SEQ
+            AND
+                B.REPLY_DEL_FLAG = 'N'
                 ) CNT,
 		    A.COMMUNITY_SEQ,
 			A.COMMON_SEQ,

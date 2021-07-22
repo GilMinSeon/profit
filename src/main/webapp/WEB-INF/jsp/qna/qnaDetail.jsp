@@ -107,7 +107,7 @@
 	}
 	function fn_rereply(cnt){
 		var formData = new FormData($('#frm'+ cnt)[0]);
-		
+
 		$.ajax({
 			type : 'post',
 			url : 'qnaRereplyAddAjax.do',
@@ -132,8 +132,8 @@
 				console.log(error);
 				console.log(error.status);
 			}
-			
-			
+
+
 		})
 	}
 
@@ -163,9 +163,9 @@
 					console.log(error.status);
 				}
 			});
-		
+
 		}
-		
+
 	}
 
 	function fn_boardDel(seq){
@@ -193,10 +193,10 @@
 					console.log(error.status);
 				}
 			});
-		
+
 		}
 	}
-	
+
 	function fn_toggle(cnt){
 		$("#rereply_div"+ cnt).toggle("fast");
 	}
@@ -227,12 +227,12 @@
 					<th>제목</th>
 					<td>${qnaDetail['commonTitle']}</td>
 				</tr>
-				
+
 				<tr>
 					<th>작성자</th>
 					<td>${qnaDetail['inUserId']}</td>
 				</tr>
-				
+
 				<tr>
 					<th>작성일</th>
 					  <c:set var = "str" value = "${qnaDetail['inDate']}"/>
@@ -246,6 +246,16 @@
 					</td>
 				</tr>
 			</table>
+			<div style="text-align: right;">
+				<div class="classes__item__text" style="text-align: center;">
+					<a href="qnaList.do" class="class-btn" style="text-align: center;">목 록</a>
+					<c:set var="inUser" value="${sessionScope.memberId}" />
+					<c:if test="${qnaDetail['inUserId'] == inUser}">
+						<a href="qnaMod.do?communitySeq=${qnaDetail.communitySeq}" class="class-btn">수정</a>
+						<a href="${path}qnaDelete.do?communitySeq=${qnaDetail.communitySeq}" class="class-btn">삭제</a>
+					</c:if>
+				</div>
+			</div>
 		</div>
 	</section>
 	<!-- Blog Details Section End -->
@@ -258,9 +268,9 @@
         <div class="container">
             <div class="row">
                 <div id="reply_area" class="col-lg-4 order-lg-1 order-2 replyarea" style="width: 100%;flex: 0 0 100%;max-width: 100%;padding-right: 0px;margin-left: 23px;">
-                
+
                     <div class="blog__sidebar">
-                        
+
                         <div class="blog__sidebar__comment" style="overflow-x:hidden;height: 500px;padding:10px;">
                             <h4>댓글(총 ${qnaDetail['replyCnt']}개)</h4>
 	                            <div class="classes__sidebar__comment" style="border-bottom: 0">
@@ -273,7 +283,7 @@
 	                                    <img src="${result.filePath}" alt="">
 	                                </div>
 	                                <div class="classes__sidebar__comment__text">
-	                                    
+
 	                                    <h6>
 		                                    <c:if test="${result.memberGubun eq 'T'}">
 	                                    	<img src="./resources/img/common/trainer_icon.png" style="width: 25px; height: 25px;">
@@ -283,8 +293,8 @@
 	                                     	<c:if test="${result.replyDepth == 1}">
 	                                     	<a style="font-size:0.8em;color:gray;" onclick='fn_toggle(${result.replySeq})'>답글달기</a>
 	                                     	</c:if>
-	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">${fn:substring(result.inDate,0,10)}</span>   
-	                                    </h6>   
+	                                     	<span style="font-size: 0.8em;color: gray;float: right;padding-right: 20px;">${fn:substring(result.inDate,0,10)}</span>
+	                                    </h6>
 	                                    <div style="margin-top: 20px;">
 		                                    <p>${result.replyContent}
 		                                    <c:if test="${result.inUserId eq memberId}">
@@ -320,14 +330,14 @@
                                     <textarea id="reply" name="replyContent" placeholder="댓글을 입력해 주세요." style="width: 79%;float: left"></textarea>
                                     <button type="button" class="site-btn" style="font-size: 1.05em; width: 120px;height: 48px;padding:0;float: right;margin-top: 15px;" onclick="fn_replyAdd()">댓글작성</button>
                                 </div>
-                                
+
                             </div>
                         </form>
                         </div>
                     </div>
                 </div>
-                
-                
+
+
             </div>
         </div>
     </div>
