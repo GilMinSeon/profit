@@ -13,8 +13,7 @@
 <link rel="stylesheet" href="./resources/datepicker/jquery-ui.css">
 <script src="./resources/datepicker/jquery-3.5.1.js"></script>
 <script src="./resources/datepicker/jquery-ui.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <style type="text/css">
 .counter-section i {
 	display: block;

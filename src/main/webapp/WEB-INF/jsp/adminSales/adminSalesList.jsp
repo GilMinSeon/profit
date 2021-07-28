@@ -95,7 +95,7 @@ function fn_pdf(cnt){
 				
 	<section class="classes spad">
 		<div class="container">
-			<h3 style="text-align: center;">정산하기</h3>
+			<h3 style="text-align: center;">매출관리</h3>
 			<br>
 			    <div class="classes__filter" style="margin-bottom: 0px;">
 				<br>
