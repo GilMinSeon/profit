@@ -266,4 +266,35 @@ public class QnaController {
 		out.flush();
 	}
 
+	/**
+	 * 게시판 이미지 업로드(qnaProfileImage)
+	 *
+	 * @author 박상빈
+	 * @param MultipartFile, HttpServletRequest, HttpServletResponse
+	 * @return
+	 * @throws Exception
+	 */
+
+	@RequestMapping(value = "qnaProfileImage.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void qnaProfileImage(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("온다");
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		// 업로드할 폴더 경로
+		String realFolder = request.getSession().getServletContext().getRealPath("profileUpload");
+		UUID uuid = UUID.randomUUID();
+		// 업로드할 파일 이름
+		String org_filename = file.getOriginalFilename();
+		String str_filename = uuid.toString() + "_" + org_filename;
+		String filepath = "\\\\192.168.41.6\\upload\\profit" + "\\" + str_filename;
+		String finalpath = "http://192.168.41.6:9999/upload/profit/" + str_filename;
+		File f = new File(filepath);
+		if (!f.exists()) {
+			f.mkdirs();
+		}
+		file.transferTo(f);
+		out.println(finalpath);
+		out.close();
+	}
 }
