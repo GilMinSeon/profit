@@ -31,26 +31,16 @@ public class UserServerHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		System.out.println("첫번째");
-		System.out.println("afterConnectionEstablished:" + session);
-
-		System.out.println(session.getAttributes());
-		System.out.println(session.getAttributes().get("memberId")); // 이게 세션의 memberId ex) S00001
-
 		connectedAllUsers.add(session);
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		System.out.println("두번째");
-		System.out.println("handleTextMessage:" + session + " : " + message);
-
 		String msg = message.getPayload();
 		ChatMessageVO chatMessage = objectMapper.readValue(msg, ChatMessageVO.class);
 		
 		//1) firstConnection
 		if (chatMessage.getCommand().equals("firstConnection")) {
-			System.out.println("first커맨드");
 			List<ChatProfileVO> list = dietService.websocketSessionList();
 			List<String> flagYList = new ArrayList<>();
 			for (int i = 0; i < list.size(); i++) {
@@ -64,11 +54,7 @@ public class UserServerHandler extends TextWebSocketHandler {
 				}
 			}
 			System.out.println("현재 웹소켓 접속한 트레이너 중 Y인 리스트 : " + returnSet);
-
 			TextMessage trainerList = new TextMessage(buildJsonUserData(returnSet).toString());
-
-			System.out.println(buildJsonUserData(returnSet));
-
 			for (WebSocketSession sess : connectedAllUsers) {
 				sess.sendMessage(trainerList);
 			}
@@ -80,22 +66,15 @@ public class UserServerHandler extends TextWebSocketHandler {
 			chatroomMembers.add(session);
 			
 			String connectingUser = chatMessage.getConnectingUser();
-			
-			
 			if(connectingUser != null) {
 				for (WebSocketSession sess : connectedAllUsers) {
 					if(connectingUser.equals(sess.getAttributes().get("memberId"))) {
 						chatroomMembers.add(sess);
-						System.out.println("같은애 찍은거 : " + connectingUser);
 					}
 				}
 				
-				// chatroomMembers에게 room입장하라는 신호 보내기
 				for(WebSocketSession sess : chatroomMembers) {
-					System.out.println("chatroomMembers에게 room입장하라는 신호 보내기");
-					
 					TextMessage txt = new TextMessage(Json.createObjectBuilder().add("enterChatId", chatroomId).add("username", (String) sess.getAttributes().get("memberId")).build().toString());
-					
 					sess.sendMessage(txt);
 				}
 				
@@ -108,8 +87,6 @@ public class UserServerHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		System.out.println("세번째");
-		System.out.println("afterConnectionClosed:" + session + ":" + status);
 		connectedAllUsers.remove(session);
 	}
 
@@ -118,12 +95,6 @@ public class UserServerHandler extends TextWebSocketHandler {
 		return list;
 	}
 
-	/**
-	 * 유저 정보가 담긴 Set<String>을 json으로 변환해주는 함수
-	 * 
-	 * @param set
-	 * @return jsondata
-	 */
 	private String buildJsonUserData(Set<String> set) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 		for (String user : set) {
@@ -132,12 +103,6 @@ public class UserServerHandler extends TextWebSocketHandler {
 		return Json.createObjectBuilder().add("allTrainers", jsonArrayBuilder).build().toString();
 	}
 	
-	
-	/**
-	 * chatroomId를 위한 랜덤값을 생성하는 함수
-	 * 
-	 * @return chatroomId
-	 */
 	private String genRandom() {
 		String chatroomId = "";
 		for (int i = 0; i < 8; i++) {
