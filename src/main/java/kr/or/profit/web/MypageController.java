@@ -538,31 +538,25 @@ public class MypageController {
 		   
 			HttpSession session = request.getSession();
 			String memberId = (String) session.getAttribute("memberId");
-			System.out.println("환불확인Id " + memberId);
-			
 			String buyLessonSeq = request.getParameter("buyLessonSeq");
-			System.out.println("환불확인seq "+ buyLessonSeq);
-			
 			String lessonSeq = request.getParameter("lessonSeq");
-			System.out.println("환불확인seq2 " + lessonSeq);
-			
-			 //환불 할 수 있는 사람인지 확인
-		      Map<String, Object> refundMap = new HashMap<>();
-		      refundMap.put("memberId", memberId);
-		      refundMap.put("lessonSeq", lessonSeq);
-		      refundMap.put("buyLessonSeq", buyLessonSeq);
-		      int checkRefundFlag = mypageService.selectcheckRefundFlag(refundMap);
+
+			//환불 할 수 있는 사람인지 확인
+		    Map<String, Object> refundMap = new HashMap<>();
+		    refundMap.put("memberId", memberId);
+		    refundMap.put("lessonSeq", lessonSeq);
+		    refundMap.put("buyLessonSeq", buyLessonSeq);
+		    int checkRefundFlag = mypageService.selectcheckRefundFlag(refundMap);
 		      
-		      String msg="";
-		      if(checkRefundFlag > 0) {
-		    	  model.addAttribute("refundOk", "1");
-		    	   msg="ok"; 
-		    	   Map<String, Object> refundFlagMap = new HashMap<>();
-		    	   refundFlagMap.put("memberId", memberId);
-		    	   refundFlagMap.put("lessonSeq", lessonSeq);
-		    	   refundFlagMap.put("buyLessonSeq", buyLessonSeq);
-		    	   int refundFlag = mypageService.updBuyLessonRefundFlag(refundFlagMap);
-		    	   System.out.println("refundFlag" + refundFlag);
+		     String msg="";
+		     if(checkRefundFlag > 0) {
+		    	 model.addAttribute("refundOk", "1");
+		         msg="ok"; 
+		    	 Map<String, Object> refundFlagMap = new HashMap<>();
+		    	 refundFlagMap.put("memberId", memberId);
+		    	 refundFlagMap.put("lessonSeq", lessonSeq);
+		    	 refundFlagMap.put("buyLessonSeq", buyLessonSeq);
+		    	 int refundFlag = mypageService.updBuyLessonRefundFlag(refundFlagMap);
 		    	   
 		      }else {
 		    	  model.addAttribute("refundOk", "0");

@@ -66,8 +66,12 @@
 <!--             id="header_info"  -->
 
             <div style="width: 100%; ">
-            		<div class="header__logo header_info" style="display: inline-block;padding-left: 15%;">
-                            <a href="home.do"><img src="./resources/img/logo.png" alt=""></a>
+            		<div class="header__logo header_info" style="display: inline-block;padding-left: 15%;padding-top:7px;padding-bottom: 15px;">
+                            <a href="home.do">
+                            	<img src="./resources/img/logo_.PNG" style="position: relative; top:-15px;">
+                            	<div style="display: inline-block;"><h2 style="color:#5768ad;font-weight: bold;"><span style="font-size: 60px;">P</span>rofit</h2>
+                            	</div><div style="display: inline-block;"><img src="" alt=""></div>
+                            </a>
                     </div>
                     <div class="header_info" style="vertical-align: bottom;text-align: right;float: right;height: 100%;padding-top: 70px;padding-right: 50px;">
                     <c:set var="memberId" value="${sessionScope.memberId}"/>
@@ -117,8 +121,7 @@
                         	<!-- 일반탭 -->
                         	<c:if test="${memberGubun == 'T'||memberGubun == 'U'|| memberId == null}">
                             <ul>
-                                <li class="active"><a href="home">Home</a></li>
-                                <li><a href="aiTeachList.do">AI교정</a></li>
+                                <li class="active"><a href="home.do">Home</a></li>
 								<li><a href="#">식단관리</a>
                                     <ul class="dropdown">
                                         <li><a href="chatList.do">1:1 상담</a></li>
@@ -161,16 +164,10 @@
                                     <ul class="dropdown">
                                         <li><a href="adminTicketPayList.do">이용권 구매내역</a></li>
                                         <li><a href="adminChatList.do">결제/환불내역</a></li>
-                                        <li><a href="adminChatStat.do">채팅통계</a></li>
                                     </ul>
                                 </li>
                                 
-                                <li><a href="#">매출관리</a>
-                                    <ul class="dropdown">
-                                        <li><a href="adminSalesList.do">정산하기</a></li>
-                                        <li><a href="aiTeachList.do">매출통계</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="adminSalesList.do">매출관리</a></li>
                                 
                                 <li><a href="noticeList.do">공지사항</a></li>
                                 

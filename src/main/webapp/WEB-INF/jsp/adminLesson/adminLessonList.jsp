@@ -175,13 +175,10 @@ function fn_switch(ele){
 					<c:if test="${!empty adminLessonList}">
 					<c:forEach var="result" items="${adminLessonList}" varStatus="status">
 					<tr>
-					 
 						<td>${ (pageMaker.cri.page-1)*10 + (status.count)}
-						
-						 <input type="hidden" class="lessonSeq" name="lessonSeq${status.index}" value="${result.lessonSeq}">
-					    <input type="hidden" name="chkTog${status.index}" value="chkTog${status.index}">
-					     <input type="hidden" class="lessonPrivateFlag" name="lessonPrivateFlag${status.index}" value="${result.lessonPrivateFlag}">
-						
+							<input type="hidden" class="lessonSeq" name="lessonSeq${status.index}" value="${result.lessonSeq}">
+						    <input type="hidden" name="chkTog${status.index}" value="chkTog${status.index}">
+						    <input type="hidden" class="lessonPrivateFlag" name="lessonPrivateFlag${status.index}" value="${result.lessonPrivateFlag}">
 						</td>
 						<td>${result.memberId}</td>
 						<td>${result.memberName}</td>
