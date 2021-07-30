@@ -168,11 +168,11 @@
             #{trainerCareer}, 
             #{trainerGym},
             'A',
-              null, 
-              #{inUserId}, 
-              sysdate
-              ),
-              null
+            null, 
+            #{inUserId}, 
+            sysdate,
+            null
+            )
         ]]>
 
 	</insert>

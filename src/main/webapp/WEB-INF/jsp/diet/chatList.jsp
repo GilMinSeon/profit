@@ -83,8 +83,6 @@
 
 		else if (jsonData.enterChatId != null) {
 			
-			alert("dddd")
-			
 			var roomId = jsonData.enterChatId;
 			$("#roomId").val(roomId);
 			$("#username").val(jsonData.username);
@@ -235,7 +233,6 @@
 			evt.preventDefault();
 			//상담여부 Ajax Url 등록 해주세요.. db update
 			memberId = "${sessionScope.memberId}";
-			alert(memberId)
 			$.ajax({
 				type : "POST",
 				data : "memberId=" + memberId,
@@ -304,31 +301,26 @@
 						style="font-size: 1.1em;">이용권 구매</a>
 				</div>
 			</c:if>
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="section-title">
-						<h5 style="font-weight: bold;">🟢 상담가능 / 🟣 상담중 / 🔴 상담불가</h5>
-					</div>
-				</div>
-			</div>
-
-			
+			<c:if test="${memberGubun eq 'T'}">
 			<!-- 웹소켓 리스트 -->
 			<div class="row">
 				<div class="col-lg-4 col-md-6" style="margin-bottom: 100px;">
 					<div class="single-trainer-item" style="position: relative">
 						<h3>
-							<input type="button" value="상담받기" id="btnAdd"> <input type="button" value="상담그만" id="btnStop">
+							<input type="button" value="상담받기" id="btnAdd" class="site-btn"> <input type="button" value="상담그만" id="btnStop" class="site-btn">
 						</h3>
-						<!-- 
-               <input type="text" id="msg">
-               <input type="button" id="btnSend" value="전송">
-                -->
 					</div>
 				</div>
 			</div>
 			<!-- 웹소켓 리스트 끝 -->
-			
+			</c:if>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="section-title">
+						<h5 style="font-weight: bold;">🟢 상담가능 / 🔴 상담불가</h5>
+					</div>
+				</div>
+			</div>
 			
 			<form name="userForm">
 				<input type="hidden" id="roomId" name="roomId"/>
