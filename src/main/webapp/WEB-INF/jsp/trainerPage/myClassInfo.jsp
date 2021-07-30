@@ -341,7 +341,7 @@ function fn_show2(){
 		<div class="container">
 			<h3 style="text-align: center; cursor: pointer;" onclick="location.href='trainerInfo.do'" >내 정보</h3>
 			<br>
-        	<div class="row" style="margin-bottom: 30px;margin-top: 30px;">
+        	<div class="row" style="margin-bottom: 30px;margin-top: 30px;padding-left:240px;">
             <!-- counter -->
             <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> 
 				<img src="./resources/img/common/onlineclass.png" style="width: 40px;height: 40px;" onclick="location.href='myClassInfo.do'">
@@ -353,13 +353,13 @@ function fn_show2(){
             <!-- end counter -->
             
             <!-- counter -->
-            <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="600ms" style="visibility: visible; animation-duration: 600ms; animation-name: fadeInUp;"> 
-	            <img src="./resources/img/common/chatting.png" style="width: 40px;height: 40px;">
-	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000"
-	            	onclick="location.href='trainerPermitList.do?selStatus=B&selIdentity=&selDate=&searchKeyword=' "
-	            	style="cursor: pointer">${todayNumberList.statusB }</span> 
-	            <p class="counter-title" style="margin-top: 10px;">1:1 상담</p>
-	        </div> 
+<!--             <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="600ms" style="visibility: visible; animation-duration: 600ms; animation-name: fadeInUp;">  -->
+<!-- 	            <img src="./resources/img/common/chatting.png" style="width: 40px;height: 40px;"> -->
+<!-- 	            <span class="timer counter alt-font appear" data-to="980" data-speed="7000" -->
+<!-- 	            	onclick="location.href='trainerPermitList.do?selStatus=B&selIdentity=&selDate=&searchKeyword=' " -->
+<%-- 	            	style="cursor: pointer">${todayNumberList.statusB }</span>  --%>
+<!-- 	            <p class="counter-title" style="margin-top: 10px;">1:1 상담</p> -->
+<!-- 	        </div>  -->
 	        <!-- end counter -->
             
             <!-- counter -->

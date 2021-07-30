@@ -375,7 +375,7 @@ function fn_search(){
 									  <div id="salt"  class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 									</div><br>
 							
-							<div style="text-align: center;">🚴‍♂삶은 달걀 칼로리와 동일한 운동을 확인해 보세요🚴</div>‍
+							<div style="text-align: center;">🚴‍♂해당 음식과 동일한 운동을 확인해 보세요🚴</div>‍
 					        <div style="text-align: center;">
 					        <div style="float: left;width: 30%;height: 200px;margin-left: 25px;">
 					        <img src="./resources/img/common/run.png" style="height: 174px;"><br>
