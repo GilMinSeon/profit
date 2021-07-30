@@ -110,56 +110,48 @@
 	</select>
 	
     
-<!--     관리자가보는 정산하기 상세 리스트 -->
+	<!-- 관리자가 - 정산하기 상세 리스트 -->
     <select id="selectAdminSalesDetail"  resultType="egovMap" parameterType="Criteria">	 <!--  egovMap :  key 에 대하여 Camel Case 변환하여 super.put-->
-		  select
-				tt.rm, tt.yyyymm, tt.trainer_id, tt.cnt, tt.sum, tt.fee, tt.realamount, tt.Gubun
+		select
+			tt.rm, tt.yyyymm, tt.trainer_id, tt.cnt, tt.sum, tt.fee, tt.realamount, tt.Gubun
 	    from
 	    	(
 	    	select rownum as rm, m.yyyymm, m.trainer_id, m.cnt, m.sum, m.fee, m.realamount, m.Gubun
-                    from(
-                        select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
-                               b.in_user_id trainer_id,
-                               count(*) as cnt,
-                               sum(lesson_price) as sum,
-                                round(sum(lesson_price) * 0.2,-1) as fee,
-                                sum(lesson_price) - round(sum(lesson_price) * 0.2,-1) realamount,
-                               '온라인클래스'   Gubun
-                        
-                            from buy_lesson a
-                            left join lesson b on 
-                            (a.lesson_seq = b.lesson_seq)
-                            left join member c on
-                            (b.in_user_id = c.member_id)
-                            group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.in_user_id, '온라인클래스'
-                         
-                         union all
-                         
-                          select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
-                               b.chat_profile_id trainer_id,
-                               count(*) as cnt,
-                               count(*) * 3200 as sum,
-                               round(count(*) * 3200 * 0.2,-1) as fee,
-                               count(*) * 3200  - round(count(*) * 3200 * 0.2,-1)  realamount,
-                               '채팅'   Gubun
-                        
-                            from chatting a
-                            left join chat_profile b on 
-                            (a.chat_profile_seq = b.chat_profile_seq)
-                            group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.chat_profile_id, '채팅'
-                        
-                        )m
-			          where m.yyyymm = #{yyyymm}
-                      and m.gubun = #{gubun}
-<!--                       and 1=1 -->
-<!--                     <if test="searchKeyword != null and searchKeyword != ''"> -->
-<!-- 					    and m.trainer_id LIKE '%' || #{searchKeyword} || '%' -->
-<!-- 					</if> -->
-					order by m.yyyymm desc, m.gubun
-					
-				)tt
-			where rm between #{rowStart} and #{rowEnd}
-			
+                 from(
+                     select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
+                            b.in_user_id trainer_id,
+                            count(*) as cnt,
+                            sum(lesson_price) as sum,
+                             round(sum(lesson_price) * 0.2,-1) as fee,
+                             sum(lesson_price) - round(sum(lesson_price) * 0.2,-1) realamount,
+                            '온라인클래스'   Gubun
+                     
+                         from buy_lesson a
+                         left join lesson b on 
+                         (a.lesson_seq = b.lesson_seq)
+                         left join member c on
+                         (b.in_user_id = c.member_id)
+                         group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.in_user_id, '온라인클래스'
+                      
+                      union all
+                      
+                       select substr(to_char(a.in_date,'yyyy-mm'),0,7)  yyyymm,
+                            b.chat_profile_id trainer_id,
+                            count(*) as cnt,
+                            count(*) * 3200 as sum,
+                            round(count(*) * 3200 * 0.2,-1) as fee,
+                            count(*) * 3200  - round(count(*) * 3200 * 0.2,-1)  realamount,
+                            '채팅'   Gubun
+                         from chatting a
+                         left join chat_profile b on 
+                         (a.chat_profile_seq = b.chat_profile_seq)
+                         group by substr(to_char(a.in_date,'yyyy-mm'),0,7) , b.chat_profile_id, '채팅'
+                     )m
+		          where m.yyyymm = #{yyyymm}
+                     and m.gubun = #{gubun}
+				order by m.yyyymm desc, m.gubun
+			)tt
+		where rm between #{rowStart} and #{rowEnd}
 	</select>    
 	
     
