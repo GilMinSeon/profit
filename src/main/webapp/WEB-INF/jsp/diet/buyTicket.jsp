@@ -55,7 +55,7 @@
                         </div>
                         <h4>3회권</h4>
                         <div class="pricing__item__price">
-                            <h2>1,100원</h2>
+                            <h2>11,000원</h2>
                             <span>/3회</span>
                         </div>
                         <ul>

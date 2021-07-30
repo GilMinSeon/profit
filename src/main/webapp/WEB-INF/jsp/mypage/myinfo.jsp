@@ -119,7 +119,6 @@ li a:hover {
 								<li><a href="myinfo.do">- 내정보</a></li>
 								<li><a href="bookmark.do">- 북마크</a></li>
 								<li><a href="myLessonList.do">- 마이클래스</a></li>
-								<li><a href="myChatList.do">- 1:1채팅내역</a></li>
 							</ul>
 						</div>
 						
